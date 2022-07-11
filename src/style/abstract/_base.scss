@@ -1,3 +1,5 @@
+@use "./variables" as *;
+@use "./breakpoint" as *;
 @each $color,
 $val in $colors {
     .color-#{$color} {
@@ -32,28 +34,49 @@ $val in $colors {
 
 @each $val in $numbers {
     .col-#{$val} {
-        width: ($val/12)*100%;
-        padding-left: 10px;
-        padding-right: 10px;
+        width: calc($val/12)*100%;
+        padding-left: 15px;
+        padding-right: 15px;
     }
 }
 
-@each $val in $fonts {
-    .fs-#{$val} {
-        font-size: #{$val}px;
+@each $val in $numbers {
+    .col-md-#{$val} {
+        @include tablet {
+            width: calc($val/12)*100%;
+            // padding-left: 10px;
+            // padding-right: 10px;
+        }
     }
 }
 
-@each $val in $fontw {
-    .fw-#{$val/100} {
-        font-weight: $val;
+@each $val in $numbers {
+    .col-sm-#{$val} {
+        @include mobile {
+            width: calc($val/12)*100%;
+            // padding-left: 5px;
+            // padding-right: 5px;
+        }
+    }
+}
+
+@for $i from 1 through 48 {
+    .fs-#{$i} {
+        font-size: #{calc($i/16)}rem !important;
+    }
+}
+
+@for $val from 1 through 10 {
+    .fw-#{$val} {
+        font-weight: $val*100;
     }
 }
 
 .container {
     width: 100%;
-    max-width: 1620px;
-    padding: 0 50px;
+    max-width: 1200px;
+    padding-left: 15px;
+    padding-right: 15px;
     margin: auto;
     position: relative;
     @include tablet {
@@ -76,6 +99,9 @@ $val in $colors {
 
 form {
     button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         min-width: 120px;
         margin: 10px auto;
         padding: 10px 20px;
@@ -95,9 +121,12 @@ form {
 
 .btn-primary {
     min-width: 120px;
-    margin: 10px auto;
+    display: inline-flex;
+    gap: 4px;
+    justify-content: center;
+    align-items: center;
+    margin: 0px auto;
     padding: 10px 20px;
-    margin: auto;
     color: #fff;
     font-size: 16px;
     font-weight: 600;
@@ -110,9 +139,16 @@ form {
     }
 }
 
+// .bx {
+//     margin: auto 0px !important;
+// }
 .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
     min-width: 120px;
-    margin: 10px auto;
+    margin: 0px auto;
     padding: 10px 20px;
     color: #333;
     font-size: 16px;
@@ -143,12 +179,6 @@ select {
     top: 4rem !important
 }
 
-td,
-th {
-    border: 1px solid black;
-    padding: 5px;
-}
-
 .text-overflow-1-lines {
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -159,7 +189,7 @@ th {
 }
 
 .text-secondary {
-    color: #999;
+    color: #666 !important;
 }
 
 .avatar--45 {
@@ -174,15 +204,38 @@ th {
     width: 100%;
 }
 
+.w-75 {
+    width: 75% !important;
+}
+
+.w-50 {
+    width: 50% !important;
+}
+
+.w-25 {
+    width: 25% !important;
+}
+
 .ma {
     margin: auto;
 }
 
-ul {
-    & li {
-        cursor: pointer;
-        &:hover {
-            color: $main-color;
-        }
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.text-with-icon {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+        color: $main-color;
+    }
+    i {
+        font-size: 1rem;
+        margin-right: 4px;
     }
 }
