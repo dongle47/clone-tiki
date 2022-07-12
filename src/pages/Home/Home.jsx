@@ -10,13 +10,11 @@ function Home() {
       <div>Trang chủ</div><br />
       <div><Link to={"/tim-kiem"} className=""> Đến trang Tìm kiếm</Link></div>
       <br></br>
-      <Container sx={{ maxWidth: "1240px" }}>
-        <Grid container spacing={2}>
-          
-            {Products.map(item=> <Grid key={item.id}  item xs={2}><CardProduct data={item} /></Grid> )}
-          
+      <div className='container' style={{ maxWidth: "1270px" }}>
+        <Grid container >
+            {Products.map(item=> <Grid key={item.id}  item lg={2} md={4} sm={6} xs={6}><CardProduct data={item} /></Grid> )}
           </Grid>
-      </Container>
+      </div>
     </>
 
   )
@@ -29,6 +27,7 @@ const Products = [{
   price:"113.000",
   sale:true,
   percent_sale:"-21%",
+  rate:4,
 },
 {
   id:"2",
@@ -37,6 +36,7 @@ const Products = [{
   price:"113.000",
   sale:false,
   percent_sale:"-21%",
+  rate:3,
 },
 {
   id:"3",
@@ -45,6 +45,7 @@ const Products = [{
   price:"113.000",
   sale:true,
   percent_sale:"-21%",
+  rate:5,
 }
 ,
 {
@@ -54,6 +55,7 @@ const Products = [{
   price:"113.000",
   sale:true,
   percent_sale:"-21%",
+  rate:4,
 },
 {
   id:"5",
@@ -62,6 +64,7 @@ const Products = [{
   price:"113.000",
   sale:true,
   percent_sale:"-21%",
+  rate:2,
 },
 {
   id:"6",
@@ -70,6 +73,7 @@ const Products = [{
   price:"113.000",
   sale:false,
   percent_sale:"-21%",
+  rate:2,
 },
 {
   id:"7",
@@ -78,6 +82,7 @@ const Products = [{
   price:"113.000",
   sale:true,
   percent_sale:"-21%",
+  rate:1,
 }]
 
 export default Home
