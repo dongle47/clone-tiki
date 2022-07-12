@@ -35,6 +35,9 @@
         align-items: center;
         gap: 4px
     }
+    &__more {
+        color: $main-color;
+    }
 }
 
 section {
@@ -59,6 +62,9 @@ section {
         a {
             color: $main-color;
         }
+    }
+    &__more {
+        color: $main-color;
     }
 }
 
