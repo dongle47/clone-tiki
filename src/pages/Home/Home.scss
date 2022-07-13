@@ -302,6 +302,7 @@ section {
     &__wrap {
         display: flex;
         width: 100%;
+        padding-bottom: 4px;
         justify-content: space-between;
         overflow-y: scroll;
         &::-webkit-scrollbar {
