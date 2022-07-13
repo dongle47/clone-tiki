@@ -250,6 +250,11 @@ function SectionFlashsale(props) {
             <img alt="" src="https://frontend.tikicdn.com/_desktop-next/static/img/giasoc.svg" />
             <img alt="" src="https://frontend.tikicdn.com/_desktop-next/static/img/dealFlashIcon.svg" />
             <img src="https://frontend.tikicdn.com/_desktop-next/static/img/homnay.svg" alt="" />
+            <span className="flashsale__time">01</span>
+            <span>:</span>
+            <span className="flashsale__time">18</span>
+            <span>:</span>
+            <span className="flashsale__time">18</span>
           </div>
           <Link id="section2__more" to={"/xemthem"}>Xem thêm</Link>
         </div>

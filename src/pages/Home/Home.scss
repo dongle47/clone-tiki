@@ -42,6 +42,17 @@
     }
 }
 
+.flashsale {
+    &__time {
+        background-color: #ff424e;
+        padding: 3px 3px;
+        font-size: 14px;
+        color: #fff;
+        font-weight: 500;
+        border-radius: 3px;
+    }
+}
+
 section {
     margin-top: 1rem;
     border-radius: 4px;
