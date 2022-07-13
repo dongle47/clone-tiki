@@ -155,7 +155,7 @@ section {
     }
 }
 
-#slider-thuonghieu2 {
+.slider-thuonghieu2 {
     .swiper-button-prev {
         width: 32px;
         height: 32px;
@@ -167,6 +167,9 @@ section {
             font-size: 1rem;
             font-weight: 1100;
             color: #666;
+        }
+        &.swiper-button-disabled {
+            opacity: 0;
         }
     }
     .swiper-button-next {
@@ -180,6 +183,9 @@ section {
             font-size: 1rem;
             font-weight: 1100;
             color: #666;
+        }
+        &.swiper-button-disabled {
+            opacity: 0;
         }
     }
     &:hover {
@@ -322,5 +328,21 @@ section {
         padding: 16px 10px;
         margin-bottom: 4px;
         border-radius: 4px;
+    }
+}
+
+.btn__outline__primary {
+    height: 33px;
+    width: 240px;
+    border-radius: 2px;
+    border: 1px solid #0d5cb6;
+    background-color: #fff;
+    color: #0d5cb6;
+    transition: all .1s ease-in-out;
+    left: 50%;
+    margin: 1rem auto;
+    &:hover {
+        background-color: #0d5cb6;
+        color: #fff;
     }
 }

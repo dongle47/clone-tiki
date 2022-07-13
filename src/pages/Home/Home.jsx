@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import "./Home.scss"
 import { Link } from "react-router-dom"
 import Grid from '@mui/material/Grid';
+import { Button } from '@mui/material';
 import CardProduct from '../../components/CardProduct';
 import CardFlashsale from '../../components/CardFlashsale';
 import { Products, Categories, SlideKhuyenMai1, SlideThuongHieu1, SlideThuongHieu2, Quicklink, CategorySpecify, Suggestions } from '../../constraints/Home';
@@ -16,6 +17,12 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 function Home() {
+  const [page, setPage] = useState(1)
+  const size = 12
+
+  const handleLoadMore = () => {
+    setPage(page => page + 1)
+  }
   return (
     <>
       <div className='category'>
@@ -129,17 +136,13 @@ function Home() {
             </div>
           </div>
           <Grid container >
-            {Products.map(item => <Grid key={item.id} item lg={2} md={4} sm={6} xs={6}><CardProduct data={item} /></Grid>)}
+            {Products.slice(0, page * size).map(item => <Grid key={item.id} item lg={2} md={4} sm={6} xs={6}><CardProduct data={item} /></Grid>)}
           </Grid>
+          <div style={{ width: "100%", display: "flex" }}>
+            <button onClick={handleLoadMore} className='btn__outline__primary'>Xem thêm</button>
+          </div>
         </section>
       </div>
-      {/* 
-
-      <div className='container'>
-        <Grid container >
-          {Products.map(item => <Grid key={item.id} item lg={2} md={4} sm={6} xs={6}><CardProduct data={item} /></Grid>)}
-        </Grid>
-      </div> */}
     </>
 
   )
@@ -220,8 +223,7 @@ function SlideThuongHieu(props) {
         slidesPerGroup={6}
         navigation={true}
         modules={[Navigation]}
-        className="mySwiper"
-        id="slider-thuonghieu2"
+        className="mySwiper slider-thuonghieu2"
       >
         {SlideThuongHieu2.map(item =>
           <SwiperSlide key={item.id} style={{ padding: "0 8px" }} >
@@ -239,6 +241,7 @@ function SlideThuongHieu(props) {
 }
 
 function SectionFlashsale(props) {
+
   return (
     <>
       <div style={{ width: "59.35%", height: "274px", backgroundColor: "#fff", borderRadius: "4px" }}>
@@ -255,8 +258,7 @@ function SectionFlashsale(props) {
           slidesPerGroup={5}
           navigation={true}
           modules={[Navigation]}
-          className="mySwiper"
-          id="slider-thuonghieu2"
+          className="mySwiper slider-thuonghieu2"
         >
           {Products.map(item =>
             <SwiperSlide key={item.id} style={{ minWidth: "148px" }}>
@@ -274,6 +276,19 @@ function SectionFlashsale(props) {
 }
 
 function Category(props) {
+  const categoryRef = useRef();
+  const handleReachEnd = () => {
+    if (categoryRef) {
+      categoryRef.current.children[2].style.display = 'none'
+      categoryRef.current.children[1].style.removeProperty("display")
+    }
+  }
+  const handleReachBeginning = () => {
+    if (categoryRef) {
+      categoryRef.current.children[1].style.display = 'none'
+      categoryRef.current.children[2].style.removeProperty("display")
+    }
+  }
   return (
     <Swiper
       slidesPerView={13}
@@ -281,6 +296,10 @@ function Category(props) {
       navigation={true}
       modules={[Navigation]}
       className="mySwiper"
+      ref={categoryRef}
+      onReachEnd={handleReachEnd}
+      onReachBeginning={handleReachBeginning}
+      onInit={handleReachBeginning}
     >
       {
         Categories.map(item =>
