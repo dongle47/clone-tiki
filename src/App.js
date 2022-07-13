@@ -6,7 +6,7 @@ import Home from './pages/Home/Home';
 
 import Search from './pages/Search/Search';
 
-import AccountInfo from './pages/AccountInfo/AccountInfo';
+import CustomerAccount from './pages/CustomerAccount/CustomerAccount';
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,7 +19,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='tim-kiem' element={<Search />} />
-        <Route path='thong-tin-tai-khoan' element={<AccountInfo />} />
+        <Route path='customer' element={<CustomerAccount />} />
       </Routes>
       <Footer />
       <ToastContainer autoClose={1000}

@@ -1,0 +1,17 @@
+
+.acc__content{
+    display: flex;
+    flex-direction: row;
+}
+
+.info1{
+    display: flex;
+    flex-direction: row;
+    &__name{
+        display: flex;
+        flex-direction: column;
+    }
+    &__nickname{
+        
+    }
+}
