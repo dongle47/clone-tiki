@@ -13,8 +13,10 @@
 }
 
 #section1,
-#section2 {
+#section2,
+#section3 {
     width: 100%;
+    max-height: 274px;
     display: flex;
     margin-top: 1rem;
     justify-content: space-between;
@@ -40,10 +42,25 @@
     }
 }
 
+.flashsale {
+    &__time {
+        background-color: #ff424e;
+        padding: 3px 3px;
+        font-size: 14px;
+        color: #fff;
+        font-weight: 500;
+        border-radius: 3px;
+    }
+}
+
 section {
     margin-top: 1rem;
     border-radius: 4px;
     background-color: #fff;
+    img {
+        width: 100%;
+        border-radius: 4px;
+    }
 }
 
 .section {
@@ -149,7 +166,7 @@ section {
     }
 }
 
-#slider-thuonghieu2 {
+.slider-thuonghieu2 {
     .swiper-button-prev {
         width: 32px;
         height: 32px;
@@ -161,6 +178,9 @@ section {
             font-size: 1rem;
             font-weight: 1100;
             color: #666;
+        }
+        &.swiper-button-disabled {
+            opacity: 0;
         }
     }
     .swiper-button-next {
@@ -175,6 +195,9 @@ section {
             font-weight: 1100;
             color: #666;
         }
+        &.swiper-button-disabled {
+            opacity: 0;
+        }
     }
     &:hover {
         .swiper-button-prev {
@@ -188,5 +211,150 @@ section {
         &::after {
             color: #000;
         }
+    }
+}
+
+.quicklink {
+    &__wrap {
+        padding: 16px 0;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+    &__item {
+        width: 103px;
+        height: 104px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        span {
+            text-align: center;
+            font-size: 13px;
+            padding: 0 10px;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+    }
+}
+
+.banner {
+    &__wrap1 {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+        img {
+            width: 295px;
+            height: 150px;
+        }
+    }
+    &__wrap2 {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+        img {
+            width: 394px;
+            height: 150px;
+            border-radius: 20px;
+        }
+    }
+}
+
+.specify {
+    &__wrap {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        grid-template-rows: 1fr;
+        gap: 12px 8px;
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+    &__item {
+        width: 117px;
+        height: 132px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        span {
+            text-align: center;
+            font-size: 13px;
+            padding: 0 10px;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+    }
+}
+
+.suggestion {
+    background-color: #f5f5fa;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    &__wrap {
+        display: flex;
+        width: 100%;
+        padding-bottom: 4px;
+        justify-content: space-between;
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+    &__item {
+        width: 151px;
+        height: 85px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #fff;
+        border-radius: 4px;
+        span {
+            text-align: center;
+            font-size: 13px;
+            padding: 0 10px;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+        &.active {
+            border: 1px solid $main-color;
+            span {
+                color: $main-color;
+            }
+        }
+    }
+}
+
+#section9 {
+    background-color: #f5f5fa;
+    .section__heading {
+        background-color: #fff;
+        padding: 16px 10px;
+        margin-bottom: 4px;
+        border-radius: 4px;
+    }
+}
+
+.btn__outline__primary {
+    height: 33px;
+    width: 240px;
+    border-radius: 2px;
+    border: 1px solid #0d5cb6;
+    background-color: #fff;
+    color: #0d5cb6;
+    transition: all .1s ease-in-out;
+    left: 50%;
+    margin: 1rem auto;
+    &:hover {
+        background-color: #0d5cb6;
+        color: #fff;
     }
 }
