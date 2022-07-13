@@ -4,7 +4,7 @@ import "./CustomerAccount.scss";
 import { sidebarTab } from "../../constraints/Profile";
 
 import Sidebar from "./Sidebar";
-
+import { Container } from "@mui/material";
 
 function CustomerAccount() {
   const [selectedTab, setSelectedTab] = React.useState(sidebarTab[0].id);
@@ -14,10 +14,10 @@ function CustomerAccount() {
     console.log(id);
   };
 
-  const handleTab = sidebarTab[selectedTab - 1].content
+  const handleTab = sidebarTab[selectedTab - 1].content;
 
   return (
-    <>
+    <div className="container">
       <div className="customer-account">
         <Sidebar
           selectedTab={selectedTab}
@@ -26,7 +26,7 @@ function CustomerAccount() {
         />
         {handleTab()}
       </div>
-    </>
+    </div>
   );
 }
 

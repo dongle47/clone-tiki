@@ -59,23 +59,18 @@ export const sidebarTab = [
     },
     {
         id: 7,
-        icon: VisibilityIcon,
-        text: 'Sản phẩm bạn đã xem'
-    },
-    {
-        id: 8,
         icon: FavoriteIcon,
         text: 'Sản phẩm yêu thích',
         content: FavoriteProduct,
     },
     {
-        id: 9,
+        id: 8,
         icon: StarHalfIcon,
         text: 'Nhận xét của tôi',
         content: MyRates
     },
     {
-        id: 10,
+        id: 9,
         icon: DiscountIcon,
         text: 'Mã giảm giá',
         content: DiscountCode
