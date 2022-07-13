@@ -397,3 +397,242 @@ export const SlideThuongHieu2=[
         link:""
     }
 ]
+
+
+export const Quicklink=[
+  {
+      id:1,
+      image:"https://salt.tikicdn.com/ts/upload/7b/fc/54/777d24de8eff003bda7a8d5f4294f9a8.gif",
+      alt:"Mua sắm có lời",
+      link:""
+  },
+  {
+      id:2,
+      image:"https://salt.tikicdn.com/cache/w100/ts/upload/9c/ca/37/d6e873b1421da32b76654bb274e46683.png.webp",
+      alt:"Siêu sale 7.7",
+      link:""
+  },
+  {
+      id:3,
+      image:"https://salt.tikicdn.com/cache/w100/ts/upload/68/9c/2f/6fc82a9a9713a2c2b1968e9760879f6e.png.webp",
+      alt:"Đi chợ siêu tốc",
+      link:""
+  },
+  {
+      id:4,
+      image:"https://salt.tikicdn.com/cache/w100/ts/upload/73/e0/7d/af993bdbf150763f3352ffa79e6a7117.png.webp",
+      alt:"Dóng tiền, nạp thẻ",
+      link:""
+  },
+  {
+      id:5,
+      image:"https://salt.tikicdn.com/cache/w100/ts/upload/ff/20/4a/0a7c547424f2d976b6012179ed745819.png.webp",
+      alt:"Mua bán ASA/XU",
+      link:""
+  },
+  {
+      id:6,
+      image:"https://salt.tikicdn.com/cache/w100/ts/upload/73/50/e1/83afc85db37c472de60ebef6eceb41a7.png.webp",
+      alt:"Mã giảm giá",
+      link:""
+  },
+  {
+      id:7,
+      image:"https://salt.tikicdn.com/cache/w100/ts/upload/ef/ae/82/f40611ad6dfc68a0d26451582a65102f.png.webp",
+      alt:"Bảo hiểm 360",
+      link:""
+  },
+  {
+      id:8,
+      image:"https://salt.tikicdn.com/cache/w100/ts/upload/99/29/ff/cea178635fd5a24ad01617cae66c065c.png.webp",
+      alt:"Giảm đến 50%",
+      link:""
+  },
+  {
+      id:9,
+      image:"https://salt.tikicdn.com/cache/w100/ts/upload/99/29/ff/cea178635fd5a24ad01617cae66c065c.png.webp",
+      alt:"Hoàn tiền 15%",
+      link:""
+  },
+  {
+      id:10,
+      image:"https://salt.tikicdn.com/cache/w100/ts/upload/4a/b2/c5/b388ee0e511889c83fab1217608fe82f.png.webp",
+      alt:"Ưu đãi thanh toán",
+      link:""
+  }
+]
+
+
+export const CategorySpecify=[
+  {
+      id:1,
+      image:"https://salt.tikicdn.com/cache/w100/ts/category/1e/8c/08/d8b02f8a0d958c74539316e8cd437cbd.png.webp",
+      alt:"NGON",
+      link:"/ngon"
+  },
+  {
+      id:2,
+      image:"https://salt.tikicdn.com/cache/w100/ts/product/0c/b8/11/6c14b804e2649e1f7162f4aef27d1648.jpg.webp",
+      alt:"Giày thể thao",
+      link:""
+  },
+  {
+      id:3,
+      image:"https://salt.tikicdn.com/cache/w100/ts/product/ad/50/99/93c55f64df94b3809e13e0648eec55f2.jpg.webp",
+      alt:"Balo",
+      link:""
+  },
+  {
+      id:4,
+      image:"https://salt.tikicdn.com/cache/w100/ts/product/35/6c/4b/709aef22ee52628dcdbdc857ba1bc46c.jpg.webp",
+      alt:"Điện thoại Smartphone",
+      link:""
+  },
+  {
+      id:5,
+      image:"https://salt.tikicdn.com/cache/w100/ts/product/15/d5/1d/64a37269a97a049337a0de82152fd43c.jpg.webp",
+      alt:"Nước giặt",
+      link:""
+  },
+  {
+      id:6,
+      image:"https://salt.tikicdn.com/cache/w100/ts/product/7e/21/b3/eb44ca47ec51e52b68f851cc1a4202a8.jpg.webp",
+      alt:"Kẹo",
+      link:""
+  },
+  {
+      id:7,
+      image:"https://salt.tikicdn.com/cache/w100/ts/product/79/78/7e/a70f1b4320b7d2fd31897a7c4efc2f34.jpg.webp",
+      alt:"Truyện tranh, Manga, Comic",
+      link:""
+  },
+  {
+      id:8,
+      image:"https://salt.tikicdn.com/cache/w100/ts/product/22/cb/a9/524a27dcd45e8a13ae6eecb3dfacba7c.jpg.webp",
+      alt:"Sách tư duy - Kỹ năng sống",
+      link:""
+  },
+  {
+      id:9,
+      image:"https://salt.tikicdn.com/cache/w100/ts/product/7c/e8/34/4d3636aadb471cad0bf2f45d681e4f23.jpg.webp",
+      alt:"Truyện ngắn - Tản văn",
+      link:""
+  },
+  {
+      id:10,
+      image:"https://salt.tikicdn.com/cache/w100/ts/product/e7/37/58/0ddcb4044c51e371aa54ac0d0bd00729.jpg.webp",
+      alt:"Bàn ghế làm việc",
+      link:""
+  },
+  {
+    id:11,
+    image:"https://salt.tikicdn.com/cache/w100/ts/product/5e/18/24/2a6154ba08df6ce6161c13f4303fa19e.jpg.webp",
+    alt:"Tiểu thuyết",
+    link:""
+},
+{
+    id:12,
+    image:"https://salt.tikicdn.com/cache/w100/ts/product/90/45/34/d5de0766b91469beb94da3ea7af202fd.jpg.webp",
+    alt:"Light Novel",
+    link:""
+},
+{
+    id:13,
+    image:"https://salt.tikicdn.com/cache/w100/ts/product/e1/04/31/7763d9035552760f627c34acfec0e12f.jpg.webp",
+    alt:"Sách Học Tiếng Anh",
+    link:""
+},
+{
+    id:14,
+    image:"https://salt.tikicdn.com/cache/w100/ts/product/4e/18/1e/aa90c76a8066d751b77deb17422ba1e0.jpg.webp",
+    alt:"Khác",
+    link:""
+},
+{
+    id:15,
+    image:"https://salt.tikicdn.com/cache/w100/ts/product/c3/0c/4a/263d041ad1099b75fe603397cb31c3ff.jpg.webp",
+    alt:"Tủ",
+    link:""
+},
+{
+    id:16,
+    image:"https://salt.tikicdn.com/cache/w100/ts/product/25/8c/35/d9081d7f2905df3cf4d1700f180b85a3.jpg.webp",
+    alt:"Phụ kiện nhà bếp khác",
+    link:""
+},
+{
+    id:17,
+    image:"https://salt.tikicdn.com/cache/w100/ts/product/27/02/b7/49104866e1a499616f0efffe65dad186.png.webp",
+    alt:"Kệ & tủ",
+    link:""
+},
+{
+    id:18,
+    image:"https://salt.tikicdn.com/cache/w100/ts/product/dc/14/f1/32d400ab6b71d8cef6938b9a36baf53a.jpg.webp",
+    alt:"Cây cảnh",
+    link:""
+},
+{
+    id:19,
+    image:"https://salt.tikicdn.com/cache/w100/ts/product/e1/8c/3c/9f3524fd1f998f292ec40da6647a7e80.jpg.webp",
+    alt:"Bình giữ nhiệt",
+    link:""
+},
+{
+    id:20,
+    image:"https://salt.tikicdn.com/cache/w100/ts/product/96/46/60/096b3ef6d9265138abb024dd0a51ff15.jpg.webp",
+    alt:"Kem dưỡng da",
+    link:""
+}
+]
+
+export const Suggestions=[
+  {
+      id:1,
+      image:"https://salt.tikicdn.com/cache/w100/ts/personalish/f9/27/b5/3a8e2286a1c8fb91b67acc5ee35f82f0.png.webp",
+      alt:"Dành cho bạn",
+      link:""
+  },
+  {
+      id:2,
+      image:"https://salt.tikicdn.com/cache/w100/ts/tikimsp/3d/cc/b6/92908056ddb7e83897fba102bf39c248.png.webp",
+      alt:"Flash Voucher 300k",
+      link:""
+  },
+  {
+      id:3,
+      image:"https://salt.tikicdn.com/cache/w100/ts/personalish/b7/aa/f3/bcff08097ead36826d2c9daf7c2debd5.png.webp",
+      alt:"Đi chợ siêu Sale",
+      link:""
+  },
+  {
+      id:4,
+      image:"https://salt.tikicdn.com/cache/w100/ts/personalish/41/99/9a/8898607d7fca4b79775a708c57a8152f.png.webp",
+      alt:"Deal Siêu Hot",
+      link:""
+  },
+  {
+      id:5,
+      image:"https://salt.tikicdn.com/cache/w100/ts/personalish/0f/59/9d/215fa18ef72e430eefcbfe5355cab8e2.png.webp",
+      alt:"Rẻ vô đối",
+      link:""
+  },
+  {
+      id:6,
+      image:"https://salt.tikicdn.com/cache/w100/ts/personalish/7d/8a/6e/d8b76e2c43cbd06b7e1aa3ab8c54df64.png.webp",
+      alt:"Hàng mới",
+      link:""
+  },
+  {
+      id:7,
+      image:"https://salt.tikicdn.com/cache/w100/ts/personalish/dc/f1/b1/6ba9e529785de3ad1a81b9c569d05aa0.png.webp",
+      alt:"Xu hướng thời trang",
+      link:""
+  },
+  {
+      id:8,
+      image:"https://salt.tikicdn.com/cache/w100/ts/personalish/b9/e1/a9/65ad8ac4e167c5009ae3f7c80395a5a4.png.webp",
+      alt:"Trending",
+      link:""
+  }
+]
