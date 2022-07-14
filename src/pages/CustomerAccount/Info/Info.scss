@@ -1,17 +1,26 @@
 
-.acc__content{
-    display: flex;
-    flex-direction: row;
+
+.customer-info label{
+    width: 30%;
 }
 
-.info1{
-    display: flex;
-    flex-direction: row;
-    &__name{
-        display: flex;
-        flex-direction: column;
-    }
-    &__nickname{
-        
-    }
+#input-name{
+    border-radius: 3px;
+    width: 15rem;
+}
+
+#input-nickname{
+    border-radius: 3px;
+    width: 15rem;
+}
+
+.avatar-control{
+    position: absolute;
+    top: 110;
+    left: -60%;
+    z-index: 1;
+    padding: 0;
+    border: 1px solid rgb(209, 209, 209);
+    background-color: white;
+    width: 250px;
 }

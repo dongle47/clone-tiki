@@ -1,30 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./CustomerAccount.scss";
 
 import { sidebarTab } from "../../constraints/Profile";
 
 import Sidebar from "./Sidebar";
-import { Container } from "@mui/material";
 
 function CustomerAccount() {
-  const [selectedTab, setSelectedTab] = React.useState(sidebarTab[0].id);
-
-  const handleListItemClick = (id) => {
-    setSelectedTab(id);
-    console.log(id);
+  const findTabId = () => {
+    const curTab = sidebarTab.find((item) =>
+      window.location.href.includes(item.link)
+    );
+    return curTab.id;
   };
 
-  const handleTab = sidebarTab[selectedTab - 1].content;
+  const [selectedTabId, setSelectedTabId] = React.useState(findTabId);
+
+  console.log(findTabId(window.location.href));
+
+  const handleClick = (id) => {
+    setSelectedTabId(id);
+
+    const currentTab = sidebarTab.find((item) => item.id === id);
+    window.history.replaceState(null, currentTab.text, currentTab.link);
+  };
+
+  const content = sidebarTab.map((item) => {
+    return <item.content />;
+  });
 
   return (
     <div className="container">
       <div className="customer-account">
         <Sidebar
-          selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab}
-          handleListItemClick={handleListItemClick}
+          selectedTabId={selectedTabId}
+          setSelectedTab={setSelectedTabId}
+          handleClick={handleClick}
         />
-        {handleTab()}
+        {content[selectedTabId - 1]}
       </div>
     </div>
   );
