@@ -21,6 +21,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='tim-kiem' element={<Search />} />
         <Route path='cart' element={<ShoppingCart />} />
+        
         <Route path='customer/account/edit' element={<CustomerAccount />} />
         <Route path='customer/notification' element={<CustomerAccount />} />
         <Route path='sale/order/history' element={<CustomerAccount />} />
