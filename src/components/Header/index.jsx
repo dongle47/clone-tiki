@@ -18,10 +18,11 @@ function Header() {
 
           <div className='Header__account'>
             <div className="Header__account__info">
-            <span>
-                <img class="cart-icon" src="https://salt.tikicdn.com/ts/upload/40/44/6c/b80ad73e5e84aeb71c08e5d8d438eaa1.png" height="32" width="32"></img>
-              </span>
-              <a> Tài khoản </a>
+                <img class="cart-icon" src="https://salt.tikicdn.com/ts/upload/67/de/1e/90e54b0a7a59948dd910ba50954c702e.png" height="32" width="32"></img>
+                <span>
+                  <span> Đăng nhập/Đăng ký</span>
+                  <span> Tài khoản</span>
+                </span>
             </div>
             <div className="Header__account__cart">
               <span>

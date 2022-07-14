@@ -37,6 +37,9 @@
     &__group{
       display:flex;
     }
+    &__cate{
+      color :white;
+    }
   }
 
   &__account{
@@ -46,6 +49,21 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    &__info{
+      width:162px;
+      display: flex;
+      font-size : 13px;
+      &>span{
+        display:flex;
+        flex-direction: column;
+        &>span:first-child{
+          font-size: 11px;
+        }
+        &>span:last-child{
+          font-size: 13px;
+        }
+      }
+    }
   }
 }
 
