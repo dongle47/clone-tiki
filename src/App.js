@@ -11,6 +11,7 @@ import CustomerAccount from './pages/CustomerAccount/CustomerAccount';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom"
+import ShoppingCart from "./pages/ShoppingCart"
 function App() {
 
   return (
@@ -19,7 +20,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='tim-kiem' element={<Search />} />
-
+        <Route path='cart' element={<ShoppingCart />} />
         <Route path='customer/account/edit' element={<CustomerAccount />} />
         <Route path='customer/notification' element={<CustomerAccount />} />
         <Route path='sale/order/history' element={<CustomerAccount />} />
