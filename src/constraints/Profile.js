@@ -4,7 +4,6 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import RateReviewIcon from '@mui/icons-material/RateReview';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import StarHalfIcon from '@mui/icons-material/StarHalf';
 import DiscountIcon from '@mui/icons-material/Discount';
@@ -74,14 +73,14 @@ export const sidebarTab = [
         icon: StarHalfIcon,
         text: 'Nhận xét của tôi',
         content: MyRates,
-        link: 'customer/coupons'
+        link: '/customer/review'
     },
     {
         id: 9,
         icon: DiscountIcon,
         text: 'Mã giảm giá',
         content: DiscountCode,
-        link: '#'
+        link: '/customer/coupons'
     },
  
 ]
