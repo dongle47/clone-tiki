@@ -19,7 +19,18 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='tim-kiem' element={<Search />} />
-        <Route path='customer' element={<CustomerAccount />} />
+
+        <Route path='customer/account/edit' element={<CustomerAccount />} />
+        <Route path='customer/notification' element={<CustomerAccount />} />
+        <Route path='sale/order/history' element={<CustomerAccount />} />
+        <Route path='customer/address' element={<CustomerAccount />} />
+        <Route path='customer/paymentcard' element={<CustomerAccount />} />
+        <Route path='nhan-xet-san-pham-ban-da-mua' element={<CustomerAccount />} />
+        <Route path='customer/wishlist' element={<CustomerAccount />} />
+        <Route path='customer/review' element={<CustomerAccount />} />
+        <Route path='customer/coupons' element={<CustomerAccount />} />
+        
+
       </Routes>
       <Footer />
       <ToastContainer autoClose={1000}

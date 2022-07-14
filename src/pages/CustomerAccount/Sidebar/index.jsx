@@ -16,14 +16,6 @@ import {
 } from "@mui/material";
 
 export default function PermanentDrawerLeft(props) {
-
-  /*const [selectedTab, setSelectedTab] = React.useState(sidebarTab[0].id);
-
-  const handleListItemClick = (id) => {
-    setSelectedTab(id);
-  };
-  */
-
   return (
     <React.Fragment>
       <List sx={{ maxWidth: 300 }}>
@@ -38,10 +30,10 @@ export default function PermanentDrawerLeft(props) {
           <ListItem
             key={item.id}
             disablePadding
-            onClick={() => props.setSelectedTab(item.id)}
-            selected={props.selectedTab === item.id}
+            onClick={() => props.handleClick(item.id)}
+            selected={props.selectedTabId === item.id}
           >
-            <ListItemButton>
+            <ListItemButton >
               <ListItemIcon>{<item.icon />}</ListItemIcon>
               <ListItemText primary={item.text} />
               {index === 1 ? (
