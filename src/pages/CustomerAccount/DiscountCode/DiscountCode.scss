@@ -1,0 +1,141 @@
+.list-voucher {
+    display: grid;
+    gap: 0px 16px;
+    grid-template-columns: repeat(2, minmax(0px, 1fr));
+    .voucher-bg1 {
+        display: flex;
+        position: relative;
+        color: rgb(36, 36, 36);
+        margin: 0px -8px 15px 0px;
+        width: 478.5px;
+        height: 132px;
+        .voucher-bg2 {
+            display: flex;
+            position: relative;
+            width: 400px;
+            .voucher-bg3 {
+                position: relative;
+                opacity: 1;
+                width: 100%;
+                height: 132px;
+                .voucher {
+                    position: absolute;
+                    top: 0px;
+                    left: 0px;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    .voucher-publisher {
+                        min-width: 132px;
+                        width: 132px;
+                        height: 132px;
+                        padding: 8px;
+                        display: flex;
+                        flex-direction: column;
+                        -webkit-box-align: center;
+                        align-items: center;
+                        align-self: center;
+                        -webkit-box-pack: center;
+                        justify-content: center;
+                        .publisher-info {
+                            position: relative;
+                            width: 60px;
+                            height: 60px;
+                            .publisher-link {
+                                width: 100%;
+                                position: relative;
+                                display: flex;
+                                -webkit-box-align: center;
+                                align-items: center;
+                                .publisher-img {
+                                    width: 100%;
+                                    padding-bottom: calc(100%);
+                                    position: relative;
+                                    .img-voucher {
+                                        object-fit: contain;
+                                        border-radius: 8px;
+                                        width: 130px;
+                                        height: 130px;
+                                        
+                                    }
+                                }
+                            }
+                        }
+                        .publisher-name {
+                            margin: 4px 4px 0px;
+                            text-align: center;
+                        }
+                    }
+                    .voucher-info {
+                        display: flex;
+                        flex-direction: column;
+                        padding: 12px;
+                        width: calc(100% - 132px);
+                        .button-info {
+                            display: block;
+                            background: transparent;
+                            outline: none;
+                            border: none;
+                            padding: 8px;
+                            cursor: pointer;
+                            line-height: 0px;
+                        }
+                        .discount-info {
+                            .money-discount {
+                                display: -webkit-box;
+                                -webkit-box-orient: vertical;
+                                -webkit-line-clamp: 1;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                letter-spacing: 0px;
+                                margin: 0px;
+                                padding: 0px;
+                                font-size: 17px;
+                                font-weight: 500;
+                                line-height: 24px;
+                                max-height: 24px;
+                                color: rgb(36, 36, 36);
+                            }
+                            .discount-note {
+                                display: -webkit-box;
+                                -webkit-box-orient: vertical;
+                                -webkit-line-clamp: 1;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                letter-spacing: 0px;
+                                margin: 0px;
+                                padding: 0px;
+                                font-size: 13px;
+                                font-weight: 400;
+                                line-height: 20px;
+                                max-height: 20px;
+                                color: rgb(120, 120, 120);
+                            }
+                        }
+                        .note-background {
+                            margin-top: auto;
+                            display: flex;
+                            align-items: flex-end;
+                            .discount-note {
+                                display: -webkit-box;
+                                -webkit-box-orient: vertical;
+                                -webkit-line-clamp: 1;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                letter-spacing: 0px;
+                                margin: 0px;
+                                padding: 0px;
+                                font-size: 13px;
+                                font-weight: 400;
+                                line-height: 20px;
+                                max-height: 20px;
+                                color: rgb(120, 120, 120);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
