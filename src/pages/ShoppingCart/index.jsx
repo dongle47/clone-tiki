@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import './ShoppingCart.scss'
 import { Grid, Typography, Checkbox, Button, Modal } from '@mui/material'
 import CartItem from '../../components/CartItem'
@@ -11,41 +11,62 @@ import CloseIcon from '@mui/icons-material/Close';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useSelector, useDispatch } from 'react-redux'
 import ChooseCoupon from '../../components/ChooseCoupon';
+import {unchooseAll,chooseAll,deleteAll} from '../../slices/cartSlice'
 
 
 function ShoppingCart() {
   const [open, setOpen] = React.useState(false);
-  const [totalPrice,setTotalPrice] = React.useState(0);
-  const [couponPrice,setCouponPrice] = React.useState(20000);
+  const [totalPrice, setTotalPrice] = React.useState(0);
+  const [couponPrice, setCouponPrice] = React.useState(20000);
+  const [checkAll, setCheckAll] = useState(false)
   const handleOpen = useCallback(() => setOpen(true));
   const handleClose = useCallback(() => setOpen(false));
-  const CartItems = useSelector(state=>state.cart.items)
-  useEffect(()=>{
-    const calcPrice=()=>{
-      const total = CartItems.reduce((t,num)=>num.choose?t+num.price*num.quanlity:t,0)
+  const CartItems = useSelector(state => state.cart.items)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    const calcPrice = () => {
+      const total = CartItems.reduce((t, num) => num.choose ? t + num.price * num.quanlity : t, 0)
       setTotalPrice(total)
     }
     calcPrice()
-  },[CartItems])
+  }, [CartItems])
+
+  const handleChooseAll=()=>{
+    if(checkAll){
+      setCheckAll(false)
+      dispatch(unchooseAll({}))
+    }
+    else{
+      setCheckAll(true)
+      dispatch(chooseAll({}))
+    }
+  }
+
+  const handleDeleteAll=()=>{
+    dispatch(deleteAll())
+  }
 
   return (<>
     <div className="container" >
-      <Grid container spacing={2}>
+      <Grid container spacing={2} style={{marginTop:"24px"}}>
         <Grid item lg={9} md={12} sm={12} xs={12}>
           <div>
-
             <Typography className="cart__title" gutterBottom variant="h5" component="div" >
               GIỎ HÀNG
             </Typography>
+
             <div className="cart__heading">
-              <div className="cart__heading__item" style={{ width: "44.45%" }}>
-                <Checkbox sx={{ padding: 0, marginRight: "12px", width: "18px", height: "18px", fontSize: "14px" }} />
-                 {`Tất cả (${CartItems.length} sản phẩm)`}
-                 </div>
+              <div className="cart__heading__item" style={{ width: "44.45%",fontSize:"14px" }}>
+                <Checkbox checked={checkAll} onChange={handleChooseAll}
+                 sx={{ padding: 0, marginRight: "12px", width: "18px", height: "18px", fontSize: "14px" }} />
+                {`Tất cả (${CartItems.length} sản phẩm)`}
+              </div>
               <div className="cart__heading__item" style={{ width: "21.11%", fontSize: "13px" }}>Đơn giá</div>
               <div className="cart__heading__item" style={{ width: "14.45%", fontSize: "13px" }}>Số lượng</div>
               <div className="cart__heading__item" style={{ width: "14.45%", fontSize: "13px" }}>Thành tiền</div>
-              <div className="cart__heading__item" style={{ width: "3.33%", fontSize: "13px" }}><DeleteOutlinedIcon /></div>
+              <div className="cart__heading__item" style={{ width: "3.33%", fontSize: "13px" }}>
+                <span onClick={handleDeleteAll}><DeleteOutlinedIcon /></span>
+              </div>
             </div>
             <div className="cart__list">
               {
@@ -98,22 +119,22 @@ function ShoppingCart() {
                   Tổng tiền
                 </span>
                 <div className="cart__summary__valueprice">
-                  <span>{numWithCommas(totalPrice-couponPrice)} ₫</span>
+                  <span>{numWithCommas(totalPrice - couponPrice>0?totalPrice - couponPrice:0)} ₫</span>
                   <span>(Đã bao gồm VAT nếu có)</span>
                 </div>
               </div>
             </div>
             <Button variant="contained"
-              sx={{ width: "100%",height:"42px" ,backgroundColor: "#ff424e", "&:hover": { opacity: 0.8, backgroundColor: "#ff424e" } }}>
+              sx={{ width: "100%", height: "42px", backgroundColor: "#ff424e", "&:hover": { opacity: 0.8, backgroundColor: "#ff424e" } }}>
               Mua hàng</Button>
 
           </div>
         </Grid>
       </Grid>
     </div>
-    {open?<ChooseCoupon handleOpen={handleOpen} handleClose={handleClose} open={open}/>:<></>}
-    
-    </>
+    {open ? <ChooseCoupon handleOpen={handleOpen} handleClose={handleClose} open={open} /> : <></>}
+
+  </>
   )
 }
 
