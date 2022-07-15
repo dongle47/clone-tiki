@@ -62,6 +62,7 @@ function App() {
 
         <Route path="/customer/address" element={<CustomerAccount />}>
           <Route index element={<Addresses />} />
+          <Route path='create' element={<CreateAddress />} />
         </Route>
 
         <Route path="/customer/paymentcard" element={<CustomerAccount />}>
