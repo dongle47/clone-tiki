@@ -10,6 +10,7 @@ import {
   hexToRgb,
   Badge,
   Box,
+  Modal,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
@@ -18,8 +19,13 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
+import CloseIcon from "@mui/icons-material/Close";
 
 function Header() {
+  const [modalLogin, setModalLogin] = React.useState(false);
+  const openModalLogin = () => setModalLogin(true);
+  const closeModalLogin = () => setModalLogin(false);
+
   return (
     <Stack
       justifyContent="space-between"
@@ -37,6 +43,7 @@ function Header() {
           src="https://salt.tikicdn.com/ts/upload/ae/f5/15/2228f38cf84d1b8451bb49e2c4537081.png"
           alt=""
         />
+
         <img
           style={{ width: "5rem", height: "1rem" }}
           alt=""
@@ -45,25 +52,20 @@ function Header() {
       </Stack>
 
       <Stack
-        sx={{ mr: "3rem" }}
+        sx={{ mr: "3rem", height: "2.5rem" }}
         direction="row"
         justifyContent="flex-end"
         spacing={3}
       >
         <Stack direction="row" alignItems="center" sx={{ padding: "0" }}>
           <input
-            style={{
-              margin: "0",
-              fontSize: "13px",
-              borderTopRightRadius: "0",
-              borderBottomRightRadius: "0",
-            }}
+            style={{}}
             id="input-search"
             placeholder="Tìm sản phẩm, danh mục hay thương hiệu mong muốn ..."
           />
           <Button
             sx={{
-              height: "42px",
+              height: "100%",
               borderTopLeftRadius: "0",
               borderBottomLeftRadius: "0",
             }}
@@ -76,11 +78,13 @@ function Header() {
 
         <Stack direction="row" alignItems="center" sx={{ color: "white" }}>
           <PersonOutlineOutlinedIcon fontSize="large" />
+
           <Stack>
             <Typography sx={{ fontSize: "11px" }}>
               Đăng nhập / Đăng ký
             </Typography>
             <Button
+              onClick={openModalLogin}
               sx={{ color: "white" }}
               endIcon={<ArrowDropDownOutlinedIcon />}
             >
@@ -99,8 +103,10 @@ function Header() {
             <Badge color="warning" badgeContent={0} showZero>
               <ShoppingCartOutlinedIcon fontSize="large" />
             </Badge>
+
             <Typography sx={{ fontSize: "12px" }}>Giỏ hàng</Typography>
           </Stack>
+
           <Button
             sx={{
               color: "white",
@@ -117,6 +123,19 @@ function Header() {
           </Button>
         </Stack>
       </Stack>
+
+      <Modal open={modalLogin} onClose={closeModalLogin}>
+        <Box className="modal-login" >
+          <Stack direction="row" justifyContent="space-between">
+            <Typography variant="h6" component="h2">
+              Login
+            </Typography>
+            <IconButton onClick={closeModalLogin}>
+              <CloseIcon />
+            </IconButton>
+          </Stack>
+        </Box>
+      </Modal>
     </Stack>
   );
 }

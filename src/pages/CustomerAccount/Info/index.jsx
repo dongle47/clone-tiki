@@ -3,8 +3,9 @@ import React from "react";
 import "./Info.scss";
 import avatar from "../../../assets/img/avatar.jpg";
 
+import { Link } from "react-router-dom";
+
 import {
-  Grid,
   Avatar,
   Typography,
   Stack,
@@ -22,13 +23,8 @@ import {
   Paper,
   InputBase,
   Divider,
-  CssBaseline,
   Badge,
-  MenuList,
   ClickAwayListener,
-  Popper,
-  Grow,
-  SxProps,
 } from "@mui/material";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -235,9 +231,11 @@ function Info() {
               <LocalPhoneOutlinedIcon />
               <ListItemText primary="Số điện thoại" secondary="0123456789" />
             </Stack>
-            <Button size="small" variant="outlined">
-              Cập nhật
-            </Button>
+            <Link to="/customer/account/edit/phone">
+              <Button size="small" variant="outlined">
+                Cập nhật
+              </Button>
+            </Link>
           </Stack>
 
           <Stack
@@ -248,14 +246,18 @@ function Info() {
           >
             <Stack direction="row" spacing={1}>
               <EmailOutlinedIcon />
+
               <ListItemText
                 primary="Địa chỉ email"
                 secondary="dong.le47@yahoo.com"
               />
             </Stack>
-            <Button size="small" variant="outlined">
-              Cập nhật
-            </Button>
+
+            <Link to="/customer/account/edit/email">
+              <Button size="small" variant="outlined">
+                Cập nhật
+              </Button>
+            </Link>
           </Stack>
 
           <Typography>Bảo mật</Typography>
@@ -268,9 +270,11 @@ function Info() {
               <LockIcon />
               <ListItemText primary="Đổi mật khẩu" />
             </Stack>
-            <Button size="small" variant="outlined">
-              Đổi mật khẩu
-            </Button>
+            <Link to="/customer/account/edit/pass" >
+              <Button size="small" variant="outlined">
+                Đổi mật khẩu
+              </Button>
+            </Link>
           </Stack>
 
           <Typography>Liên kết mạng xã hội</Typography>

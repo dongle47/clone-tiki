@@ -1,42 +1,68 @@
-import React, { useEffect } from "react";
+import React from "react";
+import {  Outlet, Link } from "react-router-dom";
+import { isFulfilled } from "@reduxjs/toolkit";
+
 import "./CustomerAccount.scss";
 
 import { sidebarTab } from "../../constraints/Profile";
 
-import Sidebar from "./Sidebar";
+import {
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+  Badge,
+} from "@mui/material";
+
+import avatarProfile from "../../assets/img/avatar.jpg";
 
 function CustomerAccount() {
-  const findTabId = () => {
-    const curTab = sidebarTab.find((item) =>
-      window.location.href.includes(item.link)
-    );
-    return curTab.id;
-  };
-
-  const [selectedTabId, setSelectedTabId] = React.useState(findTabId);
-
-  console.log(findTabId(window.location.href));
+  const [selectedTabId, setSelectedTabId] = React.useState(0);
 
   const handleClick = (id) => {
     setSelectedTabId(id);
-
-    const currentTab = sidebarTab.find((item) => item.id === id);
-    window.history.replaceState(null, currentTab.text, currentTab.link);
   };
-
-  const content = sidebarTab.map((item) => {
-    return <item.content />;
-  });
 
   return (
     <div className="container">
       <div className="customer-account">
-        <Sidebar
-          selectedTabId={selectedTabId}
-          setSelectedTab={setSelectedTabId}
-          handleClick={handleClick}
-        />
-        {content[selectedTabId - 1]}
+        <List sx={{ maxWidth: 300 }}>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar alt="hình đại diện" src={avatarProfile} />
+            </ListItemAvatar>
+            <ListItemText primary="Tài khoản của" secondary="Dong Le" />
+          </ListItem>
+
+          {sidebarTab.map((item, index) => {
+            if (item.text != "/") {
+              return (
+                <Link to={item.link}>
+                  <ListItem
+                    key={item.id}
+                    disablePadding
+                    onClick={() => handleClick(item.id)}
+                    selected={selectedTabId === item.id}
+                  >
+                    <ListItemButton>
+                      <ListItemIcon>{<item.icon />}</ListItemIcon>
+
+                      <ListItemText primary={item.text} />
+                      {index === 1 ? (
+                        <Badge badgeContent="3" color="error"></Badge>
+                      ) : null}
+                    </ListItemButton>
+                  </ListItem>
+                </Link>
+              );
+            }
+          })}
+        </List>
+
+        <Outlet />
       </div>
     </div>
   );

@@ -26,22 +26,26 @@ export default function PermanentDrawerLeft(props) {
           <ListItemText primary="Tài khoản của" secondary="Dong Le" />
         </ListItem>
 
-        {sidebarTab.map((item, index) => (
-          <ListItem
-            key={item.id}
-            disablePadding
-            onClick={() => props.handleClick(item.id)}
-            selected={props.selectedTabId === item.id}
-          >
-            <ListItemButton >
-              <ListItemIcon>{<item.icon />}</ListItemIcon>
-              <ListItemText primary={item.text} />
-              {index === 1 ? (
-                <Badge badgeContent="3" color="error"></Badge>
-              ) : null}
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {sidebarTab.map((item, index) => {
+          if (item.text != "/") {
+            return (
+              <ListItem
+                key={item.id}
+                disablePadding
+                onClick={() => props.handleClick(item.id)}
+                selected={props.selectedTabId === item.id}
+              >
+                <ListItemButton>
+                  <ListItemIcon>{<item.icon />}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                  {index === 1 ? (
+                    <Badge badgeContent="3" color="error"></Badge>
+                  ) : null}
+                </ListItemButton>
+              </ListItem>
+            );
+          }
+        })}
       </List>
     </React.Fragment>
   );
