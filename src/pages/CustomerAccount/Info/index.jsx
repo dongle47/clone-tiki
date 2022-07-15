@@ -292,7 +292,7 @@ function Info() {
               <ListItemText primary="Facebook" />
             </Stack>
             <Button size="small" variant="outlined">
-              Đổi mật khẩu
+              Liên kết
             </Button>
           </Stack>
 
@@ -306,7 +306,7 @@ function Info() {
               <ListItemText primary="Google" />
             </Stack>
             <Button size="small" variant="outlined">
-              Đổi mật khẩu
+              Liên kết
             </Button>
           </Stack>
         </Stack>
