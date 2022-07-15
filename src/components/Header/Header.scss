@@ -1,70 +1,76 @@
-.Header {
-  height:100px;
-  width: 100%;
-  background-color: #2196f3;
+// .Header {
+//   height:100px;
+//   width: 100%;
+//   background-color: #2196f3;
 
-  &__top{
-    height: 66px;
-    padding: 10px 0 ;
-    width : 100%;
-    display:flex;
-    justify-content: space-between;
-  }
+//   &__top{
+//     height: 66px;
+//     padding: 10px 0 ;
+//     width : 100%;
+//     display:flex;
+//     justify-content: space-between;
+//   }
 
-  &__bottom{
-    height: 34px;
-    padding: 0;
-    width : 100%;
-    display:flex;
-    justify-content: space-between;
-  }
+//   &__bottom{
+//     height: 34px;
+//     padding: 0;
+//     width : 100%;
+//     display:flex;
+//     justify-content: space-between;
+//   }
 
-  &__wrap{
-    width: 1240px;
-    margin:0 auto;
-    height: 100%;
-  }
-  &__logo{
-    height: 100%;
-  width: 190px;
-  display:flex;
-  flex-direction: column;
-  justify-content: center;
-  gap:10px;
-  }
-  &__search{
-    flex:1;
-    &__group{
-      display:flex;
-    }
-    &__cate{
-      color :white;
-    }
-  }
+//   &__wrap{
+//     width: 1240px;
+//     margin:0 auto;
+//     height: 100%;
+//   }
+//   &__logo{
+//     height: 100%;
+//   width: 190px;
+//   display:flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   gap:10px;
+//   }
+//   &__search{
+//     flex:1;
+//     &__group{
+//       display:flex;
+//     }
+//     &__cate{
+//       color :white;
+//     }
+//   }
 
-  &__account{
-    margin-left:16px;
-    width:300px;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    &__info{
-      width:162px;
-      display: flex;
-      font-size : 13px;
-      &>span{
-        display:flex;
-        flex-direction: column;
-        &>span:first-child{
-          font-size: 11px;
-        }
-        &>span:last-child{
-          font-size: 13px;
-        }
-      }
-    }
-  }
+//   &__account{
+//     margin-left:16px;
+//     width:300px;
+//     color: white;
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//     &__info{
+//       width:162px;
+//       display: flex;
+//       font-size : 13px;
+//       &>span{
+//         display:flex;
+//         flex-direction: column;
+//         &>span:first-child{
+//           font-size: 11px;
+//         }
+//         &>span:last-child{
+//           font-size: 13px;
+//         }
+//       }
+//     }
+//   }
+// }
+
+#input-search{
+  border-radius: 3px ;
+  width: 35rem;
 }
+
 
 
