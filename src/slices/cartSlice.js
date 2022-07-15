@@ -24,7 +24,20 @@ export const cartSlice = createSlice({
                 state.items = temp
                 localStorage.setItem("cartItems",JSON.stringify(state.items))
             }
+        },
+        chooseAll:(state,action)=>{
+            state.items= state.items.map(item=>{return {...item,choose:true}})
+            localStorage.setItem("cartItems",JSON.stringify(state.items))
+        },
+        unchooseAll:(state,action)=>{
+            state.items= state.items.map(item=>{return {...item,choose:false}})
+            localStorage.setItem("cartItems",JSON.stringify(state.items))
+        },
+        deleteAll:(state,action)=>{
+            state.items = []
+            localStorage.setItem("cartItems",JSON.stringify(state.items))
         }
+
     }
 })
 
@@ -33,7 +46,10 @@ const findIndexItem = (arr,item)=>arr.findIndex(e=>e.id===item.id)
 const delItems = (arr,item)=>arr.filter(e=>e.id!==item.id)
 export const {
     removeItem,
-    updateItem
+    updateItem,
+    chooseAll,
+    unchooseAll,
+    deleteAll
 }=cartSlice.actions
 
 export default cartSlice.reducer

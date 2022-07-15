@@ -110,7 +110,7 @@ function CartItem(props) {
                 </div>
                 <div className="cart-item__cell cart-item__total" style={{ width: "14.45%" }}>{numWithCommas(data?.price * data?.quanlity)} ₫</div>
                 <div className="cart-item__cell" style={{ width: "3.33%" }}>
-                    <span onClick={handleClickRemove}><DeleteOutlinedIcon /></span>
+                    <span style={{cursor:"pointer" }} onClick={handleClickRemove}><DeleteOutlinedIcon /></span>
                 </div>
             </div>
 
