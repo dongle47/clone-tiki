@@ -1,5 +1,11 @@
+import React from "react";
+
+import "./Info.scss";
+import avatar from "../../../assets/img/avatar.jpg";
+
+import { Link } from "react-router-dom";
+
 import {
-  Grid,
   Avatar,
   Typography,
   Stack,
@@ -17,17 +23,10 @@ import {
   Paper,
   InputBase,
   Divider,
-  CssBaseline,
   Badge,
-  MenuList,
   ClickAwayListener,
-  Popper,
-  Grow,
-  SxProps,
 } from "@mui/material";
-import React from "react";
-import "./Info.scss";
-import avatar from "../../../assets/img/avatar.jpg";
+
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import SearchIcon from "@mui/icons-material/Search";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
@@ -41,35 +40,24 @@ import WallpaperIcon from "@mui/icons-material/Wallpaper";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const style = {
-  position: "absolute",
-  top: "20%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  borderRadius: 5,
-  p: 4,
-};
-
 function Info() {
   const [day, setDay] = React.useState("");
 
-  const [openModal, setOpenModal] = React.useState(false);
+  const [modalNational, setModalNational] = React.useState(false);
+  const openModalNational = () => setModalNational(true);
+  const closeModalNational = () => setModalNational(false);
+
+  const [modalViewAvatar, setModalViewAvatar] = React.useState(false);
+  const openModalViewAvatar = () => setModalViewAvatar(true);
+  const closeModalViewAvatar = () => setModalViewAvatar(false);
 
   const [openAvatar, setOpenAvatar] = React.useState(false);
-
   const handleClickAvatar = () => {
     setOpenAvatar((prev) => !prev);
   };
-
   const handleClickAwayAvatar = () => {
     setOpenAvatar(false);
   };
-
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
 
   const handleChange = (event) => {
     setDay(event.target.value);
@@ -95,14 +83,18 @@ function Info() {
                   color="primary"
                 >
                   <Avatar
-                    sx={{ width: 110, height: 110, border: "2px solid aqua" }}
+                    sx={{
+                      width: 110,
+                      height: 110,
+                      border: "3px solid aquamarine",
+                    }}
                     src={avatar}
                   />
                 </Badge>
                 {openAvatar ? (
                   <Stack className="avatar-control">
                     <Stack autoFocusItem={openAvatar}>
-                      <MenuItem>
+                      <MenuItem onClick={openModalViewAvatar}>
                         <WallpaperIcon sx={{ mr: 2 }} />
                         Xem ảnh đại diện
                       </MenuItem>
@@ -211,7 +203,7 @@ function Info() {
             <label>Quốc tịch</label>
             <Button
               variant="outlined"
-              onClick={handleOpenModal}
+              onClick={openModalNational}
               endIcon={<KeyboardArrowDownIcon />}
               color="inherit"
               sx={{ color: hexToRgb("#ACABAB"), width: "73%" }}
@@ -239,9 +231,11 @@ function Info() {
               <LocalPhoneOutlinedIcon />
               <ListItemText primary="Số điện thoại" secondary="0123456789" />
             </Stack>
-            <Button size="small" variant="outlined">
-              Cập nhật
-            </Button>
+            <Link to="/customer/account/edit/phone">
+              <Button size="small" variant="outlined">
+                Cập nhật
+              </Button>
+            </Link>
           </Stack>
 
           <Stack
@@ -252,14 +246,18 @@ function Info() {
           >
             <Stack direction="row" spacing={1}>
               <EmailOutlinedIcon />
+
               <ListItemText
                 primary="Địa chỉ email"
                 secondary="dong.le47@yahoo.com"
               />
             </Stack>
-            <Button size="small" variant="outlined">
-              Cập nhật
-            </Button>
+
+            <Link to="/customer/account/edit/email">
+              <Button size="small" variant="outlined">
+                Cập nhật
+              </Button>
+            </Link>
           </Stack>
 
           <Typography>Bảo mật</Typography>
@@ -272,9 +270,11 @@ function Info() {
               <LockIcon />
               <ListItemText primary="Đổi mật khẩu" />
             </Stack>
-            <Button size="small" variant="outlined">
-              Đổi mật khẩu
-            </Button>
+            <Link to="/customer/account/edit/pass" >
+              <Button size="small" variant="outlined">
+                Đổi mật khẩu
+              </Button>
+            </Link>
           </Stack>
 
           <Typography>Liên kết mạng xã hội</Typography>
@@ -308,20 +308,20 @@ function Info() {
         </Stack>
       </Stack>
 
-      {/* Modal  */}
-      <Modal open={openModal} onClose={handleCloseModal}>
-        <Box sx={style}>
+      {/* Modal nationality  */}
+      <Modal open={modalNational} onClose={closeModalNational}>
+        <Box className="modal-nationality">
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="h6" component="h2">
               Chọn quốc tịch
             </Typography>
-            <IconButton onClick={handleCloseModal}>
+            <IconButton onClick={closeModalNational}>
               <CloseIcon />
             </IconButton>
           </Stack>
 
           <Paper>
-            <IconButton aria-label="search" onClick={handleCloseModal}>
+            <IconButton aria-label="search" onClick={closeModalNational}>
               <SearchIcon />
             </IconButton>
             <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Tìm kiếm nhanh" />
@@ -343,6 +343,26 @@ function Info() {
             Lưu thay đổi
           </Button>
         </Box>
+      </Modal>
+
+      {/* Modal view avatar */}
+      <Modal open={modalViewAvatar} onClose={closeModalViewAvatar}>
+        <Stack className="modal-view-avatar" spacing={2}>
+          <Stack direction="row" justifyContent="space-between">
+            <Typography variant="h6" component="h2">
+              Xem ảnh
+            </Typography>
+            <IconButton onClick={closeModalViewAvatar}>
+              <CloseIcon />
+            </IconButton>
+          </Stack>
+          <Divider />
+          <img
+            style={{ width: "35rem", height: "35rem" }}
+            src={avatar}
+            alt="ảnh đại diện"
+          />
+        </Stack>
       </Modal>
     </Stack>
   );

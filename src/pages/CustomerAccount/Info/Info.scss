@@ -1,26 +1,52 @@
 
-
 .customer-info label{
     width: 30%;
 }
 
-#input-name{
-    border-radius: 3px;
+#input-name, #input-nickname{
     width: 15rem;
-}
-
-#input-nickname{
+    height: 2.2rem;
+    padding-left: 0.5rem;
     border-radius: 3px;
-    width: 15rem;
+    border: 1px solid rgb(173, 173, 173);
+    &:focus{
+        outline: none;
+    }
 }
 
 .avatar-control{
     position: absolute;
-    top: 110;
+    top: 115px;
     left: -60%;
     z-index: 1;
     padding: 0;
-    border: 1px solid rgb(209, 209, 209);
+    box-shadow: 0 0 4px rgba(31, 30, 30, 0.548);
     background-color: white;
     width: 250px;
 }
+
+.modal-nationality{
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30rem;
+    background-color: white;
+    box-shadow: 24px;
+    border-radius: 5px;
+    padding: 1rem;
+}
+
+.modal-view-avatar{
+    position: absolute;
+    top: 25rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40rem;
+    background-color: white;
+    box-shadow: 24px;
+    border-radius: 5px;
+    padding: 1rem;
+    overflow-y: initial;
+}
+
