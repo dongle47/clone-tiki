@@ -80,3 +80,31 @@ export const address = [
         phone: '0123456789',
     }
 ]
+
+export const orderTabs = [
+    {
+        id:1,
+        display:"Tất cả đơn",
+    },
+    {
+        id:2,
+        display:"Chờ thanh toán",
+    },
+    {
+        id:3,
+        display:"Đang xử lý",
+    },
+    {
+        id:4,
+        display:"Đang vận chuyển",
+    },
+    {
+        id:5,
+        display:"Đã giao",
+    },
+    {
+        id:6,
+        display:"Đã huỷ",
+    },
+
+]
