@@ -1,19 +1,86 @@
-.block{
-    width: 264px;
-    height : 10px;
-    &>a{
-        display: block
-    }
-}
-
-.sdt{
-    width: 264px;
-    height : 20px
-}
-
-.Main-Fotter {
-    width: 264px;
-    height : 284px;
-}
-
-
+.Footer {
+    width: 100%;
+    background-color: white;
+    padding:16px 0;
+    margin-top: 10rem;
+  }
+  
+  .block{
+      display: flex;
+      width:1240px;
+      margin:auto;
+      gap:16px;
+      & a{
+          display: block;
+          font-size: 12px;
+          color:#888;
+          margin-bottom: 8px;
+      }
+  
+      &__3{
+          &__logo{
+              display:flex;
+              & a{
+                  display:inline-flex;
+              }
+          }
+      }
+      &__5{
+          &__download{
+              display: flex;
+              gap: 10px;
+          
+              & div{
+                  display:flex;
+                  flex-direction:column;
+                  justify-content:space-between;
+                  align-items:center;
+                  height:80px;
+              }
+          }
+      }
+      &__title{
+          margin-bottom:16px;
+          color:#333;
+      }
+      &>div{
+          flex:1;
+      }
+      &__contact{
+          display:flex;
+      }
+  }
+  
+  .hotline{
+      font-size: 12px;
+      color:#888;
+      margin-bottom: 8px;
+      &>a{
+          display:inline;
+          font-weight:500;
+          color:#333
+      }
+      &>span{
+          display:block
+      }
+  }
+  
+  .security{
+      font-size: 12px;
+      color:#888;
+      display: inline-flex;
+  }
+  
+  .address-info{
+      border:1px solid #bfbfbf;
+      border-left: none;
+      border-right: none;
+      font-size: 12px;
+      color:#888;
+      padding: 16px 0;
+      &>*{
+          margin-bottom: 8px;
+  
+      }
+  }
+  

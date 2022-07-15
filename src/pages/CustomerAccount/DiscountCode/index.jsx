@@ -6,7 +6,8 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-
+import Divider from "@mui/material/Divider";
+import { DiscountCodes } from "../../../constraints/DiscountCode";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 function TabPanel(props) {
@@ -50,49 +51,161 @@ function DiscountCode() {
   };
   return (
     <div>
-      <Box sx={{ width: "100%" }}>
+      <Typography>Mã giảm giá</Typography>
+
+      <Box sx={{ width: "100%", top: "0" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
             value={value}
             onChange={handleChange}
             aria-label="basic tabs example"
           >
-            <Tab label="Tất Cả" {...a11yProps(0)} />
-            <Tab label="Ưu đãi thanh toán" {...a11yProps(1)} />
-            <Tab label="Hết Hiệu Lực" {...a11yProps(2)} />
+            <Tab
+              label="Tất Cả"
+              {...a11yProps(0)}
+              style={{
+                fontSize: "13px",
+                fontWeight: "400",
+                textTransform: "none",
+              }}
+            />
+            <Tab
+              label="Ưu đãi thanh toán"
+              {...a11yProps(1)}
+              style={{
+                fontSize: "13px",
+                fontWeight: "400",
+                textTransform: "none",
+              }}
+            />
+            <Tab
+              label="Hết Hiệu Lực"
+              {...a11yProps(2)}
+              style={{
+                fontSize: "13px",
+                fontWeight: "400",
+                textTransform: "none",
+              }}
+            />
           </Tabs>
         </Box>
+
         <TabPanel value={value} index={0}>
-          <Stack direction="row">
-            <Stack
-              className="coupon-container"
-              direction="row"
-              justifyContent="space-between"
-            >
-              <Stack
-                sx={{ width: "70%" }}
-                direction="row"
-                justifyContent="space-between"
-              >
-                <img
-                  alt=""
-                  src="https://salt.tikicdn.com/cache/128x128/ts/upload/92/ad/57/0d9a096885400b7b4752b67afdc72898.png"
-                />
+          <Stack direction="row" spacing={2}>
+            <Stack spacing={1.6}>
+              {DiscountCodes.map((item) => (
+                <Stack
+                  sx={{ width: "100%", borderRadius: "5px", padding: "0.6rem" }}
+                  key={item.id}
+                  className="coupon-container"
+                  direction="row"
+                  justifyContent="space-between"
+                >
+                  <Stack
+                    sx={{ width: "70%", height: "132px" }}
+                    direction="row"
+                    spacing={3}
+                  >
+                    <Stack
+                      sx={{ marginLeft: "1rem" }}
+                      direction="column"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <img
+                        alt=""
+                        src={item.image}
+                        style={{
+                          width: "5rem",
+                          height: "5rem",
+                          justifyContent: "center",
+                        }}
+                      />
+                      <Typography
+                        style={{
+                          fontSize: "11px",
+                          fontWeight: "400",
+                          margin: "0px 0px 0px 0px",
+                        }}
+                        align="center"
+                      >
+                        {item.publisher}
+                      </Typography>
+                    </Stack>
 
-                <Stack>
-                  <Typography>Giảm 500k</Typography>
-                  <Typography>Số lượng có hạn</Typography>
-                  <Typography>HSD: 31/07/2022</Typography>
+                    <Divider orientation="vertical" flexItem />
+
+                    <Stack sx={{ width: "10rem" }}>
+                      <Typography>{item.name}</Typography>
+                      <Typography>{item.note}</Typography>
+                      <Typography>{item.expired}</Typography>
+                    </Stack>
+                  </Stack>
+                  <InfoOutlinedIcon color="info" />
                 </Stack>
-              </Stack>
+              ))}
+            </Stack>
 
-              <InfoOutlinedIcon />
+            <Stack spacing={1.6}>
+              {DiscountCodes.map((item) => (
+                <Stack
+                  sx={{ width: "100%", borderRadius: "5px", padding: "0.6rem" }}
+                  key={item.id}
+                  className="coupon-container"
+                  direction="row"
+                  justifyContent="space-between"
+                >
+                  <Stack
+                    sx={{ width: "70%", height: "132px" }}
+                    direction="row"
+                    spacing={3}
+                  >
+                    <Stack
+                      sx={{ marginLeft: "1rem" }}
+                      direction="column"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <img
+                        alt=""
+                        src={item.image}
+                        style={{
+                          width: "5rem",
+                          height: "5rem",
+                          justifyContent: "center",
+                        }}
+                      />
+                      <Typography
+                        style={{
+                          fontSize: "11px",
+                          fontWeight: "400",
+                          margin: "0px 0px 0px 0px",
+                        }}
+                        align="center"
+                      >
+                        {item.publisher}
+                      </Typography>
+                    </Stack>
+
+                    <Divider orientation="vertical" flexItem />
+
+                    <Stack sx={{ width: "10rem" }}>
+                      <Typography>{item.name}</Typography>
+                      <Typography>{item.note}</Typography>
+                      <Typography>{item.expired}</Typography>
+                    </Stack>
+                  </Stack>
+                  <InfoOutlinedIcon color="info" />
+                </Stack>
+              ))}
             </Stack>
           </Stack>
         </TabPanel>
+
         <TabPanel value={value} index={1}>
           Item Two
         </TabPanel>
+
         <TabPanel value={value} index={2}>
           Item Three
         </TabPanel>

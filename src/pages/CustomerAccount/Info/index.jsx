@@ -51,6 +51,10 @@ function Info() {
   const openModalViewAvatar = () => setModalViewAvatar(true);
   const closeModalViewAvatar = () => setModalViewAvatar(false);
 
+  const [modalUploadAvatar, setModalUploadAvatar] = React.useState(false);
+  const openModalUploadAvatar = () => setModalUploadAvatar(true);
+  const closeModalUploadViewAvatar = () => setModalUploadAvatar(false);
+
   const [openAvatar, setOpenAvatar] = React.useState(false);
   const handleClickAvatar = () => {
     setOpenAvatar((prev) => !prev);
@@ -270,7 +274,7 @@ function Info() {
               <LockIcon />
               <ListItemText primary="Đổi mật khẩu" />
             </Stack>
-            <Link to="/customer/account/edit/pass" >
+            <Link to="/customer/account/edit/pass">
               <Button size="small" variant="outlined">
                 Đổi mật khẩu
               </Button>
@@ -346,11 +350,15 @@ function Info() {
       </Modal>
 
       {/* Modal view avatar */}
-      <Modal open={modalViewAvatar} onClose={closeModalViewAvatar}>
+      <Modal
+        sx={{ overflowY: "scroll" }}
+        open={modalViewAvatar}
+        onClose={closeModalViewAvatar}
+      >
         <Stack className="modal-view-avatar" spacing={2}>
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="h6" component="h2">
-              Xem ảnh
+              Xem ảnh đại diện
             </Typography>
             <IconButton onClick={closeModalViewAvatar}>
               <CloseIcon />
@@ -358,7 +366,31 @@ function Info() {
           </Stack>
           <Divider />
           <img
-            style={{ width: "35rem", height: "35rem" }}
+            style={{ width: "35rem", height: "35rem", alignSelf: "center" }}
+            src={avatar}
+            alt="ảnh đại diện"
+          />
+        </Stack>
+      </Modal>
+
+      {/* Modal upload avatar */}
+      <Modal
+        sx={{ overflowY: "scroll" }}
+        open={modalViewAvatar}
+        onClose={closeModalViewAvatar}
+      >
+        <Stack className="modal-view-avatar" spacing={2}>
+          <Stack direction="row" justifyContent="space-between">
+            <Typography variant="h6" component="h2">
+              Xem ảnh đại diện
+            </Typography>
+            <IconButton onClick={closeModalViewAvatar}>
+              <CloseIcon />
+            </IconButton>
+          </Stack>
+          <Divider />
+          <img
+            style={{ width: "35rem", height: "35rem", alignSelf: "center" }}
             src={avatar}
             alt="ảnh đại diện"
           />
