@@ -37,7 +37,7 @@ export default function PermanentDrawerLeft(props) {
               >
                 <ListItemButton>
                   <ListItemIcon>{<item.icon />}</ListItemIcon>
-                  <ListItemText primary={item.text} />
+                  <ListItemText primary={item.text} className="sidebar-item__text"/>
                   {index === 1 ? (
                     <Badge badgeContent="3" color="error"></Badge>
                   ) : null}

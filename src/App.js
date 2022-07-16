@@ -31,6 +31,7 @@ import MyRates from './pages/CustomerAccount/MyRates/index';
 import DiscountCode from './pages/CustomerAccount/DiscountCode/index';
 
 import ShoppingCart from "./pages/ShoppingCart"
+import FilterProduct from "./pages/FilterProduct";
 
 function App() {
 
@@ -84,6 +85,8 @@ function App() {
         <Route path="/customer/coupons" element={<CustomerAccount />}>
           <Route index element={<DiscountCode />} />
         </Route>
+
+        <Route path="/filter-product" element={<FilterProduct />}/>
 
       </Routes>
       <Footer />
