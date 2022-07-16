@@ -15,6 +15,7 @@ import {
   ListItemAvatar,
   Avatar,
   Badge,
+  Box,
 } from "@mui/material";
 
 import avatarProfile from "../../assets/img/avatar.jpg";
@@ -29,6 +30,8 @@ function CustomerAccount() {
   return (
     <div className="container">
       <div className="customer-account">
+        <Box sx={{width:"250px"}}>
+
         <List sx={{ maxWidth: 300 }}>
           <ListItem>
             <ListItemAvatar>
@@ -50,7 +53,7 @@ function CustomerAccount() {
                     <ListItemButton>
                       <ListItemIcon>{<item.icon />}</ListItemIcon>
 
-                      <ListItemText primary={item.text} />
+                      <ListItemText primary={item.text} sx={{"&>span":{fontSize:"13px"}}} />
                       {index === 1 ? (
                         <Badge badgeContent="3" color="error"></Badge>
                       ) : null}
@@ -61,8 +64,11 @@ function CustomerAccount() {
             }
           })}
         </List>
-
-        <Outlet />
+        </Box>
+<Box sx={{flex:1,marginTop:"16px"}}>
+   <Outlet />
+</Box>
+       
       </div>
     </div>
   );
