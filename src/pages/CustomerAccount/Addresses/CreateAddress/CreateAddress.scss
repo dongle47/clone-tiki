@@ -1,0 +1,89 @@
+.createaddress {
+    width: 100%;
+    &__heading {
+        font-size: 19px;
+        line-height: 21px;
+        font-weight: 300;
+        margin: 20px 0px 15px;
+    }
+    &__inner {
+        background-color: rgb(255, 255, 255);
+        border-radius: 4px;
+        min-height: 400px;
+        padding: 30px 20px;
+        &__btn-submit {
+            border: 0px;
+            width: 176px;
+            height: 40px;
+            border-radius: 4px;
+            color: rgb(74, 74, 74);
+            font-size: 14px;
+            background-color: rgb(253, 216, 53);
+            cursor: pointer;
+        }
+        &__input {
+            width: 60%;
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+            margin: 0px 0px 15px;
+            &__checkbox {
+                &__type {
+                    margin-right: 10px;
+                }
+                &__checkboxfake {
+                    width: 18px;
+                    height: 18px;
+                    border: 1px solid rgb(120, 120, 120);
+                    display: inline-block;
+                    vertical-align: middle;
+                    margin: 0px 12px 0px 0px;
+                    position: relative;
+                    z-index: 1;
+                    color: rgb(120, 120, 120);
+                }
+            }
+            &__radio {
+                display: flex;
+                margin-right: 15px;
+                &__input {
+                    margin-right: 10px;
+                }
+            }
+            &__inputlabel {
+                width: 100px;
+                min-width: 110px;
+                font-size: 13px;
+                color: rgb(51, 51, 51);
+            }
+            &__inputselect {
+                width: 100%;
+                border: 1px solid rgb(204, 204, 204);
+                height: 34px;
+                padding: 6px 12px;
+                line-height: 34px;
+                outline: none;
+                background: 0px center;
+                border-radius: 4px;
+                box-shadow: none;
+            }
+            &__inputcontent {
+                width: 100%;
+                border: 1px solid rgb(204, 204, 204);
+                height: 34px;
+                padding: 6px 12px;
+                line-height: 34px;
+                outline: none;
+                background: 0px center;
+                border-radius: 4px;
+                box-shadow: none;                             
+            }
+            &__textarea {
+                border: 1px solid rgb(204, 204, 204);
+                border-radius: 4px;
+                width: 100%;
+                padding: 6px 12px;
+            }
+        }
+    }
+}
