@@ -31,13 +31,21 @@ import MyRates from './pages/CustomerAccount/MyRates/index';
 import DiscountCode from './pages/CustomerAccount/DiscountCode/index';
 
 import ShoppingCart from "./pages/ShoppingCart"
+
 import FilterProduct from "./pages/FilterProduct";
+
+import Admin from './pages/Admin';
+import AdminLogin from './pages/Admin/Login';
 
 function App() {
 
+  const isAdmin = window.location.href.includes('admin')
+
   return (
     <BrowserRouter>
-      <Header />
+
+      {isAdmin ? null : <Header />}
+
       <Routes>
         <Route path='/' element={<Home />} />
 
@@ -86,10 +94,16 @@ function App() {
           <Route index element={<DiscountCode />} />
         </Route>
 
-        <Route path="/filter-product" element={<FilterProduct />}/>
+        <Route path="/filter-product" element={<FilterProduct />} />
+
+        <Route path='/admin' element={<Admin />} />
+        <Route path='/admin/login' element={<AdminLogin />} />
+
 
       </Routes>
-      <Footer />
+
+      {isAdmin ? null : <Footer />}
+
       <ToastContainer autoClose={1000}
         hideProgressBar
         newestOnTop={false}
