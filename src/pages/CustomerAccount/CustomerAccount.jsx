@@ -1,5 +1,5 @@
 import React from "react";
-import {  Outlet, Link } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import { isFulfilled } from "@reduxjs/toolkit";
 
 import "./CustomerAccount.scss";
@@ -30,18 +30,16 @@ function CustomerAccount() {
   return (
     <div className="container">
       <div className="customer-account">
-        <Box sx={{width:"250px"}}>
+        <Box sx={{ width: "250px" }}>
+          <List sx={{ maxWidth: 300 }}>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar alt="hình đại diện" src={avatarProfile} />
+              </ListItemAvatar>
+              <ListItemText primary="Tài khoản của" secondary="Dong Le" />
+            </ListItem>
 
-        <List sx={{ maxWidth: 300 }}>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar alt="hình đại diện" src={avatarProfile} />
-            </ListItemAvatar>
-            <ListItemText primary="Tài khoản của" secondary="Dong Le" />
-          </ListItem>
-
-          {sidebarTab.map((item, index) => {
-            if (item.text != "/") {
+            {sidebarTab.map((item, index) => {
               return (
                 <Link to={item.link}>
                   <ListItem
@@ -53,7 +51,10 @@ function CustomerAccount() {
                     <ListItemButton>
                       <ListItemIcon>{<item.icon />}</ListItemIcon>
 
-                      <ListItemText primary={item.text} sx={{"&>span":{fontSize:"13px"}}} />
+                      <ListItemText
+                        primary={item.text}
+                        sx={{ "&>span": { fontSize: "13px" } }}
+                      />
                       {index === 1 ? (
                         <Badge badgeContent="3" color="error"></Badge>
                       ) : null}
@@ -61,14 +62,12 @@ function CustomerAccount() {
                   </ListItem>
                 </Link>
               );
-            }
-          })}
-        </List>
+            })}
+          </List>
         </Box>
-<Box sx={{flex:1,marginTop:"16px"}}>
-   <Outlet />
-</Box>
-       
+        <Box sx={{ flex: 1, marginTop: "16px" }}>
+          <Outlet />
+        </Box>
       </div>
     </div>
   );
