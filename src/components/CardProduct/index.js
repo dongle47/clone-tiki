@@ -10,7 +10,7 @@ import {Link} from 'react-router-dom'
 
 function CardProduct({ data }) {
     return (
-        <Link to={"/product"}>
+        <Link to={"/detail-product"}>
 
             <Card sx={{ maxWidth: '345px', padding: '12px', boxShadow: "none"}}>
                 <CardMedia

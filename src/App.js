@@ -33,6 +33,7 @@ import DiscountCode from './pages/CustomerAccount/DiscountCode/index';
 import ShoppingCart from "./pages/ShoppingCart"
 
 import FilterProduct from "./pages/FilterProduct";
+import DetailProduct from "./pages/DetailProduct"
 
 import Admin from './pages/Admin';
 import AdminLogin from './pages/Admin/Login';
@@ -95,6 +96,7 @@ function App() {
         </Route>
 
         <Route path="/filter-product" element={<FilterProduct />} />
+        <Route path="/detail-product" element={<DetailProduct />} />
 
         <Route path='/admin' element={<Admin />} />
         <Route path='/admin/login' element={<AdminLogin />} />
