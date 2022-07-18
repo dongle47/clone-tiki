@@ -232,7 +232,7 @@ function Feedback() {
                         <img src="https://salt.tikicdn.com/cache/w120/ts/review/36/58/79/9ff2d72e4d8075101b3e5ab158b3b59c.jpg" alt="" />
                     </div>
                 </Stack>
-                <Typography sx={{ fontSize: "13px", color: "rgb(128, 128, 137)" }} pr={1}>Màu sắc: Trắng sứ</Typography>
+                <Typography mt={1} sx={{ fontSize: "13px", color: "rgb(128, 128, 137)" }} pr={1}>Màu sắc: Trắng sứ</Typography>
                 <Stack direction="row">
                     <Typography sx={{ fontSize: "13px", color: "rgb(128, 128, 137)" }}>Đánh giá vào 1 tháng trước</Typography>
 
