@@ -36,6 +36,18 @@ import FilterProduct from "./pages/FilterProduct";
 
 import Admin from './pages/Admin';
 import AdminLogin from './pages/Admin/Login';
+import Brand from './pages/Admin/Brand';
+import Category from './pages/Admin/Category';
+import Coupon from './pages/Admin/Coupon';
+import Dashboard from './pages/Admin/Dashboard';
+import DevelopCenter from './pages/Admin/DevelopCenter';
+import Order from './pages/Admin/Order';
+import Product from './pages/Admin/Product';
+import Review from './pages/Admin/Review';
+import User from './pages/Admin/User';
+
+
+
 
 function App() {
 
@@ -96,9 +108,20 @@ function App() {
 
         <Route path="/filter-product" element={<FilterProduct />} />
 
-        <Route path='/admin' element={<Admin />} />
         <Route path='/admin/login' element={<AdminLogin />} />
 
+        <Route path="/admin" element={<Admin />}>
+          <Route index element={<Dashboard />} />
+          <Route path='order' element={<Order />} />
+          <Route path='product' element={<Product />} />
+          <Route path='category' element={<Category />} />
+          <Route path='brand' element={<Brand />} />
+          <Route path='develop' element={<DevelopCenter />} />
+          <Route path='coupon' element={<Coupon />} />
+          <Route path='user' element={<User />} />
+          <Route path='review' element={<Review />} />
+
+        </Route>
 
       </Routes>
 

@@ -23,10 +23,6 @@ import avatarProfile from "../../assets/img/avatar.jpg";
 function CustomerAccount() {
   const [selectedTabId, setSelectedTabId] = React.useState(0);
 
-  const handleClick = (id) => {
-    setSelectedTabId(id);
-  };
-
   return (
     <div className="container">
       <div className="customer-account">
@@ -45,7 +41,7 @@ function CustomerAccount() {
                   <ListItem
                     key={item.id}
                     disablePadding
-                    onClick={() => handleClick(item.id)}
+                    onClick={() => setSelectedTabId(item.id)}
                     selected={selectedTabId === item.id}
                   >
                     <ListItemButton>
