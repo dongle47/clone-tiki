@@ -1,4 +1,5 @@
 import React from "react";
+import "./Login.scss";
 import {
     Grid,
     Stack,
@@ -29,15 +30,17 @@ function Login() {
                     <h4 style={{ fontSize: "24px" }}> ĐĂNG NHẬP </h4>
                 </Stack>
                 <TextField id="outlined-basic" label="Nhập email hoặc sđt" variant="outlined" />
-                <Stack direction="row" sx={{ width: "100%" }}>
-                    <TextField id="outlined-basic" label="Nhập mật khẩu" variant="outlined" sx={{ flex: "1" }} />
-                    <IconButton onClick={() => setShowPass(!showPass)}>
-                        {showPass ? (
-                            <VisibilityOutlinedIcon />
-                        ) : (
-                            <VisibilityOffOutlinedIcon />
-                        )}
-                    </IconButton>
+                <Stack direction="row" sx={{ width: "100%", position:"relative" }}>
+                    <TextField id="outlined-basic" label="Nhập mật khẩu" variant="outlined" sx={{ width:"100%" }} />
+                    <span className="iconShowPass">
+                        <IconButton onClick={() => setShowPass(!showPass)}>
+                            {showPass ? (
+                                <VisibilityOutlinedIcon />
+                            ) : (
+                                <VisibilityOffOutlinedIcon />
+                            )}
+                        </IconButton>
+                    </span>
                 </Stack>
                 <p>Quên mật khẩu ? Nhấn vào <a href="" style={{ color: "#1890ff" }}>đây!</a></p>
                 <Button variant="contained" color="warning">Đăng nhập</Button>
