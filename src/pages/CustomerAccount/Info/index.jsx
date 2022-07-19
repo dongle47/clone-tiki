@@ -38,7 +38,6 @@ import GoogleIcon from "@mui/icons-material/Google";
 import CloseIcon from "@mui/icons-material/Close";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import WallpaperIcon from "@mui/icons-material/Wallpaper";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
@@ -327,7 +326,7 @@ function Info() {
 
       {/* Modal nationality  */}
       <Modal open={modalNational} onClose={closeModalNational}>
-        <Box className="modal-nationality">
+        <Box sx={{width:'30rem', top:'30%'}} className="modal-info">
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="h6" component="h2">
               Chọn quốc tịch
@@ -368,7 +367,7 @@ function Info() {
         open={modalViewAvatar}
         onClose={closeModalViewAvatar}
       >
-        <Stack className="modal-view-avatar" spacing={2}>
+        <Stack className="modal-info" spacing={2}>
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="h6" component="h2">
               Xem ảnh đại diện
@@ -394,7 +393,7 @@ function Info() {
       >
         <Stack
           sx={{ padding: "2rem" }}
-          className="modal-view-avatar"
+          className="modal-info"
           spacing={2}
         >
           <Stack direction="row" justifyContent="space-between">
@@ -426,7 +425,7 @@ function Info() {
               }) => (
                 // write your building UI
                 <div className="upload__image-wrapper">
-                  {imageList.length == 0 ? (
+                  {imageList.length === 0 ? (
                     <Stack
                       sx={{
                         width: "100%",
@@ -503,7 +502,7 @@ function Info() {
         open={modalDeleteAvatar}
         onClose={closeModalDeleteAvatar}
       >
-        <Stack className="modal-delete-avatar" direction="row" spacing={2} justifyContent='center' >
+        <Stack className="modal-info" direction="row" spacing={2} justifyContent='center' width='26rem' >
           <Stack>
             <InfoOutlinedIcon color="primary" />
           </Stack>

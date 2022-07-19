@@ -25,9 +25,9 @@ import Addresses from './pages/CustomerAccount/Addresses/index';
 import CreateAddress from './pages/CustomerAccount/Addresses/CreateAddress/index';
 
 import PayInfo from './pages/CustomerAccount/PayInfo/index';
-import RatePurchased from './pages/CustomerAccount/RatePurchased/index';
+import ReviewPurchased from './pages/CustomerAccount/ReviewPurchased/index';
 import FavoriteProduct from './pages/CustomerAccount/FavoriteProduct/index';
-import MyRates from './pages/CustomerAccount/MyRates/index';
+import MyReview from './pages/CustomerAccount/MyReview/index';
 import DiscountCode from './pages/CustomerAccount/Coupon/index';
 
 import ShoppingCart from "./pages/ShoppingCart"
@@ -92,7 +92,7 @@ function App() {
         </Route>
 
         <Route path="/nhan-xet-san-pham-ban-da-mua" element={<CustomerAccount />}>
-          <Route index element={<RatePurchased />} />
+          <Route index element={<ReviewPurchased />} />
         </Route>
 
         <Route path="/customer/wishlist" element={<CustomerAccount />}>
@@ -100,7 +100,7 @@ function App() {
         </Route>
 
         <Route path="/customer/review" element={<CustomerAccount />}>
-          <Route index element={<MyRates />} />
+          <Route index element={<MyReview />} />
         </Route>
 
         <Route path="/customer/coupons" element={<CustomerAccount />}>
