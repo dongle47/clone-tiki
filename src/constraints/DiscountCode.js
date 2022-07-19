@@ -36,3 +36,42 @@ export const DiscountCodes = [
         link:"",
     },
 ]
+
+export const ExpriredDiscountCodes = [
+    {
+        id: 1,
+        publisher: "Vando Official Store",
+        name:"Giảm 10%",
+        image:"https://vcdn.tikicdn.com/cache/128x128/ts/seller/b4/11/e9/a70b080cf3c808d5812df2f52a5483ad.jpg",
+        note:"Cho đơn hàng từ 499K",
+        expired:"HSD: 07/07/22",
+        link:"",
+    },
+    {
+        id: 2,
+        publisher: "BG Việt Nam Official Store",
+        name:"Giảm 10%",
+        image:"https://vcdn.tikicdn.com/cache/128x128/ts/seller/7e/9f/64/e846fe20e9700e4404c06b6917bf66f4.jpg",
+        note:"Cho đơn hàng từ 500K",
+        expired:"HSD: 08/07/22",
+        link:"",
+    },
+    {
+        id: 3,
+        publisher: "HEAD Honda Phát Tiến",
+        name:"Giảm 700K",
+        image:"https://vcdn.tikicdn.com/cache/128x128/ts/seller/c2/61/91/6c9f5ffdc717a12ddbc00ba810f640af.jpg",
+        note:"Cho đơn hàng từ 70 triệu",
+        expired:"HSD: 07/07/22",
+        link:"",
+    },
+    {
+        id: 4,
+        publisher: "VinFast Official",
+        name:"Giảm 100k",
+        image:"https://vcdn.tikicdn.com/cache/128x128/ts/seller/0a/9d/2a/543b4485d46bbdfe088312aee042da44.jpg",
+        note:"Số lượng có hạn",
+        expired:"HSD: 07/07/22",
+        link:"",
+    },
+]
