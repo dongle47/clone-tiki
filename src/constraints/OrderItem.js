@@ -27,6 +27,7 @@ export const orderItems = [
                 name:"Sạc Dự Phòng Xiaomi 10000mAh Gen 3 PLM13ZM - Hàng Nhập Khẩu - Đen",
                 image:"https://salt.tikicdn.com/cache/200x200/ts/product/03/c5/fa/de1f68f3247b1a407d725800925f341a.jpg",
                 link:"",
+                coupon:10000,
                 price:350000,
                 quanlity:1,
             },
@@ -35,6 +36,7 @@ export const orderItems = [
                 name:"Sạc Dự Phòng Xiaomi 10000mAh Gen 3 PLM13ZM - Hàng Nhập Khẩu - Đen",
                 image:"https://salt.tikicdn.com/cache/200x200/ts/product/03/c5/fa/de1f68f3247b1a407d725800925f341a.jpg",
                 link:"",
+                coupon:10000,
                 price:350000,
                 quanlity:2,
             }

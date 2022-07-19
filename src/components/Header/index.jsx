@@ -133,11 +133,13 @@ function Header() {
         </Stack>
       </Stack>
 
-      <Modal open={modalLogin} onClose={closeModalLogin}>
+      <Modal sx={{overflowY:"scroll"}} open={modalLogin} onClose={closeModalLogin}>
+
         <Box className="modal-login" sx={{ width: "800px" }}>
           {
             loginForm ? <Login handleLogin={handleLogin} closeModalLogin={closeModalLogin} /> : <Signin closeModalLogin={closeModalLogin} />
           }</Box>
+       
       </Modal>
     </Stack>
   );
@@ -150,8 +152,11 @@ function Login(props) {
         <h4 style={{ fontSize: "24px" }}>Xin chào,</h4>
         <p style={{ fontSize: "15px" }}>Đăng nhập hoặc tạo tài khoản</p>
         <TextField id="standard-basic" label="Số Điện Thoại" variant="standard" />
-        <Button variant="contained" onClick={props.handleLogin} color='error' >Tiếp tục</Button>
+        <Button variant="contained"  color='error' >Tiếp tục</Button>
         <p style={{ textAlign: "center" }}>Đăng nhập bằng mail</p>
+        <p style={{ textAlign: "center" }}>Nếu bạn chưa có tài khoản? 
+        <span style={{color:"#1890ff",cursor:"pointer"}} onClick={props.handleLogin}> Đăng ký</span>
+        </p>
         <p style={{ textAlign: "center", marginTop: "3rem" }} >Tiếp tục bằng</p>
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} >
           <img src="https://salt.tikicdn.com/ts/upload/3a/22/45/0f04dc6e4ed55fa62dcb305fd337db6c.png" alt="facebook" width="58px" height="58px" />

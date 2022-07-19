@@ -1,0 +1,16 @@
+.detailOrder {
+    & p {
+        font-size: 13px !important;
+    }
+    &__content {
+        & p {
+            margin-top: 5px;
+            color: #000000A6;
+        }
+    }
+    &__item {
+        p {
+            color: #333;
+        }
+    }
+}
