@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import { DiscountCodes } from "../../../constraints/DiscountCode";
+import { ExpriredDiscountCodes } from "../../../constraints/DiscountCode";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 function TabPanel(props) {
@@ -22,7 +23,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 0 }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -92,7 +93,7 @@ function Coupon() {
 
         <TabPanel value={value} index={0}>
           <Stack direction="row" spacing={2}>
-            <Stack spacing={1.6}>
+            <Stack spacing={1.6} minWidth= "480px">
               {DiscountCodes.map((item) => (
                 <Stack
                   sx={{ width: "100%", borderRadius: "5px", padding: "0.6rem" }}
@@ -100,17 +101,18 @@ function Coupon() {
                   className="coupon-container"
                   direction="row"
                   justifyContent="space-between"
+                  backgroundColor="#fff"
                 >
                   <Stack
                     sx={{ width: "70%", height: "132px" }}
                     direction="row"
-                    spacing={3}
-                  >
+                    spacing={3}>
                     <Stack
-                      sx={{ marginLeft: "1rem" }}
+                      sx={{ marginLeft: "1rem"}}
                       direction="column"
                       alignItems="center"
                       justifyContent="center"
+                      gap = "0.3rem"
                     >
                       <img
                         alt=""
@@ -125,28 +127,26 @@ function Coupon() {
                         style={{
                           fontSize: "11px",
                           fontWeight: "400",
-                          margin: "0px 0px 0px 0px",
+                          margin: "0px 0px 0px 0px"
                         }}
                         align="center"
                       >
                         {item.publisher}
                       </Typography>
                     </Stack>
-
                     <Divider orientation="vertical" flexItem />
-
                     <Stack sx={{ width: "10rem" }}>
-                      <Typography>{item.name}</Typography>
-                      <Typography>{item.note}</Typography>
-                      <Typography>{item.expired}</Typography>
+                      <Typography sx = {{fontSize: "17px", fontWeight: "500", lineHeight: "24px", color:"#242424"}}>{item.name}</Typography>
+                      <Typography sx = {{color:"#787878", fontSize:"13px", fontWeight: "400", }}>{item.note}</Typography>
+                      <Typography sx = {{color:"#787878", fontSize:"13px",  fontWeight: "400",marginBottom:"0px", marginTop:"auto"}}>{item.expired}</Typography>
                     </Stack>
                   </Stack>
-                  <InfoOutlinedIcon color="info" />
+                  <InfoOutlinedIcon sx ={{width:"20px", height:"20px"}}color="info" />
                 </Stack>
               ))}
             </Stack>
 
-            <Stack spacing={1.6}>
+            <Stack spacing={1.6} minWidth= "480px">
               {DiscountCodes.map((item) => (
                 <Stack
                   sx={{ width: "100%", borderRadius: "5px", padding: "0.6rem" }}
@@ -154,17 +154,18 @@ function Coupon() {
                   className="coupon-container"
                   direction="row"
                   justifyContent="space-between"
+                  backgroundColor="#fff"
                 >
                   <Stack
                     sx={{ width: "70%", height: "132px" }}
                     direction="row"
-                    spacing={3}
-                  >
+                    spacing={3}>
                     <Stack
-                      sx={{ marginLeft: "1rem" }}
+                      sx={{ marginLeft: "1rem"}}
                       direction="column"
                       alignItems="center"
                       justifyContent="center"
+                      gap = "0.3rem"
                     >
                       <img
                         alt=""
@@ -179,23 +180,21 @@ function Coupon() {
                         style={{
                           fontSize: "11px",
                           fontWeight: "400",
-                          margin: "0px 0px 0px 0px",
+                          margin: "0px 0px 0px 0px"
                         }}
                         align="center"
                       >
                         {item.publisher}
                       </Typography>
                     </Stack>
-
                     <Divider orientation="vertical" flexItem />
-
                     <Stack sx={{ width: "10rem" }}>
-                      <Typography>{item.name}</Typography>
-                      <Typography>{item.note}</Typography>
-                      <Typography>{item.expired}</Typography>
+                      <Typography sx = {{fontSize: "17px", fontWeight: "500", lineHeight: "24px", color:"#242424"}}>{item.name}</Typography>
+                      <Typography sx = {{color:"#787878", fontSize:"13px", fontWeight: "400", }}>{item.note}</Typography>
+                      <Typography sx = {{color:"#787878", fontSize:"13px",  fontWeight: "400",marginBottom:"0px", marginTop:"auto"}}>{item.expired}</Typography>
                     </Stack>
                   </Stack>
-                  <InfoOutlinedIcon color="info" />
+                  <InfoOutlinedIcon sx ={{width:"20px", height:"20px"}}color="info" />
                 </Stack>
               ))}
             </Stack>
@@ -203,11 +202,223 @@ function Coupon() {
         </TabPanel>
 
         <TabPanel value={value} index={1}>
-          Item Two
+        <Stack direction="row" spacing={2}>
+            <Stack spacing={1.6} minWidth= "480px">
+              {DiscountCodes.map((item) => (
+                <Stack
+                  sx={{ width: "100%", borderRadius: "5px", padding: "0.6rem" }}
+                  key={item.id}
+                  className="coupon-container"
+                  direction="row"
+                  justifyContent="space-between"
+                  backgroundColor="#fff"
+                >
+                  <Stack
+                    sx={{ width: "70%", height: "132px" }}
+                    direction="row"
+                    spacing={3}>
+                    <Stack
+                      sx={{ marginLeft: "1rem"}}
+                      direction="column"
+                      alignItems="center"
+                      justifyContent="center"
+                      gap = "0.3rem"
+                    >
+                      <img
+                        alt=""
+                        src={item.image}
+                        style={{
+                          width: "5rem",
+                          height: "5rem",
+                          justifyContent: "center",
+                        }}
+                      />
+                      <Typography
+                        style={{
+                          fontSize: "11px",
+                          fontWeight: "400",
+                          margin: "0px 0px 0px 0px"
+                        }}
+                        align="center"
+                      >
+                        {item.publisher}
+                      </Typography>
+                    </Stack>
+                    <Divider orientation="vertical" flexItem />
+                    <Stack sx={{ width: "10rem" }}>
+                      <Typography sx = {{fontSize: "17px", fontWeight: "500", lineHeight: "24px", color:"#242424"}}>{item.name}</Typography>
+                      <Typography sx = {{color:"#787878", fontSize:"13px", fontWeight: "400", }}>{item.note}</Typography>
+                      <Typography sx = {{color:"#787878", fontSize:"13px",  fontWeight: "400",marginBottom:"0px", marginTop:"auto"}}>{item.expired}</Typography>
+                    </Stack>
+                  </Stack>
+                  <InfoOutlinedIcon sx ={{width:"20px", height:"20px"}}color="info" />
+                </Stack>
+              ))}
+            </Stack>
+
+            <Stack spacing={1.6} minWidth= "480px">
+              {DiscountCodes.map((item) => (
+                <Stack
+                  sx={{ width: "100%", borderRadius: "5px", padding: "0.6rem" }}
+                  key={item.id}
+                  className="coupon-container"
+                  direction="row"
+                  justifyContent="space-between"
+                  backgroundColor="#fff"
+                >
+                  <Stack
+                    sx={{ width: "70%", height: "132px" }}
+                    direction="row"
+                    spacing={3}>
+                    <Stack
+                      sx={{ marginLeft: "1rem"}}
+                      direction="column"
+                      alignItems="center"
+                      justifyContent="center"
+                      gap = "0.3rem"
+                    >
+                      <img
+                        alt=""
+                        src={item.image}
+                        style={{
+                          width: "5rem",
+                          height: "5rem",
+                          justifyContent: "center",
+                        }}
+                      />
+                      <Typography
+                        style={{
+                          fontSize: "11px",
+                          fontWeight: "400",
+                          margin: "0px 0px 0px 0px"
+                        }}
+                        align="center"
+                      >
+                        {item.publisher}
+                      </Typography>
+                    </Stack>
+                    <Divider orientation="vertical" flexItem />
+                    <Stack sx={{ width: "10rem" }}>
+                      <Typography sx = {{fontSize: "17px", fontWeight: "500", lineHeight: "24px", color:"#242424"}}>{item.name}</Typography>
+                      <Typography sx = {{color:"#787878", fontSize:"13px", fontWeight: "400", }}>{item.note}</Typography>
+                      <Typography sx = {{color:"#787878", fontSize:"13px",  fontWeight: "400",marginBottom:"0px", marginTop:"auto"}}>{item.expired}</Typography>
+                    </Stack>
+                  </Stack>
+                  <InfoOutlinedIcon sx ={{width:"20px", height:"20px"}}color="info" />
+                </Stack>
+              ))}
+            </Stack>
+          </Stack>
         </TabPanel>
 
         <TabPanel value={value} index={2}>
-          Item Three
+        <Stack direction="row" spacing={2}>
+            <Stack spacing={1.6} minWidth= "480px">
+              {ExpriredDiscountCodes.map((item) => (
+                <Stack
+                  sx={{ width: "100%", borderRadius: "5px", padding: "0.6rem" }}
+                  key={item.id}
+                  className="coupon-container"
+                  direction="row"
+                  justifyContent="space-between"
+                  backgroundColor="#fff"
+                >
+                  <Stack
+                    sx={{ width: "70%", height: "132px" }}
+                    direction="row"
+                    spacing={3}>
+                    <Stack
+                      sx={{ marginLeft: "1rem"}}
+                      direction="column"
+                      alignItems="center"
+                      justifyContent="center"
+                      gap = "0.3rem"
+                    >
+                      <img
+                        alt=""
+                        src={item.image}
+                        style={{
+                          width: "5rem",
+                          height: "5rem",
+                          justifyContent: "center",
+                        }}
+                      />
+                      <Typography
+                        style={{
+                          fontSize: "11px",
+                          fontWeight: "400",
+                          margin: "0px 0px 0px 0px"
+                        }}
+                        align="center"
+                      >
+                        {item.publisher}
+                      </Typography>
+                    </Stack>
+                    <Divider orientation="vertical" flexItem />
+                    <Stack sx={{ width: "10rem" }}>
+                      <Typography sx = {{fontSize: "17px", fontWeight: "500", lineHeight: "24px", color:"#242424"}}>{item.name}</Typography>
+                      <Typography sx = {{color:"#787878", fontSize:"13px", fontWeight: "400", }}>{item.note}</Typography>
+                      <Typography sx = {{color:"#787878", fontSize:"13px",  fontWeight: "400",marginBottom:"0px", marginTop:"auto"}}>{item.expired}</Typography>
+                    </Stack>
+                  </Stack>
+                  <InfoOutlinedIcon sx ={{width:"20px", height:"20px"}}color="info" />
+                </Stack>
+              ))}
+            </Stack>
+
+            <Stack spacing={1.6} minWidth= "480px">
+              {ExpriredDiscountCodes.map((item) => (
+                <Stack
+                  sx={{ width: "100%", borderRadius: "5px", padding: "0.6rem" }}
+                  key={item.id}
+                  className="coupon-container"
+                  direction="row"
+                  justifyContent="space-between"
+                  backgroundColor="#fff"
+                >
+                  <Stack
+                    sx={{ width: "70%", height: "132px" }}
+                    direction="row"
+                    spacing={3}>
+                    <Stack
+                      sx={{ marginLeft: "1rem"}}
+                      direction="column"
+                      alignItems="center"
+                      justifyContent="center"
+                      gap = "0.3rem"
+                    >
+                      <img
+                        alt=""
+                        src={item.image}
+                        style={{
+                          width: "5rem",
+                          height: "5rem",
+                          justifyContent: "center",
+                        }}
+                      />
+                      <Typography
+                        style={{
+                          fontSize: "11px",
+                          fontWeight: "400",
+                          margin: "0px 0px 0px 0px"
+                        }}
+                        align="center"
+                      >
+                        {item.publisher}
+                      </Typography>
+                    </Stack>
+                    <Divider orientation="vertical" flexItem />
+                    <Stack sx={{ width: "10rem" }}>
+                      <Typography sx = {{fontSize: "17px", fontWeight: "500", lineHeight: "24px", color:"#242424"}}>{item.name}</Typography>
+                      <Typography sx = {{color:"#787878", fontSize:"13px", fontWeight: "400", }}>{item.note}</Typography>
+                      <Typography sx = {{color:"#787878", fontSize:"13px",  fontWeight: "400",marginBottom:"0px", marginTop:"auto"}}>{item.expired}</Typography>
+                    </Stack>
+                  </Stack>
+                  <InfoOutlinedIcon sx ={{width:"20px", height:"20px"}}color="info" />
+                </Stack>
+              ))}
+            </Stack>
+          </Stack>
         </TabPanel>
       </Box>
     </div>
