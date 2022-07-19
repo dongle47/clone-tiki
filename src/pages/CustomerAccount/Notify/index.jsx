@@ -213,7 +213,7 @@ function Notify() {
                     </svg>
                   </div>
                 </div>
-                <div style={{ flex: 1 }}>
+                <Box style={{ flex: 1 }}>
                   <Typography style={{ fontSize: "13px", color: "#666" }}>
                     {item.info}
                   </Typography>
@@ -225,7 +225,7 @@ function Notify() {
                   >
                     Chi tiết
                   </a>
-                </div>
+                </Box>
                 <Typography
                   sx={{ fontSize: "14px", color: "#0b74e5", width: "122px" }}
                 >

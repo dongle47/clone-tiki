@@ -23,7 +23,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 0 }}>
+        <Box sx={{ p: 3 }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -51,7 +51,7 @@ function Coupon() {
     setValue(newValue);
   };
   return (
-    <div>
+    <Box>
       <Typography>Mã giảm giá</Typography>
 
       <Box sx={{ width: "100%", top: "0" }}>
@@ -421,7 +421,7 @@ function Coupon() {
           </Stack>
         </TabPanel>
       </Box>
-    </div>
+    </Box>
   );
 }
 
