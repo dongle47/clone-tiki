@@ -5,11 +5,24 @@ import tikinow from "../../assets/img/tikinow.jpg"
 import fb from "../../assets/img/fb.jpg"
 import youtube from "../../assets/img/ytb.jpg"
 import zalo from "../../assets/img/zalo.jpg"
+import {
+  Grid,
+  Stack,
+  IconButton,
+  Button,
+  Typography,
+  hexToRgb,
+  Badge,
+  Box,
+  Modal,
+  TextField,
+} from "@mui/material";
+
 function Footer() {
   return (
-    <div className='Footer'>
-      <div className='block'>
-        <div className='block__1'>
+    <Box className='Footer'>
+      <Stack className='block' direction="row">
+        <Stack className='block__1' direction="column">
           <h4 className='block__title'>Hỗ trợ khách hàng</h4>
           <div className='hotline'>
             Hotline:&nbsp;
@@ -31,9 +44,9 @@ function Footer() {
             Báo lỗi bảo mật:&nbsp;
             <a href="mailto:security@tiki.vn">security@tiki.vn</a>
           </p>
-        </div>
+        </Stack>
 
-        <div className='block__2'>
+        <Stack className='block__2' direction="column">
           <h4 className="block__title">Về Tiki</h4>
           <a rel="noreferrer" href="https://tiki.vn/thong-tin/gioi-thieu-ve-tiki" className="small-text" target="_blank">Giới thiệu Tiki</a>
           <a rel="noreferrer" href="https://tuyendung.tiki.vn/" className="small-text" target="_blank">Tuyển dụng</a>
@@ -46,9 +59,9 @@ function Footer() {
           <a rel="noreferrer" href="https://tiki.vn/khuyen-mai/tiki-tiep-thi-lien-ket" className="small-text" target="_blank">Tiếp thị liên kết cùng Tiki</a>
           <a rel="noreferrer" href="https://tiki.vn/chuong-trinh/ban-hang-doanh-nghiep" className="small-text" target="_blank">Bán hàng doanh nghiệp</a>
           <a rel="noreferrer" href="https://www.tikinow.biz/%C4%91i%E1%BB%81u-kho%E1%BA%A3n-v%E1%BA%ADn-chuy%E1%BB%83n" className="small-text" target="_blank">Điều kiện vận chuyển</a>
-        </div>
+        </Stack>
 
-        <div className='block__3'>
+        <Stack className='block__3' direction="column">
           <h4 className="block__title">Hợp tác và liên kết</h4>
           <div>
             <a rel="noreferrer" href="https://tiki.vn/quy-che-hoat-dong-sgdtmdt" className="small-text" target="_blank">Quy chế hoạt động Sàn GDTMĐT</a>
@@ -64,9 +77,9 @@ function Footer() {
                 <img src="https://frontend.tikicdn.com/_desktop-next/static/img/footer/bo-cong-thuong.svg" height="32" width="83" alt="" /></a>
             </div>
           </div>
-        </div>
+        </Stack>
 
-        <div className='block__4'>
+        <Stack className='block__4' direction="column">
           <div>
             <h4 className="block__title">Phương thức thanh toán</h4>
             <img alt='' src={nhanhieu} />
@@ -75,9 +88,9 @@ function Footer() {
             <h4 style={{ margin: '24px 0 12px' }} className="block__title">Dịch vụ giao hàng</h4>
             <a href="/"><img alt='' src={tikinow}></img></a>
           </div>
-        </div>
+        </Stack>
 
-        <div className='block__5'>
+        <Stack className='block__5'>
           <div>
             <h4 className="block__title">Kết nối với chúng tôi</h4>
             <div className='block__contact'>
@@ -104,16 +117,16 @@ function Footer() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </Stack>
+      </Stack>
 
       <div className="container address-info">
         <p>Trụ sở chính: Tòa nhà Viettel, Số 285, đường Cách Mạng Tháng 8, phường 12, quận 10, Thành phố Hồ Chí Minh</p>
         <p>Tiki nhận đặt hàng trực tuyến và giao hàng tận nơi, chưa hỗ trợ mua và nhận hàng trực tiếp tại văn phòng hoặc trung tâm xử lý đơn hàng</p>
         <p>Giấy chứng nhận Đăng ký Kinh doanh số 0309532909 do Sở Kế hoạch và Đầu tư Thành phố Hồ Chí Minh cấp lần đầu ngày 06/01/2010 và sửa đổi lần thứ 23 ngày 14/02/2022</p>
-        <p  style={{marginBottom:'0'}}>© 2022 - Bản quyền của Công ty TNHH Ti Ki</p>
+        <p style={{ marginBottom: '0' }}>© 2022 - Bản quyền của Công ty TNHH Ti Ki</p>
       </div>
-    </div>
+    </Box>
   )
 }
 
