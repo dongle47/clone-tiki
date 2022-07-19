@@ -46,6 +46,7 @@ import Order from './pages/Admin/Order';
 import Product from './pages/Admin/Product';
 import Review from './pages/Admin/Review';
 import User from './pages/Admin/User';
+import DetailOrder from "./pages/CustomerAccount/Orders/DetailOrder/DetailOrder";
 
 
 
@@ -78,9 +79,11 @@ function App() {
           <Route index element={<Notify />} />
         </Route>
 
-        <Route path="/sale/order/history" element={<CustomerAccount />}>
-          <Route index element={<Orders />} />
+        <Route path="/sale/order" element={<CustomerAccount />}>
+          <Route path="history" element={<Orders />} />
+          <Route path="detail" element={<DetailOrder />} />
         </Route>
+
 
         <Route path="/customer/address" element={<CustomerAccount />}>
           <Route index element={<Addresses />} />
