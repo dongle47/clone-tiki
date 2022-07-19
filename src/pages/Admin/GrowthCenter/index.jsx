@@ -1,7 +1,7 @@
-function DevelopCenter(){
+function GrowthCenter(){
     return(
         <div>Trung tâm phát triển</div>
     )
 }
 
-export default DevelopCenter
+export default GrowthCenter

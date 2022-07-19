@@ -28,7 +28,7 @@ import PayInfo from './pages/CustomerAccount/PayInfo/index';
 import RatePurchased from './pages/CustomerAccount/RatePurchased/index';
 import FavoriteProduct from './pages/CustomerAccount/FavoriteProduct/index';
 import MyRates from './pages/CustomerAccount/MyRates/index';
-import DiscountCode from './pages/CustomerAccount/DiscountCode/index';
+import DiscountCode from './pages/CustomerAccount/Coupon/index';
 
 import ShoppingCart from "./pages/ShoppingCart"
 
@@ -38,9 +38,9 @@ import Admin from './pages/Admin';
 import AdminLogin from './pages/Admin/Login';
 import Brand from './pages/Admin/Brand';
 import Category from './pages/Admin/Category';
-import Coupon from './pages/Admin/Coupon';
+import CouponAdmin from './pages/Admin/Coupon';
 import Dashboard from './pages/Admin/Dashboard';
-import DevelopCenter from './pages/Admin/DevelopCenter';
+import GrowthCenter from './pages/Admin/GrowthCenter';
 import Order from './pages/Admin/Order';
 import Product from './pages/Admin/Product';
 import Review from './pages/Admin/Review';
@@ -116,8 +116,8 @@ function App() {
           <Route path='product' element={<Product />} />
           <Route path='category' element={<Category />} />
           <Route path='brand' element={<Brand />} />
-          <Route path='develop' element={<DevelopCenter />} />
-          <Route path='coupon' element={<Coupon />} />
+          <Route path='develop' element={<GrowthCenter />} />
+          <Route path='coupon' element={<CouponAdmin />} />
           <Route path='user' element={<User />} />
           <Route path='review' element={<Review />} />
 
