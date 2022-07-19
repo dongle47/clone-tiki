@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./DiscountCode.scss";
+import "./Coupon.scss";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -43,7 +43,7 @@ function a11yProps(index) {
   };
 }
 
-function DiscountCode() {
+function Coupon() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -214,4 +214,4 @@ function DiscountCode() {
   );
 }
 
-export default DiscountCode;
+export default Coupon;
