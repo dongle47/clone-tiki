@@ -127,7 +127,7 @@ function Header() {
             startIcon={<StorefrontOutlinedIcon />}
           >
             <Typography sx={{ fontSize: "10px" }}>
-              Bán hàng cùng Tiki
+              Admin
             </Typography>
           </Button>
         </Stack>

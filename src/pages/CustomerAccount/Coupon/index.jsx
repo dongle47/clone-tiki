@@ -136,9 +136,36 @@ function Coupon() {
                     </Stack>
                     <Divider orientation="vertical" flexItem />
                     <Stack sx={{ width: "10rem" }}>
-                      <Typography sx = {{fontSize: "17px", fontWeight: "500", lineHeight: "24px", color:"#242424"}}>{item.name}</Typography>
-                      <Typography sx = {{color:"#787878", fontSize:"13px", fontWeight: "400", }}>{item.note}</Typography>
-                      <Typography sx = {{color:"#787878", fontSize:"13px",  fontWeight: "400",marginBottom:"0px", marginTop:"auto"}}>{item.expired}</Typography>
+                      <Typography
+                        sx={{
+                          fontSize: "17px",
+                          fontWeight: "500",
+                          lineHeight: "24px",
+                          color: "#242424",
+                        }}
+                      >
+                        {item.name}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#787878",
+                          fontSize: "13px",
+                          fontWeight: "400",
+                        }}
+                      >
+                        {item.note}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#787878",
+                          fontSize: "13px",
+                          fontWeight: "400",
+                          marginBottom: "0px",
+                          marginTop: "auto",
+                        }}
+                      >
+                        {item.expired}
+                      </Typography>
                     </Stack>
                   </Stack>
                   <InfoOutlinedIcon sx ={{width:"20px", height:"20px"}}color="info" />
@@ -189,9 +216,36 @@ function Coupon() {
                     </Stack>
                     <Divider orientation="vertical" flexItem />
                     <Stack sx={{ width: "10rem" }}>
-                      <Typography sx = {{fontSize: "17px", fontWeight: "500", lineHeight: "24px", color:"#242424"}}>{item.name}</Typography>
-                      <Typography sx = {{color:"#787878", fontSize:"13px", fontWeight: "400", }}>{item.note}</Typography>
-                      <Typography sx = {{color:"#787878", fontSize:"13px",  fontWeight: "400",marginBottom:"0px", marginTop:"auto"}}>{item.expired}</Typography>
+                      <Typography
+                        sx={{
+                          fontSize: "17px",
+                          fontWeight: "500",
+                          lineHeight: "24px",
+                          color: "#242424",
+                        }}
+                      >
+                        {item.name}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#787878",
+                          fontSize: "13px",
+                          fontWeight: "400",
+                        }}
+                      >
+                        {item.note}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#787878",
+                          fontSize: "13px",
+                          fontWeight: "400",
+                          marginBottom: "0px",
+                          marginTop: "auto",
+                        }}
+                      >
+                        {item.expired}
+                      </Typography>
                     </Stack>
                   </Stack>
                   <InfoOutlinedIcon sx ={{width:"20px", height:"20px"}}color="info" />
