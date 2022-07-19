@@ -92,8 +92,8 @@ function Coupon() {
         </Box>
 
         <TabPanel value={value} index={0}>
-          <Stack direction="row" spacing={2}>
-            <Stack spacing={1.6} minWidth= "480px">
+        <Stack direction="row" spacing={2}>
+            <Stack spacing={1.6} >
               {DiscountCodes.map((item) => (
                 <Stack
                   sx={{ width: "100%", borderRadius: "5px", padding: "0.6rem" }}
@@ -146,7 +146,7 @@ function Coupon() {
               ))}
             </Stack>
 
-            <Stack spacing={1.6} minWidth= "480px">
+            <Stack spacing={1.6}>
               {DiscountCodes.map((item) => (
                 <Stack
                   sx={{ width: "100%", borderRadius: "5px", padding: "0.6rem" }}
@@ -202,8 +202,8 @@ function Coupon() {
         </TabPanel>
 
         <TabPanel value={value} index={1}>
-        <Stack direction="row" spacing={2}>
-            <Stack spacing={1.6} minWidth= "480px">
+          <Stack direction="row" spacing={2}>
+            <Stack spacing={1.6} >
               {DiscountCodes.map((item) => (
                 <Stack
                   sx={{ width: "100%", borderRadius: "5px", padding: "0.6rem" }}
@@ -256,7 +256,7 @@ function Coupon() {
               ))}
             </Stack>
 
-            <Stack spacing={1.6} minWidth= "480px">
+            <Stack spacing={1.6}>
               {DiscountCodes.map((item) => (
                 <Stack
                   sx={{ width: "100%", borderRadius: "5px", padding: "0.6rem" }}
@@ -313,7 +313,7 @@ function Coupon() {
 
         <TabPanel value={value} index={2}>
         <Stack direction="row" spacing={2}>
-            <Stack spacing={1.6} minWidth= "480px">
+            <Stack spacing={1.6} >
               {ExpriredDiscountCodes.map((item) => (
                 <Stack
                   sx={{ width: "100%", borderRadius: "5px", padding: "0.6rem" }}
@@ -366,7 +366,7 @@ function Coupon() {
               ))}
             </Stack>
 
-            <Stack spacing={1.6} minWidth= "480px">
+            <Stack spacing={1.6} >
               {ExpriredDiscountCodes.map((item) => (
                 <Stack
                   sx={{ width: "100%", borderRadius: "5px", padding: "0.6rem" }}
