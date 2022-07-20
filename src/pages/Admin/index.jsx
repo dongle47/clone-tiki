@@ -3,6 +3,8 @@ import { styled, useTheme } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Badge from "@mui/material/Badge";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+
 
 import { Outlet, Link } from "react-router-dom";
 
@@ -150,6 +152,16 @@ function Admin() {
   const handleClickAwayAccount = () => {
     setOpenAccount(false);
   };
+  const [openNotify, setOpenNotify] = React.useState(false);
+
+  const form = () => {
+    return(
+      <Box sx={{zIndex:'10'}} >
+      <Typography>dadsadadsa</Typography>
+
+      </Box>
+    )
+  }
 
   const styles = {
     position: "absolute",
@@ -217,11 +229,21 @@ function Admin() {
                 <TextsmsOutlinedIcon sx={{ borderRadius: "50%" }} />
               </IconButton>
 
-              <IconButton sx={{ border: "1px solid silver" }}>
+              <IconButton onClick={() => setOpenNotify(true)} sx={{ border: "1px solid silver" }}>
                 <Badge color="info" badgeContent={3}>
                   <NotificationsNoneOutlinedIcon />
                 </Badge>
               </IconButton>
+
+              <SwipeableDrawer
+                  anchor="right"
+                  open={openNotify}
+                  onClose={() => setOpenNotify(false)}
+                  onOpen={() => setOpenNotify(true)}
+
+                >
+                  {form()}
+                </SwipeableDrawer>
 
               <ClickAwayListener onClickAway={handleClickAwayAccount}>
                 <Stack
