@@ -1,14 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import './ShoppingCart.scss'
-import { Grid, Typography, Checkbox, Button, Modal } from '@mui/material'
+import { Grid, Typography, Checkbox, Button, Stack } from '@mui/material'
 import CartItem from '../../components/CartItem'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 // import { CartItems } from "../../constraints/Cart"
 import InfoIcon from '@mui/icons-material/Info';
 import DiscountIcon from '@mui/icons-material/Discount';
 import { numWithCommas } from "../../constraints/Util"
-import CloseIcon from '@mui/icons-material/Close';
-import CancelIcon from '@mui/icons-material/Cancel';
 import { useSelector, useDispatch } from 'react-redux'
 import ChooseCoupon from '../../components/ChooseCoupon';
 import {unchooseAll,chooseAll,deleteAll} from '../../slices/cartSlice'
@@ -76,6 +74,15 @@ function ShoppingCart() {
           </div>
         </Grid>
         <Grid item lg={3} md={12} sm={12} xs={12}>
+          <div className='cart__address'>
+            <Stack direction="row" mb={1.5} justifyContent="space-between">
+              <Typography style={{fontSize:"16px",fontWeight:500,color:"#888"}}>Giao tới</Typography>
+              <Typography sx={{color:"#1890ff"}}>Thay đổi</Typography>
+            </Stack>
+            <Typography mb={0.25} sx={{fontWeight:500}}>Lê Văn Đồng   0332298170</Typography>
+            <Typography sx={{color:"#888"}}>Ktx khu B đhqg, Phường Đông Hòa, Thị xã Dĩ An, Bình Dương</Typography>
+            
+          </div>
           <div className='cart__coupon'>
             <div className="cart__coupon__title">
               <span>Tiki Khuyến mãi</span>
