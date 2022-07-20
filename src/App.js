@@ -47,6 +47,7 @@ import Product from './pages/Admin/Product';
 import Review from './pages/Admin/Review';
 import User from './pages/Admin/User';
 import DetailOrder from "./pages/CustomerAccount/Orders/DetailOrder/DetailOrder";
+import Payment from "./pages/Payment";
 
 
 
@@ -66,6 +67,7 @@ function App() {
         <Route path='tim-kiem' element={<Search />} />
 
         <Route path='cart' element={<ShoppingCart />} />
+        <Route path='payment' element={<Payment />} />
 
         {/* Routing customer account */}
         <Route path="/customer/account/edit" element={<CustomerAccount />}>
