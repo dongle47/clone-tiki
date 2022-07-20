@@ -1,12 +1,10 @@
 import * as React from "react";
+import { Outlet, Link } from "react-router-dom";
+import { sidebar } from "../../constraints/Admin";
 import { styled, useTheme } from "@mui/material/styles";
+
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
-import Badge from "@mui/material/Badge";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-
-
-import { Outlet, Link } from "react-router-dom";
 
 import {
   Box,
@@ -18,63 +16,23 @@ import {
   Stack,
   ClickAwayListener,
   Button,
+  Badge,
+  SwipeableDrawer,
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  ListItem,
+  ListItemButton,
 } from "@mui/material";
 
-import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-
-import MuiAccordion from "@mui/material/Accordion";
-import MuiAccordionSummary from "@mui/material/AccordionSummary";
-import MuiAccordionDetails from "@mui/material/AccordionDetails";
-
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
-
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 
-import { sidebar } from "../../constraints/Admin";
-
 const drawerWidth = 240;
-
-const Accordion = styled((props) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  "&:not(:last-child)": {
-    borderBottom: 0,
-  },
-  "&:before": {
-    display: "none",
-  },
-}));
-
-const AccordionSummary = styled((props) => <MuiAccordionSummary {...props} />)(
-  ({ theme }) => ({
-    backgroundColor:
-      theme.palette.mode === "dark"
-        ? "rgba(255, 255, 255, .05)"
-        : "rgba(0, 0, 0, .03)",
-    flexDirection: "row-reverse",
-    "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-      transform: "rotate(90deg)",
-    },
-    "& .MuiAccordionSummary-content": {
-      marginLeft: theme.spacing(0),
-    },
-  })
-);
-
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(0),
-  borderTop: "1px solid rgba(0, 0, 0, .125)",
-}));
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -152,18 +110,18 @@ function Admin() {
   const handleClickAwayAccount = () => {
     setOpenAccount(false);
   };
+
   const [openNotify, setOpenNotify] = React.useState(false);
 
-  const form = () => {
-    return(
-      <Box sx={{zIndex:'10'}} >
-      <Typography>dadsadadsa</Typography>
-
+  const formNotify = () => {
+    return (
+      <Box sx={{ zIndex: "10" }}>
+        <Typography>dadsadadsa</Typography>
       </Box>
-    )
-  }
+    );
+  };
 
-  const styles = {
+  const stylesAccount = {
     position: "absolute",
     top: 60,
     right: "0",
@@ -229,21 +187,23 @@ function Admin() {
                 <TextsmsOutlinedIcon sx={{ borderRadius: "50%" }} />
               </IconButton>
 
-              <IconButton onClick={() => setOpenNotify(true)} sx={{ border: "1px solid silver" }}>
+              <IconButton
+                onClick={() => setOpenNotify(true)}
+                sx={{ border: "1px solid silver" }}
+              >
                 <Badge color="info" badgeContent={3}>
                   <NotificationsNoneOutlinedIcon />
                 </Badge>
               </IconButton>
 
               <SwipeableDrawer
-                  anchor="right"
-                  open={openNotify}
-                  onClose={() => setOpenNotify(false)}
-                  onOpen={() => setOpenNotify(true)}
-
-                >
-                  {form()}
-                </SwipeableDrawer>
+                anchor="right"
+                open={openNotify}
+                onClose={() => setOpenNotify(false)}
+                onOpen={() => setOpenNotify(true)}
+              >
+                {formNotify()}
+              </SwipeableDrawer>
 
               <ClickAwayListener onClickAway={handleClickAwayAccount}>
                 <Stack
@@ -267,9 +227,11 @@ function Admin() {
                   />
                   <Typography variant="caption">dong.le47@yahoo.com</Typography>
                   {openAccount ? (
-                    <Stack sx={styles}>
+                    <Stack sx={stylesAccount}>
                       <Typography>Lê Văn Đồng</Typography>
+
                       <Typography>dong.le47@yahoo.com</Typography>
+
                       <ListItem disablePadding sx={{ display: "block" }}>
                         <Button
                           variant="text"
@@ -277,6 +239,7 @@ function Admin() {
                         >
                           Hồ sơ nhà bán
                         </Button>
+
                         <Button
                           variant="text"
                           startIcon={<DriveFileRenameOutlineOutlinedIcon />}
@@ -296,16 +259,12 @@ function Admin() {
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {/* {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )} */}
             <img
               src="https://salt.tikicdn.com/cache/w32/ts/sellercenterFE/93/76/03/2a08fa4ae6a024a752fbba87d145bce8.png"
               alt=""
             />
           </IconButton>
+          
           <Typography sx={{ ml: "1rem", fontWeight: "bold" }} variant="h6">
             Admin Center
           </Typography>
@@ -339,6 +298,7 @@ function Admin() {
                   >
                     {<item.icon />}
                   </ListItemIcon>
+
                   <ListItemText
                     primary={item.text}
                     sx={{ opacity: open ? 1 : 0 }}

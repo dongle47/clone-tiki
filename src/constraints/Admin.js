@@ -32,7 +32,7 @@ export const sidebar = [
     },
     {
         id: 4,
-        text: 'Loại sản phẩm',
+        text: 'Danh mục sản phẩm',
         icon: CategoryOutlinedIcon,
         link: '/admin/category'
     },
