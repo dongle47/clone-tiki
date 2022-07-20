@@ -2,6 +2,7 @@ import * as React from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
+import Badge from "@mui/material/Badge";
 
 import { Outlet, Link } from "react-router-dom";
 
@@ -12,6 +13,9 @@ import {
   CssBaseline,
   Typography,
   Divider,
+  Stack,
+  ClickAwayListener,
+  Button,
 } from "@mui/material";
 
 import IconButton from "@mui/material/IconButton";
@@ -24,6 +28,12 @@ import ListItemText from "@mui/material/ListItemText";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
+
+import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 
@@ -131,6 +141,28 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 function Admin() {
+  const [openAccount, setOpenAccount] = React.useState(false);
+
+  const handleClickAccount = () => {
+    setOpenAccount((prev) => !prev);
+  };
+
+  const handleClickAwayAccount = () => {
+    setOpenAccount(false);
+  };
+
+  const styles = {
+    position: "absolute",
+    top: 60,
+    right: "0",
+    left: "-5rem",
+    zIndex: 1,
+    border: "1px solid",
+    p: 1,
+    bgcolor: "background.paper",
+    width: "16rem",
+  };
+
   const [expanded, setExpanded] = React.useState("panel1");
 
   const handleChange = (panel) => (event, newExpanded) => {
@@ -161,22 +193,81 @@ function Admin() {
         open={open}
       >
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={() => setOpen(!open)}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              // ...(open && { display: "none" }),
-            }}
+          <Stack
+            sx={{ width: "100%" }}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
           >
-            <MenuIcon />
-          </IconButton>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={() => setOpen(!open)}
+              edge="start"
+              sx={{
+                marginRight: 5,
+                // ...(open && { display: "none" }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
 
-          <Typography variant="h6" noWrap component="div">
-            Admin page header
-          </Typography>
+            <Stack direction="row" spacing={3} alignItems="center">
+              <IconButton sx={{ border: "1px solid silver" }}>
+                <TextsmsOutlinedIcon sx={{ borderRadius: "50%" }} />
+              </IconButton>
+
+              <IconButton sx={{ border: "1px solid silver" }}>
+                <Badge color="info" badgeContent={3}>
+                  <NotificationsNoneOutlinedIcon />
+                </Badge>
+              </IconButton>
+
+              <ClickAwayListener onClickAway={handleClickAwayAccount}>
+                <Stack
+                  sx={{
+                    border: "1px solid silver",
+                    borderRadius: "3px",
+                    padding: "0.3rem",
+                    position: "relative",
+                  }}
+                  direction="row"
+                  alignItems="center"
+                  spacing={1}
+                  onClick={handleClickAccount}
+                >
+                  <Box
+                    sx={{ borderRadius: "50%" }}
+                    alt=""
+                    component="img"
+                    src="https://salt.tikicdn.com/cache/w32/ts/sellercenterFE/93/76/03/2a08fa4ae6a024a752fbba87d145bce8.png"
+                    onClick={handleClickAccount}
+                  />
+                  <Typography variant="caption">dong.le47@yahoo.com</Typography>
+                  {openAccount ? (
+                    <Stack sx={styles}>
+                      <Typography>Lê Văn Đồng</Typography>
+                      <Typography>dong.le47@yahoo.com</Typography>
+                      <ListItem disablePadding sx={{ display: "block" }}>
+                        <Button
+                          variant="text"
+                          startIcon={<PersonOutlineIcon />}
+                        >
+                          Hồ sơ nhà bán
+                        </Button>
+                        <Button
+                          variant="text"
+                          startIcon={<DriveFileRenameOutlineOutlinedIcon />}
+                        >
+                          Thay đổi mật khẩu
+                        </Button>
+                      </ListItem>
+                    </Stack>
+                  ) : null}
+                </Stack>
+              </ClickAwayListener>
+            </Stack>
+          </Stack>
         </Toolbar>
       </AppBar>
 
@@ -202,7 +293,7 @@ function Admin() {
 
         <List>
           {sidebar.map((item) => (
-            <Link to={item.link} >
+            <Link to={item.link}>
               <ListItem
                 key={item.id}
                 disablePadding
