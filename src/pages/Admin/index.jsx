@@ -354,7 +354,7 @@ function Admin() {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          p: 0,
           backgroundColor: "#f5f5fa",
           minHeight: "40rem",
         }}
