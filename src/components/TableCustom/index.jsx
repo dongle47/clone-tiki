@@ -51,7 +51,7 @@ function TableCustom() {
               <TableCell sx={{ width: "calc(18*100%/101)", padding: "4px" }}>
                 <Typography sx={{ color: "#1890ff" }}>Áp dụng cho tất cả sản phẩm</Typography>
                 <Typography>Cho tất cả khách hàng</Typography>
-                <Typography>>= 100.000đ giá trị đơn hàng</Typography>
+                <Typography>= 100.000đ giá trị đơn hàng</Typography>
                 <Typography>Giới hạn tổng cộng 3 lần sử dụng</Typography>
               </TableCell>
               <TableCell sx={{ width: "calc(18*100%/101)", padding: "8px" }}>
