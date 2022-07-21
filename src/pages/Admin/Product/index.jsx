@@ -10,13 +10,17 @@ import {
 import "./Product.scss"
 import ListProduct from './ListProduct'
 import RefreshIcon from '@mui/icons-material/Refresh';
+import {Link} from 'react-router-dom';
+
 function Product() {
     return (
         <>
             <Box>
                 <Stack direction="row" mb={1} justifyContent="space-between" alignItems="center" sx={{ backgroundColor: "#FFF", height: "80px" }} px={2}>
                     <Typography sx={{ fontWeight: 550 }} >Quản lý sản phẩm</Typography>
-                    <Button variant="outlined" pr={2}>Tạo sản phẩm</Button>
+                    <Link to='/admin/product/create'>  
+                        <Button variant="outlined" pr={2}>Tạo sản phẩm</Button>
+                    </Link>     
                 </Stack>
                 <Stack sx={{ backgroundColor: "#FFF" }} mb={2}>
                     <Box pt={1} pb={1.5}>

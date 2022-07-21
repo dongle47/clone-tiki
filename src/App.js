@@ -50,6 +50,7 @@ import Dashboard from './pages/Admin/Dashboard';
 import GrowthCenter from './pages/Admin/GrowthCenter';
 import Order from './pages/Admin/Order';
 import Product from './pages/Admin/Product';
+import CreateProduct from "./pages/Admin/Product/CreateProduct/CreateProduct";
 import Review from './pages/Admin/Review';
 import User from './pages/Admin/User';
 import DetailOrder from "./pages/CustomerAccount/Orders/DetailOrder/DetailOrder";
@@ -129,7 +130,7 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path='order' element={<Order />} />
           <Route path='product' element={<Product />} />
-
+          <Route path='product/create' element={<CreateProduct />} />
           <Route path='category' element={<Category />}>
           </Route>
 
