@@ -176,7 +176,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
         position: 'relative',
         border: '1px solid #888',
         fontSize: 14,
-        height: '32px',
+        height: '32px !important',
         padding: '4px 10px',
         transition: theme.transitions.create(['border-color', 'box-shadow']),
 
