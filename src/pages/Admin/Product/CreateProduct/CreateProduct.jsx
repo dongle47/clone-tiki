@@ -12,8 +12,12 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  TextareaAutosize
 } from '@mui/material';
 import "./CreateProduct.scss"
+import AddIcon from '@mui/icons-material/Add';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import { width } from '@mui/system';
@@ -36,7 +40,7 @@ const choose = [
   { label: 'Pulp Fiction' }];
 export default function CreateProduct() {
   return (
-    <Box px={2} >
+    <Box px={2} spacing={2}>
       <Stack>
         <Stack sx={{ backgroundColor: "#FFF", height: "80px" }} px={2} direction="row" justifyContent="flex-start" alignItems="center" mb={0.2}>
           <ArrowBackIcon />
@@ -88,7 +92,7 @@ export default function CreateProduct() {
               </Stack>
             </Stack>
           </Stack>
-          <Stack sx={{ backgroundColor: "#FFF"  }} direction="row" justifyContent="center" mb={1}>
+          <Stack sx={{ backgroundColor: "#FFF" }} direction="row" justifyContent="center" mb={1}>
             <Accordion justifyContent="center">
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -144,6 +148,64 @@ export default function CreateProduct() {
               </AccordionDetails>
             </Accordion>
           </Stack>
+        </Stack>
+      </Stack>
+      <Stack sx={{ backgroundColor: "#fff" }}>
+        <Stack sx={{ backgroundColor: "#FFF", height: "46px" }} px={2} direction="row" justifyContent="space-between" alignItems="center">
+          <Typography sx={{ fontWeight: 550 }}>2.Mô Tả Sản Phẩm</Typography>
+          <KeyboardArrowDownIcon />
+        </Stack>
+        <Stack p={2} spacing={2}>
+          <Typography sx={{ fontSize: "18px", fontWeigth: "bold", color: "#8c8c8c" }}>Thông tin quan trọng</Typography>
+          <Typography sx={{ fontWeight: "bold" }}>Video sản phẩm</Typography>
+          <Typography>.mp4, .mkv | Độ dài video tối đa 1,5 phút | Tối đa 15 MB</Typography>
+          <Button className="btn__upload" variant="contained" component="label">
+            <Stack justifyContent="center" alignItems="center" spacing={2}>
+              <PlayCircleOutlineIcon sx={{fontSize:"50px"}} />
+              <Typography sx={{ color: "#333" }}>Nhấn hoặc kéo thả tập tin vào để tải lên</Typography>
+            </Stack>
+            <input hidden accept="image/*" multiple type="file" />
+          </Button>
+          <Stack direction="row">
+            <Typography sx={{ fontWeight: "bold" }}>Mô tả chi tiết sản phẩm (Không chèn link/địa chỉ/SĐT/website/logo nhà bán)</Typography>
+            <InfoOutlinedIcon />
+          </Stack>
+          <TextareaAutosize
+            aria-label="minimum height"
+            minRows={5}
+            style={{ width: "50%" }}
+          />
+          <Stack direction="row">
+            <Typography sx={{ fontWeight: "bold" }}>Kích thước</Typography>
+            <InfoOutlinedIcon />
+          </Stack>
+          <TextareaAutosize
+            aria-label="minimum height"
+            minRows={5}
+            style={{ width: "50%" }}
+          />
+        </Stack>
+      </Stack>
+      <Stack sx={{ backgroundColor: "#fff" }} pt={2}>
+        <Stack sx={{ backgroundColor: "#FFF", height: "46px" }} px={2} direction="row" justifyContent="space-between" alignItems="center">
+          <Typography sx={{ fontWeight: 550 }}>3. Giá Bán Và Mã Sản Phẩm</Typography>
+          <KeyboardArrowDownIcon />
+        </Stack>
+        <Stack direction="row" spacing={20}>
+          <Stack px={2}>
+            <Typography sx={{ fontWeigth: "bold" }}>Giá bán</Typography>
+            <TextField size="small" sx={{ width: "150%" }}></TextField>
+          </Stack>
+          <Stack px={2}>
+            <Typography sx={{ fontWeigth: "bold" }}>Mã sản phẩm</Typography>
+            <TextField size="small" sx={{ width: "150%" }}></TextField>
+          </Stack>
+        </Stack>
+        <Stack px={2} py={2}>
+          <Button className="btn__add" variant="contained" component="label">
+            <AddIcon sx={{color:"#1890ff"}} />
+            <Typography sx={{color:"#1890ff"}}>Thêm lựa chọn hàng để giúp khách hàng tìm kiếm sản phẩm và dễ dàng thêm mới lựa chọn</Typography>
+          </Button>
         </Stack>
       </Stack>
     </Box>
