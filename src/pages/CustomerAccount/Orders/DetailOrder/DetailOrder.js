@@ -104,7 +104,6 @@ function DetailOrder() {
                         <Typography px={2.5} sx={{ fontSize: "14px", textAlign: "end", color: "#787878" }}>Phí vận chuyển</Typography>
                         <Typography px={2.5} sx={{ fontSize: "18px", textAlign: "end", width: "160px", color: "#ff3b27" }}>366.000 ₫</Typography>
                     </Stack>
-
                 </Stack>
             </Box>
         </>

@@ -131,7 +131,7 @@ function App() {
 
         <Route path="/admin" element={<Admin />}>
           <Route index element={<Dashboard />} />
-          <Route path='order' element={<Order />} />
+          <Route path='order/*' element={<Order />} />
           <Route path='product' element={<Product />} />
 
           <Route path='category' element={<Category />}>
