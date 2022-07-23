@@ -52,11 +52,15 @@ import Order from './pages/Admin/Order';
 import Product from './pages/Admin/Product';
 import CreateProduct from "./pages/Admin/Product/CreateProduct/CreateProduct";
 import Review from './pages/Admin/Review';
+
 import User from './pages/Admin/User';
+import DetailUser from './pages/Admin/User/DetailUser';
+
 import DetailOrder from "./pages/CustomerAccount/Orders/DetailOrder/DetailOrder";
 import Payment from "./pages/Payment";
 import TableCustom from "./components/TableCustom";
 import AdminTab from "./components/AdminTab/AdminTab";
+import CreateCoupon from "./pages/Admin/Coupon/CreateCoupon";
 
 
 
@@ -128,7 +132,7 @@ function App() {
 
         <Route path="/admin" element={<Admin />}>
           <Route index element={<Dashboard />} />
-          <Route path='order' element={<Order />} />
+          <Route path='order/*' element={<Order />} />
           <Route path='product' element={<Product />} />
           <Route path='product/create' element={<CreateProduct />} />
           <Route path='category' element={<Category />}>
@@ -142,12 +146,16 @@ function App() {
           <Route path='brand' element={<Brand />} />
           <Route path='develop' element={<GrowthCenter />} />
           <Route path='coupon' element={<CouponAdmin />} />
+          
           <Route path='user' element={<User />} />
+          <Route path='user/detail' element={<DetailUser />} />
+
+
           <Route path='review' element={<Review />} />
           <Route path='test-table' element={<TableCustom />} />
           <Route path='test-tab' element={<AdminTab items={[{id:1,label:"Tất cả"},{id:2,label:"Đang bán"},{id:3,label:"Hết hàng"},{id:4,label:"Nháp"}]}
                                                     handleChangeTab={(i)=>{console.log(i)}} />} />
-                    
+          <Route path="coupon/create" element={<CreateCoupon/>} />         
 
         </Route>
 
