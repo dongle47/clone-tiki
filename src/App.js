@@ -59,6 +59,7 @@ import DetailOrder from "./pages/CustomerAccount/Orders/DetailOrder/DetailOrder"
 import Payment from "./pages/Payment";
 import TableCustom from "./components/TableCustom";
 import AdminTab from "./components/AdminTab/AdminTab";
+import CreateCoupon from "./pages/Admin/Coupon/CreateCoupon";
 
 
 
@@ -153,7 +154,7 @@ function App() {
           <Route path='test-table' element={<TableCustom />} />
           <Route path='test-tab' element={<AdminTab items={[{id:1,label:"Tất cả"},{id:2,label:"Đang bán"},{id:3,label:"Hết hàng"},{id:4,label:"Nháp"}]}
                                                     handleChangeTab={(i)=>{console.log(i)}} />} />
-                    
+          <Route path="coupon/create" element={<CreateCoupon/>} />         
 
         </Route>
 

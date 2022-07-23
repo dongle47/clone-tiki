@@ -17,7 +17,6 @@ function TableCustom() {
   return (
     <Box p={3}>
 
-
       <Table className="couponTable" sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
@@ -51,7 +50,7 @@ function TableCustom() {
               <TableCell sx={{ width: "calc(18*100%/101)", padding: "4px" }}>
                 <Typography sx={{ color: "#1890ff" }}>Áp dụng cho tất cả sản phẩm</Typography>
                 <Typography>Cho tất cả khách hàng</Typography>
-                <Typography> >= 100.000đ giá trị đơn hàng</Typography>
+                <Typography>&gt;= 100.000đ giá trị đơn hàng</Typography>
                 <Typography>Giới hạn tổng cộng 3 lần sử dụng</Typography>
               </TableCell>
               <TableCell sx={{ width: "calc(18*100%/101)", padding: "8px" }}>
@@ -65,7 +64,6 @@ function TableCustom() {
               </TableCell>
               <TableCell sx={{ width: "calc(13*100%/101)" }}>
                 <Stack spacing={1}>
-
                   <Button variant="outlined" sx={{ padding: "4px" }}>Chỉnh sửa</Button>
                   <Stack className="couponTable__button__end" direction="row" justifyContent="space-between" alignItems="center"  >
                     <div>Kết thúc</div>

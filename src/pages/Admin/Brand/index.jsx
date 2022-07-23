@@ -181,10 +181,7 @@ function Brand() {
           <Stack spacing={3}>
             <Stack>
               <Typography sx={{ fontWeight: "bold" }}>
-                Bạn có chắc muốn xoá ảnh đại diện ?
-              </Typography>
-              <Typography>
-                Hình ảnh đại diện sẽ quay về mặc định của Tiki
+                Bạn có chắc muốn xoá thương hiệu này ?
               </Typography>
             </Stack>
 
