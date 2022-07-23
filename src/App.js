@@ -127,7 +127,7 @@ function App() {
 
         <Route path="/admin" element={<Admin />}>
           <Route index element={<Dashboard />} />
-          <Route path='order' element={<Order />} />
+          <Route path='order/*' element={<Order />} />
           <Route path='product' element={<Product />} />
 
           <Route path='category' element={<Category />}>
@@ -144,10 +144,8 @@ function App() {
           <Route path='user' element={<User />} />
           <Route path='review' element={<Review />} />
           <Route path='test-table' element={<TableCustom />} />
-          <Route path='test-tab' element={<AdminTab items={[{id:1,label:"Tất cả"},{id:2,label:"Đang bán"},{id:3,label:"Hết hàng"},{id:4,label:"Nháp"}]}
-                                                    handleChangeTab={(i)=>{console.log(i)}} />} />
-                    
-
+          <Route path='test-tab' element={<AdminTab items={[{ id: 1, label: "Tất cả" }, { id: 2, label: "Đang bán" }, { id: 3, label: "Hết hàng" }, { id: 4, label: "Nháp" }]}
+                            handleChangeTab={(i) => { console.log(i) }} />} />
         </Route>
 
       </Routes>
