@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Header.scss";
-import { useState, useCallback } from "react"
+import { useState, useCallback, useRef } from "react"
 
 import {
   Grid,
@@ -8,12 +8,10 @@ import {
   IconButton,
   Button,
   Typography,
-  hexToRgb,
   Badge,
   Box,
   Modal,
   TextField,
-  Popover,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
@@ -25,10 +23,12 @@ import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import ClearIcon from '@mui/icons-material/Clear';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Categories } from "../../constraints/Header"
 
 function Header() {
   const [modalLogin, setModalLogin] = useState(false);
   const [loginForm, setLoginForm] = useState(true);
+  const [focusSearch, setFocusSearch] = useState(false)
   const openModalLogin = () => setModalLogin(true);
   const closeModalLogin = () => {
     setModalLogin(false);
@@ -39,254 +39,234 @@ function Header() {
     setLoginForm(false)
   })
 
-
-
-  const [anchorElAccount, setAnchorElAccount] = React.useState(null);
-
-  const handlePopoverOpenAccount = (event) => {
-    setAnchorElAccount(event.currentTarget);
-  };
-
-  const handlePopoverCloseAccount = () => {
-    setAnchorElAccount(null);
-  };
-
-  const open = Boolean(anchorElAccount);
-
-
-
-  const [anchorElSearch, setAnchorElSearch] = React.useState(null);
-
-  const handleClickSearch = (event) => {
-    setAnchorElSearch(event.currentTarget);
-  };
-
-  const handleCloseSearch = () => {
-    setAnchorElSearch(null);
-  };
-
-  const openSearch = Boolean(anchorElSearch);
-  const id = openSearch ? 'simple-popover' : undefined;
+  useEffect(() => {
+    document.addEventListener("click", (event) => {
+      const searchResultElement = document.getElementById("input-search-result")
+      if (searchResultElement) {
+        const isClickInsideElement = searchResultElement.contains(event.target);
+        if (!isClickInsideElement && event.target.id !== "input-search") {
+          setFocusSearch(false);
+        }
+      }
+    })
+    return (() => document.removeEventListener("click", () => { }))
+  }, [])
 
   return (
-    <Stack
-      justifyContent="space-between"
-      direction="row"
-      alignItems="center"
-      sx={{ backgroundColor: hexToRgb("#2196f3"), height: "7rem" }}
-    >
+    <header style={{ backgroundColor: "#2196f3" }}>
       <Stack
-        onClick={() => (window.location = "/")}
-        sx={{ ml: "5rem" }}
-        spacing={1.5}
-      >
-        <img
-          style={{ width: "4rem", height: "3rem" }}
-          src="https://salt.tikicdn.com/ts/upload/ae/f5/15/2228f38cf84d1b8451bb49e2c4537081.png"
-          alt=""
-        />
-
-        <img
-          style={{ width: "5rem", height: "1rem" }}
-          alt=""
-          src="https://salt.tikicdn.com/ts/upload/e5/1d/22/61ff572362f08ead7f34ce410a4a6f96.png"
-        />
-      </Stack>
-
-      <Stack
-        sx={{ mr: "3rem", height: "2.5rem" }}
+        justifyContent="space-between"
         direction="row"
-        justifyContent="flex-end"
-        spacing={3}
+        alignItems="flex-start"
+        spacing={2}
+        sx={{ height: "100px",width:"100%", maxWidth: "1240px", margin: "0 auto" }}
       >
-        <Stack direction="row" alignItems="center" sx={{ padding: "0" }}>
-          <input
-            style={{}}
-            id="input-search"
-            placeholder="Tìm sản phẩm, danh mục hay thương hiệu mong muốn ..."
-            onClick={handleClickSearch}
-          />
-          <Popover
-            id={id}
-            open={openSearch}
-            anchorEl={anchorElSearch}
-            onClose={handleCloseSearch}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
+        <Link to={"/"}>
+          <Stack
+            sx={{ width: "190px" }}
+            spacing={1.5} pt={2}
           >
-            <Box sx={{ width: "560px" }} px={2}>
-              <Stack direction="row" justifyContent="space-between"
-                alignItems="center" sx={{ height: "44px" }}>
-                <Typography>Deal Hot Từ Abbott</Typography>
-                <img src="https://salt.tikicdn.com/cache/140x28/ts/banner/76/dc/6e/cdf1d2ce2de591e94dabf818db15261a.jpg.webp" width="140px" height="28px"></img>
-              </Stack>
-              <Stack sx={{ height: "36px" }} direction="row" spacing={1}>
-                <SearchIcon sx={{ fontSize: "25px" }} />
-                <Typography sx={{ fontSize: "13px", fontweight: 500, flex: 1 }}>tai nghe Bluetooth</Typography>
-                <ClearIcon></ClearIcon>
-              </Stack>
-              <Stack sx={{ height: "36px" }} direction="row" spacing={1}>
-                <SearchIcon sx={{ fontSize: "25px" }} />
-                <Typography sx={{ fontSize: "13px", fontweight: 500, flex: 1 }}>Iphone 13</Typography>
-                <ClearIcon></ClearIcon>
-              </Stack>
-              <Stack sx={{ height: "36px" }} direction="row" justifyContent="center"
-                alignItems="center"><Typography sx={{ fontSize: "16px", color: "#0D5CB6" }}>Xem thêm</Typography>
-                <KeyboardArrowDownIcon /></Stack>
-              <Box pt={1} pb={1.5}>
-                <Stack sx={{ height: "24px" }} direction="row" mb={1}>
-                  <img src="https://salt.tikicdn.com/ts/upload/4f/03/a0/2455cd7c0f3aef0c4fd58aa7ff93545a.png" width="24px" height="24px"></img>
-                  <Typography>Tìm kiếm phổ biến</Typography></Stack>
-                <Grid container spacing={2}>{
-                  [1, 2, 3, 4, 5, 6].map(number =>
-                    <Grid key={number} item xs={4}>
-                      <Stack direction="row">
-                        <img src="https://salt.tikicdn.com/cache/280x280/ts/product/4e/51/a9/d3c765cea429477a2f1a769b39d589bc.jpg" width="38px" height="38px"></img>
-                        <Typography my={0.5} sx={{ fontSize: "12px" }}>Người đua diều</Typography>
-                      </Stack>
-                    </Grid>
-                  )
-                }
+            <img alt="" style={{ width: "60px", height: "40px" }} src="https://salt.tikicdn.com/ts/upload/ae/f5/15/2228f38cf84d1b8451bb49e2c4537081.png" />
+            <img style={{ width: "83px", height: "12px" }} alt="" src="https://salt.tikicdn.com/ts/upload/e5/1d/22/61ff572362f08ead7f34ce410a4a6f96.png" />
+          </Stack>
+        </Link>
 
-                </Grid>
-              </Box>
-              <Box pt={1} pb={1.5}>
-                <Typography sx={{ height: "24px" }} mb={1} >Danh Mục Nổi Bật</Typography>
-                <Grid container spacing={2}>
-                  {
-                    [1, 2, 3, 4, 5, 6, 7, 8].map(number =>
-                      <Grid item xs={3}>
-                        <Stack justifyContent="center"
-                          alignItems="center">
-                          <img src="https://salt.tikicdn.com/cache/280x280/ts/product/90/55/ea/340eb77f1170e4c381c866c275138a82.jpg" width="64,5px" height="64,5px"></img>
-                          <Typography my={0.5} sx={{ textAlign: "center", fontSize: "12px" }}>Tai nghe Bluetooth nhét tai</Typography>
+        <Box sx={{flex:1}}  pt={2}>
+          <Stack direction="row" alignItems="center" sx={{ padding: "0", height:'40px',flex:1,position: "relative" }}>
+            <input
+              style={{height:"100%",flex:1}}
+              id="input-search"
+              placeholder="Tìm sản phẩm, danh mục hay thương hiệu mong muốn ..."
+              onFocus={() => setFocusSearch(true)}
+            />
+            {
+              focusSearch &&
+              <Box id="input-search-result" sx={{ width: "calc(100% - 120px)" }} px={2} className="header__search__result">
+                <Stack direction="row" justifyContent="space-between"
+                  alignItems="center" sx={{ height: "44px" }}>
+                  <Typography>Deal Hot Từ Abbott</Typography>
+                  <img src="https://salt.tikicdn.com/cache/140x28/ts/banner/76/dc/6e/cdf1d2ce2de591e94dabf818db15261a.jpg.webp" width="140px" height="28px"></img>
+                </Stack>
+                <Stack sx={{ height: "36px" }} direction="row" spacing={1}>
+                  <SearchIcon sx={{ fontSize: "25px" }} />
+                  <Typography sx={{ fontSize: "13px", fontweight: 500, flex: 1 }}>tai nghe Bluetooth</Typography>
+                  <ClearIcon></ClearIcon>
+                </Stack>
+                <Stack sx={{ height: "36px" }} direction="row" spacing={1}>
+                  <SearchIcon sx={{ fontSize: "25px" }} />
+                  <Typography sx={{ fontSize: "13px", fontweight: 500, flex: 1 }}>Iphone 13</Typography>
+                  <ClearIcon></ClearIcon>
+                </Stack>
+                <Stack sx={{ height: "36px" }} direction="row" justifyContent="center"
+                  alignItems="center"><Typography sx={{ fontSize: "16px", color: "#0D5CB6" }}>Xem thêm</Typography>
+                  <KeyboardArrowDownIcon /></Stack>
+                <Box pt={1} pb={1.5}>
+                  <Stack sx={{ height: "24px" }} direction="row" mb={1}>
+                    <img alt="" src="https://salt.tikicdn.com/ts/upload/4f/03/a0/2455cd7c0f3aef0c4fd58aa7ff93545a.png" width="24px" height="24px"></img>
+                    <Typography>Tìm kiếm phổ biến</Typography></Stack>
+                  <Grid container spacing={2}>{
+                    [1, 2, 3, 4, 5, 6].map(number =>
+                      <Grid key={number} item xs={4}>
+                        <Stack direction="row">
+                          <img src="https://salt.tikicdn.com/cache/280x280/ts/product/4e/51/a9/d3c765cea429477a2f1a769b39d589bc.jpg" width="38px" height="38px"></img>
+                          <Typography my={0.5} sx={{ fontSize: "12px" }}>Người đua diều</Typography>
                         </Stack>
                       </Grid>
                     )
                   }
-                </Grid>
+
+                  </Grid>
+                </Box>
+                <Box pt={1} pb={1.5}>
+                  <Typography sx={{ height: "24px" }} mb={1} >Danh Mục Nổi Bật</Typography>
+                  <Grid container spacing={2}>
+                    {
+                      [1, 2, 3, 4, 5, 6, 7, 8].map(number =>
+                        <Grid key={number} item xs={3}>
+                          <Stack justifyContent="center"
+                            alignItems="center">
+                            <img src="https://salt.tikicdn.com/cache/280x280/ts/product/90/55/ea/340eb77f1170e4c381c866c275138a82.jpg" width="64,5px" height="64,5px"></img>
+                            <Typography my={0.5} sx={{ textAlign: "center", fontSize: "12px" }}>Tai nghe Bluetooth nhét tai</Typography>
+                          </Stack>
+                        </Grid>
+                      )
+                    }
+                  </Grid>
+                </Box>
               </Box>
-            </Box>
-          </Popover>
-          <Button
-            sx={{
-              height: "100%",
-              borderTopLeftRadius: "0",
-              borderBottomLeftRadius: "0",
-            }}
-            variant="contained"
-            startIcon={<SearchIcon />}
-          >
-            Tìm kiếm
-          </Button>
+            }
+            <Button
+              sx={{
+                height: "100%",
+                width:"120px",
+                borderTopLeftRadius: "0",
+                borderBottomLeftRadius: "0",
+              }}
+              variant="contained"
+              startIcon={<SearchIcon />}
+            >
+              Tìm kiếm
+            </Button>
+          </Stack>
+          <Stack direction="row" mt={1.25} spacing={1} sx={{ '& a':{color: "#fff",fontSize:"11px"} }}>
+            {Categories.map(item => <Link key={item.id} to={item.link}>{item.display}</Link>)}
+          </Stack>
+        </Box>
+
+        <Stack
+          
+          direction="row"
+          alignItems="flex-start"
+          justifyContent="space-between"
+          spacing={3}
+          py={2}
+        >
+          <Stack className="header__account"
+            direction="row" alignItems="center" sx={{ color: "white",width:"160px",maxWidth:"160px" }}>
+            <PersonOutlineOutlinedIcon fontSize="large" />
+            <Stack>
+              <Typography sx={{ fontSize: "11px" }}>
+                Đăng nhập / Đăng ký
+              </Typography>
+              <Button
+                onClick={openModalLogin}
+                sx={{ color: "white" }}
+                endIcon={<ArrowDropDownOutlinedIcon />}
+              >
+                <Typography sx={{ fontSize: "13px" }}>Tài khoản</Typography>
+              </Button>
 
 
-        </Stack>
-
-        <Stack direction="row" alignItems="center" sx={{ color: "white" }}>
-          <PersonOutlineOutlinedIcon fontSize="large" />
+              <div className="header__dropdown">
+                <Link to={"/sale/order/history"}>Đơn hàng của tôi</Link>
+                <Link to={"/customer/wishlist"}>Sản phẩm yêu thích</Link>
+                <Link to={"/customer/notification"}>Thông báo của tôi</Link>
+                <Link to={"/customer/account/edit"}>Tài khoản của tôi</Link>
+                <Link to="/">
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <img className="header__dropdown__img" alt="" src='https://salt.tikicdn.com/ts/ta/06/60/57/811aae78f04f81a6e00ba2681e02291f.png' />
+                    <Stack><div>SEP 0</div><div>Bạn đang có <b>0 Astra</b></div></Stack>
+                  </Stack>
+                </Link>
+                <Link to="/">
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <img className="header__dropdown__img" alt="" src='https://frontend.tikicdn.com/_desktop-next/static/img/account/insurance.png' />
+                    <Stack><div>Hợp đồng bảo hiểm</div></Stack>
+                  </Stack>
+                </Link>
+                <Link to="/">
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <img className="header__dropdown__img" alt="" src='https://salt.tikicdn.com/ts/upload/5b/70/af/ac0eacaa8ec6738ac474f7bbe767bd75.png' />
+                    <Stack><div>TikiNOW</div><div>Thông tin Gói hội viên</div></Stack>
+                  </Stack>
+                </Link>
+                <Link to="/customer/coupons">
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <img className="header__dropdown__img" alt="" src='https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_code.svg' />
+                    <Stack><div>Mã giảm giá </div><div>Bạn đang có <b>2</b> mã giảm giá</div></Stack>
+                  </Stack>
+                </Link>
+                <Link to="/">
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <img className="header__dropdown__img" alt="" src='https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg' />
+                    <Stack><div>Thông tin Tiki xu</div><div>Bạn đang có <b>0</b> Tiki xu</div></Stack>
+                  </Stack>
+                </Link>
+                <Link to="/">
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <img className="header__dropdown__img" alt="" src='https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg' />
+                    <Stack><div>Thông tin BookCare</div><div>Bạn đang có <b>0</b> BookCare</div></Stack>
+                  </Stack>
+                </Link>
+                <Link to="/">Đổi trả dễ dàng</Link>
+                <Link to="/">Thoát tài khoản</Link>
+              </div>
+            </Stack>
+          </Stack>
 
           <Stack>
-            <Typography sx={{ fontSize: "11px" }}>
-              Đăng nhập / Đăng ký
-            </Typography>
+            <Link to="/cart">
+              <Stack
+                justifyContent="flex-end"
+                alignItems="flex-end"
+                direction="row"
+                spacing={1}
+                sx={{ color: "white",width:"110px",maxWidth:"110px" }}
+              >
+                <Badge color="warning" badgeContent={0} showZero>
+                  <ShoppingCartOutlinedIcon  sx={{fontSize:"32px"}} />
+                </Badge>
+                <Typography sx={{ fontSize: "12px" }}>Giỏ hàng</Typography>
+              </Stack>
+            </Link>
+
             <Button
-              onMouseEnter={handlePopoverOpenAccount}
-              onMouseLeave={handlePopoverCloseAccount}
-              onClick={openModalLogin}
-              sx={{ color: "white" }}
-              endIcon={<ArrowDropDownOutlinedIcon />}
-            >
-              <Typography sx={{ fontSize: "13px" }}>Tài khoản</Typography>
-            </Button>
-
-            <Popover
-              id="mouse-over-popover"
               sx={{
-                pointerEvents: 'none',
+                color: "white",
+                borderRadius: "50px",
+                padding: "3px auto",
+                fontSize: "small",
               }}
-              open={open}
-              anchorEl={anchorElAccount}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              onClose={handlePopoverCloseAccount}
-              disableRestoreFocus
+              variant="contained"
+              startIcon={<StorefrontOutlinedIcon />}
             >
-              <div class="dropdown">
-                <div class="dropdown-content">
-                  <a href="#">Đơn hàng của tôi</a>
-                  <a href="#">Quản lý đổi trả</a>
-                  <a href="#">Thông báo của tôi</a>
-                  <a href="#">Tài khoản của tôi</a>
-                  <span className='icon'><img className='img1' src='https://salt.tikicdn.com/ts/ta/06/60/57/811aae78f04f81a6e00ba2681e02291f.png' /></span>
-                  <div href="#" className='astra'>SEP 0 <br />Bạn đang có <b>0 Astra</b></div>
-                  <span className='icon1'><img className='img1' src='https://frontend.tikicdn.com/_desktop-next/static/img/account/insurance.png' /></span>
-                  <div href="#" className='astra'>Hợp đồng bảo hiểm</div>
-                  <span className='icon2'><img className='img1' src='https://salt.tikicdn.com/ts/upload/5b/70/af/ac0eacaa8ec6738ac474f7bbe767bd75.png' /></span>
-                  <div href="#" className='astra'>TikiNOW <br />Thông tin Gói hội viên</div>
-                  <span className='icon3'><img className='img1' src='https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_code.svg' /></span>
-                  <div href="#" className='astra'>Mã giảm giá <br />Bạn đang có <b>2</b> mã giảm giá</div>
-                  <span className='icon4'><img className='img1' src='https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg' /></span>
-                  <div href="#" className='astra'>Thông tin Tiki xu <br />Bạn đang có <b>0</b> Tiki xu</div>
-                  <span className='icon5'><img className='img1' src='https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg' /></span>
-                  <div href="#" className='astra'>Thông tin BookCare <br />Bạn đang có <b>0</b> BookCare</div>
-                  <a href="#">Đổi trả dễ dàng</a>
-                  <a href="#">Thoát tài khoản</a>
-                </div>
-
-              </div>
-            </Popover>
+              <Typography sx={{ fontSize: "10px" }}>
+                Admin
+              </Typography>
+            </Button>
           </Stack>
         </Stack>
 
-        <Stack>
-          <Stack
-            justifyContent="flex-end"
-            direction="row"
-            spacing={1}
-            sx={{ color: "white" }}
-          >
-            <Badge color="warning" badgeContent={0} showZero>
-              <ShoppingCartOutlinedIcon fontSize="large" />
-            </Badge>
+        <Modal sx={{ overflowY: "scroll" }} open={modalLogin} onClose={closeModalLogin}>
 
-            <Typography sx={{ fontSize: "12px" }}>Giỏ hàng</Typography>
-          </Stack>
+          <Box className="modal-login" sx={{ width: "800px" }}>
+            {
+              loginForm ? <Login handleLogin={handleLogin} closeModalLogin={closeModalLogin} /> : <Signin closeModalLogin={closeModalLogin} />
+            }</Box>
 
-          <Button
-            sx={{
-              color: "white",
-              borderRadius: "50px",
-              padding: "3px auto",
-              fontSize: "small",
-            }}
-            variant="contained"
-            startIcon={<StorefrontOutlinedIcon />}
-          >
-            <Typography sx={{ fontSize: "10px" }}>
-              Admin
-            </Typography>
-          </Button>
-        </Stack>
+        </Modal>
       </Stack>
-
-      <Modal sx={{ overflowY: "scroll" }} open={modalLogin} onClose={closeModalLogin}>
-
-        <Box className="modal-login" sx={{ width: "800px" }}>
-          {
-            loginForm ? <Login handleLogin={handleLogin} closeModalLogin={closeModalLogin} /> : <Signin closeModalLogin={closeModalLogin} />
-          }</Box>
-
-      </Modal>
-    </Stack>
+    </header>
   );
 }
 
@@ -362,6 +342,7 @@ function Signin(props) {
       </span>
 
     </Stack>
+
   )
 }
 
