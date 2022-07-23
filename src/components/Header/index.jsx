@@ -59,7 +59,7 @@ function Header() {
         direction="row"
         alignItems="flex-start"
         spacing={2}
-        sx={{ height: "100px", maxWidth: "1240px", margin: "0 auto" }}
+        sx={{ height: "100px",width:"100%", maxWidth: "1240px", margin: "0 auto" }}
       >
         <Link to={"/"}>
           <Stack
@@ -71,10 +71,8 @@ function Header() {
           </Stack>
         </Link>
 
-
-
         <Box sx={{flex:1}}  pt={2}>
-          <Stack direction="row" alignItems="center" sx={{ padding: "0", height:'40px' ,width:"100%",position: "relative" }}>
+          <Stack direction="row" alignItems="center" sx={{ padding: "0", height:'40px',flex:1,position: "relative" }}>
             <input
               style={{height:"100%",flex:1}}
               id="input-search"
@@ -83,7 +81,7 @@ function Header() {
             />
             {
               focusSearch &&
-              <Box id="input-search-result" sx={{ width: "560px" }} px={2} className="header__search__result">
+              <Box id="input-search-result" sx={{ width: "calc(100% - 120px)" }} px={2} className="header__search__result">
                 <Stack direction="row" justifyContent="space-between"
                   alignItems="center" sx={{ height: "44px" }}>
                   <Typography>Deal Hot Từ Abbott</Typography>
@@ -156,7 +154,7 @@ function Header() {
         </Box>
 
         <Stack
-          sx={{  }}
+          
           direction="row"
           alignItems="flex-start"
           justifyContent="space-between"
