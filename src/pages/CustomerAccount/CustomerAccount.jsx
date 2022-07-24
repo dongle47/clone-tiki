@@ -1,6 +1,5 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
-import { isFulfilled } from "@reduxjs/toolkit";
 
 import "./CustomerAccount.scss";
 

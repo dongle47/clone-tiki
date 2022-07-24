@@ -18,9 +18,6 @@ import "./CreateProduct.scss"
 import AddIcon from '@mui/icons-material/Add';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import { Link } from 'react-router-dom';
-import { width } from '@mui/system';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ErrorIcon from '@mui/icons-material/Error';

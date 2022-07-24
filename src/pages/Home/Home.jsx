@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react'
 import "./Home.scss"
 import { Link } from "react-router-dom"
 import Grid from '@mui/material/Grid';
-import { Button } from '@mui/material';
 import CardProduct from '../../components/CardProduct';
 import CardFlashsale from '../../components/CardFlashsale';
 import { Products, Categories, SlideKhuyenMai1, SlideThuongHieu1, SlideThuongHieu2, Quicklink, CategorySpecify, Suggestions } from '../../constraints/Home';

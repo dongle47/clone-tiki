@@ -5,7 +5,6 @@ import {
     Stack,
     Button,
     Typography,
-    Modal,
     TextField,
     Table,
     TableHead,
@@ -15,7 +14,6 @@ import {
     InputBase,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Checkbox from '@mui/material/Checkbox';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -48,9 +46,6 @@ const items = [
 ]
 
 function OrderList() {
-    const [modalDelete, setModalDelete] = React.useState(false);
-    const openModalDelete = () => setModalDelete(true);
-    const closeModalDelete = () => setModalDelete(false);
     const [selected, setSelected] = React.useState(null)
 
     const handleClickTab = (i) => {
@@ -190,30 +185,7 @@ function OrderList() {
                 </TableBody>
             </Table>
 
-            <Modal
-                sx={{ overflowY: "scroll" }}
-                open={modalDelete}
-                onClose={closeModalDelete}
-            >
-                <Stack className="modal-info" direction="row" spacing={2} justifyContent='center' width='26rem' >
-                    <Stack>
-                        <InfoOutlinedIcon color="primary" />
-                    </Stack>
-
-                    <Stack spacing={3}>
-                        <Stack>
-                            <Typography sx={{ fontWeight: "bold" }}>
-                                Bạn có chắc muốn xóa danh mục này ?
-                            </Typography>
-                        </Stack>
-
-                        <Stack direction="row" justifyContent="flex-end" spacing={1}>
-                            <Button onClick={closeModalDelete} variant="outlined">Hủy</Button>
-                            <Button variant="contained">Xóa bỏ</Button>
-                        </Stack>
-                    </Stack>
-                </Stack>
-            </Modal>
+          
         </Stack>
         <Routes>
             <Route path='detail' element={<DetailOrder />} />

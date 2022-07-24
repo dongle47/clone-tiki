@@ -1,6 +1,5 @@
 import { Box, Typography, Stack, Button } from '@mui/material'
 import React from 'react'
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import "./OrderItem.scss"
 import { orderStates } from "../../constraints/OrderItem"
 import {numWithCommas} from "../../constraints/Util"

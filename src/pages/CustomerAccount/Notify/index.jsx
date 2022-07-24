@@ -333,7 +333,7 @@ function Notify() {
               alignItems: "center",
             }}
           >
-            <img src="https://frontend.tikicdn.com/_desktop-next/static/img/mascot_fail.svg" />
+            <img alt="" src="https://frontend.tikicdn.com/_desktop-next/static/img/mascot_fail.svg" />
             <Typography
               sx={{ margin: "20px 0px", color: "#000000a6", fontSize: "14px" }}
             >
@@ -365,7 +365,7 @@ function Notify() {
               alignItems: "center",
             }}
           >
-            <img src="https://frontend.tikicdn.com/_desktop-next/static/img/mascot_fail.svg" />
+            <img alt="" src="https://frontend.tikicdn.com/_desktop-next/static/img/mascot_fail.svg" />
             <Typography
               sx={{ margin: "20px 0px", color: "#000000a6", fontSize: "14px" }}
             >

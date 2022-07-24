@@ -2,23 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import "./Category.scss";
-
-import img from "../../../assets/img/test.png";
-
 import {
-  Grid,
   Stack,
-  IconButton,
   Button,
   Typography,
-  hexToRgb,
-  Badge,
-  Box,
   Modal,
   TextField,
-  Paper,
   Table,
-  TableContainer,
   TableHead,
   TableBody,
   TableRow,

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./Header.scss";
-import { useState, useCallback, useRef } from "react"
+import { useState, useCallback } from "react"
 
 import {
   Grid,
@@ -37,7 +37,7 @@ function Header() {
 
   const handleLogin = useCallback(() => {
     setLoginForm(false)
-  })
+  },[])
 
   useEffect(() => {
     document.addEventListener("click", (event) => {
@@ -85,7 +85,7 @@ function Header() {
                 <Stack direction="row" justifyContent="space-between"
                   alignItems="center" sx={{ height: "44px" }}>
                   <Typography>Deal Hot Từ Abbott</Typography>
-                  <img src="https://salt.tikicdn.com/cache/140x28/ts/banner/76/dc/6e/cdf1d2ce2de591e94dabf818db15261a.jpg.webp" width="140px" height="28px"></img>
+                  <img  alt="" src="https://salt.tikicdn.com/cache/140x28/ts/banner/76/dc/6e/cdf1d2ce2de591e94dabf818db15261a.jpg.webp" width="140px" height="28px"></img>
                 </Stack>
                 <Stack sx={{ height: "36px" }} direction="row" spacing={1}>
                   <SearchIcon sx={{ fontSize: "25px" }} />
@@ -108,7 +108,7 @@ function Header() {
                     [1, 2, 3, 4, 5, 6].map(number =>
                       <Grid key={number} item xs={4}>
                         <Stack direction="row">
-                          <img src="https://salt.tikicdn.com/cache/280x280/ts/product/4e/51/a9/d3c765cea429477a2f1a769b39d589bc.jpg" width="38px" height="38px"></img>
+                          <img alt="" src="https://salt.tikicdn.com/cache/280x280/ts/product/4e/51/a9/d3c765cea429477a2f1a769b39d589bc.jpg" width="38px" height="38px"></img>
                           <Typography my={0.5} sx={{ fontSize: "12px" }}>Người đua diều</Typography>
                         </Stack>
                       </Grid>
@@ -125,7 +125,7 @@ function Header() {
                         <Grid key={number} item xs={3}>
                           <Stack justifyContent="center"
                             alignItems="center">
-                            <img src="https://salt.tikicdn.com/cache/280x280/ts/product/90/55/ea/340eb77f1170e4c381c866c275138a82.jpg" width="64,5px" height="64,5px"></img>
+                            <img alt="" src="https://salt.tikicdn.com/cache/280x280/ts/product/90/55/ea/340eb77f1170e4c381c866c275138a82.jpg" width="64,5px" height="64,5px"></img>
                             <Typography my={0.5} sx={{ textAlign: "center", fontSize: "12px" }}>Tai nghe Bluetooth nhét tai</Typography>
                           </Stack>
                         </Grid>
@@ -287,10 +287,10 @@ function Login(props) {
           <img src="https://salt.tikicdn.com/ts/upload/3a/22/45/0f04dc6e4ed55fa62dcb305fd337db6c.png" alt="facebook" width="58px" height="58px" />
           <img src="https://salt.tikicdn.com/ts/upload/1c/ac/e8/141c68302262747f5988df2aae7eb161.png" alt="google" width="58px" height="58px" />
         </Stack>
-        <p style={{ textAlign: "center" }}>Bằng việc tiếp tục, bạn đã chấp nhận <a href="">điều khoản sử dụng</a></p>
+        <p style={{ textAlign: "center" }}>Bằng việc tiếp tục, bạn đã chấp nhận <a href="/">điều khoản sử dụng</a></p>
       </Stack>
       <Box sx={{ flex: 3, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "10px" }}>
-        <img src="https://salt.tikicdn.com/ts/upload/eb/f3/a3/25b2ccba8f33a5157f161b6a50f64a60.png" width="203" />
+        <img alt="" src="https://salt.tikicdn.com/ts/upload/eb/f3/a3/25b2ccba8f33a5157f161b6a50f64a60.png" width="203" />
         <h4>Mua sắm tại Tiki</h4>
         <span>Siêu ưu đãi mỗi ngày</span>
       </Box>
@@ -328,10 +328,10 @@ function Signin(props) {
           <img src="https://salt.tikicdn.com/ts/upload/3a/22/45/0f04dc6e4ed55fa62dcb305fd337db6c.png" alt="facebook" width="58px" height="58px" />
           <img src="https://salt.tikicdn.com/ts/upload/1c/ac/e8/141c68302262747f5988df2aae7eb161.png" alt="google" width="58px" height="58px" />
         </Stack>
-        <p style={{ textAlign: "center" }}>Bằng việc tiếp tục, bạn đã chấp nhận <a href="">điều khoản sử dụng</a></p>
+        <p style={{ textAlign: "center" }}>Bằng việc tiếp tục, bạn đã chấp nhận <a href="/">điều khoản sử dụng</a></p>
       </Stack>
       <Box sx={{ flex: 3, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "10px" }}>
-        <img src="https://salt.tikicdn.com/ts/upload/eb/f3/a3/25b2ccba8f33a5157f161b6a50f64a60.png" width="203" />
+        <img  alt="" src="https://salt.tikicdn.com/ts/upload/eb/f3/a3/25b2ccba8f33a5157f161b6a50f64a60.png" width="203" />
         <h4>Mua sắm tại Tiki</h4>
         <span>Siêu ưu đãi mỗi ngày</span>
       </Box>

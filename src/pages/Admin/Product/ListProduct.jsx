@@ -17,7 +17,6 @@ import {
     Checkbox,
     Modal
 } from '@mui/material';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import EditIcon from '@mui/icons-material/Edit';
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import "./ListProduct.scss"

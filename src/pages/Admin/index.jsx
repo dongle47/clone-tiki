@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Outlet, Link } from "react-router-dom";
 import { sidebar } from "../../constraints/Admin";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -30,7 +30,6 @@ import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
-import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 
 const drawerWidth = 240;
 
@@ -133,21 +132,10 @@ function Admin() {
     width: "16rem",
   };
 
-  const [expanded, setExpanded] = React.useState("panel1");
-
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
-  };
 
   const [selectedTabId, setSelectedTabId] = React.useState(0);
 
-  const theme = useTheme();
-
   const [open, setOpen] = React.useState(true);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
 
   const handleDrawerClose = () => {
     setOpen(false);
