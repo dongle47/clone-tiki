@@ -3,21 +3,13 @@ import imgProfile from "../../../../assets/img/profile.jpg";
 import { Link } from "react-router-dom";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { styled } from "@mui/material/styles";
 import { address } from "../../../../constraints/Profile";
 
 import {
-  Grid,
   Stack,
-  IconButton,
   Button,
   Typography,
-  hexToRgb,
-  Badge,
   Box,
-  Modal,
-  TextField,
-  Divider,
   TableCell,
   TableBody,
   TableRow,
@@ -30,9 +22,7 @@ import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import EmailIcon from "@mui/icons-material/Email";
 import CakeIcon from "@mui/icons-material/Cake";
 
-import LinearProgress, {
-  linearProgressClasses,
-} from "@mui/material/LinearProgress";
+import LinearProgress from "@mui/material/LinearProgress";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -78,11 +68,6 @@ const data = [
   },
 ];
 
-const styleStack = {
-  border: "1px solid silver",
-  borderRadius: "0.3rem",
-  padding: "1rem",
-};
 
 function DetailUser() {
   return (

@@ -1,18 +1,16 @@
 import React from 'react'
 import {
-    Box, Stack
+    Stack
 } from "@mui/material"
 import "./AdminTab.scss"
 function AdminTab(props) {
     const [items,setItems] = React.useState([])
     const [selected, setSelected] = React.useState(null)
-    const [handleChangeTab,setHandleChangeTab]=React.useState(null)
     React.useEffect(()=>{
         const loadData = ()=>{
             if(props.items){
                 setItems(props.items)
                 setSelected(0)
-                setHandleChangeTab(props.handleChangeTab)
             }
         }
         loadData()

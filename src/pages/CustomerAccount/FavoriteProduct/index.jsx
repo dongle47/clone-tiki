@@ -6,10 +6,8 @@ import {
   CardMedia,
   CardContent,
   CardActions,
-  Button,
 } from "@mui/material";
 
-import CardProduct from "../../../components/CardProduct";
 import productImage from "../../../assets/img/avatar1.jpg";
 
 

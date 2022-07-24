@@ -1,7 +1,5 @@
 import {
-  Box,
   Stack,
-  InputBase,
   Typography,
   Button,
   TextField,
@@ -15,8 +13,6 @@ import { useState } from "react";
 
 function Password() {
   const [showPass, setShowPass] = useState(false);
-  const [showNewPass, setShowNewPass] = useState(false);
-  const [showConfirmPass, setShowConfirmPass] = useState(false);
 
   const passwordInput = (placeHolder) => {
     return (

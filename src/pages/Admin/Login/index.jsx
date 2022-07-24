@@ -1,15 +1,9 @@
 import React from "react";
 import "./Login.scss";
 import {
-    Grid,
     Stack,
     IconButton,
     Button,
-    Typography,
-    hexToRgb,
-    Badge,
-    Box,
-    Modal,
     TextField,
 } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -42,7 +36,7 @@ function Login() {
                         </IconButton>
                     </span>
                 </Stack>
-                <p>Quên mật khẩu ? Nhấn vào <a href="" style={{ color: "#1890ff" }}>đây!</a></p>
+                <p>Quên mật khẩu ? Nhấn vào <a href="/" style={{ color: "#1890ff" }}>đây!</a></p>
                 <Button variant="contained" color="warning">Đăng nhập</Button>
             </Stack>
         </Stack>

@@ -1,5 +1,5 @@
 import "./CreateCoupon.scss"
-import { useState, useRef } from "react"
+import { useState } from "react"
 import {
     Stack,
     Box,
@@ -16,13 +16,7 @@ import {
 } from "@mui/material"
 import DiscountIcon from '@mui/icons-material/Discount';
 import CloseIcon from '@mui/icons-material/Close';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { couponAnalytics } from "../../../../constraints/CouponAnalytic"
-import AddIcon from '@mui/icons-material/Add';
-import SearchIcon from '@mui/icons-material/Search';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { styled } from '@mui/material/styles';
 
 const style = {
@@ -49,7 +43,7 @@ function CreateCoupon() {
     const [category, setCategory] = useState(0)
     const [nameCoupon, setNameCoupon] = useState({ error: false, value: "" })
     const [codeCoupon, setCodeCoupon] = useState({ error: false, value: "" })
-    const [product, setProduct] = useState(0)
+    const [product, setProduct] = useState("0")
     const [typeCouponValue, setTypeCouponValue] = useState({ error: false, value: "" })
     const [valueMin, setValueMin] = useState({ error: false, value: "" })
     const [quanlityCoupon, setQuanlityCoupon] = useState({ error: false, value: "" })
@@ -157,15 +151,15 @@ function CreateCoupon() {
                                 <LabelCustom>Sản phẩm áp dụng</LabelCustom>
                                 <Box sx={{ flex: 1 }}>
                                     <RadioGroupCustom
-                                        defaultValue={0}
+                                        defaultValue={"0"}
                                         onChange={(e) => setProduct(e.target.value)}
                                         name="typeProduct"
                                     >
-                                        <FormControlLabelCustom value={0} control={<RadioCustom />} label="Tất cả sản phẩm" />
-                                        <FormControlLabelCustom value={1} control={<RadioCustom />} label="Sản phẩm cụ thể" />
+                                        <FormControlLabelCustom value="0" control={<RadioCustom />} label="Tất cả sản phẩm" />
+                                        <FormControlLabelCustom value="1" control={<RadioCustom />} label="Sản phẩm cụ thể" />
                                     </RadioGroupCustom>
                                     {
-                                        product == 1 &&
+                                        product === "1" &&
                                         <Box mt={1.5}>
                                             <Button onClick={handleOpen} variant="contained" sx={{ height: "32px" }}>Chọn sản phẩm</Button>
                                             <Typography sx={{ fontSize: "14px", color: "#ff4d4f" }}>Vui lòng chọn tối thiểu một sản phẩm</Typography>

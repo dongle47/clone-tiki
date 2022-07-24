@@ -3,7 +3,7 @@ import "./CartItem.scss";
 import { Checkbox, Typography, Dialog, Button } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { numWithCommas } from "../../constraints/Util";
-import { useSelector, useDispatch } from "react-redux";
+import {  useDispatch } from "react-redux";
 import { removeItem, updateItem } from "../../slices/cartSlice";
 
 function CartItem(props) {

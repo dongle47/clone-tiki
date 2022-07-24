@@ -1,5 +1,5 @@
 import "./Coupon.scss"
-import { useState, useRef } from "react"
+import { useState } from "react"
 import {
     Stack,
     Box,
@@ -26,20 +26,10 @@ import { styled } from '@mui/material/styles';
 function Coupon() {
     const [status, setStatus] = useState(0);
 
-    const statusRef = useRef(null)
     const onChangeStatus = (e) => {
         setStatus(e.target.value)
     }
-    const handleShowMenuStatus = (event) => {
-        if (statusRef.current) {
-            statusRef.current.classList.toggle("active")
-        }
-    }
-    const handleHideMenuStatus = (event) => {
-        if (statusRef.current) {
-            statusRef.current.classList.remove("active")
-        }
-    }
+    
     return (
         <Box mt={2} className="couponAdmin">
             <Box px={4}>

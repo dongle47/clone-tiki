@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import './Payment.scss'
 import { Grid, Typography, Box, Button, Stack, Radio, RadioGroup } from '@mui/material'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -6,18 +6,18 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import InfoIcon from '@mui/icons-material/Info';
 import DiscountIcon from '@mui/icons-material/Discount';
 import { numWithCommas } from "../../constraints/Util"
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import ChooseCoupon from '../../components/ChooseCoupon';
 
 
 function Payment() {
-  const [open, setOpen] = React.useState(false);
-  const [totalPrice, setTotalPrice] = React.useState(0);
-  const [couponPrice, setCouponPrice] = React.useState(20000);
-  const handleOpen = useCallback(() => setOpen(true));
-  const handleClose = useCallback(() => setOpen(false));
+  const [open, setOpen] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [couponPrice, setCouponPrice] = useState(20000);
+  const handleOpen = useCallback(() => setOpen(true),[]);
+  const handleClose = useCallback(() => setOpen(false),[]);
   const CartItems = useSelector(state => state.cart.items)
-  const dispatch = useDispatch()
+
   const [expandDetail, setExpandDetail] = useState(false)
   useEffect(() => {
     const calcPrice = () => {
@@ -27,8 +27,8 @@ function Payment() {
     calcPrice()
   }, [CartItems])
 
-  const [ship, setShip] = React.useState('shipping1');
-  const [payment, setPayment] = React.useState(1);
+  const [ship, setShip] = useState('shipping1');
+  const [payment, setPayment] = useState(1);
 
   const handleChangeTypeShip = (event) => {
     setShip(event.target.value);
@@ -80,7 +80,7 @@ function Payment() {
                 paymentMethods.map(item =>
                   <Stack key={item.id} direction="row" alignItems="center" sx={{ height: "64px" }} >
                     <Radio name='payment' value={item.value} sx={{ padding: 0, marginRight: "8px" }} />
-                    <img width="32px" height="32px" style={{ marginRight: "12px" }} src={item.image}></img>
+                    <img alt="" width="32px" height="32px" style={{ marginRight: "12px" }} src={item.image}></img>
                     <Typography sx={{ margin: "auto 0" }}>{item.display}</Typography>
                   </Stack>
                 )
