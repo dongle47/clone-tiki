@@ -1,13 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Brand.scss";
-import {
-  Stack,
-  Button,
-  Typography,
-  Modal,
-  TextField,
-} from "@mui/material";
+import { Stack, Button, Typography, Modal, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
@@ -72,18 +66,17 @@ const rows = [
 ];
 
 function Brand() {
-
   const [modalDelete, setModalDelete] = React.useState(false);
   const openModalDelete = () => setModalDelete(true);
   const closeModalDelete = () => setModalDelete(false);
-  
+
   return (
     <Stack direction="row" sx={{ backgroundColor: "#fff" }} p={3}>
       <Stack spacing={2}>
         <Stack direction="row" justifyContent="space-between">
           <Typography>Danh sách thương hiệu</Typography>
 
-          <Link to='/admin/brand/create' >
+          <Link to="/admin/brand/create">
             <Button variant="contained">Thêm thương hiệu</Button>
           </Link>
         </Stack>
@@ -146,7 +139,11 @@ function Brand() {
                 <TableCell>
                   <Stack spacing={1} justifyContent="center" py={1}>
                     <Button variant="contained">Sửa</Button>
-                    <Button onClick={openModalDelete} variant="outlined" color="error">
+                    <Button
+                      onClick={openModalDelete}
+                      variant="outlined"
+                      color="error"
+                    >
                       Xóa
                     </Button>
                   </Stack>
@@ -162,7 +159,13 @@ function Brand() {
         open={modalDelete}
         onClose={closeModalDelete}
       >
-        <Stack className="modal-info" direction="row" spacing={2} justifyContent='center' width='26rem' >
+        <Stack
+          className="modal-info"
+          direction="row"
+          spacing={2}
+          justifyContent="center"
+          width="26rem"
+        >
           <Stack>
             <InfoOutlinedIcon color="primary" />
           </Stack>
@@ -175,7 +178,9 @@ function Brand() {
             </Stack>
 
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              <Button onClick={closeModalDelete} variant="outlined">Hủy</Button>
+              <Button onClick={closeModalDelete} variant="outlined">
+                Hủy
+              </Button>
               <Button variant="contained">Xóa bỏ</Button>
             </Stack>
           </Stack>
