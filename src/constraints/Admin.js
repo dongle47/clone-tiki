@@ -78,5 +78,5 @@ export const sidebar = [
         icon: WarehouseOutlinedIcon,
         link: '/admin'
     },
-    
+
 ]

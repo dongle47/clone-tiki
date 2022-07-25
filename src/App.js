@@ -146,16 +146,16 @@ function App() {
           <Route path='brand' element={<Brand />} />
           <Route path='develop' element={<GrowthCenter />} />
           <Route path='coupon' element={<CouponAdmin />} />
-          
+
           <Route path='user' element={<User />} />
           <Route path='user/detail' element={<DetailUser />} />
 
 
           <Route path='review' element={<Review />} />
           <Route path='test-table' element={<TableCustom />} />
-          <Route path='test-tab' element={<AdminTab items={[{id:1,label:"Tất cả"},{id:2,label:"Đang bán"},{id:3,label:"Hết hàng"},{id:4,label:"Nháp"}]}
-                                                    handleChangeTab={(i)=>{console.log(i)}} />} />
-          <Route path="coupon/create" element={<CreateCoupon/>} />         
+          <Route path='test-tab' element={<AdminTab items={[{ id: 1, label: "Tất cả" }, { id: 2, label: "Đang bán" }, { id: 3, label: "Hết hàng" }, { id: 4, label: "Nháp" }]}
+            handleChangeTab={(i) => { console.log(i) }} />} />
+          <Route path="coupon/create" element={<CreateCoupon />} />
 
         </Route>
 
