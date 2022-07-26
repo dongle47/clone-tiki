@@ -85,52 +85,20 @@ export const data = {
 function GrowthCenter() {
   const [value, setValue] = React.useState([null, null]);
   return (
-    <Box padding="1rem">
+    <Box p="1rem" width="100%" className="growthCenter">
       <Stack spacing={2}>
-        <Stack backgroundColor="#ffff" pl="1rem" pt="1rem" pb="1rem" spacing={1.5}>
-          <Typography
-            sx={{ fontSize: "20px", fontWeight: "500", color: "#000000d9" }}
-          >
+        <Stack bgcolor="#fff" p="1rem" spacing={1.5}>
+          <Typography fontSize="20px" fontWeight={500}>
             Hiệu quả kinh doanh
           </Typography>
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography sx={{ fontSize: "14px", color: "#000000d9" }}>
+            <Typography >
               Thời gian báo cáo:
             </Typography>
             <Stack direction="row" alignItems="center">
-              <Button
-                variant="outlined"
-                sx={{
-                  fontSize: "14px",
-                  color: "#000000d9",
-                  fontWeight: "400",
-                  border: "1px solid #c2c2c2",
-                }}
-              >
-                Hôm nay
-              </Button>
-              <Button
-                variant="outlined"
-                sx={{
-                  fontSize: "14px",
-                  color: "#000000d9",
-                  fontWeight: "400",
-                  border: "1px solid #1890ff",
-                }}
-              >
-                7 ngày qua
-              </Button>
-              <Button
-                variant="outlined"
-                sx={{
-                  fontSize: "14px",
-                  color: "#000000d9",
-                  fontWeight: "400",
-                  border: "1px solid #c2c2c2",
-                }}
-              >
-                30 ngày qua
-              </Button>
+              <Button className="growthCenter__buttonTime growthCenter__buttonTime--selected" variant="outlined">Hôm nay</Button>
+              <Button className="growthCenter__buttonTime" variant="outlined">7 ngày qua</Button>
+              <Button className="growthCenter__buttonTime" variant="outlined"> 30 ngày qua</Button>
             </Stack>
             <LocalizationProvider
               dateAdapter={AdapterDateFns}
@@ -151,26 +119,21 @@ function GrowthCenter() {
               />
             </LocalizationProvider>
 
-            <Typography
-              sx={{ fontSize: "14px", fontWeight: "", color: "#000000d9" }}
-            >
+            <Typography>
               (Lần cập nhật cuối: 18/06/2022. 11:00)
             </Typography>
           </Stack>
         </Stack>
-        <Stack spacing={2} backgroundColor="#ffff" pl="1rem" pt="1rem">
-          {/*  */}
+        <Stack spacing={2} bgcolor="#fff" pl="1rem" pt="1rem">
           <Stack
             direction="row"
             sx={{ alignItems: "center", justifyContent: "space-between" }}
             spacing={1}
           >
-            <Typography
-              sx={{ fontSize: "14px", fontWeight: "600", color: "#000000d9" }}
-            >
+            <Typography fontWeight={600}>
               Chỉ số chính
             </Typography>
-            <Typography sx={{ fontSize: "14px", color: "#00000073", flex: 1 }}>
+            <Typography color="#00000073" flex={1}>
               7 ngày qua: 14/07/2022 - 20/07/2022 (So sánh với: 05/07/2022 -
               11/07/2022)
             </Typography>
@@ -179,262 +142,32 @@ function GrowthCenter() {
             </Button>
           </Stack>
 
-          <Stack direction="row" spacing={3}>
-            <Stack className="Box-info" >
-              <Stack
-                direction="row"
-                sx={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    color: "#000000d9",
-                  }}
-                >
-                  Doanh thu
-                </Typography>
-                <InfoOutlinedIcon
-                  sx={{ width: "20px", height: "20px" }}
-                  color="#adadad"
-                />
-              </Stack>
-              <Typography
-                mt="20px"
-                sx={{ fontSize: "20px", fontWeight: "500", color: "#000000d9" }}
-              >
-                928.000đ
-              </Typography>
-              <Stack direction="row" sx={{ alignItems: "center" }}>
-                <ArrowDropUpIcon sx={{ color: "#7dd254" }} />
-                <Typography
-                  sx={{ color: "#7dd254", fontSize: "14px", fontWeight: "600" }}
-                >
-                  {" "}
-                  100%
-                </Typography>
-              </Stack>
-            </Stack>
-            <Stack className="Box-info">
-              <Stack
-                direction="row"
-                sx={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    color: "#000000d9",
-                  }}
-                >
-                  Đơn hàng
-                </Typography>
-                <InfoOutlinedIcon
-                  sx={{ width: "20px", height: "20px" }}
-                  color="#adadad"
-                />
-              </Stack>
-              <Typography
-                mt="20px"
-                sx={{ fontSize: "20px", fontWeight: "500", color: "#000000d9" }}
-              >
-                1
-              </Typography>
-              <Stack direction="row">
-                <ArrowDropUpIcon sx={{ color: "#7dd254" }} />
-                <Typography
-                  sx={{ color: "#7dd254", fontSize: "14px", fontWeight: "600" }}
-                >
-                  {" "}
-                  100%
-                </Typography>
-              </Stack>
-            </Stack>
-            <Stack className="Box-info">
-              <Stack
-                direction="row"
-                sx={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    color: "#000000d9",
-                  }}
-                >
-                  Doanh thu thuần
-                </Typography>
-                <InfoOutlinedIcon
-                  sx={{ width: "20px", height: "20px" }}
-                  color="#adadad"
-                />
-              </Stack>
+          <Stack direction="row" spacing={2} className="growthCenter__listBox">
+            {
+              items.map(item =>
+                <Stack className="boxInfo" >
+                  <Stack direction="row" justifyContent="space-between">
+                    <Typography>{item.title}</Typography>
+                    <InfoOutlinedIcon className="boxInfo__icon" />
+                  </Stack>
+                  <Typography mt="20px" fontSize="20px" fontWeight={500}>
+                    {item.value}
+                  </Typography>
+                  <Stack direction="row" alignItems="center">
+                    {item.value === "--" ?
+                      <Typography className="boxInfo__nodata">{item.percent}</Typography>
+                      : <><ArrowDropUpIcon className="boxInfo__Upicon" />
+                        <Typography className="boxInfo__Uppercent">{item.percent}%</Typography>
+                      </>
+                    }
+                  </Stack>
+                </Stack>
+              )}
 
-              <Typography
-                mt="20px"
-                sx={{ fontSize: "20px", fontWeight: "500", color: "#000000d9" }}
-              >
-                {" "}
-                --{" "}
-              </Typography>
-              <Stack direction="row">
-                <Typography sx={{ fontSize: "14px", fontWeight: "600" }}>
-                  Không có dữ liệu
-                </Typography>
-              </Stack>
-            </Stack>
-            <Stack className="Box-info">
-              <Stack
-                direction="row"
-                sx={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    color: "#000000d9",
-                  }}
-                >
-                  Lượt xem
-                </Typography>
-                <InfoOutlinedIcon
-                  sx={{ width: "20px", height: "20px" }}
-                  color="#adadad"
-                />
-              </Stack>
-
-              <Typography
-                mt="20px"
-                sx={{ fontSize: "20px", fontWeight: "500", color: "#000000d9" }}
-              >
-                108
-              </Typography>
-              <Stack direction="row">
-                <ArrowDropUpIcon sx={{ color: "#7dd254" }} />
-                <Typography
-                  sx={{ color: "#7dd254", fontSize: "14px", fontWeight: "600" }}
-                >
-                  468,5%
-                </Typography>
-              </Stack>
-            </Stack>
-            <Stack className="Box-info">
-              <Stack
-                direction="row"
-                sx={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    color: "#000000d9",
-                  }}
-                >
-                  Tỷ lệ chuyển đổi
-                </Typography>
-                <InfoOutlinedIcon
-                  sx={{ width: "20px", height: "20px" }}
-                  color="#adadad"
-                />
-              </Stack>
-
-              <Typography
-                mt="20px"
-                sx={{ fontSize: "20px", fontWeight: "500", color: "#000000d9" }}
-              >
-                16,7%
-              </Typography>
-              <Stack direction="row">
-                <ArrowDropUpIcon sx={{ color: "#7dd254" }} />
-                <Typography
-                  sx={{ color: "#7dd254", fontSize: "14px", fontWeight: "600" }}
-                >
-                  {" "}
-                  100%
-                </Typography>
-              </Stack>
-            </Stack>
-            <Stack className="Box-info">
-              <Stack
-                direction="row"
-                sx={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    color: "#000000d9",
-                  }}
-                >
-                  Đơn hàng hủy
-                </Typography>{" "}
-                <InfoOutlinedIcon
-                  sx={{ width: "20px", height: "20px" }}
-                  color="#adadad"
-                />{" "}
-              </Stack>
-
-              <Typography
-                mt="20px"
-                sx={{ fontSize: "20px", fontWeight: "500", color: "#000000d9" }}
-              >
-                1
-              </Typography>
-              <Stack direction="row">
-                <ArrowDropUpIcon sx={{ color: "#7dd254" }} />
-                <Typography
-                  sx={{ color: "#7dd254", fontSize: "14px", fontWeight: "600" }}
-                >
-                  {" "}
-                  100%
-                </Typography>
-              </Stack>
-            </Stack>
-            <Stack className="Box-info">
-              <Stack
-                direction="row"
-                sx={{ display: "flex", justifyContent: "space-between" }}
-              >
-                {" "}
-                <Typography
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    color: "#000000d9",
-                  }}
-                >
-                  SKU bán ra
-                </Typography>
-                <InfoOutlinedIcon
-                  sx={{ width: "20px", height: "20px" }}
-                  color="#adadad"
-                />
-              </Stack>
-
-              <Typography
-                mt="20px"
-                sx={{ fontSize: "20px", fontWeight: "500", color: "#000000d9" }}
-              >
-                1
-              </Typography>
-              <Stack direction="row">
-                <ArrowDropUpIcon sx={{ color: "#7dd254" }} />
-                <Typography
-                  sx={{ color: "#7dd254", fontSize: "14px", fontWeight: "600" }}
-                >
-                  {" "}
-                  100%
-                </Typography>
-              </Stack>
-            </Stack>
           </Stack>
         </Stack>
-        <Stack
-          backgroundColor="#ffff"
-          direction="row"
-          sx={{ justifyContent: "center" }}
-        >
-          <Stack sx={{ width: "70%", justifyContent: "center" }}>
+        <Stack bgcolor="#fff" direction="row" justifyContent= "center">
+          <Stack width= "70%" justifyContent="center">
             <Line options={options} data={data} />
           </Stack>
         </Stack>
@@ -442,5 +175,50 @@ function GrowthCenter() {
     </Box>
   );
 }
+
+const items = [
+  {
+    id: 1,
+    title: "Doanh thu",
+    value: "928.000đ",
+    percent: "100"
+  },
+  {
+    id: 2,
+    title: "Đơn hàng",
+    value: "1",
+    percent: "100"
+  },
+  {
+    id: 3,
+    title: "Doanh thu thuần",
+    value: "--",
+    percent: "Không có dữ liệu"
+  },
+  {
+    id: 4,
+    title: "Lượt xem",
+    value: "928",
+    percent: "200"
+  },
+  {
+    id: 5,
+    title: "Tỉ lệ chuyển đổi",
+    value: "16.7%",
+    percent: "100"
+  },
+  {
+    id: 6,
+    title: "Đơn hàng huỷ",
+    value: "1",
+    percent: "100"
+  },
+  {
+    id: 7,
+    title: "SKU bán ra",
+    value: "1",
+    percent: "100"
+  },
+]
 
 export default GrowthCenter;

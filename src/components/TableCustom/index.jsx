@@ -65,7 +65,7 @@ function TableCustom() {
               <TableCell sx={{ width: "calc(13*100%/101)" }}>
                 <Stack spacing={1}>
                   <Button variant="outlined" sx={{ padding: "4px" }}>Chỉnh sửa</Button>
-                  <Stack className="couponTable__button__end" direction="row" justifyContent="space-between" alignItems="center"  >
+                  <Stack className="couponTable__buttonEnd" direction="row" justifyContent="space-between" alignItems="center"  >
                     <div>Kết thúc</div>
                     <span><MoreVertIcon/></span>
                   </Stack>

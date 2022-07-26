@@ -67,7 +67,7 @@ function Category() {
   const closeModalDelete = () => setModalDelete(false);
 
   return (
-    <Stack direction="row" sx={{ backgroundColor: "#fff" }} p={3}>
+    <Stack direction="row" bgcolor ="#fff" p={3}>
       <Stack spacing={2}>
         <Stack direction="row" justifyContent="space-between">
           <Typography>Danh sách danh mục sản phẩm</Typography>
@@ -75,12 +75,12 @@ function Category() {
             <Button variant="contained">Thêm danh mục</Button>
           </Link>
         </Stack>
-        <Stack direction="row" sx={{ width: "100%", position: "relative" }}>
+        <Stack direction="row" width="100%" position="relative">
           <TextField
             id="outlined-basic"
             label="Search"
             variant="outlined"
-            sx={{ width: "100%" }}
+            width= "100%"
           />
           <span className="category__iconSearch">
             <SearchIcon sx={{ fontSize: "28px" }} />
@@ -92,7 +92,6 @@ function Category() {
           sx={{ minWidth: "650px" }}
           stickyHeader
           size="small"
-          aria-label="sticky  table"
         >
           <TableHead>
             <TableRow>
@@ -109,9 +108,9 @@ function Category() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {rows.map((row,index) => (
               <TableRow
-                key={row.name}
+                key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
@@ -147,7 +146,7 @@ function Category() {
 
           <Stack spacing={3}>
             <Stack>
-              <Typography sx={{ fontWeight: "bold" }}>
+              <Typography fontWeight= "bold">
                 Bạn có chắc muốn xóa danh mục này ?
               </Typography>
             </Stack>

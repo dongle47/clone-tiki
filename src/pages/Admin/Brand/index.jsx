@@ -59,10 +59,6 @@ const rows = [
     "https://salt.tikicdn.com/cache/w220/ts/seller/4f/bb/60/2797e4e553ea5b4e9b4f93ad63ccc110.jpg"
   ),
 
-  // createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  // createData('Eclair', 262, 16.0, 24, 6.0),
-  // createData('Cupcake', 305, 3.7, 67, 4.3),
-  // createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
 function Brand() {
@@ -85,7 +81,8 @@ function Brand() {
             id="outlined-basic"
             label="Search"
             variant="outlined"
-            sx={{ width: "100%" }}
+            size = "medium"
+            width = "100%"
           />
           <span className="brand__iconSearch">
             <SearchIcon sx={{ fontSize: "28px" }} />
@@ -94,10 +91,9 @@ function Brand() {
 
         <Table
           className="tableBrand"
-          sx={{ minWidth: "650px" }}
+          minWidth = "650px"
           stickyHeader
           size="small"
-          aria-label="sticky  table"
         >
           <TableHead>
             <TableRow>
@@ -120,9 +116,9 @@ function Brand() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {rows.map((row,index) => (
               <TableRow
-                key={row.name}
+                key={row.index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">

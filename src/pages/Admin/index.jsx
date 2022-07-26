@@ -142,7 +142,7 @@ function Admin() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Stack direction="row">
       <CssBaseline />
 
       <AppBar
@@ -152,7 +152,7 @@ function Admin() {
       >
         <Toolbar>
           <Stack
-            sx={{ width: "100%" }}
+            width="100%"
             direction="row"
             justifyContent="space-between"
             alignItems="center"
@@ -207,7 +207,7 @@ function Admin() {
                   onClick={handleClickAccount}
                 >
                   <Box
-                    sx={{ borderRadius: "50%" }}
+                    borderRadius="50%"
                     alt=""
                     component="img"
                     src="https://salt.tikicdn.com/cache/w32/ts/sellercenterFE/93/76/03/2a08fa4ae6a024a752fbba87d145bce8.png"
@@ -298,19 +298,11 @@ function Admin() {
         </List>
       </Drawer>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 0,
-          backgroundColor: "#f5f5fa",
-          minHeight: "40rem",
-        }}
-      >
+      <Box component="main" flexGrow={1}  p={0} bgcolor="#f5f5fa" minHeight="40rem">
         <DrawerHeader />
         <Outlet />
       </Box>
-    </Box>
+    </Stack>
   );
 }
 

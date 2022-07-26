@@ -7,20 +7,18 @@
     & p {
         font-size: 12px !important;
     }
-    &__button {
-        &__end {
-            cursor: pointer;
-            border: 1px solid #bfbfbf;
-            height: 28px;
-            &>div {
-                flex: 1;
-                margin: auto;
-                text-align: center;
-            }
-            &>span {
-                height: 100%;
-                border-left: 1px solid #bfbfbf;
-            }
+    &__buttonEnd {
+        cursor: pointer;
+        border: 1px solid #bfbfbf;
+        height: 28px;
+        &>div {
+            flex: 1;
+            margin: auto;
+            text-align: center;
+        }
+        &>span {
+            height: 100%;
+            border-left: 1px solid #bfbfbf;
         }
     }
 }

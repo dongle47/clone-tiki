@@ -65,35 +65,28 @@ function OrderList() {
 
     return (<>
     
-        <Stack p={3} backgroundColor="white">
-            <Typography sx={{ fontSize: "32px" }}>Danh sách đơn hàng</Typography>
+        <Stack p={3} bgcolor="#fff">
+            <Typography fontSize="26px">Danh sách đơn hàng</Typography>
             <Stack direction="row" spacing="2rem" p={2} alignItems="center">
                 <Typography>Vui lòng xem hướng dẫn và gửi góp ý:</Typography>
                 <a href="https://hocvien.tiki.vn/faq/gioi-thieu-giao-dien-quan-ly-don-hang-moi/">
-                    <Typography style={{ color: "#1890FF", fontSize: "14px" }}>Hướng dẫn xử lý đơn hàng</Typography></a>
+                    <Typography color= "#1890FF" fontSize="14px">Hướng dẫn xử lý đơn hàng</Typography></a>
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSdbp82PL58iyly_85SGcml8NcDYQEt1dK97QOJMZedVU7aVMA/viewform">
-                    <Typography style={{ color: "#1890FF", fontSize: "14px" }}>Gửi góp ý</Typography></a>
+                    <Typography color="#1890FF" fontSize="14px">Gửi góp ý</Typography></a>
             </Stack>
             <Stack direction="row" spacing={0.5} p={2}>
                 {
                     items?.map((item, i) =>
-                        <Stack onClick={() => { handleClickTab(i) }} key={item.id || i} alignItems="center" justifyContent="center" className={`orderTab__item ${i === selected ? "selected" : ""}`}>
-                            <Typography style={{ fontWeight: "600" }}>{item.label}</Typography>
+                        <Stack onClick={() => { handleClickTab(i)}} key={item.id || i}
+                        alignItems="center" justifyContent="center"
+                        className={`orderTab__item ${i === selected ? "selected" : ""}`}>
+                            <Typography fontWeight="500 !important">{item.label}</Typography>
                             <Typography>{item.value}</Typography>
                         </Stack>)
                 }
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1}>
-                {/* <FormControl sx={{ m: 1, minWidth: 160 }} size="small" >
-                    <Select
-                        inputProps={{ 'aria-label': 'Without label' }}
-                    >
-                        <MenuItem><em>Mã đơn hàng</em></MenuItem>
-                        <MenuItem>SKU</MenuItem>
-                        <MenuItem>Thông tin khách hàng</MenuItem>
-                    </Select>
-                </FormControl> */}
-                <Stack sx={{ width: "256px" }}>
+                <Stack width="256px">
                     <Select
                         value={status}
                         onChange={onChangeStatus}
@@ -118,7 +111,7 @@ function OrderList() {
                         <SearchIcon sx={{ fontSize: "28px" }} />
                     </span>
                 </Stack>
-                <Stack sx={{ width: "256px" }}>
+                <Stack width="256px">
                     <Select
                         value={orderDate}
                         onChange={onChangeOrderDate}
@@ -132,9 +125,9 @@ function OrderList() {
             </Stack>
 
             <Stack direction="row" p={2} spacing="16px">
-                <Button variant="outlined" sx={{ borderRadius: "16px" }}>Chưa in phiếu</Button>
-                <Button variant="outlined" sx={{ borderRadius: "16px" }}>Lấy hàng thất bại</Button>
-                <Button variant="outlined" sx={{ borderRadius: "16px" }}>Giao hàng thất bại</Button>
+                <Button variant="outlined" borderRadius="16px">Chưa in phiếu</Button>
+                <Button variant="outlined"  borderRadius="16px">Lấy hàng thất bại</Button>
+                <Button variant="outlined" borderRadius="16px">Giao hàng thất bại</Button>
             </Stack>
 
             <Table
@@ -142,7 +135,6 @@ function OrderList() {
                 sx={{ minWidth: "650px" }}
                 stickyHeader
                 size="small"
-                aria-label="sticky  table"
             >
                 <TableHead>
                     <TableRow>
@@ -169,12 +161,6 @@ function OrderList() {
                             <TableCell align="left">{row.label}</TableCell>
                             <TableCell align="center">
                                 <Stack spacing={1} justifyContent="center" py={1}>
-                                    {/* <span className="order__iconEdit">
-                                        <EditIcon sx={{ fontSize: "28px" }} />
-                                    </span>
-                                    <span className="order__iconDel">
-                                        <DeleteOutlineIcon onClick={openModalDelete} sx={{ fontSize: "28px" }} />
-                                    </span> */}
                                     <Link to="detail">
                                         <Button sx={{ width: "100px" }} variant="outlined">Xem chi tiết</Button>
                                     </Link>
