@@ -7,11 +7,11 @@ import './style/App.scss';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
-import Home from './pages/Home/Home';
+import Home from './pages/Home';
 
-import Search from './pages/Search/Search';
+import Search from './pages/Search';
 
-import CustomerAccount from './pages/CustomerAccount/CustomerAccount';
+import CustomerAccount from './pages/CustomerAccount';
 
 import Info from './pages/CustomerAccount/Info/index';
 import PhoneNumber from './pages/CustomerAccount/Info/PhoneNumber/index';
@@ -50,16 +50,16 @@ import Dashboard from './pages/Admin/Dashboard';
 import GrowthCenter from './pages/Admin/GrowthCenter';
 import Order from './pages/Admin/Order';
 import Product from './pages/Admin/Product';
-import CreateProduct from "./pages/Admin/Product/CreateProduct/CreateProduct";
+import CreateProduct from "./pages/Admin/Product/CreateProduct";
 import Review from './pages/Admin/Review';
 
 import User from './pages/Admin/User';
 import DetailUser from './pages/Admin/User/DetailUser';
 
-import DetailOrder from "./pages/CustomerAccount/Orders/DetailOrder/DetailOrder";
+import DetailOrder from "./pages/CustomerAccount/Orders/DetailOrder";
 import Payment from "./pages/Payment";
 import TableCustom from "./components/TableCustom";
-import AdminTab from "./components/AdminTab/AdminTab";
+import AdminTab from "./components/AdminTab";
 import CreateCoupon from "./pages/Admin/Coupon/CreateCoupon";
 
 

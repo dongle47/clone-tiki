@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import "./Orders.scss"
 import SearchIcon from '@mui/icons-material/Search';
-import OrderItem from "../../../components/OrderItem.js";
+import OrderItem from "../../../components/OrderItem/index.jsx";
 import { orderTabs, orderItems } from "../../../constraints/OrderItem";
 
 function Orders() {
