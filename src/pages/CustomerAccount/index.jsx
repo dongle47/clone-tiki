@@ -23,10 +23,10 @@ function CustomerAccount() {
   const [selectedTabId, setSelectedTabId] = React.useState(0);
 
   return (
-    <div className="container">
-      <div className="customer-account">
-        <Box sx={{ width: "250px" }}>
-          <List sx={{ maxWidth: 300 }}>
+    <Box className="container">
+      <Box className="customer-account">
+        <Box width="16rem">
+          <List maxWidth={300}>
             <ListItem>
               <ListItemAvatar>
                 <Avatar alt="hình đại diện" src={avatarProfile} />
@@ -63,8 +63,8 @@ function CustomerAccount() {
         <Box sx={{ flex: 1, marginTop: "16px" }}>
           <Outlet />
         </Box>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

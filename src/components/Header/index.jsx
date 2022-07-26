@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "./Header.scss";
 import { useState, useCallback } from "react";
+import { Link } from "react-router-dom";
 
 import {
   Grid,
@@ -13,7 +14,6 @@ import {
   Modal,
   TextField,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 
 import SearchIcon from "@mui/icons-material/Search";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -363,18 +363,18 @@ function Header() {
               </Stack>
             </Link>
 
-            <Button
-              sx={{
-                color: "white",
-                borderRadius: "50px",
-                padding: "0.1rem ",
-                fontSize: "small",
-              }}
-              variant="contained"
-              startIcon={<StorefrontOutlinedIcon />}
-            >
-              <Typography sx={{ fontSize: "10px" }}>Admin</Typography>
-            </Button>
+              <Button
+                sx={{
+                  color: "white",
+                  borderRadius: "50px",
+                  padding: "0.1rem ",
+                  fontSize: "small",
+                }}
+                variant="contained"
+                startIcon={<StorefrontOutlinedIcon />}
+              >
+                <Typography sx={{ fontSize: "10px" }}>Admin</Typography>
+              </Button>
           </Stack>
         </Stack>
 
