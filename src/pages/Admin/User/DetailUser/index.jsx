@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { address } from "../../../../constraints/Profile";
-
+import "./DetailUser.scss"
 import {
   Stack,
   Button,
@@ -71,21 +71,12 @@ const data = [
 
 function DetailUser() {
   return (
-    <Box sx={{ padding: "2rem", backgroundColor: "#fff" }}>
+    <Box p="2rem" bgcolor="#fff">
       <Typography variant="h6">Chi tiết khách hàng</Typography>
-
-      <Stack sx={{ backgroundColor: "#fff", padding: "1rem" }} spacing={3}>
+      <Stack p="1rem" spacing={3}>
         <Stack direction="row" spacing={3}>
-          <Stack
-            sx={{
-              border: "1px solid silver",
-              borderRadius: "0.3rem",
-              width: "50%",
-              padding: "1rem",
-            }}
-            spacing={5}
-          >
-            <Typography sx={{ fontWeight: "bold " }}>
+          <Stack className="detailUser__infowrap" spacing={5}>
+            <Typography fontWeight="bold">
               Thông tin người dùng
             </Typography>
 
@@ -95,7 +86,7 @@ function DetailUser() {
                 alt=""
                 src={imgProfile}
               />
-              <Typography sx={{ color: "silver" }} variant="caption">
+              <Typography color="silver"variant="caption">
                 ID
               </Typography>
               <Typography variant="h6">ABCD</Typography>
@@ -117,25 +108,16 @@ function DetailUser() {
               </Stack>
 
               <Stack direction="row" alignItem="center">
-                <CakeIcon />
+                <CakeIcon/>
                 <Typography>01/01/2001</Typography>
               </Stack>
             </Stack>
           </Stack>
 
-          <Stack
-            sx={{
-              border: "1px solid silver",
-              borderRadius: "0.3rem",
-              width: "50%",
-              padding: "1rem",
-            }}
-            alignItem="center"
-          >
+          <Stack className="detailUser__infowrap" alignItem="center">
             <Typography fontWeight="bold">Thống kê mua hàng</Typography>
 
-            <Stack
-              sx={{ width: "50%", height: "50%", marginLeft: "7rem" }}
+            <Stack width="50%" height="50%" ml="7rem"
               alignItems="center"
               spacing={3}
             >
@@ -145,19 +127,12 @@ function DetailUser() {
           </Stack>
         </Stack>
 
-        <Stack
-          sx={{
-            border: "1px solid silver",
-            padding: "1rem",
-            borderRadius: "0.3rem",
-          }}
-          spacing={3}
-        >
-          <Typography sx={{ fontWeight: "bold" }}>
+        <Stack className="detailUser__infowrap" width="100% !important" spacing={3}>
+          <Typography fontWeight="bold">
             Thống kê hoạt động
           </Typography>
 
-          <Stack sx={{ flexGrow: 1 }} spacing={3}>
+          <Stack flexGrow={1} spacing={3}>
             <Stack>
               <Stack direction="row" justifyContent="space-between">
                 <Typography>Sản phẩm yêu thích</Typography>
@@ -200,18 +175,12 @@ function DetailUser() {
           </Stack>
         </Stack>
 
-        <Stack
-          sx={{
-            border: "1px solid silver",
-            borderRaidus: "0.3rem",
-            padding: "1rem",
-          }}
-        >
-          <Typography sx={{ fontWeight: "bold" }}>Sổ địa chỉ</Typography>
+        <Stack className="detailUser__infowrap" width="100% !important">
+          <Typography fontWeight="bold">Sổ địa chỉ</Typography>
           {address.map((item) => {
             return (
               <Stack
-                sx={{ width: "50rem" }}
+                width="50rem"
                 direction="row"
                 justifyContent="space-between"
                 className="items"
@@ -230,14 +199,8 @@ function DetailUser() {
           })}
         </Stack>
 
-        <Stack
-          sx={{
-            border: "1px solid silver",
-            borderRadius: "0.3rem",
-            padding: "1rem",
-          }}
-        >
-          <Typography sx={{ fontWeight: "bold" }}>
+        <Stack  className="detailUser__infowrap" width="fit-content  !important">
+          <Typography fontWeight="bold">
             Danh sách đơn hàng
           </Typography>
 
@@ -246,7 +209,6 @@ function DetailUser() {
             sx={{ minWidth: "50rem" }}
             stickyHeader
             size="small"
-            aria-label="sticky  table"
           >
             <TableHead>
               <TableRow>

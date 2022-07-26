@@ -70,26 +70,21 @@ function User() {
           sx={{ minWidth: "50rem" }}
           stickyHeader
           size="small"
-          aria-label="sticky  table"
         >
           <TableHead>
             <TableRow>
               <TableCell align="center" sx={{ width: "20%", top: "64px" }}>
                 ID
               </TableCell>
-
               <TableCell align="center" sx={{ width: "20%", top: "64px" }}>
                 Tên khách hàng
               </TableCell>
-
               <TableCell align="center" sx={{ width: "20%", top: "64px" }}>
                 Ngày đăng ký
               </TableCell>
-
               <TableCell align="center" sx={{ width: "20%", top: "64px" }}>
                 Số điện thoại
               </TableCell>
-
               <TableCell align="center" sx={{ width: "20%", top: "64px" }}>
                 Thao tác
               </TableCell>

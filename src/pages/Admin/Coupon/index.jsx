@@ -34,15 +34,13 @@ function Coupon() {
         <Box mt={2} className="couponAdmin">
             <Box px={4}>
                 <Typography component="h2" className="couponAdmin__title">Mã giảm giá</Typography>
-                <Typography mt={0.625} pb={2}
-                    sx={{ lineHeight: "32px" }}
+                <Typography mt={0.625} pb={2} lineHeight="32px"
                 >Vui lòng xem hướng dẫn chi tiết: <span>Cách cài đặt “Mã giảm giá”</span></Typography>
             </Box>
             <Box mt={2} mx={3} px={3} py={2}>
-                <Stack direction="row" spacing={1} mb={2} justifyContent="space-between" alignItems="center" 
-                    sx={{height:"32px"}}>
-                    <Typography style={{ fontSize: "16px", fontWeight: 500 }}>Các chỉ số hiệu quả chính</Typography>
-                    <Typography sx={{ flex: 1 }}>7 ngày qua: 03/07/2022 - 09/07/2022•So sánh với: 26/06/2022 - 02/07/2022</Typography>
+                <Stack direction="row" spacing={1} mb={2} justifyContent="space-between" alignItems="center" height={4}>
+                    <Typography fontSize="16px" fontWeight={500} >Các chỉ số hiệu quả chính</Typography>
+                    <Typography flex = {1}>7 ngày qua: 03/07/2022 - 09/07/2022•So sánh với: 26/06/2022 - 02/07/2022</Typography>
                     <Stack direction="row" alignItems="center" spacing={0.5} className="color-primary" sx={{ cursor: "pointer" }}>
                         <TrendingUpIcon />
                         Báo cáo chi tiết
@@ -66,11 +64,11 @@ function Coupon() {
             </Box>
             <Box mt={2} mx={3} py={2} px={3}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <Typography style={{ fontSize: "16px", fontWeight: 500 }}>Danh sách mã giảm giá</Typography>
+                    <Typography fontSize="16px" fontWeight={500}>Danh sách mã giảm giá</Typography>
                     <Button variant="contained" startIcon={<AddIcon />}>Tạo mã giảm giá</Button>
                 </Stack>
                 <Stack className="couponAdmin__filter" direction="row" spacing={2} mt={4} mb={2}>
-                    <Stack sx={{ width: "256px" }} spacing={0.25}>
+                    <Stack width="256px" spacing={0.25}>
                         <label>Mã giảm giá</label>
                         <Box className="couponAdmin__groupinput">
                             <input type="text" placeholder="Nhập mã giảm giá" />
@@ -78,7 +76,7 @@ function Coupon() {
                         </Box>
 
                     </Stack>
-                    <Stack sx={{ width: "256px" }} spacing={0.25}>
+                    <Stack width="256px" spacing={0.25}>
                         <label>Trạng thái</label>
                         <Select
                             value={status}
@@ -139,9 +137,9 @@ function Coupon() {
                                 </TableCell>
                                 <TableCell sx={{ width: "calc(13*100%/101)" }}>
                                     <Stack spacing={1}>
-                                        <Button variant="outlined" sx={{ padding: "4px" }}>Chỉnh sửa</Button>
-                                        <Stack className="couponTable__button__end" direction="row" justifyContent="space-between" alignItems="center"  >
-                                            <div>Kết thúc</div>
+                                        <Button variant="outlined" sx={{p:"4px"}}>Chỉnh sửa</Button>
+                                        <Stack className="couponTable__buttonEnd" direction="row" justifyContent="space-between" alignItems="center"  >
+                                            <Box>Kết thúc</Box>
                                             <span><MoreVertIcon /></span>
                                         </Stack>
                                     </Stack>
