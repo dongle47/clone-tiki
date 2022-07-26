@@ -11,7 +11,7 @@ import {
   Button
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import "./Table.scss"
+import "./TableCustom.scss"
 function TableCustom() {
 
   return (
