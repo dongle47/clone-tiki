@@ -62,6 +62,8 @@ import TableCustom from "./components/TableCustom";
 import AdminTab from "./components/AdminTab";
 import CreateCoupon from "./pages/Admin/Coupon/CreateCoupon";
 
+import Error from "./pages/Error/index";
+
 
 
 
@@ -158,6 +160,9 @@ function App() {
           <Route path="coupon/create" element={<CreateCoupon />} />
 
         </Route>
+
+        <Route path="error" element={<Error />} />
+
 
       </Routes>
 
