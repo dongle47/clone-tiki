@@ -34,7 +34,7 @@ function Review() {
 
     useEffect(() => {
         const closePopper = (event) => {
-            const div = document.getElementById("reviewAdmin__filter__brand")
+            const div = document.getElementById("reviewAdmin__filterBrand")
             if (div) {
                 const isClickInsideElement = div.contains(event.target);
                 if (!isClickInsideElement) {
@@ -49,29 +49,27 @@ function Review() {
     }, [])
     return (
         <Box mt={2} className="reviewAdmin">
-            <Box px={4} backgroundColor="#fff">
+            <Box px={4} bgcolor="#fff">
                 <Typography component="h2" className="reviewAdmin__title">Quản lý đánh giá</Typography>
-                <Stack direction="row" className="reviewAdmin__rate">
-
+                <Stack direction="row">
                     {
                         listRate.map(item =>
                             <Stack key={item.id} onClick={() => setFilterRate(item.id)}
-                                alignItems="center" px={2.5} className={`reviewAdmin__rate__item ${filterRate === item.id ? "active" : ""}`}>
+                                alignItems="center" px={2.5} className={`reviewAdmin__rateItem ${filterRate === item.id ? "active" : ""}`}>
                                 <Stack direction="row" alignItems={"flex-start"} sx={{ fontSize: "14px", height: "24px" }}>
                                     <span>{item.display}</span>
                                     {item.id === 0 || <StarIcon sx={{ fontSize: "17px", color: "#fadb14" }} />}
                                 </Stack>
-                                <Typography sx={{ color: "#888", fontSize: "14px", lineHeight: "24px", marginBottom: "8px" }}>(0)</Typography>
+                                <Typography>(0)</Typography>
                             </Stack>)
                     }
 
                 </Stack>
             </Box>
 
-            <Box mt={2} mx={3} py={2} px={3} backgroundColor="#FFF">
-
+            <Box mt={2} mx={3} py={2} px={3} bgcolor="#fff">
                 <Stack className="reviewAdmin__filter" direction="row" spacing={2} mt={1} mb={2}>
-                    <Stack direction="row" sx={{ width: "256px" }} alignItems='center' >
+                    <Stack direction="row" width="256px" alignItems='center' >
                         <Select
                             value={status}
                             onChange={onChangeStatus}
@@ -87,7 +85,7 @@ function Review() {
                         </Box>
 
                     </Stack>
-                    <Stack sx={{ width: "256px" }} spacing={0.25}>
+                    <Stack width="256px" spacing={0.25}>
                         <Select
                             value={status}
                             onChange={onChangeStatus}
@@ -99,13 +97,19 @@ function Review() {
                         </Select>
                     </Stack>
                     <Box>
-                        <ButtonSelect onClick={(e) => { e.stopPropagation(); setOpenBrand(!openBrand) }} variant="contained" endIcon={<KeyboardArrowDownIcon />}>Thương hiệu</ButtonSelect>
-                        <Stack id="reviewAdmin__filter__brand" className={`reviewAdmin__filter__brand ${openBrand ? "active" : ""}`}>
-                            <Box id="reviewAdmin__filter__brandInput">
-                                <input type="text" placeholder="Nhập mã giảm giá" />
+                        <ButtonSelect
+                            onClick={(e) => { e.stopPropagation(); setOpenBrand(!openBrand) }}
+                            variant="contained"
+                            endIcon={<KeyboardArrowDownIcon />}
+                        >Thương hiệu
+                        </ButtonSelect>
+                        <Stack id="reviewAdmin__filterBrand" 
+                        className={`reviewAdmin__filterBrand ${openBrand ? "active" : ""}`}>
+                            <Box id="reviewAdmin__BrandInput">
+                                <input type="text" placeholder="Nhập thương hiệu" />
                                 <SearchIcon sx={{ color: "#888" }} />
                             </Box>
-                            <Stack className="reviewAdmin__filter__brandList">
+                            <Stack className="reviewAdmin__filterBrand--list">
                                 <FormControlLabel control={<Checkbox />} label="X" />
                                 <FormControlLabel control={<Checkbox />} label="L" />
                                 <FormControlLabel control={<Checkbox />} label="M" />
@@ -119,21 +123,21 @@ function Review() {
                 </Stack>
 
                 <Stack direction='row' spacing={2}>
-                    <Button variant="text" sx={{color:"#333",fontSize:"14px",backgroundColor:"#dfdfdf",'&:hover':{backgroundColor:"#dfdfdf"}}}>Có nội dung</Button>
-                    <Button variant="text" sx={{color:"#333",fontSize:"14px",backgroundColor:"#dfdfdf",'&:hover':{backgroundColor:"#dfdfdf"}}}>Có hình ảnh/video</Button>
-                    <Button variant="text" sx={{color:"#333",fontSize:"14px",backgroundColor:"#dfdfdf",'&:hover':{backgroundColor:"#dfdfdf"}}}>Chưa trả lời</Button>
+                    <Button variant="text" className="reviewAdmin__btnFilter">Có nội dung</Button>
+                    <Button variant="text" className="reviewAdmin__btnFilter">Có hình ảnh/video</Button>
+                    <Button variant="text" className="reviewAdmin__btnFilter">Chưa trả lời</Button>
                 </Stack>
             </Box>
-            <Box mt={2} mx={3} py={2} px={3} backgroundColor="#FFF">
-                <Typography fontSize={"14px"}>Số đánh giá: 3</Typography>              
-                <Table className="reviewTable" sx={{ minWidth: 650,mt:"20px" }} size="small" aria-label="a dense table">
+            <Box mt={2} mx={3} py={2} px={3} bgcolor="#FFF">
+                <Typography fontSize={"14px"}>Số đánh giá: 3</Typography>
+                <Table className="reviewTable">
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ width: "calc(14*100%/102)", backgroundColor: "#e8e8e8" }}>Mã đơn hàng</TableCell>
-                            <TableCell sx={{ width: "calc(40*100%/102)", backgroundColor: "#e8e8e8" }}>Sản phẩm</TableCell>
-                            <TableCell sx={{ width: "calc(20*100%/102)", backgroundColor: "#e8e8e8" }}>Đánh giá</TableCell>
-                            <TableCell sx={{ width: "calc(14*100%/102)", backgroundColor: "#e8e8e8" }}>Trạng thái</TableCell>
-                            <TableCell sx={{ width: "calc(14*100%/102)", backgroundColor: "#e8e8e8" }}>Thao tác</TableCell>
+                            <TableCell>Mã đơn hàng</TableCell>
+                            <TableCell>Sản phẩm</TableCell>
+                            <TableCell>Đánh giá</TableCell>
+                            <TableCell>Trạng thái</TableCell>
+                            <TableCell>Thao tác</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -142,34 +146,34 @@ function Review() {
                                 key={row}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
-                                <TableCell sx={{ width: "calc(14*100%/102)" }}>
+                                <TableCell>
                                     <Stack>
-                                        <Typography sx={{ color: "#1890ff" }}>GD252537</Typography>
+                                        <Typography color="#1890ff">GD252537</Typography>
                                     </Stack>
                                 </TableCell>
-                                <TableCell sx={{ width: "calc(40*100%/102)" }}>
+                                <TableCell>
                                     <Stack direction="row" spacing={1.5} alignItems="center">
                                         <img width={"80px"} height={"100px"} src="https://salt.tikicdn.com/cache/400x400/ts/product/8d/e5/1f/d15f620cda7b01c5a42f5625e7b3ed46.jpg.webp" alt="" />
-                                        <Stack sx={{ flex: 1 }}>
-                                            <Typography className="text-overflow-2-lines" sx={{ fontSize: "14px" }}>Điện thoại Samsung Galaxy M23 5G (6GB/128GB) - Hàng chính hãng</Typography>
-                                            <Typography sx={{ color: "#888", fontSize: "14px" }}>SKU: 1234567890123</Typography>
+                                        <Stack flex={1}>
+                                            <Typography className="text-overflow-2-lines">Điện thoại Samsung Galaxy M23 5G (6GB/128GB) - Hàng chính hãng</Typography>
+                                            <Typography color="#888">SKU: 1234567890123</Typography>
                                         </Stack>
                                     </Stack>
                                 </TableCell>
-                                <TableCell sx={{ width: "calc(20*100%/102)" }} spacing={1.25}>
+                                <TableCell spacing={1.25}>
                                     <Stack>
                                         <Rating name="read-only" value={3} readOnly />
-                                        <Typography sx={{ fontSize: "14px" }}>3/5</Typography>
+                                        <Typography>3/5</Typography>
                                     </Stack>
                                 </TableCell>
-                                <TableCell sx={{ width: "calc(14*100%/102)", padding: "8px" }}>
+                                <TableCell>
                                     <Typography>Đã duyệt</Typography>
                                 </TableCell>
-                                <TableCell align='center' sx={{ width: "calc(14*100%/102)", padding: "4px" }}>
+                                <TableCell align='center'>
                                     <Stack direction='row' spacing={1.25}>
-                                        <Typography sx={{fontSize:"14px",color:"#1890ff"}}>Báo cáo</Typography>
-                                        <Typography sx={{fontSize:"14px",color:"#1890ff"}}>Trả lời</Typography>
-                                        </Stack>
+                                        <Typography color="#1890ff">Báo cáo</Typography>
+                                        <Typography color="#1890ff">Trả lời</Typography>
+                                    </Stack>
                                 </TableCell>
                             </TableRow>
                         ))}
