@@ -1,16 +1,17 @@
-import { Typography, Button, Stack } from "@mui/material";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
 import "./Addresses.scss";
+import { address } from "../../../constraints/Profile";
+
+import { Typography, Button, Stack } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
-import { address } from "../../../constraints/Profile";
 
 function Addresses() {
   const addresses = address.map((item) => {
     return (
       <Stack
-        sx={{ width: "50rem" }}
         direction="row"
+        width="50rem"
         justifyContent="space-between"
         className="items"
       >
@@ -21,8 +22,12 @@ function Addresses() {
         </Stack>
 
         <Stack direction="row" className="action">
-          <Button className="modify">Chỉnh sửa</Button>
-          <Button className="delete">Xóa</Button>
+          <Button variant="text" color="primary">
+            Chỉnh sửa
+          </Button>
+          <Button variant="text" color="warning">
+            Xóa
+          </Button>
         </Stack>
       </Stack>
     );
@@ -31,7 +36,7 @@ function Addresses() {
   return (
     <Stack spacing={2} className="addresses">
       <Typography className="heading">Sổ địa chỉ</Typography>
-      <Link to='/customer/address/create' >
+      <Link to="/customer/address/create">
         <Button className="new" variant="outlined" startIcon={<AddIcon />}>
           Thêm địa chỉ mới
         </Button>

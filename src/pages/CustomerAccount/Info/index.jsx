@@ -39,7 +39,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import WallpaperIcon from "@mui/icons-material/Wallpaper";
 import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 
 function Info() {
   const [day, setDay] = React.useState(null);
@@ -81,19 +81,17 @@ function Info() {
 
   return (
     <Stack className="customer-info" spacing={3}>
-      <Typography>Thông tin tài khoản</Typography>
+      <Typography variant="h6">Thông tin tài khoản</Typography>
 
       <Stack direction="row" spacing={3}>
-        <Stack spacing={3} className="">
+        <Stack spacing={3}>
           <Typography>Thông tin cá nhân</Typography>
 
           <Stack direction="row" spacing={4}>
             <ClickAwayListener onClickAway={handleClickAwayAvatar}>
               <Box sx={{ position: "relative" }} onClick={handleClickAvatar}>
                 <Badge
-                  badgeContent={
-                    <EditRoundedIcon fontSize="30" sx={{ color: "white" }} />
-                  }
+                  badgeContent={<EditRoundedIcon fontSize="30" color="white" />}
                   overlap="circular"
                   anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                   color="primary"
@@ -111,17 +109,20 @@ function Info() {
                   <Stack className="avatar-control">
                     <Stack autoFocusItem={openAvatar}>
                       <MenuItem onClick={openModalViewAvatar}>
-                        <WallpaperIcon color='disabled' sx={{ mr: 2 }} />
+                        <WallpaperIcon sx={{ mr: 2 }} color="disabled" />
                         Xem ảnh đại diện
                       </MenuItem>
 
                       <MenuItem onClick={openModalUploadAvatar}>
-                        <VisibilityOutlinedIcon color='disabled' sx={{ mr: 2 }} />
+                        <VisibilityOutlinedIcon
+                          sx={{ mr: 2 }}
+                          color="disabled"
+                        />
                         Cập nhật ảnh đại diện
                       </MenuItem>
 
                       <MenuItem onClick={openModalDeleteAvatar}>
-                        <DeleteIcon color='disabled' sx={{ mr: 2 }} />
+                        <DeleteIcon sx={{ mr: 2 }} color="disabled" />
                         Xóa ảnh đại diện hiện tại
                       </MenuItem>
                     </Stack>
@@ -235,7 +236,7 @@ function Info() {
 
         <Divider orientation="vertical" flexItem />
 
-        <Stack spacing={4} className="customer-info__column2">
+        <Stack spacing={4}>
           <Typography>Số điện thoại và Email</Typography>
 
           <Stack
@@ -244,7 +245,7 @@ function Info() {
             justifyContent="space-between"
           >
             <Stack direction="row" spacing={1}>
-              <LocalPhoneOutlinedIcon color='disabled' />
+              <LocalPhoneOutlinedIcon color="disabled" />
               <ListItemText primary="Số điện thoại" secondary="0123456789" />
             </Stack>
             <Link to="/customer/account/edit/phone">
@@ -261,7 +262,7 @@ function Info() {
             justifyContent="space-between"
           >
             <Stack direction="row" spacing={1}>
-              <EmailOutlinedIcon color='disabled' />
+              <EmailOutlinedIcon color="disabled" />
 
               <ListItemText
                 primary="Địa chỉ email"
@@ -283,7 +284,7 @@ function Info() {
             justifyContent="space-between"
           >
             <Stack direction="row" spacing={1}>
-              <LockIcon color='disabled' />
+              <LockIcon color="disabled" />
               <ListItemText primary="Đổi mật khẩu" />
             </Stack>
             <Link to="/customer/account/edit/pass">
@@ -300,7 +301,7 @@ function Info() {
             justifyContent="space-between"
           >
             <Stack direction="row" spacing={1}>
-              <FacebookRoundedIcon color='primary' />
+              <FacebookRoundedIcon color="primary" />
               <ListItemText primary="Facebook" />
             </Stack>
             <Button size="small" variant="outlined">
@@ -314,7 +315,7 @@ function Info() {
             justifyContent="space-between"
           >
             <Stack direction="row" spacing={1}>
-              <GoogleIcon color='success' />
+              <GoogleIcon color="success" />
               <ListItemText primary="Google" />
             </Stack>
             <Button size="small" variant="outlined">
@@ -326,7 +327,7 @@ function Info() {
 
       {/* Modal nationality  */}
       <Modal open={modalNational} onClose={closeModalNational}>
-        <Box sx={{width:'30rem', top:'30%'}} className="modal-info">
+        <Box sx={{ width: "30rem", top: "30%" }} className="modal-info">
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="h6" component="h2">
               Chọn quốc tịch
@@ -391,11 +392,7 @@ function Info() {
         open={modalUploadAvatar}
         onClose={closeModalUploadAvatar}
       >
-        <Stack
-          sx={{ padding: "2rem" }}
-          className="modal-info"
-          spacing={2}
-        >
+        <Stack sx={{ padding: "2rem" }} className="modal-info" spacing={2}>
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="h6" component="h2">
               Cập nhật ảnh đại diện
@@ -502,7 +499,13 @@ function Info() {
         open={modalDeleteAvatar}
         onClose={closeModalDeleteAvatar}
       >
-        <Stack className="modal-info" direction="row" spacing={2} justifyContent='center' width='26rem' >
+        <Stack
+          className="modal-info"
+          direction="row"
+          spacing={2}
+          justifyContent="center"
+          width="26rem"
+        >
           <Stack>
             <InfoOutlinedIcon color="primary" />
           </Stack>
@@ -518,7 +521,9 @@ function Info() {
             </Stack>
 
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              <Button onClick={closeModalDeleteAvatar} variant="outlined">Hủy</Button>
+              <Button onClick={closeModalDeleteAvatar} variant="outlined">
+                Hủy
+              </Button>
               <Button variant="contained">Xóa bỏ</Button>
             </Stack>
           </Stack>
