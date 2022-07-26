@@ -3,127 +3,127 @@
 export const Categories = [{
   id: 1,
   display: "Thịt, rau củ",
-  link: ""
+  link: "filter"
 },
 {
   id: 2,
   display: "Bách hoá",
-  link: ""
+  link: "filter"
 },
 {
   id: 3,
   display: "Nhà cửa",
-  link: ""
+  link: "filter"
 },
 {
   id: 4,
   display: "Điện tử",
-  link: ""
+  link: "filter"
 },
 {
   id: 5,
   display: "Thiết bị số",
-  link: ""
+  link: "filter"
 },
 {
   id: 6,
   display: "Điện Thoại",
-  link: ""
+  link: "filter"
 },
 {
   id: 7,
   display: "Mẹ & Bé",
-  link: ""
+  link: "filter"
 },
 {
   id: 8,
   display: "Làm Đẹp",
-  link: ""
+  link: "filter"
 },
 {
   id: 9,
   display: "Gia Dụng",
-  link: ""
+  link: "filter"
 },
 {
   id: 10,
   display: "Thời trang nữ",
-  link: ""
+  link: "filter"
 },
 {
   id: 11,
   display: "Thời trang nam",
-  link: ""
+  link: "filter"
 },
 {
   id: 12,
   display: "Giày nữ",
-  link: ""
+  link: "filter"
 },
 {
   id: 13,
   display: "Túi nữ",
-  link: ""
+  link: "filter"
 },
 {
   id: 14,
   display: "Giày nam",
-  link: ""
+  link: "filter"
 },
 {
   id: 15,
   display: "Túi nam",
-  link: ""
+  link: "filter"
 },
 {
   id: 16,
   display: "Balo & Vali",
-  link: ""
+  link: "filter"
 },
 {
   id: 17,
   display: "Phụ kiện",
-  link: ""
+  link: "filter"
 },
 {
   id: 18,
   display: "Đồng hồ",
-  link: ""
+  link: "filter"
 },
 {
   id: 19,
   display: "Laptop",
-  link: ""
+  link: "filter"
 },
 {
   id: 20,
   display: "Quốc Tế",
-  link: ""
+  link: "filter"
 },
 {
   id: 21,
   display: "Voucher",
-  link: ""
+  link: "filter"
 },
 {
   id: 22,
   display: "Xe",
-  link: ""
+  link: "filter"
 },
 {
   id: 23,
   display: "Sách",
-  link: ""
+  link: "filter"
 },
 {
   id: 24,
   display: "Thể Thao",
-  link: ""
+  link: "filter"
 },
 {
   id: 25,
   display: "Máy Ảnh",
-  link: ""
+  link: "filter"
 }
 ]
 

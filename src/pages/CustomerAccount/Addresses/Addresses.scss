@@ -20,6 +20,7 @@
         justify-content: center;
     }
 }
+
 .items {
     background-color: rgb(255, 255, 255);
     padding: 17px;
@@ -37,23 +38,6 @@
         }
         .address {
             margin: 0px 0px 5px;
-        }
-    }
-    .action {
-        .delete {
-            font-size: 14px;
-            color: rgb(255, 66, 78);
-            border: 0px;
-            display: inline-block;
-            padding: 6px 12px;
-            cursor: pointer;
-            outline: 0px;
-        }
-        .modify {
-            font-size: 14px;
-            color: rgb(27, 168, 255);
-            display: inline-block;
-            padding: 6px 12px;
         }
     }
 }

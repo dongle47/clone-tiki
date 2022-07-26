@@ -1,22 +1,27 @@
 import * as React from "react";
 import "./Notify.scss";
-import Stack from "@mui/material/Stack";
 import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { Notifies } from "../../../constraints/Notify";
+
+import {
+  Stack,
+  Tabs,
+  Tab,
+  Box,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem,
+  Badge,
+  Button,
+} from "@mui/material";
+
 import HomeIcon from "@mui/icons-material/Home";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import UpdateIcon from "@mui/icons-material/Update";
-import Badge from "@mui/material/Badge";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
+import { Notifies } from "../../../constraints/Notify";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -70,23 +75,15 @@ function Notify() {
 
   return (
     <Box sx={{ width: "100%", top: "0" }}>
-      <div>
-        <h4
-          style={{
-            fontSize: "19px",
-            fontWeight: "300",
-            marginTop: "20px",
-            marginRight: "0px",
-            marginBottom: "15px",
-            marginLeft: "0px",
-            scale: "",
-          }}
+      <Typography variant="h6">Thông báo của tôi</Typography>
+
+      <Box sx={{ width: "100%", mt: "1rem", backgroundColor: "#fff" }}>
+        <Stack
+          position="static"
+          color="default"
+          direction="row"
+          alignItems="center"
         >
-          Thông báo của tôi (3)
-        </h4>
-      </div>
-      <Box sx={{ width: "100%", top: "0", backgroundColor: "#ffffff"}}>
-        <Stack position="static" color="default" direction="row" alignItems="center">
           <Tabs
             value={value}
             onChange={handleChange}
@@ -121,7 +118,7 @@ function Notify() {
             />
             <Tab icon={<UpdateIcon />} aria-label="Update" {...a11yProps(3)} />
           </Tabs>
-          <Box marginRight = "0px" marginLeft = "auto">
+          <Box marginRight="0px" marginLeft="auto">
             <IconButton
               aria-label="more"
               id="long-button"
@@ -165,20 +162,13 @@ function Notify() {
               <Stack
                 key={item.id}
                 direction="row"
-                sx={{
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: "20px",
-                  padding: "25px",
-                  backgroundColor: "#f6fcff",
-                }}
+                justifyContent="space-between"
+                alignItems="center"
+                spacing={2}
+                padding={3}
               >
-                <Typography
-                  component="div"
-                  style={{ fontSize: "13px", width: "100px", color: "#666" }}
-                >
-                  {item.date}
-                </Typography>
+                <Typography variant="body2">{item.date}</Typography>
+
                 <div
                   style={{
                     display: "inline-block",
@@ -213,10 +203,9 @@ function Notify() {
                     </svg>
                   </div>
                 </div>
+
                 <Box style={{ flex: 1 }}>
-                  <Typography style={{ fontSize: "13px", color: "#666" }}>
-                    {item.info}
-                  </Typography>
+                  <Typography variant="body2">{item.info}</Typography>
                   <a
                     style={{ fontSize: "13px", color: "#0b74e5" }}
                     target="_blank"
@@ -226,99 +215,33 @@ function Notify() {
                     Chi tiết
                   </a>
                 </Box>
-                <Typography
-                  sx={{ fontSize: "14px", color: "#0b74e5", width: "122px" }}
-                >
-                  Đánh dấu đã đọc
-                </Typography>
-                <Typography
-                  sx={{ fontSize: "14px", color: "#ff424e", width: "42px" }}
-                >
-                  Xóa
-                </Typography>
+
+                <Button>Đánh dấu đã đọc</Button>
+
+                <Button color="warning">Xóa</Button>
               </Stack>
             ))}
           </Stack>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Stack sx={{ minHeight: "400px" }}>
-            {Notifies.map((item) => (
-              <Stack
-                key={item.id}
-                direction="row"
-                sx={{
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: "20px",
-                  padding: "25px",
-                  backgroundColor: "#f6fcff",
-                }}
-              >
-                <Typography
-                  component="div"
-                  style={{ fontSize: "13px", width: "100px", color: "#666" }}
-                >
-                  {item.date}
-                </Typography>
-                <div
-                  style={{
-                    display: "inline-block",
-                    verticalAlign: "middle",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "0px 0px",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      color: "#ffffff",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      fontSize: "30px",
-                      backgroundColor: "#fd810b",
-                    }}
-                  >
-                    <svg
-                      stroke="currentColor"
-                      fill="currentColor"
-                      stroke-width="0"
-                      viewBox="0 0 24 24"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"></path>
-                    </svg>
-                  </div>
-                </div>
-                <div style={{ flex: 1 }}>
-                  <Typography style={{ fontSize: "13px", color: "#666" }}>
-                    {item.info}
-                  </Typography>
-                  <a
-                    style={{ fontSize: "13px", color: "#0b74e5" }}
-                    target="_blank"
-                    href={item.link}
-                    rel="noreferrer"
-                  >
-                    Chi tiết
-                  </a>
-                </div>
-                <Typography
-                  sx={{ fontSize: "14px", color: "#0b74e5", width: "122px" }}
-                >
-                  Đánh dấu đã đọc
-                </Typography>
-                <Typography
-                  sx={{ fontSize: "14px", color: "#ff424e", width: "42px" }}
-                >
-                  Xóa
-                </Typography>
-              </Stack>
-            ))}
+          <Stack
+            sx={{
+              width: "100%",
+              minHeight: "400px",
+            }}
+            justifyContent="center"
+            alignItems="center"
+            p="2rem"
+          >
+            <img
+              alt=""
+              src="https://frontend.tikicdn.com/_desktop-next/static/img/mascot_fail.svg"
+            />
+            <Typography variant="body1">Bạn chưa có thông báo</Typography>
+
+            <Button variant="contained" color="warning">
+              Tiếp tục mua sắm
+            </Button>
           </Stack>
         </TabPanel>
         <TabPanel value={value} index={2}>
@@ -326,31 +249,20 @@ function Notify() {
             sx={{
               width: "100%",
               minHeight: "400px",
-              margin: "20px 0px 20px 0px",
-              padding: "25px",
-              backgroundColor: "#ffffff",
-              justifyContent: "center",
-              alignItems: "center",
             }}
+            justifyContent="center"
+            alignItems="center"
+            p="2rem"
           >
-            <img alt="" src="https://frontend.tikicdn.com/_desktop-next/static/img/mascot_fail.svg" />
-            <Typography
-              sx={{ margin: "20px 0px", color: "#000000a6", fontSize: "14px" }}
-            >
-              Bạn chưa có thông báo
-            </Typography>
-            <Box
-              href="/"
-              sx={{
-                width: "190px",
-                borderRadius: "4px",
-                fontSize: "14px",
-                backgroundColor: "#fdd835",
-                padding: "10px 30px",
-              }}
-            >
+            <img
+              alt=""
+              src="https://frontend.tikicdn.com/_desktop-next/static/img/mascot_fail.svg"
+            />
+            <Typography variant="body1">Bạn chưa có thông báo</Typography>
+
+            <Button variant="contained" color="warning">
               Tiếp tục mua sắm
-            </Box>
+            </Button>
           </Stack>
         </TabPanel>
         <TabPanel value={value} index={3}>
@@ -358,31 +270,20 @@ function Notify() {
             sx={{
               width: "100%",
               minHeight: "400px",
-              margin: "20px 0px 20px 0px",
-              padding: "25px",
-              backgroundColor: "#ffffff",
-              justifyContent: "center",
-              alignItems: "center",
             }}
+            justifyContent="center"
+            alignItems="center"
+            p="2rem"
           >
-            <img alt="" src="https://frontend.tikicdn.com/_desktop-next/static/img/mascot_fail.svg" />
-            <Typography
-              sx={{ margin: "20px 0px", color: "#000000a6", fontSize: "14px" }}
-            >
-              Bạn chưa có thông báo
-            </Typography>
-            <Box
-              href="/"
-              sx={{
-                width: "190px",
-                borderRadius: "4px",
-                fontSize: "14px",
-                backgroundColor: "#fdd835",
-                padding: "10px 30px",
-              }}
-            >
+            <img
+              alt=""
+              src="https://frontend.tikicdn.com/_desktop-next/static/img/mascot_fail.svg"
+            />
+            <Typography variant="body1">Bạn chưa có thông báo</Typography>
+
+            <Button variant="contained" color="warning">
               Tiếp tục mua sắm
-            </Box>
+            </Button>
           </Stack>
         </TabPanel>
       </Box>
