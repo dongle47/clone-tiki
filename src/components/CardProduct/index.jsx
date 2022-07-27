@@ -26,10 +26,10 @@ function CardProduct({ data }) {
                     </Typography>
                     <div style={{ display: "flex", alignItems: "center" }}>
                         <Rating name="read-only" value={data?.rate || 0} sx={{ fontSize: "0.875rem" }} readOnly />
-                        <span style={{ color: "#787878", fontSize: "11px" }}>| Đã bán 43</span>
+                        <span style={{ color: "#787878", fontSize: "11px" }}>| Đã bán {data?.sold}</span>
                     </div>
-                    <Typography className="card__price" color={`${data?.sale ? "#ff0000" : "#000000"}`} gutterBottom variant="h5" component="div">
-                        {data?.price} ₫ {data?.sale ? <div className="card__sale">{data?.percent_sale}</div> : <></>}
+                    <Typography className="card__price" color={`${data?.discount!==0 ? "#ff0000" : "#000000"}`} gutterBottom variant="h5" component="div">
+                        {data?.price} ₫ {data?.discount!==0 ? <div className="card__sale">{data?.discount}%</div> : <></>}
                     </Typography>
                 </CardContent>
             </Card>

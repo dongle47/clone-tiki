@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Home.scss";
 
@@ -25,12 +25,28 @@ import { Pagination, Navigation, Autoplay } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import apiMain from "../../apis/apiMain";
 function Home() {
+  const [products, setProducts] = useState([])
   const [page, setPage] = useState(1);
-  const size = 12;
+  const size = 10;
+
+  useEffect(() => {
+    const getData = async() => {
+      let param = {
+        _page: page,
+        _limit: size
+      }
+      const response = await apiMain.getProducts(param)
+      if(response){
+        setProducts(pre => [...pre,...response.data])
+      }
+    }
+    getData()
+  }, [page])
 
   const handleLoadMore = () => {
-    setPage((page) => page + 1);
+    setPage((page) => page + 1)
   };
   return (
     <>
@@ -176,9 +192,8 @@ function Home() {
               {Suggestions.map((item) => (
                 <Link key={item.id} to={item.link}>
                   <div
-                    className={`suggestion__item ${
-                      item.id === 1 ? "active" : ""
-                    }`}
+                    className={`suggestion__item ${item.id === 1 ? "active" : ""
+                      }`}
                   >
                     <img
                       style={{ width: "48px" }}
@@ -192,11 +207,12 @@ function Home() {
             </div>
           </div>
           <Grid container>
-            {Products.slice(0, page * size).map((item) => (
-              <Grid key={item.id} item lg={2} md={4} sm={6} xs={6}>
-                <CardProduct data={item} />
-              </Grid>
-            ))}
+            {
+              products.map((item) => (
+                <Grid key={item.id} item lg={2} md={4} sm={6} xs={6}>
+                  <CardProduct data={item} />
+                </Grid>
+              ))}
           </Grid>
           <div style={{ width: "100%", display: "flex" }}>
             <Button
