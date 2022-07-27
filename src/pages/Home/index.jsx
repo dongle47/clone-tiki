@@ -2,20 +2,17 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Home.scss";
 
-import { Grid, Stack, Button,Box } from "@mui/material";
+import { Grid, Stack, Button, Box } from "@mui/material";
 import CardProduct from "../../components/CardProduct";
 import CardFlashsale from "../../components/CardFlashsale";
 
 import {
   Products,
   Categories,
-  SlideKhuyenMai1,
   SlideThuongHieu1,
   SlideThuongHieu2,
-  Quicklink,
-  CategorySpecify,
-  Suggestions,
 } from "../../constraints/Home";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // import required modules
@@ -25,29 +22,66 @@ import { Pagination, Navigation, Autoplay } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+
 import apiMain from "../../apis/apiMain";
+import apiHome from "../../apis/apiHome";
+
 function Home() {
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState([]);
+  const [Quicklink, setQuicklink] = useState([]);
+  const [CategorySpecify, setCategorySpecify] = useState([]);
+  const [Suggestions, setSuggestions] = useState([]);
+
   const [page, setPage] = useState(1);
   const size = 10;
 
   useEffect(() => {
-    const getData = async() => {
+    const getData = async () => {
       let param = {
         _page: page,
-        _limit: size
+        _limit: size,
+      };
+      const response = await apiMain.getProducts(param);
+      if (response) {
+        setProducts((pre) => [...pre, ...response.data]);
       }
-      const response = await apiMain.getProducts(param)
-      if(response){
-        setProducts(pre => [...pre,...response.data])
+    };
+    getData();
+  }, [page]);
+
+  useEffect(() => {
+    const getDataQuickLink = async () => {
+      let param = {};
+      const response = await apiHome.getQuickLink(param);
+      if (response) {
+        setQuicklink(response);
       }
-    }
-    getData()
-  }, [page])
+    };
+    getDataQuickLink();
+
+    const getDataCategorySpecify = async () => {
+      let param = {};
+      const response = await apiHome.getCategorySpecify(param);
+      if (response) {
+        setCategorySpecify(response);
+      }
+    };
+    getDataCategorySpecify();
+
+    const getDataSuggestion = async () => {
+      let param = {};
+      const response = await apiHome.getSuggestions(param);
+      if (response) {
+        setSuggestions(response);
+      }
+    };
+    getDataSuggestion();
+  }, []);
 
   const handleLoadMore = () => {
-    setPage((page) => page + 1)
+    setPage((page) => page + 1);
   };
+
   return (
     <>
       <Box className="category">
@@ -66,14 +100,14 @@ function Home() {
         </section>
 
         <section id="section3">
-          <Box  width="16.45%">
+          <Box width="16.45%">
             <img
               style={{ maxHeight: "160px" }}
               src="https://salt.tikicdn.com/cache/w200/ts/banner/15/54/a3/dc054f7084003d4c9f5e100249fff610.png.webp"
               alt=""
             />
           </Box>
-          <Box width= "64.52%">
+          <Box width="64.52%">
             <img
               src="https://salt.tikicdn.com/cache/w750/ts/banner/20/af/9d/85c2367e8eb8c832e631842e75364fe2.png.webp"
               alt=""
@@ -192,8 +226,9 @@ function Home() {
               {Suggestions.map((item) => (
                 <Link key={item.id} to={item.link}>
                   <Box
-                    className={`suggestion__item ${item.id === 1 ? "active" : ""
-                      }`}
+                    className={`suggestion__item ${
+                      item.id === 1 ? "active" : ""
+                    }`}
                   >
                     <img
                       style={{ width: "48px" }}
@@ -207,12 +242,11 @@ function Home() {
             </Box>
           </Box>
           <Grid container>
-            {
-              products.map((item) => (
-                <Grid key={item.id} item lg={2} md={4} sm={6} xs={6}>
-                  <CardProduct data={item} />
-                </Grid>
-              ))}
+            {products.map((item) => (
+              <Grid key={item.id} item lg={2} md={4} sm={6} xs={6}>
+                <CardProduct data={item} />
+              </Grid>
+            ))}
           </Grid>
           <Box style={{ width: "100%", display: "flex" }}>
             <Button
@@ -231,6 +265,19 @@ function Home() {
 }
 
 function SlideKhuyenMai(props) {
+  const [SlideKhuyenMai1, setSlideKhuyenMai1] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      let param = {};
+      const response = await apiHome.getSlideKhuyenMai(param);
+      if (response) {
+        setSlideKhuyenMai1(response);
+      }
+    };
+    getData();
+  }, []);
+
   return (
     <>
       <Box style={{ width: "66.65%" }}>

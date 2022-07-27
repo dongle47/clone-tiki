@@ -38,7 +38,7 @@ function OrderItem(props) {
           >
             <img width="80px" height="80px" alt="" src={item.image} />
             <span className="orderItem__product__quanlity">
-              x{item.quanlity}
+              x{item.quantity}
             </span>
           </Stack>
           <Stack sx={{ flex: 1, margin: "0 12px" }}>
@@ -48,7 +48,7 @@ function OrderItem(props) {
           </Stack>
           <Stack sx={{}}>
             <Typography className="orderItem__product__price">
-              {numWithCommas(item.price * item.quanlity)} ₫
+              {numWithCommas(item.price * item.quantity)} ₫
             </Typography>
           </Stack>
         </Stack>

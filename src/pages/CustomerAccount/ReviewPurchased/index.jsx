@@ -17,6 +17,7 @@ import {
   DialogActions,
   DialogContent,
   Rating,
+  Pagination,
 } from "@mui/material";
 
 import productImage from "../../../assets/img/avatar1.jpg";
@@ -106,6 +107,8 @@ function ReviewPurchased() {
         </Card>
       </Stack>
 
+      <Pagination count={10} page={1} />
+
       <div>
         <BootstrapDialog
           onClose={handleClose}
@@ -157,16 +160,22 @@ function ReviewPurchased() {
                   maxRows={10}
                   aria-label="maximum height"
                   placeholder="Nhập bình luận"
-                  style={{ width: "100%", border: "1px solid #c2c2c2", fontSize:'20px' }}
+                  style={{
+                    width: "100%",
+                    border: "1px solid #c2c2c2",
+                    fontSize: "20px",
+                  }}
                 />
               </Stack>
             </Stack>
           </DialogContent>
 
           <DialogActions>
-            <Button variant="outlined" color='error' onClick={handleClose}>Trở lại</Button>
+            <Button variant="outlined" color="error" onClick={handleClose}>
+              Trở lại
+            </Button>
 
-            <Button variant='contained' >Hoàn thành</Button>
+            <Button variant="contained">Hoàn thành</Button>
           </DialogActions>
         </BootstrapDialog>
       </div>

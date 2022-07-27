@@ -1,5 +1,6 @@
 
 import { axiosClient, axiosInstance } from "./axiosClient";
+
 const apiMain = {
 
     ///authentication
@@ -18,16 +19,18 @@ const apiMain = {
         return res.data;
     },
     
+    getMyReviews: async (params) => {
+        const myReview = await axiosClient.get('/myreview', {params})
+        return myReview.data;
+    },
+
+
     verifyToken: async (user, dispatch, stateSuccess) => {
         const url = `/auth/verifytoken`
         let axi = axiosInstance(user, dispatch, stateSuccess)
         return (await axi.get(url, { headers: { Authorization: `Bearer ${user.accessToken}` } })).data;
     },
     
-    getMyReviews: async (params) => {
-        const myReview = await axiosClient.get('/myreview', {params})
-        return myReview.data;
-    }
     
 }
 export default apiMain;
