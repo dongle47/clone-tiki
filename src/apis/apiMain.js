@@ -14,5 +14,10 @@ const apiMain = {
         return (await axi.get(url, { headers: { Authorization: `Bearer ${user.accessToken}` } })).data;
     },
     
+    getMyReviews: async (params) => {
+        const myReview = await axiosClient.get('/myreview', {params})
+        return myReview.data;
+    }
+    
 }
 export default apiMain;
