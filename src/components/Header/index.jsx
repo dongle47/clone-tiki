@@ -483,7 +483,7 @@ function Login(props) {
   );
 }
 
-function Signin(props) {
+function SignUp(props) {
 
   const [pass, setPass] = React.useState({
     password: '',
