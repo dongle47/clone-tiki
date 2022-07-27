@@ -60,13 +60,17 @@ import AdminTab from "./components/AdminTab";
 import CreateCoupon from "./pages/Admin/Coupon/CreateCoupon";
 
 import Error from "./pages/Error/index";
+import { useDispatch, useSelector } from "react-redux";
+import { axiosInstance } from "./apis/axiosClient";
 
-
+import {loginSuccess,logoutSuccess} from "./slices/authSlice"
 
 
 function App() {
   const isAdmin = window.location.href.includes("admin");
-
+  const user = useSelector(state=>state.auth.user)
+  const dispatch = useDispatch()
+  axiosInstance(user,dispatch,loginSuccess,logoutSuccess)
   return (
     <BrowserRouter>
       {isAdmin ? null : <Header />}

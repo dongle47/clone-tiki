@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import ReviewProduct from './ReviewProduct'
 import {
     Rating,
-    Button, Grid
+    Button, Grid,
+    Box,
+    Stack
 
 } from "@mui/material"
 import "./DetailProduct.scss"
@@ -23,30 +25,30 @@ function DetailProduct() {
     const link_option_color = "https://salt.tikicdn.com/cache/100x100/ts/product/d5/40/5e/754dcea83b913f7585861d083491a917.png.webp"
     return (
         <>
-            <div className="container">
-                <div className="detailProduct">
-                    <div className="detailProduct__img">
-                        <div className="detailProduct__img__primary">
+            <Box className="container">
+                <Box className="detailProduct">
+                    <Box className="detailProduct__img">
+                        <Box className="detailProduct__primary-img">
                             <img src={link_image} alt="" />
-                        </div>
-                        <div className="detailProduct__img__list">
-                            <div className="detailProduct__img__item selected"> <img src={link_image} alt="" /></div>
-                            <div className="detailProduct__img__item"> <img src={link_image} alt="" /></div>
-                            <div className="detailProduct__img__item"> <img src={link_image} alt="" /></div>
-                            <div className="detailProduct__img__item"> <img src={link_image} alt="" /></div>
-                            <div className="detailProduct__img__item"> <img src={link_image} alt="" /></div>
-                            <div className="detailProduct__img__item">
-                                <div className="lastimage">+6</div>
+                        </Box>
+                        <Stack direction="row" justifyContent="space-between" mt={3}>
+                            <Box className="detailProduct__item-img selected"> <img src={link_image} alt="" /></Box>
+                            <Box className="detailProduct__item-img"> <img src={link_image} alt="" /></Box>
+                            <Box className="detailProduct__item-img"> <img src={link_image} alt="" /></Box>
+                            <Box className="detailProduct__item-img"> <img src={link_image} alt="" /></Box>
+                            <Box className="detailProduct__item-img"> <img src={link_image} alt="" /></Box>
+                            <Box className="detailProduct__item-img">
+                                <Box className="lastimage">+6</Box>
                                 <img src={link_image} alt="" />
-                            </div>
+                            </Box>
 
-                        </div>
-                    </div>
-                    <div className="detailProduct__info">
-                        <div className="detailProduct__info__title">
+                        </Stack>
+                    </Box>
+                    <Box flex={1}>
+                        <Box className="detailProduct__title">
                             <h2>Áo Thun Polo Nam YODY Bo Trơn Chất Liệu Cafe Siêu Nhẹ, Siêu Mát, Khử Mùi Tốt - APM4225</h2>
-                        </div>
-                        <div className="detailProduct__info__rating">
+                        </Box>
+                        <Box className="detailProduct__rating">
                             <Rating
                                 name="simple-controlled"
                                 value={4}
@@ -54,90 +56,90 @@ function DetailProduct() {
                                 sx={{ fontSize: "18px" }}
                             />
                             <span>Xem 19 đánh giá | Đã bán 400</span>
-                        </div>
+                        </Box>
 
-                        <div className="detailProduct__info__price">
+                        <Box className="detailProduct__price">
                             <span>217.000 ₫</span>
                             <span>300.000 ₫</span>
                             <span>-30%</span>
-                        </div>
-                        <div className="detailProduct__option">
-                            <div className="detailProduct__option__title">
+                        </Box>
+                        <Box className="product-option">
+                            <Box className="product-option__title">
                                 Màu: <span>Đen</span>
-                            </div>
-                            <div className="detailProduct__option__list">
-                                <div className="detailProduct__option__item detailProduct__option__item--color selected">
+                            </Box>
+                            <Box className="product-option__list">
+                                <Box className="product-option__item product-option__item--color selected">
                                     <img src={link_option_color} alt="" />
                                     Navy
                                     <span><CheckIcon sx={{ fontSize: "12px", color: '#fff' }} /></span>
-                                </div>
-                                <div className="detailProduct__option__item detailProduct__option__item--color">
+                                </Box>
+                                <Box className="product-option__item product-option__item--color">
                                     <img src={link_option_color} alt="" />
                                     Navy
                                     <span><CheckIcon sx={{ fontSize: "12px", color: '#fff' }} /></span>
-                                </div>
-                                <div className="detailProduct__option__item detailProduct__option__item--color">
+                                </Box>
+                                <Box className="product-option__item product-option__item--color">
                                     <img src={link_option_color} alt="" />
                                     Navy
                                     <span><CheckIcon sx={{ fontSize: "12px", color: '#fff' }} /></span>
-                                </div>
+                                </Box>
 
-                            </div>
-                        </div>
+                            </Box>
+                        </Box>
 
-                        <div className="detailProduct__option">
-                            <div className="detailProduct__option__title">
+                        <Box className="product-option">
+                            <Box className="product-option__title">
                                 Kích cỡ: <span>L</span>
-                            </div>
+                            </Box>
 
-                            <div className="detailProduct__option__list">
-                                <div className="detailProduct__option__item detailProduct__option__item--size">
+                            <Box className="product-option__list">
+                                <Box className="product-option__item product-option__item--size">
                                     M
-                                </div>
-                                <div className="detailProduct__option__item detailProduct__option__item--size">
+                                </Box>
+                                <Box className="product-option__item product-option__item--size">
                                     L
-                                </div>
-                                <div className="detailProduct__option__item detailProduct__option__item--size selected">
+                                </Box>
+                                <Box className="product-option__item product-option__item--size selected">
                                     3XL
                                     <span><CheckIcon sx={{ fontSize: "12px", color: '#fff' }} /></span>
-                                </div>
+                                </Box>
 
-                            </div>
-                        </div>
+                            </Box>
+                        </Box>
 
-                        <div className="detailProduct__coupon">
-                            <div className="detailProduct__coupon__title">
+                        <Box className="product-coupon">
+                            <Box className="product-coupon__title">
                                 8 Mã giảm giá
-                            </div>
-                            <div className="detailProduct__coupon__list">
-                                <div className="detailProduct__coupon__item">
+                            </Box>
+                            <Box className="product-coupon__list">
+                                <Box className="product-coupon__item">
                                     Giảm 80k
-                                </div>
-                                <div className="detailProduct__coupon__item">
+                                </Box>
+                                <Box className="product-coupon__item">
                                     Giảm 20k
-                                </div>
+                                </Box>
                                 <ArrowForwardIosIcon sx={{ color: "#1890ff" }} />
-                            </div>
-                        </div>
+                            </Box>
+                        </Box>
 
-                        <div className="detailProduct__address">
+                        <Box className="detailProduct__address">
                             <span>Giao đến </span>
                             <span>TP. Nha Trang, P. Vĩnh Trường, Khánh Hòa</span>
                             <span> - </span>
                             <span>Đổi địa chỉ</span>
-                        </div>
+                        </Box>
 
-                        <div className="detailProduct__quanlity">
-                            <div className="detailProduct__quanlity__title">
+                        <Box className="product-quanlity">
+                            <Box className="product-quanlity__title">
                                 Số lượng
-                            </div>
-                            <div className="detailProduct__quanlity__groupInput">
+                            </Box>
+                            <Box className="product-quanlity__groupInput">
                                 <button><RemoveIcon /></button>
                                 <input type="text" value={1} />
                                 <button><AddIcon /></button>
-                            </div>
-                        </div>
-                        <div className="detailProduct__buy">
+                            </Box>
+                        </Box>
+                        <Box className="detailProduct__buy">
                             <Button variant="contained"
                                 sx={{
                                     width: "400px",
@@ -146,15 +148,15 @@ function DetailProduct() {
                                     "&:hover": { opacity: 0.8, backgroundColor: "#ff3945" }
                                 }}
                             >Chọn mua</Button>
-                        </div>
+                        </Box>
 
-                    </div>
-                </div>
+                    </Box>
+                </Box>
 
-                <div className="productSimilar">
-                    <div className="productSimilar__title">
+                <Box className="productSimilar">
+                    <Box className="productSimilar__title">
                         Sản Phẩm Tương Tự
-                    </div>
+                    </Box>
                     <Grid container>
                         {Products.slice(0, 6).map(item =>
                             <Grid item key={item.id} xs={2}>
@@ -162,13 +164,12 @@ function DetailProduct() {
                             </Grid>)
                         }
                     </Grid>
-                </div>
-                <div className="productSpecification">
-                    <div className="productSpecification__title">
+                </Box>
+                <Box className="productSpecification">
+                    <Box className="productSpecification__title">
                         Thông Tin Chi Tiết
-                    </div>
-                    <div className="productSpecification__table">
-
+                    </Box>
+                    <Box className="productSpecification__table">
                         <table>
                             <tbody>
                                 <tr>
@@ -193,26 +194,26 @@ function DetailProduct() {
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-                </div>
-                <div className="descriptionProduct">
-                    <div className="productSpecification__title">
+                    </Box>
+                </Box>
+                <Box className="descriptionProduct">
+                    <Box className="productSpecification__title">
                         Mô Tả Sản phẩm
-                    </div>
-                    <div className="descriptionProduct__content">
+                    </Box>
+                    <Box className="descriptionProduct__content">
                         {
                             (expandContent ? content.split("\n") : content.split("\n").splice(0, 40))
                                 .map((item, i) => <p key={i}>{item}</p>)
                         }
-                        {expandContent ? "" : <div className="bg-gradient"></div>}
-                    </div>
+                        {expandContent ? "" : <Box className="bg-gradient"></Box>}
+                    </Box>
 
-                    <div className="descriptionProduct__showmore">
+                    <Box className="descriptionProduct__showmore">
                         <Button onClick={handleExpandContent} variant="outlined">{expandContent ? "Thu gọn nội dung" : "Xem thêm"}</Button>
 
-                    </div>
-                </div>
-            </div>
+                    </Box>
+                </Box>
+            </Box>
             <ReviewProduct />
         </>
 

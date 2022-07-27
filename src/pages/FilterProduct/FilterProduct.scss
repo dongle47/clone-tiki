@@ -6,30 +6,30 @@
     &__sidebar {
         border-left: 1px solid #f5f5f5;
         width: 250px;
-        &__title {
-            padding: 14px 0;
-            font-size: 13px !important;
-            font-weight: 500 !important;
-            text-transform: uppercase;
+    }
+    &__title {
+        padding: 14px 0;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        text-transform: uppercase;
+    }
+    &__form {
+        border-bottom: 1px solid #f5f5f5;
+        padding: 0 8px 12px 6px;
+    }
+    &__label {
+        height: 24px !important;
+        margin: 0 0 4px 0 !important;
+        & .MuiTypography-root {
+            font-size: 13px
         }
-        &__form {
-            border-bottom: 1px solid #f5f5f5;
-            padding: 0 8px 12px 6px;
-        }
-        &__label {
-            height: 24px !important;
-            margin: 0 0 4px 0 !important;
-            & .MuiTypography-root {
-                font-size: 13px
-            }
-        }
-        &__checkbox,
-        &__radiobutton {
-            padding: 0 !important;
-            margin: 0 4px 0 0 !important;
-            & .MuiSvgIcon-root {
-                font-size: 18px;
-            }
+    }
+    &__checkbox,
+    &__radiobutton {
+        padding: 0 !important;
+        margin: 0 4px 0 0 !important;
+        & .MuiSvgIcon-root {
+            font-size: 18px;
         }
     }
 }

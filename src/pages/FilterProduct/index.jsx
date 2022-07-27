@@ -34,20 +34,20 @@ function FilterProduct(props) {
     return (
         <Stack className='filterProduct container' direction="row" spacing={1}>
             <Stack className='filterProduct__sidebar' direction="column">
-                <Box className='filterProduct__sidebar__form'>
-                    <Typography className='filterProduct__sidebar__title'>Dịch vụ</Typography>
+                <Box className='filterProduct__form'>
+                    <Typography className='filterProduct__title'>Dịch vụ</Typography>
                     <FormGroup>
                         {
                             services.map(item =>
-                                <FormControlLabel key={item.id} className='filterProduct__sidebar__label'
-                                    control={<Checkbox className="filterProduct__sidebar__checkbox" />
+                                <FormControlLabel key={item.id} className='filterProduct__label'
+                                    control={<Checkbox className="filterProduct__checkbox" />
                                     } label={item.name} />)
                         }
                     </FormGroup>
                 </Box>
 
-                <Box className='filterProduct__sidebar__form'>
-                    <Typography className='filterProduct__sidebar__title'>Đánh giá</Typography>
+                <Box className='filterProduct__form'>
+                    <Typography className='filterProduct__title'>Đánh giá</Typography>
                     <FormGroup>
                         {
                             [5, 4, 3].map(item =>
@@ -73,8 +73,8 @@ function FilterProduct(props) {
                     </FormGroup>
                 </Box>
 
-                <Box className='filterProduct__sidebar__form'>
-                    <Typography className='filterProduct__sidebar__title'>Giá</Typography>
+                <Box className='filterProduct__form'>
+                    <Typography className='filterProduct__title'>Giá</Typography>
                     <span className='filterPrice'>Dưới {numWithCommas(category.rangePrice.min)} </span>
                     <span className='filterPrice'>Từ {numWithCommas(category.rangePrice.min)} đến {numWithCommas(category.rangePrice.max)} </span>
                     <span className='filterPrice'>Trên {numWithCommas(category.rangePrice.max)} </span>
@@ -93,19 +93,19 @@ function FilterProduct(props) {
                     )
                 }
 
-                <Box className='filterProduct__sidebar__form'>
-                    <Typography className='filterProduct__sidebar__title'>Giao hàng</Typography>
+                <Box className='filterProduct__form'>
+                    <Typography className='filterProduct__title'>Giao hàng</Typography>
                     <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
                         name="radio-buttons-group"
                     >
-                        <FormControlLabel className='filterProduct__sidebar__label'
+                        <FormControlLabel className='filterProduct__label'
                             value="noidia"
-                            control={<Radio className="filterProduct__sidebar__radiobutton" />}
+                            control={<Radio className="filterProduct__radiobutton" />}
                             label="Hàng Nội Địa" />
-                        <FormControlLabel className='filterProduct__sidebar__label'
+                        <FormControlLabel className='filterProduct__label'
                             value="quocte"
-                            control={<Radio className="filterProduct__sidebar__radiobutton" />}
+                            control={<Radio className="filterProduct__radiobutton" />}
                             label="Hàng Quốc Tế" />
                     </RadioGroup>
                 </Box>
@@ -150,15 +150,15 @@ function FilterForm(props) {
         setExpand(pre => !pre)
     }
     return (
-        <Box className='filterProduct__sidebar__form'>
-            <Typography className='filterProduct__sidebar__title'>{property.display}</Typography>
+        <Box className='filterProduct__form'>
+            <Typography className='filterProduct__title'>{property.display}</Typography>
             <FormGroup>
                 {(expand ? property.items : property.items.slice(0, 4))
                     .map(item =>
                         <FormControlLabel
                             key={item.id}
-                            className='filterProduct__sidebar__label'
-                            control={<Checkbox className="filterProduct__sidebar__checkbox" />}
+                            className='filterProduct__label'
+                            control={<Checkbox className="filterProduct__checkbox" />}
                             label={item.name} />)
                 }
             </FormGroup>
