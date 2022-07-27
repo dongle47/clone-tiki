@@ -7,6 +7,10 @@ const apiMain = {
         const res = await axiosClient.get('/products', {params})
         return res.data;
     },
+    getOrders: async (params) => {
+        const res = await axiosClient.get('/myorder', {params})
+        return res.data;
+    },
     
     verifyToken: async (user, dispatch, stateSuccess) => {
         const url = `/auth/verifytoken`
