@@ -14,6 +14,7 @@ import {
   Modal,
   TextField,
   Popover,
+  Input
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
@@ -25,6 +26,12 @@ import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import ClearIcon from '@mui/icons-material/Clear';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 
 function Header() {
   const [modalLogin, setModalLogin] = useState(false);
@@ -325,6 +332,46 @@ function Login(props) {
 }
 
 function Signin(props) {
+
+  const [pass, setPass] = React.useState({
+    password: '',
+    showPassword: false,
+  });
+
+  const [passConf, setPassConf] = React.useState({
+    passwordConf: '',
+    showPasswordConf: false,
+  });
+
+  const handleChangePass = (prop) => (event) => {
+    setPass({ ...pass, [prop]: event.target.value });
+  };
+
+  const handleChangePassConf = (prop) => (event) => {
+    setPassConf({ ...passConf, [prop]: event.target.value });
+  };
+
+  const handleClickShowPass = () => {
+    setPass({
+      ...pass,
+      showPassword: !pass.showPassword,
+    });
+  };
+
+  const handleClickShowPassConf = () => {
+    setPassConf({
+      ...passConf,
+      showPasswordConf: !passConf.showPasswordConf,
+    });
+  };
+
+  const handleMouseDownPass = (event) => {
+    event.preventDefault();
+  };
+
+  const handleMouseDownPassConf = (event) => {
+    event.preventDefault();
+  };
   return (
     <Stack direction="row">
       <Stack direction='column' sx={{ flex: 5 }} spacing={2}>
@@ -339,8 +386,55 @@ function Signin(props) {
           <TextField id="standard-basic" label="Nhập mã" variant="standard" sx={{ flex: 1 }} />
           <Button variant="outlined" sx={{ width: "100px" }}>Xác nhận</Button>
         </div>
-        <TextField id="standard-basic" label="Nhập mật khẩu" variant="standard" />
-        <TextField id="standard-basic" label="Nhập lại mật khẩu" variant="standard" />
+        {/* <TextField id="standard-basic" label="Nhập mật khẩu" variant="standard" /> */}
+
+        <FormControl sx={{ width: "100%" }} variant="standard">
+        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+          <Input
+          variant="standard"
+            id="password"
+            type={pass.showPassword ? 'text' : 'password'}
+            value={pass.password}
+            onChange={handleChangePass('password')}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPass}
+                  onMouseDown={handleMouseDownPass}
+                  edge="end"
+                >
+                  {pass.showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
+          />
+        </FormControl>
+        {/* <TextField id="standard-basic" label="Nhập lại mật khẩu" variant="standard" /> */}
+
+        <FormControl sx={{ width: "100%" }} variant="standard">
+          <InputLabel htmlFor="outlined-adornment-password">Nhập lại mật khẩu</InputLabel>
+          <Input
+            id="password-config"
+            type={passConf.showPasswordConf ? 'text' : 'password'}
+            value={passConf.password}
+            onChange={handleChangePassConf('password')}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassConf}
+                  onMouseDown={handleMouseDownPassConf}
+                  edge="end"
+                >
+                  {passConf.showPasswordConf ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
+          />
+        </FormControl>
         <Button variant="contained" color='error'>Hoàn Tất</Button>
         <p style={{ textAlign: "center" }}>Đăng nhập bằng mail</p>
         <p style={{ textAlign: "center", marginTop: "3rem" }} >Tiếp tục bằng</p>
@@ -361,7 +455,7 @@ function Signin(props) {
         </IconButton>
       </span>
 
-    </Stack>
+    </Stack>   
   )
 }
 
