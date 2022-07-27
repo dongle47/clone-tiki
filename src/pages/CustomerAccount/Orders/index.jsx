@@ -10,12 +10,29 @@ import "./Orders.scss"
 import SearchIcon from '@mui/icons-material/Search';
 import OrderItem from "../../../components/OrderItem/index.jsx";
 import { orderTabs, orderItems } from "../../../constraints/OrderItem";
+import { useEffect } from "react";
+import apiMain
+ from "../../../apis/apiMain";
 
 function Orders() {
-    const [orders, setOrders] = useState(orderItems)
+    const [orders, setOrders] = useState([])
     const theme = useTheme();
     const [value, setValue] = useState(0);
-
+    const [page, setPage] = useState(1);
+    const size = 10;
+    useEffect(() => {
+        const getData = async() => {
+          let param = {
+            _page: page,
+            _limit: size
+          }
+          const response = await apiMain.getOrders(param)
+          if(response){
+            setOrders(response.data)
+          }
+        }
+        getData()
+      }, [page])
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -66,7 +83,7 @@ function Orders() {
                 </TabPanel>
                 {
                     orderTabs.slice(1, orderTabs.length).map(item => {
-                        const tmp = getOrderByType(orders, item.type)
+                        const tmp = getOrderByType(orders, item.id)
                         if (tmp.length === 0)
                             return (
                                 <TabPanel value={value} index={item.id} dir={theme.direction}>
@@ -118,7 +135,7 @@ function TabPanel(props) {
     );
 }
 
-const getOrderByType = (orders, type) => orders.filter(item => item.type === type)
+const getOrderByType = (orders, id) => orders.filter(item => item.type.id === id)
 
 
 export default Orders

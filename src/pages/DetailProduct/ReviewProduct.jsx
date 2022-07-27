@@ -1,10 +1,11 @@
-import React from 'react'
+import { useState, useRef, useEffect } from "react";
 import "./ReviewProduct.scss"
 import {
     Box, Typography,
     Stack,
     Rating
 } from "@mui/material"
+import apiMain from "../../apis/apiMain";
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
@@ -13,6 +14,24 @@ import CheckIcon from '@mui/icons-material/Check';
 import Pagination from '@mui/material/Pagination';
 
 function ReviewProduct() {
+    const [reviews, setReviews] = useState([])
+    const [page, setPage] = useState([1])
+    const size = 10
+
+    useEffect(() => {
+        const getReviews = async () => {
+            let param = {
+                _page: page,
+                _limit: size
+            }
+            const response = await apiMain.getReviews(param)
+            if (response) {
+                setReviews(response.data)
+            }
+        }
+        getReviews()
+    }, [page])
+
     return (
         <Box className="container" sx={{ backgroundColor: "#fff" }}>
             <Typography sx={{ fontSize: "20px" }} py={1} px={2}>Đánh Giá - Nhận Xét Từ Khách Hàng</Typography>
@@ -158,20 +177,17 @@ function ReviewProduct() {
 
             {/* Đánh giá của người mua */}
             {
-                [1,2,3,4].map((item,i)=><Feedback key={i}/>)
+                reviews.map((item, i) => <Feedback key={i} />)
             }
 
             <Stack justifyContent={"flex-end"} direction="row" sx={{ padding: "0 48px" }}>
                 <Pagination count={5} color="primary" />
             </Stack>
-
-
-
         </Box>
     )
 }
 
-function Feedback() {
+function Feedback({data}) {
     return (
         <Stack direction="row" sx={{ padding: "32px 48px 24px" }}>
             <Box sx={{ width: "335px" }}>
@@ -197,15 +213,15 @@ function Feedback() {
                         <div className='IconWritten'>
                             <img src="https://salt.tikicdn.com/ts/upload/c6/67/f1/444fc9e1869b5d4398cdec3682af7f14.png" alt="" />
                         </div>
-                        <Typography sx={{fontSize:"13px",color:"#888"}}>Đã viết: </Typography>
-                        <Typography ml={1} sx={{fontSize:"13px",color:"#333"}}>1 đánh giá</Typography>
+                        <Typography sx={{ fontSize: "13px", color: "#888" }}>Đã viết: </Typography>
+                        <Typography ml={1} sx={{ fontSize: "13px", color: "#333" }}>1 đánh giá</Typography>
                     </Stack>
                     <Stack direction="row" mt={1}>
                         <div className='IconWritten'>
                             <img src="https://salt.tikicdn.com/ts/upload/cc/86/cd/1d5ac6d4e00abbf6aa4e4636489c9d80.png" alt="" />
                         </div>
-                        <Typography sx={{fontSize:"13px",color:"#888"}}>Đã nhận: </Typography>
-                        <Typography sx={{fontSize:"13px",color:"#333"}} ml={1}>0 Lượt cám ơn</Typography>
+                        <Typography sx={{ fontSize: "13px", color: "#888" }}>Đã nhận: </Typography>
+                        <Typography sx={{ fontSize: "13px", color: "#333" }} ml={1}>0 Lượt cám ơn</Typography>
                     </Stack>
                 </Stack>
             </Box>

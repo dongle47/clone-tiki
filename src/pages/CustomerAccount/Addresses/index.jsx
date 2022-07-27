@@ -11,8 +11,7 @@ function Addresses() {
     return (
       <Stack
         direction="row"
-        width="50rem"
-        justifyContent="space-between"
+        width="100%"
         className="items"
       >
         <Stack className="info">
@@ -22,10 +21,10 @@ function Addresses() {
         </Stack>
 
         <Stack direction="row" className="action">
-          <Button variant="text" color="primary">
+          <Button className="Modify" variant="text">
             Chỉnh sửa
           </Button>
-          <Button variant="text" color="warning">
+          <Button className="Delete" variant="text">
             Xóa
           </Button>
         </Stack>
