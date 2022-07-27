@@ -1,12 +1,11 @@
 import { Box, Typography, Stack, Button } from "@mui/material";
 import React from "react";
 import "./OrderItem.scss";
-import { orderStates } from "../../constraints/OrderItem";
+import { orderTabs } from "../../constraints/OrderItem";
 import { numWithCommas } from "../../constraints/Util";
 function OrderItem(props) {
   const { order } = props;
-  console.log(order.state);
-  const state = getState(order.state);
+  const state = getState(order.type);
   return (
     <Box className="orderItem">
       <Box className="orderItem__heading">
@@ -78,6 +77,6 @@ function OrderItem(props) {
   );
 }
 
-const getState = (state) => orderStates.find((item) => item.display === state);
+const getState = (state) => orderTabs.find((item) => item.id === state.id);
 
 export default OrderItem;
