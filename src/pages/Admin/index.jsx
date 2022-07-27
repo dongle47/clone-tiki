@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Outlet, Link } from "react-router-dom";
+import {Routes,Route, Link } from "react-router-dom";
 import { sidebar } from "../../constraints/Admin";
 import { styled } from "@mui/material/styles";
 
@@ -30,6 +30,22 @@ import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
+
+import CreateCoupon from "./Coupon/CreateCoupon";
+import AdminLogin from "./Login";
+import Brand from "./Brand";
+import CreateBrand from "./Brand/CruBrand";
+import Category from "./Category";
+import CreateCategory from "./Category/CruCategory/index";
+import CouponAdmin from "./Coupon";
+import Dashboard from "./Dashboard";
+import GrowthCenter from "./GrowthCenter";
+import Order from "./Order";
+import Product from "./Product";
+import CreateProduct from "./Product/CreateProduct";
+import Review from "./Review";
+import User from "./User";
+import DetailUser from "./User/DetailUser";
 
 const drawerWidth = 240;
 
@@ -252,7 +268,7 @@ function Admin() {
               alt=""
             />
           </IconButton>
-          
+
           <Typography sx={{ ml: "1rem", fontWeight: "bold" }} variant="h6">
             Admin Center
           </Typography>
@@ -298,9 +314,35 @@ function Admin() {
         </List>
       </Drawer>
 
-      <Box component="main" flexGrow={1}  p={0} bgcolor="#f5f5fa" minHeight="40rem">
+      <Box component="main" flexGrow={1} p={0} bgcolor="#f5f5fa" minHeight="40rem">
         <DrawerHeader />
-        <Outlet />
+        <Routes>
+          <Route index element={<Dashboard />} />
+          <Route path="login" element={<AdminLogin />} />
+          <Route path="order/*" element={<Order />} />
+          <Route path="product" element={<Product />}>
+            <Route path="create" element={<CreateProduct />} />
+          </Route>
+
+          <Route path="category" element={<Category />}>
+            <Route path="create" element={<CreateCategory />} />
+          </Route>
+
+          <Route path="brand" element={<Brand />}>
+            <Route path="create" element={<CreateBrand />} />
+          </Route>
+
+          <Route path="develop" element={<GrowthCenter />} />
+          <Route path="coupon" element={<CouponAdmin />} >
+            <Route path="create" element={<CreateCoupon />} />
+          </Route>
+
+          <Route path="user" element={<User />}>
+            <Route path="detail" element={<DetailUser />} />
+          </Route>
+
+          <Route path="review" element={<Review />} />
+        </Routes>
       </Box>
     </Stack>
   );

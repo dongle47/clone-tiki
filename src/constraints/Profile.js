@@ -25,7 +25,7 @@ export const sidebarTab = [
         id: 3,
         icon: ListAltIcon,
         text: 'Quản lý đơn hàng',
-        link: '/sale/order/history'
+        link: '/customer/order/history'
     },
     {
         id: 4,
@@ -43,7 +43,7 @@ export const sidebarTab = [
         id: 6,
         icon: RateReviewIcon,
         text: 'Nhận xét sản phẩm đã mua',
-        link: '/nhan-xet-san-pham-ban-da-mua'
+        link: '/customer/nhan-xet-san-pham-ban-da-mua'
     },
     {
         id: 7,

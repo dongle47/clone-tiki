@@ -24,20 +24,17 @@ import SmartToyOutlinedIcon from '@mui/icons-material/SmartToyOutlined';
 import LiquorOutlinedIcon from '@mui/icons-material/LiquorOutlined';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import SportsBasketballOutlinedIcon from '@mui/icons-material/SportsBasketballOutlined';
-function MyFormHelperText() {
-    const { focused } = useFormControl() || {};
-    return;
-}
+
 function Error() {
     return (
         <Box>
             <Stack >
                 <Box sx={{ backgroundColor: "#3fc6f5" }} height="230px">
-                    <img src="https://salt.tikicdn.com/desktop/img/404/city-cloud.png" width="1535px" />
+                    <img alt="" src="https://salt.tikicdn.com/desktop/img/404/city-cloud.png" width="1535px" />
                 </Box>
                 <Box sx={{ backgroundColor: "#fdba13" }} height="120px" px={2} position="relative" >
                     <Stack direction="row" alignItems="center" justifyContent="center" pt={2} spacing={3}>
-                        <img src="https://salt.tikicdn.com/assets/img/404/404.png"></img>
+                        <img alt="" src="https://salt.tikicdn.com/assets/img/404/404.png"></img>
                         <Typography sx={{ fontSize: "22px", color: "#FFFFFF", fontWeight: 550 }} width="405.5px">Xin lỗi, trang của bạn đang tìm kiếm không tồn tại!</Typography>
                     </Stack>
                     <img src="https://salt.tikicdn.com/assets/img/404/super.png" alt="" style={{ position: "absolute", bottom: 0, left: "220px" }} />
@@ -75,7 +72,6 @@ function Error() {
                 <Box component="form" noValidate autoComplete="off" justifyContent="space-between">
                     <FormControl sx={{width:"345px", height:"34px"}} px={2}>
                         <OutlinedInput size="small"  placeholder="Địa chỉ Email của bạn" />
-                        <MyFormHelperText />
                     </FormControl>
                 </Box>
                 <Button variant="contained">Đăng ký</Button>
