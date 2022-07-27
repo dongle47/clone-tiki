@@ -1,42 +1,53 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React from "react";
+import { useState, useRef, useEffect } from "react";
 import "./MyReview.scss";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Rating from "@mui/material/Rating";
 import StoreIcon from "@mui/icons-material/Store";
-import { myReviews } from "../../../constraints/MyReview";
+import apiMain from "../../../apis/apiMain";
+import Pagination from '@mui/material/Pagination';
 
 function MyRates() {
+  const [myReviews, setMyReviews] = useState([])
+  const [totalPage, setTotalPage] = useState(10)
+  const [page, setPage] = useState(1)
+  const size = 5
+
+  useEffect(() => {
+    const getMyReviews = async () => {
+      let param = {
+        _page: page,
+        _limit: size
+      }
+      const response = await apiMain.getMyReviews(param)
+      if (response) {
+        setMyReviews(response.data)
+        setTotalPage(Math.ceil(response.pagination._totalRows/size))
+      }
+    }
+    getMyReviews()
+  }, [page])
+
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
   return (
     <Box>
       <Typography variant="h6" sx={{ margin: "20px 0px 15px" }}>
         Nhận xét sản phẩm đã mua
       </Typography>
-      <Stack>
+      <Stack flex='1' >
         {myReviews.map((item) => (
-          <Stack
-            direction="row"
-            spacing={10}
-            backgroundColor="#ffff"
-            padding={2}
+          <Stack direction="row" spacing={10} bgcolor="#ffff" p={2}
           >
             <Stack
-              direction="row"
-              spacing={1}
-              sx={{ minWidth: "240px", minHeight: "256px" }}
+              spacing={1} minWidth="240px" minHeight="256px"
             >
-              <Stack
+              <Stack className="myreview__avt"
                 sx={{
-                  backgroundSize: "90%",
-                  backgroundRepeat: "no-repeat",
-                  border: "0.5px solid rgb(238, 238, 238)",
-                  height: "80px",
-                  width: "80px",
-                  borderRadius: "4px",
                   backgroundImage: `url(${item.productImg})`,
-                  backgroundPosition: "center center",
                 }}
               ></Stack>
               <Stack>
@@ -54,10 +65,10 @@ function MyRates() {
             <Stack spacing={1}>
               <Stack direction="row" spacing={1} jutifyContent="center">
                 <Stack direction="row">
-                  <Rating name="disabled" value={item.star} disabled />
+                  <Rating name="disabled" value={item.rating} disabled />
                 </Stack>
-                <Typography
-                  sx={{ fontSize: "15px", color: "#242424", fontWeight: "500" }}
+                <Typography 
+                  fontSize="15px" color="#242424" fontWeight="500"
                 >
                   {item.subject}
                 </Typography>
@@ -67,16 +78,11 @@ function MyRates() {
               >
                 {item.content}
               </Typography>
-              <Stack direction="row" spacing={1}>
-                {item.linkPhoto.map((item) => (
-                  <Stack
+              <Stack direction="row" flexWrap="wrap" justifyContent="flex-start" gap={'10px'}>
+                {item.imgRate.map((item) => (
+                  <Stack className="myreview__picture"
                     sx={{
-                      height: "150px",
-                      width: "150px",
-                      borderRadius: "4px",
-                      backgroundImage: `url(${item.url})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center center",
+                      backgroundImage: `url(${item})`,                      
                     }}
                   ></Stack>
                 ))}
@@ -87,6 +93,11 @@ function MyRates() {
             </Stack>
           </Stack>
         ))}
+      </Stack>
+
+      <Stack spacing={2}>
+        <Typography>Page: {page}</Typography>
+        <Pagination count={totalPage} page={page} onChange={handleChange} />
       </Stack>
     </Box>
   );
