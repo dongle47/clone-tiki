@@ -7,6 +7,12 @@ const apiMain = {
         const res = await axiosClient.get('/products', {params})
         return res.data;
     },
+
+    getNotification: async (params) => {
+        const res = await axiosClient.get('/notifications', {params})
+        return res.data;
+    },
+
     getOrders: async (params) => {
         const res = await axiosClient.get('/myorder', {params})
         return res.data;
