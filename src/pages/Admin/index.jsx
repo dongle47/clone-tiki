@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Outlet, Link } from "react-router-dom";
 import { sidebar } from "../../constraints/Admin";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -30,7 +30,6 @@ import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
-import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 
 const drawerWidth = 240;
 
@@ -133,28 +132,17 @@ function Admin() {
     width: "16rem",
   };
 
-  const [expanded, setExpanded] = React.useState("panel1");
-
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
-  };
 
   const [selectedTabId, setSelectedTabId] = React.useState(0);
 
-  const theme = useTheme();
-
   const [open, setOpen] = React.useState(true);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
 
   const handleDrawerClose = () => {
     setOpen(false);
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Stack direction="row">
       <CssBaseline />
 
       <AppBar
@@ -164,7 +152,7 @@ function Admin() {
       >
         <Toolbar>
           <Stack
-            sx={{ width: "100%" }}
+            width="100%"
             direction="row"
             justifyContent="space-between"
             alignItems="center"
@@ -219,7 +207,7 @@ function Admin() {
                   onClick={handleClickAccount}
                 >
                   <Box
-                    sx={{ borderRadius: "50%" }}
+                    borderRadius="50%"
                     alt=""
                     component="img"
                     src="https://salt.tikicdn.com/cache/w32/ts/sellercenterFE/93/76/03/2a08fa4ae6a024a752fbba87d145bce8.png"
@@ -310,19 +298,11 @@ function Admin() {
         </List>
       </Drawer>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 0,
-          backgroundColor: "#f5f5fa",
-          minHeight: "40rem",
-        }}
-      >
+      <Box component="main" flexGrow={1}  p={0} bgcolor="#f5f5fa" minHeight="40rem">
         <DrawerHeader />
         <Outlet />
       </Box>
-    </Box>
+    </Stack>
   );
 }
 

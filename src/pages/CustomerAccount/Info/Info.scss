@@ -1,7 +1,27 @@
+.customer-info{
+    label{
+        width: 30%;
 
-.customer-info label{
-    width: 30%;
+    }
+
+    &__input-container{
+        border : 0.5px solid #e0dfde;
+        border-radius: 4px;
+        padding: 1rem;
+        width: 40%;
+
+        
+    }
 }
+
+.input-container{
+    &__size{
+        width: 60rem;
+        min-height: 15rem;
+    }
+}
+
+
 
 #input-name, #input-nickname{
     width: 15rem;

@@ -1,4 +1,4 @@
-import React from 'react'
+import {useEffect,useState} from 'react'
 import './ChooseCoupon.scss'
 import {  Button, Modal } from '@mui/material'
 // import { CartItems } from "../../constraints/Cart"
@@ -6,11 +6,10 @@ import InfoIcon from '@mui/icons-material/Info';
 import DiscountIcon from '@mui/icons-material/Discount'
 import CloseIcon from '@mui/icons-material/Close';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useSelector, useDispatch } from 'react-redux'
 
 function ChooseCoupon(props) {
-    const [open, setOpen] = React.useState(props.open);
-  React.useEffect(()=>{
+    const [open, setOpen] = useState(props.open);
+  useEffect(()=>{
     setOpen(props.open)
   },[props.open])
     return (

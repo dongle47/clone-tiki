@@ -1,32 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Brand.scss";
-import {
-  Grid,
-  Stack,
-  IconButton,
-  Button,
-  Typography,
-  hexToRgb,
-  Badge,
-  Box,
-  Modal,
-  TextField,
-  Divider,
-} from "@mui/material";
+import { Stack, Button, Typography, Modal, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
-import img from "../../../assets/img/test.png";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-
-import CloseIcon from '@mui/icons-material/Close';
 
 function createData(name, description, address, contact, image) {
   return { name, description, address, contact, image };
@@ -76,25 +59,20 @@ const rows = [
     "https://salt.tikicdn.com/cache/w220/ts/seller/4f/bb/60/2797e4e553ea5b4e9b4f93ad63ccc110.jpg"
   ),
 
-  // createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  // createData('Eclair', 262, 16.0, 24, 6.0),
-  // createData('Cupcake', 305, 3.7, 67, 4.3),
-  // createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
 function Brand() {
-
   const [modalDelete, setModalDelete] = React.useState(false);
   const openModalDelete = () => setModalDelete(true);
   const closeModalDelete = () => setModalDelete(false);
-  
+
   return (
     <Stack direction="row" sx={{ backgroundColor: "#fff" }} p={3}>
       <Stack spacing={2}>
         <Stack direction="row" justifyContent="space-between">
           <Typography>Danh sách thương hiệu</Typography>
 
-          <Link to='/admin/brand/create' >
+          <Link to="/admin/brand/create">
             <Button variant="contained">Thêm thương hiệu</Button>
           </Link>
         </Stack>
@@ -103,7 +81,8 @@ function Brand() {
             id="outlined-basic"
             label="Search"
             variant="outlined"
-            sx={{ width: "100%" }}
+            size = "medium"
+            width = "100%"
           />
           <span className="brand__iconSearch">
             <SearchIcon sx={{ fontSize: "28px" }} />
@@ -112,10 +91,9 @@ function Brand() {
 
         <Table
           className="tableBrand"
-          sx={{ minWidth: "650px" }}
+          minWidth = "650px"
           stickyHeader
           size="small"
-          aria-label="sticky  table"
         >
           <TableHead>
             <TableRow>
@@ -138,9 +116,9 @@ function Brand() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {rows.map((row,index) => (
               <TableRow
-                key={row.name}
+                key={row.index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
@@ -157,7 +135,11 @@ function Brand() {
                 <TableCell>
                   <Stack spacing={1} justifyContent="center" py={1}>
                     <Button variant="contained">Sửa</Button>
-                    <Button onClick={openModalDelete} variant="outlined" color="error">
+                    <Button
+                      onClick={openModalDelete}
+                      variant="outlined"
+                      color="error"
+                    >
                       Xóa
                     </Button>
                   </Stack>
@@ -173,7 +155,13 @@ function Brand() {
         open={modalDelete}
         onClose={closeModalDelete}
       >
-        <Stack className="modal-info" direction="row" spacing={2} justifyContent='center' width='26rem' >
+        <Stack
+          className="modal-info"
+          direction="row"
+          spacing={2}
+          justifyContent="center"
+          width="26rem"
+        >
           <Stack>
             <InfoOutlinedIcon color="primary" />
           </Stack>
@@ -186,7 +174,9 @@ function Brand() {
             </Stack>
 
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              <Button onClick={closeModalDelete} variant="outlined">Hủy</Button>
+              <Button onClick={closeModalDelete} variant="outlined">
+                Hủy
+              </Button>
               <Button variant="contained">Xóa bỏ</Button>
             </Stack>
           </Stack>

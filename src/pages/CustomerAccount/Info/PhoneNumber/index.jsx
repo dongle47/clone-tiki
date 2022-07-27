@@ -1,26 +1,17 @@
 import { Box, Stack, InputBase, Typography, Button } from "@mui/material";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
-import { borderRadius } from "@mui/system";
 
 function PhoneNumber() {
   return (
-    <Box sx={{ mt: "5rem" }}>
-      <Typography>Cập nhật số điện thoại</Typography>
-      
+    <Box sx={{ mt: "1rem" }}>
+      <Typography variant="h6" >Cập nhật số điện thoại</Typography>
+
       <Stack
-        sx={{ width: "60rem", height: "15rem"  }}
+        className="input-container__size"
         alignItems="center"
         justifyContent="center"
       >
-        <Stack
-          sx={{
-            border: "0.5px solid #e0dfde",
-            borderRadius: "4px",
-            padding: "1rem",
-            width: "40%",
-            
-          }}
-        >
+        <Stack className="customer-info__input-container">
           <Typography>Số điện thoại</Typography>
 
           <Stack spacing={4}>

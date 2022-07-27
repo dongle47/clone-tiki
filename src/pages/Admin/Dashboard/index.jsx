@@ -17,6 +17,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import {numWithCommas} from "../../../constraints/Util"
 
 ChartJS.register(
   CategoryScale,
@@ -49,7 +50,7 @@ export const data = {
     },
     {
       label: "Doanh thu",
-      data: [350, 450, 750, 650,470, 769, 570],
+      data: [350, 450, 750, 650, 470, 769, 570],
       backgroundColor: "rgba(53, 162, 235, 0.5)",
     },
   ],
@@ -60,166 +61,30 @@ function Dashboard() {
     <Box>
       <Stack spacing={3} pl="5rem" mt="2rem">
         <Stack direction="row" spacing={4}>
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{
-              backgroundColor: "#ffff",
-              borderRadius: "0.375rem",
-              padding: "10px",
-            }}
-          >
-            <Stack
-              backgroundColor="#b9ffd3"
-              sx={{
-                width: "80px",
-                height: "80px",
-                borderRadius: "0.375rem",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <GroupsIcon sx={{ fontSize: 40, color: "#22ad56" }} />
-            </Stack>
-            <Stack sx={{ alignItems: "center", justifyContent: "center" }}>
-              <Typography
-                sx={{
-                  marginBottom: "5px",
-                  fontSize: "15px",
-                  fontWeight: "600",
-                  color: "#d20000",
-                }}
-              >
-                TỔNG KHÁCH HÀNG
-              </Typography>
-              <Typography
-                sx={{ fontSize: "16px", fontWeight: "450", color: "#2a2a2a" }}
-              >
-                256 Khách hàng
-              </Typography>
-            </Stack>
-          </Stack>
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{
-              backgroundColor: "#ffff",
-              borderRadius: "0.375rem",
-              padding: "10px",
-            }}
-          >
-            <Stack
-              backgroundColor="#adcbf3"
-              sx={{
-                width: "80px",
-                height: "80px",
-                borderRadius: "0.375rem",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <InventoryIcon sx={{ fontSize: 40, color: "#1d5aab" }} />
-            </Stack>
-            <Stack sx={{ alignItems: "center", justifyContent: "center" }}>
-              <Typography
-                sx={{
-                  marginBottom: "5px",
-                  fontSize: "15px",
-                  fontWeight: "600",
-                  color: "#d20000",
-                }}
-              >
-                TỔNG SẢN PHẨM
-              </Typography>
-              <Typography
-                sx={{ fontSize: "16px", fontWeight: "450", color: "#2a2a2a" }}
-              >
-                256 Sản phẩm
-              </Typography>
-            </Stack>
-          </Stack>
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{
-              backgroundColor: "#ffff",
-              borderRadius: "0.375rem",
-              padding: "10px",
-            }}
-          >
-            <Stack
-              backgroundColor="#fde1c3"
-              sx={{
-                width: "80px",
-                height: "80px",
-                borderRadius: "0.375rem",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <DescriptionIcon sx={{ fontSize: 40, color: "#ff8b07" }} />
-            </Stack>
-            <Stack sx={{ alignItems: "center", justifyContent: "center" }}>
-              <Typography
-                sx={{
-                  marginBottom: "5px",
-                  fontSize: "15px",
-                  fontWeight: "600",
-                  color: "#d20000",
-                }}
-              >
-                TỔNG ĐƠN HÀNG
-              </Typography>
-              <Typography
-                sx={{ fontSize: "16px", fontWeight: "450", color: "#2a2a2a" }}
-              >
-                256 Đơn hàng
-              </Typography>
-            </Stack>
-          </Stack>
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{
-              backgroundColor: "#ffff",
-              borderRadius: "0.375rem",
-              padding: "10px",
-            }}
-          >
-            <Stack
-              backgroundColor="#f9baba"
-              sx={{
-                width: "80px",
-                height: "80px",
-                borderRadius: "0.375rem",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <PaidIcon sx={{ fontSize: 40, color: "#de2222" }} />
-            </Stack>
-            <Stack sx={{ alignItems: "center", justifyContent: "center" }}>
-              <Typography
-                sx={{
-                  marginBottom: "5px",
-                  fontSize: "15px",
-                  fontWeight: "600",
-                  color: "#d20000",
-                }}
-              >
-                TỔNG DOANH THU
-              </Typography>
-              <Typography
-                sx={{ fontSize: "16px", fontWeight: "450", color: "#2a2a2a" }}
-              >
-                200.000.000đ
-              </Typography>
-            </Stack>
-          </Stack>
+          {
+            items.map(item => {
+              let iconColor = item.iconColor
+              return (
+                <Stack className="dashboard__item" key={item.id} direction="row" >
+                  <Stack className="dashboard__icon" bgcolor={item.bgcolor}>
+                    <GroupsIcon sx={{ fontSize: 40, color: iconColor }} />
+                  </Stack>
+                  <Stack alignItems="center" justifyContent="center">
+                    <Typography className="dashboard__title">
+                      {item.title}
+                    </Typography>
+                    <Typography color="#2a2a2a" fontWeight={500}>
+                      {`${numWithCommas(item.value)} ${item.unit}`}
+                    </Typography>
+                  </Stack>
+                </Stack>
+              )
+            })
+          }
         </Stack>
         <Box width="65%" height="65%">
           <Stack alignItems="center" justifyContent="center">
-            <Typography sx={{fontSize: "18px", fontWeight: "500"}}>Thống kê doanh thu</Typography>
+            <Typography sx={{ fontSize: "18px", fontWeight: "500" }}>Thống kê doanh thu</Typography>
           </Stack>
           <Bar options={options} data={data} />
         </Box>
@@ -227,5 +92,44 @@ function Dashboard() {
     </Box>
   );
 }
+
+const items = [
+  {
+    id: 1,
+    title: "Tổng khách hàng",
+    value: "256",
+    unit: "Khách hàng",
+    icon: GroupsIcon,
+    iconColor: "#22ad56",
+    bgcolor: "#b9ffd3"
+  },
+  {
+    id: 2,
+    title: "Tổng sản phẩm",
+    value: "256",
+    unit: "Sản phẩm",
+    icon: InventoryIcon,
+    iconColor: "#1d5aab",
+    bgcolor: "#adcbf3"
+  },
+  {
+    id: 1,
+    title: "Tổng đơn hàng",
+    value: "256",
+    unit: "Đơn hàng",
+    icon: DescriptionIcon,
+    iconColor: "#ff8b07",
+    bgcolor: "#fde1c3"
+  },
+  {
+    id: 1,
+    title: "Tổng doanh thu",
+    value: "256000000",
+    unit: "đ",
+    icon: PaidIcon,
+    iconColor: "#de2222",
+    bgcolor: "#f9baba"
+  },
+]
 
 export default Dashboard;

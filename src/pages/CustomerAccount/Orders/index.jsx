@@ -4,11 +4,11 @@ import {
     Box,
     Tabs,
     Tab,
-    Typography, TextField, Stack
+    Typography
 } from '@mui/material'
 import "./Orders.scss"
 import SearchIcon from '@mui/icons-material/Search';
-import OrderItem from "../../../components/OrderItem.js";
+import OrderItem from "../../../components/OrderItem/index.jsx";
 import { orderTabs, orderItems } from "../../../constraints/OrderItem";
 
 function Orders() {
@@ -19,10 +19,7 @@ function Orders() {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-
-    const handleChangeIndex = (index) => {
-        setValue(index);
-    };
+   
     return (
         <>
             <Box className="myorder" sx={{ width: "100%" }}>
@@ -34,7 +31,6 @@ function Orders() {
                         indicatorColor="primary"
                         variant="fullWidth"
                         aria-label="full width tabs example"
-
                     >
                         {
                             orderTabs.map(item =>
