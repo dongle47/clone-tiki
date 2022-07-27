@@ -259,7 +259,7 @@ function Header() {
               </Button>
 
               <div className="header__dropdown">
-                <Link to={"/sale/order/history"}>Đơn hàng của tôi</Link>
+                <Link to={"/customer/order/history"}>Đơn hàng của tôi</Link>
                 <Link to={"/customer/wishlist"}>Sản phẩm yêu thích</Link>
                 <Link to={"/customer/notification"}>Thông báo của tôi</Link>
                 <Link to={"/customer/account/edit"}>Tài khoản của tôi</Link>
@@ -369,12 +369,11 @@ function Header() {
                 <Typography sx={{ fontSize: "12px" }}>Giỏ hàng</Typography>
               </Stack>
             </Link>
-
-              <Button
+                <a href="/admin"><Button
                 sx={{
                   color: "white",
                   borderRadius: "50px",
-                  padding: "0.1rem ",
+                  padding: "0.25rem 1rem ",
                   fontSize: "small",
                 }}
                 variant="contained"
@@ -382,6 +381,7 @@ function Header() {
               >
                 <Typography sx={{ fontSize: "10px" }}>Admin</Typography>
               </Button>
+              </a>
           </Stack>
         </Stack>
 

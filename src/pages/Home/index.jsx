@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Home.scss";
 
-import { Grid, Stack, Button } from "@mui/material";
+import { Grid, Stack, Button,Box } from "@mui/material";
 import CardProduct from "../../components/CardProduct";
 import CardFlashsale from "../../components/CardFlashsale";
 
@@ -50,13 +50,13 @@ function Home() {
   };
   return (
     <>
-      <div className="category">
-        <div className="container">
+      <Box className="category">
+        <Box className="container">
           <Category />
-        </div>
-      </div>
+        </Box>
+      </Box>
 
-      <div className="container">
+      <Box className="container">
         <section id="section1">
           <SlideKhuyenMai />
         </section>
@@ -66,45 +66,45 @@ function Home() {
         </section>
 
         <section id="section3">
-          <div style={{ width: "16.45%" }}>
+          <Box  width="16.45%">
             <img
               style={{ maxHeight: "160px" }}
               src="https://salt.tikicdn.com/cache/w200/ts/banner/15/54/a3/dc054f7084003d4c9f5e100249fff610.png.webp"
               alt=""
             />
-          </div>
-          <div style={{ width: "64.52%" }}>
+          </Box>
+          <Box width= "64.52%">
             <img
               src="https://salt.tikicdn.com/cache/w750/ts/banner/20/af/9d/85c2367e8eb8c832e631842e75364fe2.png.webp"
               alt=""
             />
-          </div>
-          <div style={{ width: "16.45%" }}>
+          </Box>
+          <Box width="16.45%">
             <img
               style={{ maxHeight: "160px" }}
               src="https://salt.tikicdn.com/cache/w200/ts/banner/da/12/bb/6c23d2e7f4a0242b01c3f9c5619bb140.png.webp"
               alt=""
             />
-          </div>
+          </Box>
         </section>
         <section id="section4">
-          <div className="quicklink__wrap">
+          <Box className="quicklink__wrap">
             {Quicklink.map((item) => (
               <Link key={item.id} to={item.link}>
-                <div className="quicklink__item">
+                <Box className="quicklink__item">
                   <img
                     style={{ width: "48px" }}
                     src={item.image}
                     alt={item.alt}
                   />
                   <span>{item.alt}</span>
-                </div>
+                </Box>
               </Link>
             ))}
-          </div>
+          </Box>
         </section>
         <section id="section5">
-          <div className="banner__wrap1">
+          <Box className="banner__wrap1">
             <img
               src="https://salt.tikicdn.com/cache/w280/ts/banner/f9/50/fd/80d44082ed11e523c7a48bc648018d11.png.webp"
               alt=""
@@ -121,12 +121,12 @@ function Home() {
               src="https://salt.tikicdn.com/cache/w280/ts/banner/ed/0d/3b/7dc88059494e699d3c77248d7d42e5d0.png.webp"
               alt=""
             />
-          </div>
+          </Box>
         </section>
 
         <section id="section6">
-          <div className="section__heading">
-            <div className="section__title">
+          <Box className="section__heading">
+            <Box className="section__title">
               <span>
                 <img
                   style={{ width: "24px" }}
@@ -135,39 +135,39 @@ function Home() {
                 />
               </span>
               Thương Hiệu Chính Hãng
-            </div>
+            </Box>
             <Link className="section__more" to={"/xem-them"}>
               XEM THÊM
             </Link>
-          </div>
+          </Box>
           <SlideThuongHieu />
         </section>
 
         <section id="section7">
-          <div
+          <Box
             className="section__heading"
             style={{ padding: "10px 16px", marginBottom: "16px" }}
           >
-            <div className="section__title">Danh Mục Nổi Bật</div>
-          </div>
-          <div className="specify__wrap">
+            <Box className="section__title">Danh Mục Nổi Bật</Box>
+          </Box>
+          <Box className="specify__wrap">
             {CategorySpecify.map((item) => (
               <Link key={item.id} to={item.link}>
-                <div className="specify__item">
+                <Box className="specify__item">
                   <img
                     style={{ width: "60px" }}
                     src={item.image}
                     alt={item.alt}
                   />
                   <span>{item.alt}</span>
-                </div>
+                </Box>
               </Link>
             ))}
-          </div>
+          </Box>
         </section>
 
         <section id="section8">
-          <div className="banner__wrap2">
+          <Box className="banner__wrap2">
             <img
               src="https://salt.tikicdn.com/cache/w400/ts/banner/83/25/b8/96442cbb3cccebd796916c8af5377ecd.png.webp"
               alt=""
@@ -180,18 +180,18 @@ function Home() {
               src="https://salt.tikicdn.com/cache/w400/ts/banner/d0/09/63/2ae37cd70c15bbf073bddedb1b5b42d9.png.webp"
               alt=""
             />
-          </div>
+          </Box>
         </section>
 
         <section id="section9">
-          <div className="suggestion">
-            <div className="section__heading">
-              <div className="section__title">Gợi Ý Hôm Nay</div>
-            </div>
-            <div className="suggestion__wrap">
+          <Box className="suggestion">
+            <Box className="section__heading">
+              <Box className="section__title">Gợi Ý Hôm Nay</Box>
+            </Box>
+            <Box className="suggestion__wrap">
               {Suggestions.map((item) => (
                 <Link key={item.id} to={item.link}>
-                  <div
+                  <Box
                     className={`suggestion__item ${item.id === 1 ? "active" : ""
                       }`}
                   >
@@ -201,11 +201,11 @@ function Home() {
                       alt={item.alt}
                     />
                     <span>{item.alt}</span>
-                  </div>
+                  </Box>
                 </Link>
               ))}
-            </div>
-          </div>
+            </Box>
+          </Box>
           <Grid container>
             {
               products.map((item) => (
@@ -214,7 +214,7 @@ function Home() {
                 </Grid>
               ))}
           </Grid>
-          <div style={{ width: "100%", display: "flex" }}>
+          <Box style={{ width: "100%", display: "flex" }}>
             <Button
               sx={{ margin: "1rem auto", width: "15rem", height: "2rem" }}
               color="primary"
@@ -223,9 +223,9 @@ function Home() {
             >
               Xem thêm
             </Button>
-          </div>
+          </Box>
         </section>
-      </div>
+      </Box>
     </>
   );
 }
@@ -233,7 +233,7 @@ function Home() {
 function SlideKhuyenMai(props) {
   return (
     <>
-      <div style={{ width: "66.65%" }}>
+      <Box style={{ width: "66.65%" }}>
         <Swiper
           navigation={true}
           loop={true}
@@ -252,22 +252,22 @@ function SlideKhuyenMai(props) {
           {SlideKhuyenMai1.map((item) => (
             <SwiperSlide key={item.id}>
               <Link to={item.link}>
-                <div style={{ width: "100%" }}>
+                <Box style={{ width: "100%" }}>
                   <img src={item.image} alt="" />
-                </div>
+                </Box>
               </Link>
             </SwiperSlide>
           ))}
         </Swiper>
-      </div>
-      <div style={{ width: "32.7%" }}>
+      </Box>
+      <Box style={{ width: "32.7%" }}>
         <Link to={"/"}>
           <img
             alt=""
             src="https://salt.tikicdn.com/cache/w400/ts/banner/a7/ee/b9/b4931904b38e1c5d9236345aa8b02a67.png.webp"
           />
         </Link>
-      </div>
+      </Box>
     </>
   );
 }
@@ -296,13 +296,13 @@ function SlideThuongHieu(props) {
         {SlideThuongHieu1.map((item) => (
           <SwiperSlide key={item.id}>
             <Link to={item.link}>
-              <div style={{ width: "100%" }}>
+              <Box style={{ width: "100%" }}>
                 <img
                   style={{ width: "100%", borderRadius: "8px" }}
                   alt={item.alt}
                   src={item.image}
                 />
-              </div>
+              </Box>
             </Link>
           </SwiperSlide>
         ))}
@@ -318,14 +318,14 @@ function SlideThuongHieu(props) {
         {SlideThuongHieu2.map((item) => (
           <SwiperSlide key={item.id} style={{ padding: "0 8px" }}>
             <Link to={item.link}>
-              <div className="img__thuonghieu2" style={{ width: "100%" }}>
+              <Box className="img__thuonghieu2" style={{ width: "100%" }}>
                 <img
                   style={{ width: "100%", borderRadius: "8px" }}
                   alt={item.alt}
                   src={item.image}
                 />
                 <p>{item.alt}</p>
-              </div>
+              </Box>
             </Link>
           </SwiperSlide>
         ))}
@@ -337,7 +337,7 @@ function SlideThuongHieu(props) {
 function SectionFlashsale(props) {
   return (
     <>
-      <div
+      <Box
         style={{
           width: "59.35%",
           height: "274px",
@@ -345,8 +345,8 @@ function SectionFlashsale(props) {
           borderRadius: "4px",
         }}
       >
-        <div id="section2__heading">
-          <div id="section2__title">
+        <Box id="section2__heading">
+          <Box id="section2__title">
             <img
               alt=""
               src="https://frontend.tikicdn.com/_desktop-next/static/img/giasoc.svg"
@@ -364,11 +364,11 @@ function SectionFlashsale(props) {
             <span className="flashsale__time">18</span>
             <span>:</span>
             <span className="flashsale__time">18</span>
-          </div>
+          </Box>
           <Link id="section2__more" to={"/xemthem"}>
             Xem thêm
           </Link>
-        </div>
+        </Box>
         <Swiper
           slidesPerView={5}
           slidesPerGroup={5}
@@ -382,15 +382,15 @@ function SectionFlashsale(props) {
             </SwiperSlide>
           ))}
         </Swiper>
-      </div>
-      <div style={{ width: "39.35%" }}>
+      </Box>
+      <Box style={{ width: "39.35%" }}>
         <Link to={"/"}>
           <img
             alt=""
             src="https://salt.tikicdn.com/cache/w572/ts/upload/1a/8e/00/291b67286660dbc51bb8381633868927.png.webp"
           />
         </Link>
-      </div>
+      </Box>
     </>
   );
 }
@@ -428,7 +428,7 @@ function Category(props) {
         {Categories.map((item) => (
           <SwiperSlide key={item.id}>
             <Link to={item.link}>
-              <div
+              <Box
                 style={{
                   fontSize: "14px",
                   textAlign: "center",
@@ -436,7 +436,7 @@ function Category(props) {
                 }}
               >
                 {item.display}
-              </div>
+              </Box>
             </Link>
           </SwiperSlide>
         ))}
