@@ -8,7 +8,7 @@ import { removeItem, updateItem } from "../../slices/cartSlice";
 
 function CartItem(props) {
   const [data, setData] = useState(props.data);
-  const [quanlity, setQuanlity] = useState(props.data.quanlity);
+  const [quantity, setQuantity] = useState(props.data.quantity);
   const dispatch = useDispatch();
 
   const [open, setOpen] = React.useState(false);
@@ -28,17 +28,17 @@ function CartItem(props) {
 
   useEffect(() => {
     setData(props.data);
-    setQuanlity(props.data.quanlity);
+    setQuantity(props.data.quantity);
   }, [props.data]);
-  const updateQuanlity = (otp) => {
+  const updateQuantity = (otp) => {
     if (otp === "-") {
-      if (data.quanlity <= 1) {
+      if (data.quantity <= 1) {
         handleClickRemove();
       } else {
         dispatch(
           updateItem({
             ...data,
-            quanlity: data.quanlity - 1,
+            quantity: data.quantity - 1,
           })
         );
       }
@@ -46,13 +46,13 @@ function CartItem(props) {
       dispatch(
         updateItem({
           ...data,
-          quanlity: data.quanlity + 1,
+          quantity: data.quantity + 1,
         })
       );
     }
   };
-  const onChangeQuanlity = (e) => {
-    setQuanlity(e.target.value);
+  const onChangeQuantity = (e) => {
+    setQuantity(e.target.value);
     if (e.target.value === "") {
       return;
     }
@@ -65,7 +65,7 @@ function CartItem(props) {
         dispatch(
           updateItem({
             ...data,
-            quanlity: num,
+            quantity: num,
           })
         );
       }
@@ -118,18 +118,18 @@ function CartItem(props) {
           {numWithCommas(data?.price)} ₫
         </div>
         <div className="cart-item__cell" style={{ width: "14.45%" }}>
-          <div className="cart-item__quanlity">
+          <div className="cart-item__quantity">
             <button
               onClick={() => {
-                updateQuanlity("-");
+                updateQuantity("-");
               }}
             >
               -
             </button>
-            <input onChange={onChangeQuanlity} type="text" value={quanlity} />
+            <input onChange={onChangeQuantity} type="text" value={quantity} />
             <button
               onClick={() => {
-                updateQuanlity("+");
+                updateQuantity("+");
               }}
             >
               +
@@ -140,7 +140,7 @@ function CartItem(props) {
           className="cart-item__cell cart-item__total"
           style={{ width: "14.45%" }}
         >
-          {numWithCommas(data?.price * data?.quanlity)} ₫
+          {numWithCommas(data?.price * data?.quantity)} ₫
         </div>
         <div className="cart-item__cell" style={{ width: "3.33%" }}>
           <span style={{ cursor: "pointer" }} onClick={handleClickRemove}>

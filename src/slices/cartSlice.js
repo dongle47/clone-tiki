@@ -1,13 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {CartItems} from "../constraints/Cart"
-const cartItems = localStorage.getItem("cartItems")!==null?JSON.parse(localStorage.getItem("cartItems")):CartItems
+
 
 export const cartSlice = createSlice({
     name: "cart",
     initialState: {
-        items: cartItems
+        items: []
     },
     reducers: {
+        addItem:(state,action)=>{
+            let newCart = [...state.items,action.payload]
+            state.items = newCart
+            localStorage.setItem("cartItems",JSON.stringify(state.items))
+        },
         removeItem:(state,action)=>{
             const itemUpdate = action.payload
             state.items = delItems(state.items,itemUpdate)
@@ -49,7 +54,8 @@ export const {
     updateItem,
     chooseAll,
     unchooseAll,
-    deleteAll
+    deleteAll,
+    addItem
 }=cartSlice.actions
 
 export default cartSlice.reducer

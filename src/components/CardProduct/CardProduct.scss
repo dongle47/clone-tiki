@@ -19,4 +19,12 @@
         font-weight: 500 !important;
         margin-top: 4px !important;
     }
+    &__wrap {
+        position: relative;
+        display: flex;
+        &:hover {
+            box-shadow: rgba(#000, 0.15) 0px 0px 20px;
+            z-index: 1;
+        }
+    }
 }
