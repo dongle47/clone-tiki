@@ -16,8 +16,8 @@ function ConfigRoute() {
         <Route path="payment" element={<Payment />} />
         {/* Routing customer account */}
         <Route path="customer/*" element={<CustomerAccount />} />
-        <Route path="/filter" element={<FilterProduct />} />
-        <Route path="/detail-product" element={<DetailProduct />} />
+        <Route path="filter" element={<FilterProduct />} />
+        <Route path="product/:id" element={<DetailProduct />} />
         <Route path="admin/*" element={<Admin />}/>
         <Route path="*" element={<Error />} />
     </Routes>

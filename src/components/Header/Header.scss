@@ -54,13 +54,14 @@
     &__account:hover &__dropdown {
         display: block;
     }
-    &__search {
+    &-search {
         &__result {
             width: 100%;
             position: absolute;
             top: 40px;
             background-color: #fff;
             z-index: 10;
+            width: calc(100% - 8rem);
         }
     }
 }

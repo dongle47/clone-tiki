@@ -14,15 +14,51 @@ import AddIcon from '@mui/icons-material/Add';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Products } from "../../constraints/Home"
 import CardProduct from '../../components/CardProduct';
+import { useLocation, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import apiProduct from '../../apis/apiProduct';
+import { useDispatch } from 'react-redux';
+import { addItem } from '../../slices/cartSlice';
+
 function DetailProduct() {
     const [expandContent, setExpandContent] = useState(false);
+    const [product, setProduct] = useState({})
+    const [quantity,setQuantity] = useState(1)
+    const dispatch = useDispatch()
+    
+    const {id} = useParams()
+
+    useEffect(()=>{
+        const getProduct = async()=>{
+            const response = await apiProduct.getProductsById(id)
+            if(response){
+                console.log(response)
+                if(response.length!==0)
+                    setProduct(response[0])
+            }
+        }
+        getProduct()
+    },[id])
+
+    const handleClickBuy =()=>{
+        dispatch(addItem({
+            choose:false,
+            id:product.id,
+            name:product.name,
+            image:product.image,
+            price:product.price,
+            quantity
+        }))
+    }
+
     const handleExpandContent = () => {
         setExpandContent(pre => !pre)
     }
-    const link_image = "https://salt.tikicdn.com/cache/400x400/ts/product/a3/cf/a9/0b59f8742708d27a25315078edf91bda.png.webp"
-    //const link_image = "https://scontent.fsgn13-3.fna.fbcdn.net/v/t39.30808-6/288914191_1448018802381522_5413425023341557697_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=xMVXmNyUMIoAX--rPOK&_nc_ht=scontent.fsgn13-3.fna&oh=00_AT_03fKblX3DllohOfwKhG4TwIf80iWz_voFbV7uQP35og&oe=62D81D8D"
 
+
+    const link_image = "https://salt.tikicdn.com/cache/400x400/ts/product/a3/cf/a9/0b59f8742708d27a25315078edf91bda.png.webp"
     const link_option_color = "https://salt.tikicdn.com/cache/100x100/ts/product/d5/40/5e/754dcea83b913f7585861d083491a917.png.webp"
+    
     return (
         <>
             <Box className="container">
@@ -134,13 +170,13 @@ function DetailProduct() {
                                 Số lượng
                             </Box>
                             <Box className="product-quanlity__groupInput">
-                                <button><RemoveIcon /></button>
-                                <input type="text" value={1} />
-                                <button><AddIcon /></button>
+                                <button onClick={()=>setQuantity(quantity===1?1:quantity-1)}><RemoveIcon /></button>
+                                <input type="text" value={quantity} />
+                                <button onClick={()=>setQuantity(quantity+1)}><AddIcon /></button>
                             </Box>
                         </Box>
                         <Box className="detailProduct__buy">
-                            <Button variant="contained"
+                            <Button variant="contained" onClick={handleClickBuy}
                                 sx={{
                                     width: "400px",
                                     height: "48px",

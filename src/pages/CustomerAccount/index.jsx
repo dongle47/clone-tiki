@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet,Routes,Route, Link } from "react-router-dom";
+import { Outlet, Routes, Route, Link } from "react-router-dom";
 
 import "./CustomerAccount.scss";
 
@@ -75,31 +75,38 @@ function CustomerAccount() {
             })}
           </List>
         </Box>
-        <Box sx={{ flex: 1, marginTop: "16px" }}>
+        <Box flex={1} mt="16px">
           {/* <Outlet /> */}
           <Routes>
-            <Route path="account/edit" element={<Info />} >
-              <Route path="phone" element={<PhoneNumber />} />
+            <Route path="account/edit/*" element={
+              <Routes>
+                <Route index element={<Info />} />
+                <Route path="phone" element={<PhoneNumber />} />
               <Route path="email" element={<Email />} />
               <Route path="pass" element={<Password />} />
-            </Route>
+              </Routes>
+            } />
 
             <Route path="notification" element={<Notify />} />
 
-            <Route path="order" element={<Orders />}>
-              <Route path="history" element={<Orders />} />
-              <Route path="detail" element={<DetailOrder />} />
-            </Route>
+            <Route path="order/*" element={
+              <Routes>
+                <Route path="history" element={<Orders />} />
+                <Route path="detail" element={<DetailOrder />} />
+              </Routes>} />
 
-            <Route path="address" element={<Addresses />}>
-              <Route path="create" element={<CreateAddress />} />
-            </Route>
+            <Route path="address/*" element={
+              <Routes>
+                <Route index element={<Addresses />} />
+                <Route path="create" element={<CreateAddress />} />
+              </Routes>
+            }/>
 
-            <Route path="/paymentcard"  element={<PayInfo />}/>
+            <Route path="/paymentcard" element={<PayInfo />} />
 
-            <Route path="/nhan-xet-san-pham-ban-da-mua"  element={<ReviewPurchased />} />
+            <Route path="/nhan-xet-san-pham-ban-da-mua" element={<ReviewPurchased />} />
 
-            <Route path="/wishlist"  element={<FavoriteProduct />} />
+            <Route path="/wishlist" element={<FavoriteProduct />} />
 
             <Route path="/review" element={<MyReview />} />
 

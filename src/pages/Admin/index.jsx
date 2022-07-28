@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Routes,Route, Link } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import { sidebar } from "../../constraints/Admin";
 import { styled } from "@mui/material/styles";
 
@@ -320,26 +320,40 @@ function Admin() {
           <Route index element={<Dashboard />} />
           <Route path="login" element={<AdminLogin />} />
           <Route path="order/*" element={<Order />} />
-          <Route path="product" element={<Product />}>
-            <Route path="create" element={<CreateProduct />} />
-          </Route>
-
-          <Route path="category" element={<Category />}>
-            <Route path="create" element={<CreateCategory />} />
-          </Route>
-
-          <Route path="brand" element={<Brand />}>
-            <Route path="create" element={<CreateBrand />} />
-          </Route>
+          <Route path="product/*" element={
+            <Routes>
+              <Route index element={<Product />} />
+              <Route path="create" element={<CreateProduct />} />
+            </Routes>
+          } />
+          
+          <Route path="category/*" element={
+            <Routes>
+              <Route index element={<Category />} />
+              <Route path="create" element={<CreateCategory />} />
+            </Routes>
+          } />
+          
+          <Route path="brand/*" element={
+            <Routes>
+              <Route path="create" element={<CreateBrand />} />
+              <Route index element={<Brand />} />
+            </Routes>
+          }/>
 
           <Route path="develop" element={<GrowthCenter />} />
-          <Route path="coupon" element={<CouponAdmin />} >
-            <Route path="create" element={<CreateCoupon />} />
-          </Route>
+          <Route path="coupon/*" element={
+            <Routes>
+              <Route index element={<CouponAdmin />} />
+              <Route path="create" element={<CreateCoupon />} />
+            </Routes>
+          } />
 
-          <Route path="user" element={<User />}>
+          <Route path="user/*" element={
+          <Routes>
+            <Route index element={<User />} />
             <Route path="detail" element={<DetailUser />} />
-          </Route>
+          </Routes>}/>
 
           <Route path="review" element={<Review />} />
         </Routes>
