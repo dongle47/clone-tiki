@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import './ShoppingCart.scss'
-import { Grid, Typography, Checkbox, Button, Stack ,Box} from '@mui/material'
+import { Grid, Typography, Checkbox, Button, Stack, Box ,Dialog} from '@mui/material'
 import CartItem from '../../components/CartItem'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 // import { CartItems } from "../../constraints/Cart"
@@ -10,25 +10,26 @@ import { numWithCommas } from "../../constraints/Util"
 import { useSelector, useDispatch } from 'react-redux'
 import ChooseCoupon from '../../components/ChooseCoupon';
 import { unchooseAll, chooseAll, deleteAll } from '../../slices/cartSlice'
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 
 
 function ShoppingCart() {
   const [open, setOpen] = useState(false);
+  const [dialogDelete, setDialogDelete] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [couponPrice, setCouponPrice] = useState(20000);
   const [checkAll, setCheckAll] = useState(false)
-  const handleOpen = useCallback(() => setOpen(true),[]);
-  const handleClose = useCallback(() => setOpen(false),[]);
+  const handleOpen = useCallback(() => setOpen(true), []);
+  const handleClose = useCallback(() => setOpen(false), []);
   const CartItems = useSelector(state => state.cart.items)
   const dispatch = useDispatch()
   useEffect(() => {
     const calcPrice = () => {
-      const total = CartItems.reduce((t, num) => num.choose ? t + num.price * num.quanlity : t, 0)
+      const total = CartItems.reduce((t, num) => num.choose ? t + num.price * num.quantity : t, 0)
       setTotalPrice(total)
     }
-    const checkChooseAll =()=>{
-      if(CartItems.every(item=>item.choose))
+    const checkChooseAll = () => {
+      if (CartItems.every(item => item.choose))
         setCheckAll(true)
       else
         setCheckAll(false)
@@ -50,6 +51,13 @@ function ShoppingCart() {
 
   const handleDeleteAll = () => {
     dispatch(deleteAll())
+    closeDialogDeleteAll()
+  }
+  const openDialogDeleteAll = () => {
+    setDialogDelete(true)
+  }
+  const closeDialogDeleteAll = () => {
+    setDialogDelete(false)
   }
 
   return (<>
@@ -63,14 +71,14 @@ function ShoppingCart() {
 
             <Box className="cart__heading cart">
               <Stack direction="row">
-                <Checkbox checked={checkAll} onChange={handleChooseAll} className="cart__checkbox"/>
+                <Checkbox checked={checkAll} onChange={handleChooseAll} className="cart__checkbox" />
                 {`Tất cả (${CartItems.length} sản phẩm)`}
               </Stack>
               <Stack>Đơn giá</Stack>
               <Stack>Số lượng</Stack>
               <Stack>Thành tiền</Stack>
               <Stack>
-                <span onClick={handleDeleteAll}><DeleteOutlinedIcon /></span>
+                <span onClick={openDialogDeleteAll}><DeleteOutlinedIcon /></span>
               </Stack>
             </Box>
             <Stack className="cart__list">
@@ -147,6 +155,33 @@ function ShoppingCart() {
       </Grid>
     </Box>
     {open ? <ChooseCoupon handleOpen={handleOpen} handleClose={handleClose} open={open} /> : <></>}
+    {dialogDelete &&
+      <Dialog onClose={closeDialogDeleteAll} open={dialogDelete}>
+        <Box className="dialog-removecart">
+          <Box className="dialog-removecart__title">
+            <h4>Xoá sản phẩm</h4>
+          </Box>
+          <Box className="dialog-removecart__content">
+            Bạn có muốn xóa tất cả sản phẩm trong giỏ hàng
+          </Box>
+          <Box className="dialog-removecart__choose">
+            <Button
+              variant="outlined"
+              onClick={handleDeleteAll}
+              sx={{ width: "94px", height: "36px" }}
+            >
+              Xác nhận
+            </Button>
+            <Button
+              variant="contained"
+              onClick={closeDialogDeleteAll}
+              sx={{ width: "57px", height: "36px" }}
+            >
+              Huỷ
+            </Button>
+          </Box>
+        </Box>
+      </Dialog>}
 
   </>
   )
