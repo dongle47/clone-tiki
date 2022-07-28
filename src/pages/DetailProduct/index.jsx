@@ -12,27 +12,41 @@ import CheckIcon from '@mui/icons-material/Check';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Products } from "../../constraints/Home"
 import CardProduct from '../../components/CardProduct';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import apiProduct from '../../apis/apiProduct';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../../slices/cartSlice';
+import apiMain from '../../apis/apiMain';
 
 function DetailProduct() {
     const [expandContent, setExpandContent] = useState(false);
     const [product, setProduct] = useState({})
+    const [productSimilars, setProductSimilars] = useState([])
     const [quantity,setQuantity] = useState(1)
     const dispatch = useDispatch()
     
     const {id} = useParams()
 
+    useEffect(() => {
+        const getData = async () => {
+            let param = {
+                _page: 1,
+                _limit: 6,
+            };
+            const response = await apiMain.getProducts(param);
+            if (response) {
+                setProductSimilars((pre) => [...pre, ...response.data]);
+            }
+        };
+        getData();
+    }, []);
+
     useEffect(()=>{
         const getProduct = async()=>{
             const response = await apiProduct.getProductsById(id)
             if(response){
-                console.log(response)
                 if(response.length!==0)
                     setProduct(response[0])
             }
@@ -49,6 +63,20 @@ function DetailProduct() {
             price:product.price,
             quantity
         }))
+    }
+
+    const onChangeQuantity=(e)=>{
+        setQuantity(e.target.value)
+        if(e.target.value==="")
+            return
+        let quantity = Number(e.target.value)
+        console.log(quantity)
+        if(Number.isInteger(quantity)){
+            setQuantity(quantity)
+        }
+        else{
+            setQuantity(1)
+        }
     }
 
     const handleExpandContent = () => {
@@ -171,7 +199,7 @@ function DetailProduct() {
                             </Box>
                             <Box className="product-quanlity__groupInput">
                                 <button onClick={()=>setQuantity(quantity===1?1:quantity-1)}><RemoveIcon /></button>
-                                <input type="text" value={quantity} />
+                                <input onChange={onChangeQuantity} type="text" value={quantity} />
                                 <button onClick={()=>setQuantity(quantity+1)}><AddIcon /></button>
                             </Box>
                         </Box>
@@ -194,7 +222,7 @@ function DetailProduct() {
                         Sản Phẩm Tương Tự
                     </Box>
                     <Grid container>
-                        {Products.slice(0, 6).map(item =>
+                        {productSimilars.slice(0, 6).map(item =>
                             <Grid item key={item.id} xs={2}>
                                 <CardProduct data={item} />
                             </Grid>)

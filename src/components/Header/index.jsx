@@ -137,7 +137,7 @@ function Header() {
                 <Typography sx={{ fontSize: "13px" }}>Tài khoản</Typography>
               </Button>
 
-              <div className="header__dropdown">
+              <Box className="header__dropdown">
                 <Link to={"/customer/order/history"}>Đơn hàng của tôi</Link>
                 <Link to={"/customer/wishlist"}>Sản phẩm yêu thích</Link>
                 <Link to={"/customer/notification"}>Thông báo của tôi</Link>
@@ -150,10 +150,10 @@ function Header() {
                       src="https://salt.tikicdn.com/ts/ta/06/60/57/811aae78f04f81a6e00ba2681e02291f.png"
                     />
                     <Stack>
-                      <div>SEP 0</div>
-                      <div>
+                      <Box>SEP 0</Box>
+                      <Box>
                         Bạn đang có <b>0 Astra</b>
-                      </div>
+                      </Box>
                     </Stack>
                   </Stack>
                 </Link>
@@ -165,7 +165,7 @@ function Header() {
                       src="https://frontend.tikicdn.com/_desktop-next/static/img/account/insurance.png"
                     />
                     <Stack>
-                      <div>Hợp đồng bảo hiểm</div>
+                      <Box>Hợp đồng bảo hiểm</Box>
                     </Stack>
                   </Stack>
                 </Link>
@@ -177,8 +177,8 @@ function Header() {
                       src="https://salt.tikicdn.com/ts/upload/5b/70/af/ac0eacaa8ec6738ac474f7bbe767bd75.png"
                     />
                     <Stack>
-                      <div>TikiNOW</div>
-                      <div>Thông tin Gói hội viên</div>
+                      <Box>TikiNOW</Box>
+                      <Box>Thông tin Gói hội viên</Box>
                     </Stack>
                   </Stack>
                 </Link>
@@ -190,10 +190,10 @@ function Header() {
                       src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_code.svg"
                     />
                     <Stack>
-                      <div>Mã giảm giá </div>
-                      <div>
+                      <Box>Mã giảm giá </Box>
+                      <Box>
                         Bạn đang có <b>2</b> mã giảm giá
-                      </div>
+                      </Box>
                     </Stack>
                   </Stack>
                 </Link>
@@ -205,10 +205,10 @@ function Header() {
                       src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg"
                     />
                     <Stack>
-                      <div>Thông tin Tiki xu</div>
-                      <div>
+                      <Box>Thông tin Tiki xu</Box>
+                      <Box>
                         Bạn đang có <b>0</b> Tiki xu
-                      </div>
+                      </Box>
                     </Stack>
                   </Stack>
                 </Link>
@@ -220,16 +220,16 @@ function Header() {
                       src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg"
                     />
                     <Stack>
-                      <div>Thông tin BookCare</div>
-                      <div>
+                      <Box>Thông tin BookCare</Box>
+                      <Box>
                         Bạn đang có <b>0</b> BookCare
-                      </div>
+                      </Box>
                     </Stack>
                   </Stack>
                 </Link>
                 <Link to="/">Đổi trả dễ dàng</Link>
                 <Link to="/">Thoát tài khoản</Link>
-              </div>
+              </Box>
             </Stack>
           </Stack>
 

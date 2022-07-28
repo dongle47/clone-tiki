@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
     Stack,
     Box,
@@ -21,11 +21,29 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { numWithCommas } from "../../constraints/Util"
 import { categories } from "../../constraints/FilterProduct"
-import { Products } from "../../constraints/Home"
 import CardProduct from '../../components/CardProduct';
+import apiMain from '../../apis/apiMain';
 function FilterProduct(props) {
     const category = categories[0]
     const [value, setValue] = useState(0);
+    const [products, setProducts] = useState([]);
+    const [page, setPage] = useState(1);
+    const size = 30;
+
+    useEffect(() => {
+        const getData = async () => {
+            let param = {
+                _page: page,
+                _limit: size,
+            };
+            const response = await apiMain.getProducts(param);
+            if (response) {
+                setProducts((pre) => [...pre, ...response.data]);
+            }
+        };
+        getData();
+    }, [page]);
+
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -51,23 +69,14 @@ function FilterProduct(props) {
                     <FormGroup>
                         {
                             [5, 4, 3].map(item =>
-                                <Box
-                                    sx={{
-                                        width: "100%",
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: "10px",
-                                        height: "24px",
-                                        marginBottom: "4px"
-                                    }}
-                                >
+                                <Box className='filterProduct__rating'>
                                     <Rating
                                         name="hover-feedback"
                                         value={item}
                                         readOnly
                                         icon={<StarIcon sx={{ fontSize: 16 }} />}
                                         emptyIcon={<StarIcon style={{ opacity: 0.55 }} sx={{ fontSize: 16 }} />}
-                                    /><Box sx={{ fontSize: "13px" }}>{`từ ${item} sao`}</Box>
+                                    /><Box fontSize="13px">{`từ ${item} sao`}</Box>
                                 </Box>)
                         }
                     </FormGroup>
@@ -131,7 +140,7 @@ function FilterProduct(props) {
                 <Box>
                     <Grid container spacing={2}>
                         {
-                            Products.map(item =>
+                            products.map(item =>
                                 <Grid item xs={3}>
                                     <CardProduct key={item.id} data={item} />
                                 </Grid>)

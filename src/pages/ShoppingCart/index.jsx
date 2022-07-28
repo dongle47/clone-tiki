@@ -27,7 +27,14 @@ function ShoppingCart() {
       const total = CartItems.reduce((t, num) => num.choose ? t + num.price * num.quanlity : t, 0)
       setTotalPrice(total)
     }
+    const checkChooseAll =()=>{
+      if(CartItems.every(item=>item.choose))
+        setCheckAll(true)
+      else
+        setCheckAll(false)
+    }
     calcPrice()
+    checkChooseAll()
   }, [CartItems])
 
   const handleChooseAll = () => {
@@ -54,10 +61,9 @@ function ShoppingCart() {
               GIỎ HÀNG
             </Typography>
 
-            <Box className="cart__heading">
+            <Box className="cart__heading cart">
               <Stack direction="row">
-                <Checkbox checked={checkAll} onChange={handleChooseAll}
-                  sx={{ padding: 0, marginRight: "12px", width: "18px", height: "18px", fontSize: "14px" }} />
+                <Checkbox checked={checkAll} onChange={handleChooseAll} className="cart__checkbox"/>
                 {`Tất cả (${CartItems.length} sản phẩm)`}
               </Stack>
               <Stack>Đơn giá</Stack>
