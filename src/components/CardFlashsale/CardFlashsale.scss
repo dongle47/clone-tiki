@@ -1,11 +1,4 @@
 .card {
-    &__title {
-        display: -webkit-box;
-        overflow: hidden;
-        -webkit-line-clamp: 2 !important;
-        -webkit-box-orient: vertical;
-        text-overflow: ellipsis;
-    }
     &__sale {
         display: inline;
         font-size: 12px;

@@ -1,10 +1,17 @@
 .card {
+    max-width: 345px;
+    padding: 12px;
+    box-shadow: none !important;
+    &__content {
+        padding: 12px 0 0 0 !important
+    }
     &__title {
         display: -webkit-box;
         overflow: hidden;
         -webkit-line-clamp: 2 !important;
         -webkit-box-orient: vertical;
         text-overflow: ellipsis;
+        line-height: 20px !important;
     }
     &__sale {
         display: inline;
@@ -15,9 +22,12 @@
         border: 1px solid #ff0000;
     }
     &__price {
+        display: flex;
         font-size: 1rem !important;
         font-weight: 500 !important;
         margin-top: 4px !important;
+        white-space: nowrap;
+        align-items: center;
     }
     &__wrap {
         position: relative;

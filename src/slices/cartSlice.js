@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {CartItems} from "../constraints/Cart"
-
 
 export const cartSlice = createSlice({
     name: "cart",
@@ -9,14 +7,19 @@ export const cartSlice = createSlice({
     },
     reducers: {
         addItem:(state,action)=>{
-            let newCart = [...state.items,action.payload]
-            state.items = newCart
-            localStorage.setItem("cartItems",JSON.stringify(state.items))
+            let newItem = action.payload
+            let items = [...state.items]
+            const indexItem = items.findIndex(item=>item.id===newItem.id)
+            if(indexItem >= 0){
+                items[indexItem].quantity += newItem.quantity
+            }
+            else
+                items.unshift(newItem)
+            state.items = [...items]
         },
         removeItem:(state,action)=>{
             const itemUpdate = action.payload
             state.items = delItems(state.items,itemUpdate)
-            localStorage.setItem("cartItems",JSON.stringify(state.items))
         },
         updateItem:(state,action)=>{
             const itemUpdate = action.payload
@@ -27,20 +30,16 @@ export const cartSlice = createSlice({
                 let temp = [...state.items]
                 temp[index] = {...itemUpdate}
                 state.items = temp
-                localStorage.setItem("cartItems",JSON.stringify(state.items))
             }
         },
         chooseAll:(state,action)=>{
             state.items= state.items.map(item=>{return {...item,choose:true}})
-            localStorage.setItem("cartItems",JSON.stringify(state.items))
         },
         unchooseAll:(state,action)=>{
             state.items= state.items.map(item=>{return {...item,choose:false}})
-            localStorage.setItem("cartItems",JSON.stringify(state.items))
         },
         deleteAll:(state,action)=>{
             state.items = []
-            localStorage.setItem("cartItems",JSON.stringify(state.items))
         }
 
     }

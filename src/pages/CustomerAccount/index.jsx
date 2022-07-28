@@ -41,7 +41,7 @@ function CustomerAccount() {
     <Box className="container">
       <Box className="customer-account">
         <Box width="16rem">
-          <List maxWidth={300}>
+          <List sx={{maxWidth:"300px"}}>
             <ListItem>
               <ListItemAvatar>
                 <Avatar alt="hình đại diện" src={avatarProfile} />
@@ -51,9 +51,9 @@ function CustomerAccount() {
 
             {sidebarTab.map((item, index) => {
               return (
-                <Link to={item.link}>
+                <Link key={item.id} to={item.link}>
                   <ListItem
-                    key={item.id}
+                    
                     disablePadding
                     onClick={() => setSelectedTabId(item.id)}
                     selected={selectedTabId === item.id}
