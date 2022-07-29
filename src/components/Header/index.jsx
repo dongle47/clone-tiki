@@ -36,7 +36,7 @@ function Header() {
 
   const [search, setSearch] = useState('')
 
-  const onChangeSearch = (event) =>{
+  const onChangeSearch = (event) => {
     setSearch(event.target.value)
   }
 
@@ -107,7 +107,7 @@ function Header() {
               style={{ height: "100%", flex: 1 }}
               id="input-search"
               placeholder="Tìm sản phẩm, danh mục hay thương hiệu mong muốn ..."
-              onFocus={() => setFocusSearch(true)} 
+              onFocus={() => setFocusSearch(true)}
               value={search}
               onChange={onChangeSearch}
             />
@@ -145,19 +145,111 @@ function Header() {
             {
               user ?
                 <>
-                  <img src={user.image} />
+                  <img src={user.img} />
                   <Stack>
                     <Typography sx={{ fontSize: "11px" }}>
                       Tài khoản
                     </Typography>
                     <Button
-                      onClick={openModalLogin}
                       sx={{ color: "white" }}
                       endIcon={<ArrowDropDownOutlinedIcon />}
                     >
-                      <Typography sx={{ fontSize: "13px" }}>{user.name}</Typography>
+                      <Typography sx={{ fontSize: "13px" }}>{user.fullname}</Typography>
                     </Button>
                   </Stack>
+                  <Box className="header__dropdown">
+                    <Link to={"/customer/order/history"}>Đơn hàng của tôi</Link>
+                    <Link to={"/customer/wishlist"}>Sản phẩm yêu thích</Link>
+                    <Link to={"/customer/notification"}>Thông báo của tôi</Link>
+                    <Link to={"/customer/account/edit"}>Tài khoản của tôi</Link>
+                    <Link to="/">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <img
+                          className="header__dropdown-img"
+                          alt=""
+                          src="https://salt.tikicdn.com/ts/ta/06/60/57/811aae78f04f81a6e00ba2681e02291f.png"
+                        />
+                        <Stack>
+                          <Box>SEP 0</Box>
+                          <Box>
+                            Bạn đang có <b>0 Astra</b>
+                          </Box>
+                        </Stack>
+                      </Stack>
+                    </Link>
+                    <Link to="/">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <img
+                          className="header__dropdown-img"
+                          alt=""
+                          src="https://frontend.tikicdn.com/_desktop-next/static/img/account/insurance.png"
+                        />
+                        <Stack>
+                          <Box>Hợp đồng bảo hiểm</Box>
+                        </Stack>
+                      </Stack>
+                    </Link>
+                    <Link to="/">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <img
+                          className="header__dropdown-img"
+                          alt=""
+                          src="https://salt.tikicdn.com/ts/upload/5b/70/af/ac0eacaa8ec6738ac474f7bbe767bd75.png"
+                        />
+                        <Stack>
+                          <Box>TikiNOW</Box>
+                          <Box>Thông tin Gói hội viên</Box>
+                        </Stack>
+                      </Stack>
+                    </Link>
+                    <Link to="/customer/coupons">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <img
+                          className="header__dropdown-img"
+                          alt=""
+                          src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_code.svg"
+                        />
+                        <Stack>
+                          <Box>Mã giảm giá </Box>
+                          <Box>
+                            Bạn đang có <b>2</b> mã giảm giá
+                          </Box>
+                        </Stack>
+                      </Stack>
+                    </Link>
+                    <Link to="/">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <img
+                          className="header__dropdown-img"
+                          alt=""
+                          src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg"
+                        />
+                        <Stack>
+                          <Box>Thông tin Tiki xu</Box>
+                          <Box>
+                            Bạn đang có <b>0</b> Tiki xu
+                          </Box>
+                        </Stack>
+                      </Stack>
+                    </Link>
+                    <Link to="/">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <img
+                          className="header__dropdown-img"
+                          alt=""
+                          src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg"
+                        />
+                        <Stack>
+                          <Box>Thông tin BookCare</Box>
+                          <Box>
+                            Bạn đang có <b>0</b> BookCare
+                          </Box>
+                        </Stack>
+                      </Stack>
+                    </Link>
+                    <Link to="/">Đổi trả dễ dàng</Link>
+                    <a onClick={handleLogout}>Thoát tài khoản</a>
+                  </Box>
                 </>
                 :
                 <>
@@ -176,99 +268,7 @@ function Header() {
                   </Stack>
                 </>
             }
-            <div className="header__dropdown">
-              <Link to={"/customer/order/history"}>Đơn hàng của tôi</Link>
-              <Link to={"/customer/wishlist"}>Sản phẩm yêu thích</Link>
-              <Link to={"/customer/notification"}>Thông báo của tôi</Link>
-              <Link to={"/customer/account/edit"}>Tài khoản của tôi</Link>
-              <Link to="/">
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <img
-                    className="header__dropdown__img"
-                    alt=""
-                    src="https://salt.tikicdn.com/ts/ta/06/60/57/811aae78f04f81a6e00ba2681e02291f.png"
-                  />
-                  <Stack>
-                    <div>SEP 0</div>
-                    <div>
-                      Bạn đang có <b>0 Astra</b>
-                    </div>
-                  </Stack>
-                </Stack>
-              </Link>
-              <Link to="/">
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <img
-                    className="header__dropdown__img"
-                    alt=""
-                    src="https://frontend.tikicdn.com/_desktop-next/static/img/account/insurance.png"
-                  />
-                  <Stack>
-                    <div>Hợp đồng bảo hiểm</div>
-                  </Stack>
-                </Stack>
-              </Link>
-              <Link to="/">
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <img
-                    className="header__dropdown__img"
-                    alt=""
-                    src="https://salt.tikicdn.com/ts/upload/5b/70/af/ac0eacaa8ec6738ac474f7bbe767bd75.png"
-                  />
-                  <Stack>
-                    <div>TikiNOW</div>
-                    <div>Thông tin Gói hội viên</div>
-                  </Stack>
-                </Stack>
-              </Link>
-              <Link to="/customer/coupons">
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <img
-                    className="header__dropdown__img"
-                    alt=""
-                    src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_code.svg"
-                  />
-                  <Stack>
-                    <div>Mã giảm giá </div>
-                    <div>
-                      Bạn đang có <b>2</b> mã giảm giá
-                    </div>
-                  </Stack>
-                </Stack>
-              </Link>
-              <Link to="/">
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <img
-                    className="header__dropdown__img"
-                    alt=""
-                    src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg"
-                  />
-                  <Stack>
-                    <div>Thông tin Tiki xu</div>
-                    <div>
-                      Bạn đang có <b>0</b> Tiki xu
-                    </div>
-                  </Stack>
-                </Stack>
-              </Link>
-              <Link to="/">
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <img
-                    className="header__dropdown__img"
-                    alt=""
-                    src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg"
-                  />
-                  <Stack>
-                    <div>Thông tin BookCare</div>
-                    <div>
-                      Bạn đang có <b>0</b> BookCare
-                    </div>
-                  </Stack>
-                </Stack>
-              </Link>
-              <Link to="/">Đổi trả dễ dàng</Link>
-              <a onClick={handleLogout} >Thoát tài khoản</a>
-            </div>
+
           </Stack>
         </Stack>
 

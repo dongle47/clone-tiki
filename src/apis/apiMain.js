@@ -35,6 +35,15 @@ const apiMain = {
         return (await axi.get(url, { headers: { Authorization: `Bearer ${user.accessToken}` } })).data;
     },
     
+    postLogin: async (params) => {
+        const myLogin = await axiosClient.post('/auth/login', params)
+        return myLogin.data;
+    },
     
+    search: async (params) => {
+        const mySearch = await axiosClient.post('', params)
+        return mySearch.data;
+    },
 }
+    
 export default apiMain;

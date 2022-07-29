@@ -39,11 +39,12 @@
             left: 50%;
             transform: translateX(-50%);
         }
-        &__img {
+        &-img {
             height: 24px;
             width: 24px;
         }
         & a {
+            cursor: pointer;
             font-size: 12px;
             color: #333;
             display: block;

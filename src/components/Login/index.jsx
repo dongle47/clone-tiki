@@ -36,22 +36,12 @@ function Login(props) {
       password: pass.password,
     }
 
-    let user = {
-      name:"tnnk",
-      image:"https://scr.vn/wp-content/uploads/2020/07/Avatar-Facebook-tr%E1%BA%AFng.jpg"
-    }
-
-    if(phone==="0123456789" && pass.password==="12345678"){
-      dispatch(loginSuccess(user))
-    }
-    else
-      setMsgError("Sai mật khẩu hoặc tên đăng nhập")
-
     apiMain.postLogin(params).then(res => {
-      dispatch(loginSuccess(res.data))
+      dispatch(loginSuccess(res.data.user))
     }
     ).catch(error => {
-      setMsgError(error.message)
+      setMsgError(error.response.data.message)
+      console.log(error)
     })
   }
 
@@ -106,7 +96,7 @@ function Login(props) {
             label="Password"
           />
         </FormControl>
-        <Typography>
+        <Typography className="msgError">
           {msgError}
         </Typography>
         <Button variant="contained" color="error" onClick={handleLogin}>
