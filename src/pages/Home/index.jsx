@@ -24,26 +24,30 @@ import "swiper/css/navigation";
 
 import apiMain from "../../apis/apiMain";
 import apiHome from "../../apis/apiHome";
+import Loading from "../../components/Loading/Loading";
 
 function Home() {
   const [products, setProducts] = useState([]);
   const [Quicklink, setQuicklink] = useState([]);
   const [CategorySpecify, setCategorySpecify] = useState([]);
   const [Suggestions, setSuggestions] = useState([]);
+  const [loadingShowmore, setLoadingShowmore] = useState(false)
 
   const [page, setPage] = useState(1);
   const size = 30;
 
   useEffect(() => {
     const getData = async () => {
+      setLoadingShowmore(true)
       let param = {
         _page: page,
         _limit: size,
       };
-      const response = await apiMain.getProducts(param);
-      if (response) {
-        setProducts((pre) => [...pre, ...response.data]);
-      }
+      apiMain.getProducts(param)
+        .then(res=>{
+          setProducts((pre) => [...pre, ...res.data]);
+        })
+        .finally(()=>setLoadingShowmore(false))
     };
     getData();
   }, [page]);
@@ -250,7 +254,7 @@ function Home() {
               color="primary"
               variant="outlined"
               onClick={handleLoadMore}
-            >
+            >{loadingShowmore&&<Loading/>}
               Xem thêm
             </Button>
           </Stack>
@@ -385,7 +389,7 @@ function SectionFlashsale() {
   useEffect(() => {
     const countDownFlashsale = () => {
       let initTime = new Date()
-      let hourFlashsale = Math.ceil(initTime.getHours() / 3) * 3
+      let hourFlashsale = Math.ceil((initTime.getHours() + initTime.getMinutes()/60) / 3) * 3
       
       initTime.setHours(hourFlashsale)
       initTime.setMinutes(0)
