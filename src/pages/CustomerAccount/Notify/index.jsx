@@ -21,7 +21,6 @@ import ReceiptIcon from "@mui/icons-material/Receipt";
 import UpdateIcon from "@mui/icons-material/Update";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-import { Notifies } from "../../../constraints/Notify";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -63,9 +62,9 @@ function Notify() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const [notification, setNotification] = useState([])
+  const [notification, setNotification] = useState([[], [], [], []])
   const [page, setPage] = useState(1);
-  const size = 10;
+  const size = 30;
 
   useEffect(() => {
     const getData = async () => {
@@ -75,11 +74,19 @@ function Notify() {
       }
       const response = await apiMain.getNotification(param)
       if (response) {
-        setNotification(response.data)
+        let data = response.data.map(item=>{return {...item,icon:getIconByType(item.type)}})
+        console.log(data)
+        const ty = [
+          data,
+          data.filter(item => item.type === "discount"),
+          data.filter(item => item.type === "order"),
+          data.filter(item => item.type === "system"),
+        ]
+        setNotification(ty)
       }
     }
     getData()
-  }, [page])
+  }, [])
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -173,9 +180,11 @@ function Notify() {
             </Menu>
           </Box>
         </Stack>
-        <TabPanel value={value} index={0}>
+
+        <TabPanel value={value} index={value}>
+
           <Stack sx={{ minHeight: "400px" }}>
-            {notification.map((item) => (
+            {notification[value].length === 0 ? <EmptyNotify /> : notification[value].map((item) => (
               <Stack
                 key={item.id}
                 direction="row"
@@ -187,18 +196,8 @@ function Notify() {
                 <Typography variant="body2">{item.date}</Typography>
 
                 <Box className="icon">
-                  <Box className="icon__img">
-                    <svg
-                      stroke="currentColor"
-                      fill="currentColor"
-                      stroke-width="0"
-                      viewBox="0 0 24 24"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"></path>
-                    </svg>
+                  <Box className={`icon__img icon__img--${item.type}`}>
+                    {item.icon&&<item.icon />}
                   </Box>
                 </Box>
 
@@ -221,70 +220,57 @@ function Notify() {
             ))}
           </Stack>
         </TabPanel>
-        <TabPanel value={value} index={1}>
-          <Stack
-            sx={{
-              width: "100%",
-              minHeight: "400px",
-            }}
-            justifyContent="center"
-            alignItems="center"
-            p="2rem"
-          >
-            <img
-              alt=""
-              src="https://frontend.tikicdn.com/_desktop-next/static/img/mascot_fail.svg"
-            />
-            <Typography variant="body1">Bạn chưa có thông báo</Typography>
-
-            <Button variant="contained" color="warning">
-              Tiếp tục mua sắm
-            </Button>
-          </Stack>
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <Stack
-            width="100%"
-            minHeight="400px"
-            justifyContent="center"
-            alignItems="center"
-            p="2rem"
-          >
-            <img
-              alt=""
-              src="https://frontend.tikicdn.com/_desktop-next/static/img/mascot_fail.svg"
-            />
-            <Typography variant="body1">Bạn chưa có thông báo</Typography>
-
-            <Button variant="contained" color="warning">
-              Tiếp tục mua sắm
-            </Button>
-          </Stack>
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <Stack
-            sx={{
-              width: "100%",
-              minHeight: "400px",
-            }}
-            justifyContent="center"
-            alignItems="center"
-            p="2rem"
-          >
-            <img
-              alt=""
-              src="https://frontend.tikicdn.com/_desktop-next/static/img/mascot_fail.svg"
-            />
-            <Typography variant="body1">Bạn chưa có thông báo</Typography>
-
-            <Button variant="contained" color="warning">
-              Tiếp tục mua sắm
-            </Button>
-          </Stack>
-        </TabPanel>
       </Box>
     </Box>
   );
+}
+
+
+const listType = [
+  {
+    name:'discount',
+    icon:CardGiftcardIcon
+  },
+  {
+    name:'order',
+    icon:ReceiptIcon
+  },
+  {
+    name:'system',
+    icon:UpdateIcon
+  }
+]
+const getIconByType =type=>{
+  const list = listType.find(item=>item.name===type)
+  if(list){
+    return list.icon
+  }
+  return null
+}
+
+function EmptyNotify() {
+  return (
+    <Stack
+      sx={{
+        width: "100%",
+        minHeight: "400px",
+      }}
+      justifyContent="center"
+      alignItems="center"
+      p="2rem"
+    >
+      <img
+        alt=""
+        src="https://frontend.tikicdn.com/_desktop-next/static/img/mascot_fail.svg"
+      />
+      <Typography variant="body1">Bạn chưa có thông báo</Typography>
+
+      <Button variant="contained" color="warning">
+        Tiếp tục mua sắm
+      </Button>
+    </Stack>
+  )
+
 }
 
 export default Notify;

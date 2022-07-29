@@ -29,7 +29,7 @@ function Footer() {
             </a>
           ))}
 
-          <div class="security">
+          <div className="security">
             Hỗ trợ khách hàng:&nbsp;
             <a href="mailto:hotro@tiki.vn">hotro@tiki.vn</a>
           </div>

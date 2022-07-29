@@ -24,7 +24,7 @@ function MyRates() {
       const response = await apiMain.getMyReviews(param)
       if (response) {
         setMyReviews(response.data)
-        setTotalPage(Math.ceil(response.pagination._totalRows/size))
+        setTotalPage(Math.ceil(response.pagination._totalRows / size))
       }
     }
     getMyReviews()
@@ -64,10 +64,17 @@ function MyRates() {
             </Stack>
             <Stack spacing={1}>
               <Stack direction="row" spacing={1} jutifyContent="center">
-                <Stack direction="row">
+                <Stack direction="row" spacing={1}>
                   <Rating name="disabled" value={item.rating} disabled />
+                  <Stack jutifyContent="center">
+                    <Typography
+                      sx={{ fontSize: "13px", fontWeight: "400", lineHeight: "20px" }}
+                    >
+                      {item.satisfy}
+                    </Typography>
+                  </Stack>
                 </Stack>
-                <Typography 
+                <Typography
                   fontSize="15px" color="#242424" fontWeight="500"
                 >
                   {item.subject}
@@ -82,7 +89,7 @@ function MyRates() {
                 {item.imgRate.map((item) => (
                   <Stack className="myreview__picture"
                     sx={{
-                      backgroundImage: `url(${item})`,                      
+                      backgroundImage: `url(${item})`,
                     }}
                   ></Stack>
                 ))}

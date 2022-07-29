@@ -38,7 +38,10 @@
 }
 
 .detailOrder-Table {
+    background-color: #fff;
+    border-radius: 4px;
     &__heading {
+        border-bottom: 1px solid #f5f5f5;
         &>* {
             padding: 20px 15px;
             width: 100px;
@@ -57,7 +60,8 @@
         &>* {
             padding: 20px 15px;
             width: 100px;
-            font-size: 15px;
+            font-size: 13px;
+            border-bottom: 1px solid #f5f5f5;
             &:first-child {
                 flex: 1;
             }

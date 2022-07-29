@@ -1,6 +1,6 @@
 import {useEffect,useState} from 'react'
 import './ChooseCoupon.scss'
-import {  Button, Modal } from '@mui/material'
+import {  Button, Modal,Box,Stack } from '@mui/material'
 // import { CartItems } from "../../constraints/Cart"
 import InfoIcon from '@mui/icons-material/Info';
 import DiscountIcon from '@mui/icons-material/Discount'
@@ -16,63 +16,58 @@ function ChooseCoupon(props) {
         <Modal
             open={open}
             onClose={props.handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-        ><div className='choose-coupon'>
-                <div className="choose-coupon__heading">
+        >
+            <Box className='choose-coupon'>
+                <Stack direction='row' className="choose-coupon__heading">
                     <span>Tiki Khuyến mãi</span>
-                    <CloseIcon onClick={props.handleClose} sx={{ height: "24px" }} />
-                </div>
-                <div className="choose-coupon__groupinput">
-                    <div className="choose-coupon__groupinput__wrap">
+                    <CloseIcon onClick={props.handleClose} height="24px"/>
+                </Stack>
+                <Box className="choose-coupon__search">
+                    <Box className="choose-coupon__groupinput">
                         <input type="text" placeholder='Nhập mã giảm giá' />
-                        <span className="choose-coupon__groupinput__icon">
+                        <span className="choose-coupon__icon">
                             <DiscountIcon sx={{ height: "18px", color: "#888" }} />
                         </span>
-                        <span className="choose-coupon__groupinput__iconclear">
+                        <span className="choose-coupon__iconclear">
                             <CancelIcon sx={{ height: "18px", color: "#888" }} />
                         </span>
-                    </div>
+                    </Box>
 
-
-                    <Button variant="contained"
-                        sx={{ height: "36px", width: "89px", padding: 0, lineHeight: 0 }}
+                    <Button variant="contained" className="choose-coupon__btn-apply"
                     >Áp dụng</Button>
-                </div>
-                <div className="choose-coupon__list">
-                    <div className="choose-coupon__list__heading">
+                </Box>
+                <Box className="choose-coupon__list">
+                    <Stack direction='row' className="choose-coupon__list-heading">
                         <span>Mã giảm giá</span>
                         <span>Áp dụng tối đa: 1</span>
-                    </div>
+                    </Stack>
                     <ul>
                         <li>
-                            <div className="coupon-item">
-                                <div className="coupon-item__img">
+                            <Box className="coupon-item">
+                                <Box className="coupon-item__img">
                                     <img src="https://salt.tikicdn.com/cache/128x128/ts/upload/b6/c1/66/74ae9fd52a0e96a63551e054c135b53e.png" alt="" />
-                                </div>
-                                <div className="coupon-item__content">
-                                    <div className="coupon-item__content__title">
+                                </Box>
+                                <Box className="coupon-item__content">
+                                    <Box className="coupon-item__title">
                                         <span>KH mới</span>
-                                        <InfoIcon sx={{ color: "#017fff", height: "20px" }} />
-                                    </div>
-                                    <div className="coupon-item__content__description">
+                                        <InfoIcon color="#017fff" height="20px" />
+                                    </Box>
+                                    <Box className="coupon-item__description">
                                         <h4>Giảm 20K</h4>
                                         <p>Cho đơn hàng từ 49K</p>
-                                    </div>
-                                    <div className="coupon-item__content__apply">
+                                    </Box>
+                                    <Box className="coupon-item__apply">
                                         <span>HSD: 31/07/2022</span>
-                                        <Button variant="contained"
-                                            sx={{ height: "28px", padding: 0, lineHeight: 0 }}
+                                        <Button variant="contained" className="coupon-item__btn-apply"
                                         >Áp dụng</Button>
-                                    </div>
-                                </div>
-                            </div>
+                                    </Box>
+                                </Box>
+                            </Box>
                         </li>
                     </ul>
-                </div>
+                </Box>
 
-            </div>
-
+            </Box>
         </Modal>
     )
 }

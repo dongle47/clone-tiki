@@ -24,6 +24,10 @@ const apiMain = {
         return myReview.data;
     },
 
+    getCoupons: async (params) => {
+        const res = await axiosClient.get('/coupons', {params})
+        return res.data;
+    },
 
     verifyToken: async (user, dispatch, stateSuccess) => {
         const url = `/auth/verifytoken`
