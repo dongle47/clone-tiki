@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useRef, useEffect } from "react";
 
 import {
   Grid,
@@ -10,8 +10,26 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from '@mui/icons-material/Clear';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import apiMain from "../../apis/apiMain";
 
-function Search() {
+function Search(props) {
+
+  const [search, setSearch] = useState([])
+
+  useEffect(() => {
+    const getSearch = async () => {
+      let param = {
+        _page:"",
+        _limit: "",
+      }
+      const response = await apiMain.getSearch(param)
+      if (response) {
+        setSearch(response.data)
+      }
+    }
+    getSearch()
+  }, [props.search])
+
   return (
     <Box id="input-search-result" px={2} className="header-search__result">
     <Stack
