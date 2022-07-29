@@ -15,6 +15,7 @@ import {
   Button,
 } from "@mui/material";
 
+import EmptyNotify from "../../../components/EmptyNotify";
 import HomeIcon from "@mui/icons-material/Home";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import ReceiptIcon from "@mui/icons-material/Receipt";
@@ -246,31 +247,6 @@ const getIconByType =type=>{
     return list.icon
   }
   return null
-}
-
-function EmptyNotify() {
-  return (
-    <Stack
-      sx={{
-        width: "100%",
-        minHeight: "400px",
-      }}
-      justifyContent="center"
-      alignItems="center"
-      p="2rem"
-    >
-      <img
-        alt=""
-        src="https://frontend.tikicdn.com/_desktop-next/static/img/mascot_fail.svg"
-      />
-      <Typography variant="body1">Bạn chưa có thông báo</Typography>
-
-      <Button variant="contained" color="warning">
-        Tiếp tục mua sắm
-      </Button>
-    </Stack>
-  )
-
 }
 
 export default Notify;
