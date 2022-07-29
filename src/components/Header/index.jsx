@@ -151,10 +151,10 @@ function Header() {
                       Tài khoản
                     </Typography>
                     <Button
-                      sx={{ color: "white" }}
+                      sx={{ color: "white", padding:"6px 0" }}
                       endIcon={<ArrowDropDownOutlinedIcon />}
                     >
-                      <Typography sx={{ fontSize: "13px" }}>{user.fullname}</Typography>
+                      <Typography className="text-overflow-1-lines" sx={{ fontSize: "13px", textAlign:"start" }}>{user.fullName}</Typography>
                     </Button>
                   </Stack>
                   <Box className="header__dropdown">
