@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { loginSuccess } from '../../slices/authSlice'
 import { useDispatch } from 'react-redux';
-import apiMain from '../../apis/apiMain'
+import apiAuth from '../../apis/apiAuth'
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
@@ -36,8 +36,9 @@ function Login(props) {
       password: pass.password,
     }
 
-    apiMain.postLogin(params).then(res => {
+    apiAuth.postLogin(params).then(res => {
       dispatch(loginSuccess(res.data.user))
+      props.closeModalLogin()
     }
     ).catch(error => {
       setMsgError(error.response.data.message)
