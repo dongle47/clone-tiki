@@ -29,7 +29,7 @@ function SignUp(props) {
   const [showPassConf, setShowPassConf] = React.useState(false);
 
   const [invalidPhone, setInvalidPhone] = React.useState(false);
-  const [checkPass, setCheckPass] = React.useState(false);
+  const [isDiffPass, setIsDiffPass] = React.useState(false);
 
   const {
     register,
@@ -38,16 +38,10 @@ function SignUp(props) {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    handleCheckPhone();
-    handleCheckPass();
-    console.log(data);
-  };
-
   const handleCheckPass = () => {
     watch("pass") !== watch("passConf")
-      ? setCheckPass(false)
-      : setCheckPass(true);
+      ? setIsDiffPass(true)
+      : setIsDiffPass(false);
   };
 
   const handleCheckPhone = () => {
@@ -65,98 +59,137 @@ function SignUp(props) {
 
         if (error.response.data.status === 400) {
           setInvalidPhone(true);
-          console.log(invalidPhone);
+        } else {
+          setInvalidPhone(false);
         }
       });
   };
 
+  const onSubmit = async (data) => {
+    await handleCheckPhone();
+    await handleCheckPass();
+    if (invalidPhone === false && isDiffPass === false) {
+      console.log(data);
+    }
+  };
+
   return (
     <Stack direction="row">
-      <Stack direction="column" sx={{ flex: 5 }} spacing={2}>
+      <Stack direction="column" sx={{ flex: 5 }} spacing={3}>
         <Typography variant="h5">Đăng ký</Typography>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack direction="row" width="100%">
-            <TextField
-              {...register("phoneNumber", {
-                required: "Hãy nhập số điện thoại",
-                pattern: {
-                  value: /\d+/,
-                  message: "Số điện thoại không hợp lệ",
-                },
-                minLength: {
-                  value: 10,
-                  message: "Số điện thoại phải có ít nhất 10 chữ số",
-                },
-              })}
-              label="Số điện thoại"
-              variant="standard"
-              sx={{ flex: 1 }}
-            />
+          <Stack spacing={2}>
+            <Stack width="100%">
+              <TextField
+                {...register("phoneNumber", {
+                  required: "Hãy nhập số điện thoại",
+                  pattern: {
+                    value: /\d+/,
+                    message: "Số điện thoại không hợp lệ",
+                  },
+                  minLength: {
+                    value: 10,
+                    message: "Số điện thoại phải có ít nhất 10 chữ số",
+                  },
+                })}
+                label="Số điện thoại"
+                variant="standard"
+                sx={{ flex: 1 }}
+              />
+
+              {errors.phoneNumber && (
+                <ErrorUnderInput message={errors.phoneNumber.message} />
+              )}
+            </Stack>
+
+            <FormControl sx={{ width: "100%" }} variant="standard">
+              <InputLabel htmlFor="outlined-adornment-password">
+                Nhập mật khẩu
+              </InputLabel>
+              <Input
+                {...register("pass", {
+                  required: "Hãy nhập mật khẩu",
+                  minLength: {
+                    value: 8,
+                    message: "Mật khẩu phải có ít nhất 8 ký tự",
+                  },
+                })}
+                variant="standard"
+                type={showPass ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPass(!showPass)}
+                      edge="end"
+                    >
+                      {showPass ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+
+              {errors.pass && <ErrorUnderInput message={errors.pass.message} />}
+            </FormControl>
+
+            <FormControl sx={{ width: "100%" }} variant="standard">
+              <InputLabel htmlFor="outlined-adornment-password">
+                Nhập lại mật khẩu
+              </InputLabel>
+              <Input
+                {...register("passConf", {
+                  required: "Hãy nhập lại mật khẩu",
+                  minLength: {
+                    value: 8,
+                    message: "Mật khẩu phải có ít nhất 8 ký tự",
+                  },
+                })}
+                id="password-config"
+                type={showPassConf ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassConf(!showPassConf)}
+                      edge="end"
+                    >
+                      {showPassConf ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+
+              {errors.passConf && (
+                <ErrorUnderInput message={errors.passConf.message} />
+              )}
+            </FormControl>
+
+            <Stack sx={{ marginTop: "5rem" }}>
+              {invalidPhone && (
+                <ErrorMessage message="Số điện thoại đã được đăng ký" />
+              )}
+              {isDiffPass ? (
+                <ErrorMessage message="Nhập mật khẩu trùng nhau dùm cái" />
+              ) : null}
+            </Stack>
+
+            <Button
+              type="submit"
+              onClick={handleSubmit(onSubmit)}
+              variant="contained"
+              color="error"
+            >
+              Hoàn Tất
+            </Button>
           </Stack>
-          {errors.phoneNumber?.message}
-
-          <FormControl sx={{ width: "100%" }} variant="standard">
-            <InputLabel htmlFor="outlined-adornment-password">
-              Nhập mật khẩu
-            </InputLabel>
-            <Input
-              {...register("pass", { required: true, minLength: 8 })}
-              variant="standard"
-              type={showPass ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton onClick={() => setShowPass(!showPass)} edge="end">
-                    {showPass ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-
-            {errors.pass?.type === "required" && "Hãy nhập mật khẩu"}
-          </FormControl>
-
-          <FormControl sx={{ width: "100%" }} variant="standard">
-            <InputLabel htmlFor="outlined-adornment-password">
-              Nhập lại mật khẩu
-            </InputLabel>
-            <Input
-              {...register("passConf", { required: true, minLength: 8 })}
-              id="password-config"
-              type={showPassConf ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassConf(!showPassConf)}
-                    edge="end"
-                  >
-                    {showPassConf ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-
-            {errors.passConf?.type === "required" && "Hãy nhập lại mật khẩu"}
-          </FormControl>
-          {invalidPhone && (
-            <ErrorMessage message="Số điện thoại đã được đăng ký" />
-          )}
-          {!checkPass && (
-            <ErrorMessage message="Nhập mật khẩu trùng nhau dùm cái" />
-          )}
-
-          <Button
-            type="submit"
-            onClick={handleSubmit(onSubmit)}
-            variant="contained"
-            color="error"
-          >
-            Hoàn Tất
-          </Button>
         </form>
 
-        <p style={{ textAlign: "center" }}>Đăng nhập bằng mail</p>
-        <p style={{ textAlign: "center", marginTop: "3rem" }}>Tiếp tục bằng</p>
+        <Typography variant="body2" sx={{ textAlign: "center" }}>
+          Đăng nhập bằng mail
+        </Typography>
+
+        <Typography variant="body2" sx={{ textAlign: "center" }}>
+          Hoặc tiếp tục bằng
+        </Typography>
 
         <Stack
           direction="row"
@@ -167,14 +200,14 @@ function SignUp(props) {
           <img
             src="https://salt.tikicdn.com/ts/upload/3a/22/45/0f04dc6e4ed55fa62dcb305fd337db6c.png"
             alt="facebook"
-            width="58px"
-            height="58px"
+            width="50rem"
+            height="50rem"
           />
           <img
             src="https://salt.tikicdn.com/ts/upload/1c/ac/e8/141c68302262747f5988df2aae7eb161.png"
             alt="google"
-            width="58px"
-            height="58px"
+            width="50rem"
+            height="50rem"
           />
         </Stack>
 
@@ -214,9 +247,21 @@ export default SignUp;
 
 function ErrorMessage(props) {
   return (
-    <Stack direction="row">
-      <ReportProblemOutlinedIcon color="error" />
-      <Typography color="red">{props.message}</Typography>
+    <Stack direction="row" alignItems="center" spacing={1}>
+      <ReportProblemOutlinedIcon size="small" color="error" />
+      <Typography variant="subtitle2" color="red">
+        {props.message}
+      </Typography>
+    </Stack>
+  );
+}
+
+function ErrorUnderInput(props) {
+  return (
+    <Stack direction="row" alignItems="center" spacing={1}>
+      <Typography variant="caption" color="gray">
+        {props.message}
+      </Typography>
     </Stack>
   );
 }
