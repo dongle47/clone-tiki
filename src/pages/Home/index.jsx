@@ -51,6 +51,7 @@ function Home() {
     };
     getData();
   }, [page]);
+  
 
   useEffect(() => {
     const getDataQuickLink = async () => {
