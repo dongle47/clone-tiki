@@ -23,6 +23,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 
 import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 function SignUp(props) {
   const [showPass, setShowPass] = React.useState(false);
@@ -30,6 +31,8 @@ function SignUp(props) {
 
   const [invalidPhone, setInvalidPhone] = React.useState(false);
   const [isDiffPass, setIsDiffPass] = React.useState(false);
+
+  const [isSuccess, setIsSuccess] = React.useState(false);
 
   const {
     register,
@@ -39,16 +42,19 @@ function SignUp(props) {
   } = useForm();
 
   const handleCheckPass = () => {
-    watch("pass") !== watch("passConf")
-      ? setIsDiffPass(true)
-      : setIsDiffPass(false);
+    if (watch("pass") !== watch("passConf")) {
+      setIsDiffPass(true);
+    } else {
+      setIsDiffPass(false);
+      return true;
+    }
   };
 
-  const handleCheckPhone = () => {
+  const handleCheckPhone = async () => {
     let param = {
       phone: watch("phoneNumber"),
     };
-    apiAuth
+    await apiAuth
       .postCheckPhone(param)
       .then((res) => {
         console.log(res);
@@ -59,17 +65,24 @@ function SignUp(props) {
 
         if (error.response.data.status === 400) {
           setInvalidPhone(true);
+          return true;
         } else {
           setInvalidPhone(false);
         }
       });
   };
 
-  const onSubmit = async (data) => {
-    await handleCheckPhone();
-    await handleCheckPass();
-    if (invalidPhone === false && isDiffPass === false) {
-      console.log(data);
+  const onSubmit = async () => {
+    if (handleCheckPhone() && handleCheckPass()) {
+      if (invalidPhone === false && isDiffPass === false) {
+        let param = {
+          password: watch("pass"),
+          phone: watch("phoneNumber"),
+        };
+        apiAuth
+          .postRegister(param)
+          .then(setIsSuccess(true));
+      }
     }
   };
 
@@ -180,6 +193,8 @@ function SignUp(props) {
             >
               Hoàn Tất
             </Button>
+
+            {isSuccess && <SuccessRegister handleSignUp={props.handleSignUp} />}
           </Stack>
         </form>
 
@@ -200,14 +215,14 @@ function SignUp(props) {
           <img
             src="https://salt.tikicdn.com/ts/upload/3a/22/45/0f04dc6e4ed55fa62dcb305fd337db6c.png"
             alt="facebook"
-            width="50rem"
-            height="50rem"
+            width="40rem"
+            height="40rem"
           />
           <img
             src="https://salt.tikicdn.com/ts/upload/1c/ac/e8/141c68302262747f5988df2aae7eb161.png"
             alt="google"
-            width="50rem"
-            height="50rem"
+            width="40rem"
+            height="40rem"
           />
         </Stack>
 
@@ -262,6 +277,24 @@ function ErrorUnderInput(props) {
       <Typography variant="caption" color="gray">
         {props.message}
       </Typography>
+    </Stack>
+  );
+}
+
+function SuccessRegister(props) {
+  return (
+    <Stack
+      direction="row"
+      spacing={2}
+      alignItems="center"
+      justifyContent="center"
+    >
+      <CheckCircleOutlineIcon color="success" />
+      <Typography sx={{ textAlign: "center" }}>Đăng ký thành công</Typography>
+
+      <Button variant="text" onClick={props.handleSignUp}>
+        Đăng nhập
+      </Button>
     </Stack>
   );
 }
