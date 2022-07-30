@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   Stack,
   Typography,
@@ -8,22 +9,57 @@ import {
 } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-
 import { useState } from "react";
+import apiProfile from "../../../../apis/apiProfile"; 
 
 function Password() {
-  const [showPass, setShowPass] = useState(false);
+  const [showPass, setShowPass] = React.useState(false);
+  const [message, setMessage] = React.useState("");
 
-  const passwordInput = (placeHolder) => {
+  const [confirmPassword, setconfirmPassword] = React.useState("");
+  const [newPassword, setnewPassword] = React.useState("");
+  const [oldPassword, setoldPassword] = React.useState("");
+
+  const onChangenewPassword = (event) => {
+    setnewPassword(event.target.value)
+    
+  }
+  const onChangeoldPassword = (event) => {
+    setoldPassword(event.target.value)
+    
+  }
+  const onChangeconfirmPassword = (event) => {
+    setconfirmPassword(event.target.value)
+    
+  }
+  const handleChangePassword = () => {
+    const params = {
+      "confirmPassword": confirmPassword,
+      "newPassword": newPassword,
+      "oldPassword": oldPassword
+    }
+    apiProfile.putChangePassword(params)
+      .then(response => {
+        setMessage("Thay đổi thành công")
+      })
+      .catch(error => {
+      console.log(error)
+      setMessage("Thay đổi không thành công!")
+    })
+  }
+
+  const passwordInput = (placeHolder, value, onChange) => {
     return (
       <TextField
+        value={value}
+        onChange = {onChange}
         size="small"
-        label={placeHolder}
+        label={placeHolder }
         type={showPass ? "text" : "password"}
         name="pass"
         InputProps={{
           endAdornment: (
-            <InputAdornment position="end">
+            <InputAdornment position="end" >
               <IconButton onClick={() => setShowPass(!showPass)}>
                 {showPass ? (
                   <VisibilityOutlinedIcon />
@@ -48,18 +84,20 @@ function Password() {
         justifyContent="center"
       >
         <Stack className="customer-info__input-container" spacing={3}>
-          {passwordInput("Nhập mật khẩu hiện tại")}
+          {passwordInput("Nhập mật khẩu hiện tại", oldPassword, onChangeoldPassword)}
 
           <Stack>
-            {passwordInput("Nhập mật khẩu mới")}
+            {passwordInput("Nhập mật khẩu mới", newPassword, onChangenewPassword)}
             <Typography variant="caption">
-              Mật khẩu phải dài từ 8 đến 32 ký tự, bao gồm chữ và số
+              
             </Typography>
           </Stack>
 
-          {passwordInput("Nhập lại mật khẩu mới")}
-
-          <Button variant="contained">Lưu thay đổi</Button>
+          {passwordInput("Nhập lại mật khẩu mới", confirmPassword, onChangeconfirmPassword)}
+          <Typography>
+              {message}
+            </Typography>
+          <Button onClick={handleChangePassword} variant="contained">Lưu thay đổi</Button>
         </Stack>
       </Stack>
     </Stack>
