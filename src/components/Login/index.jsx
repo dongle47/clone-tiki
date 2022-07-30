@@ -35,9 +35,11 @@ function Login(props) {
       phone: phone,
       password: pass.password,
     }
+    
 
     apiAuth.postLogin(params).then(res => {
-      dispatch(loginSuccess(res.data.user))
+      let { accessToken, refreshToken, user } = res.data
+      dispatch(loginSuccess({ accessToken, refreshToken, ...user }))
       props.closeModalLogin()
     }
     ).catch(error => {
