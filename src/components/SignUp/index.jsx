@@ -22,11 +22,14 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 
+import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
+
 function SignUp(props) {
   const [showPass, setShowPass] = React.useState(false);
   const [showPassConf, setShowPassConf] = React.useState(false);
 
   const [invalidPhone, setInvalidPhone] = React.useState(false);
+  const [checkPass, setCheckPass] = React.useState(false);
 
   const {
     register,
@@ -35,7 +38,17 @@ function SignUp(props) {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    handleCheckPhone();
+    handleCheckPass();
+    console.log(data);
+  };
+
+  const handleCheckPass = () => {
+    watch("pass") !== watch("passConf")
+      ? setCheckPass(false)
+      : setCheckPass(true);
+  };
 
   const handleCheckPhone = () => {
     let param = {
@@ -47,11 +60,13 @@ function SignUp(props) {
         console.log(res);
       })
       .catch((error) => {
-        console.log(error.response.data.message);
+        console.log(error.response.data.status);
         setInvalidPhone(false);
 
-        if (error.response.data.message.includes("exists"))
+        if (error.response.data.status === 400) {
           setInvalidPhone(true);
+          console.log(invalidPhone);
+        }
       });
   };
 
@@ -61,28 +76,25 @@ function SignUp(props) {
         <Typography variant="h5">Đăng ký</Typography>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            {...register("name", { required: true })}
-            label="Nhập họ tên"
-            variant="standard"
-          />
-
           <Stack direction="row" width="100%">
             <TextField
-              {...register("phoneNumber", { required: true, minLength: 10 })}
+              {...register("phoneNumber", {
+                required: "Hãy nhập số điện thoại",
+                pattern: {
+                  value: /\d+/,
+                  message: "Số điện thoại không hợp lệ",
+                },
+                minLength: {
+                  value: 10,
+                  message: "Số điện thoại phải có ít nhất 10 chữ số",
+                },
+              })}
               label="Số điện thoại"
               variant="standard"
               sx={{ flex: 1 }}
             />
-            <Button
-              onClick={handleCheckPhone}
-              variant="outlined"
-              sx={{ width: "100px" }}
-            >
-              Kiểm tra
-            </Button>
           </Stack>
-          {invalidPhone && <Typography>Số điện thoại đã sử dụng</Typography>}
+          {errors.phoneNumber?.message}
 
           <FormControl sx={{ width: "100%" }} variant="standard">
             <InputLabel htmlFor="outlined-adornment-password">
@@ -100,6 +112,8 @@ function SignUp(props) {
                 </InputAdornment>
               }
             />
+
+            {errors.pass?.type === "required" && "Hãy nhập mật khẩu"}
           </FormControl>
 
           <FormControl sx={{ width: "100%" }} variant="standard">
@@ -121,7 +135,15 @@ function SignUp(props) {
                 </InputAdornment>
               }
             />
+
+            {errors.passConf?.type === "required" && "Hãy nhập lại mật khẩu"}
           </FormControl>
+          {invalidPhone && (
+            <ErrorMessage message="Số điện thoại đã được đăng ký" />
+          )}
+          {!checkPass && (
+            <ErrorMessage message="Nhập mật khẩu trùng nhau dùm cái" />
+          )}
 
           <Button
             type="submit"
@@ -189,3 +211,12 @@ function SignUp(props) {
 }
 
 export default SignUp;
+
+function ErrorMessage(props) {
+  return (
+    <Stack direction="row">
+      <ReportProblemOutlinedIcon color="error" />
+      <Typography color="red">{props.message}</Typography>
+    </Stack>
+  );
+}
