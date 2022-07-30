@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  Box,
   Stack,
   Typography,
   Button,
@@ -9,7 +10,6 @@ import {
 } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import { useState } from "react";
 import apiProfile from "../../../../apis/apiProfile"; 
 
 function Password() {
@@ -94,9 +94,10 @@ function Password() {
           </Stack>
 
           {passwordInput("Nhập lại mật khẩu mới", confirmPassword, onChangeconfirmPassword)}
-          <Typography>
+          <Box><Typography>
               {message}
-            </Typography>
+            </Typography></Box>
+          
           <Button onClick={handleChangePassword} variant="contained">Lưu thay đổi</Button>
         </Stack>
       </Stack>
