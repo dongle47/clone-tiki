@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "@mui/material/styles";
-import { Box, Tabs, Tab, Typography } from "@mui/material";
+import { Box, Tabs, Tab, Typography, Pagination, Stack } from "@mui/material";
 import "./Orders.scss";
 import SearchIcon from "@mui/icons-material/Search";
 import OrderItem from "../../../components/OrderItem/index.jsx";
@@ -13,6 +13,8 @@ function Orders() {
   const theme = useTheme();
   const [value, setValue] = useState(0);
   const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(10);
+  
   const size = 10;
 
   useEffect(() => {
@@ -24,6 +26,7 @@ function Orders() {
       const response = await apiMain.getOrders(param);
       if (response) {
         setOrders(response.data);
+        setTotalPage(Math.ceil(response.pagination._totalRows / size))
       }
     };
     getData();
@@ -112,6 +115,11 @@ function Orders() {
                 </TabPanel>
               );
           })}
+
+          {orders.length !== 0 ? <Stack spacing={2}>
+            <Typography>Page: {page}</Typography>
+            <Pagination count={totalPage} page={page} onChange={handleChange} />
+          </Stack> : <></>}
         </Box>
       </Box>
     </>

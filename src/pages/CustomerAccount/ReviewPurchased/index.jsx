@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { styled } from "@mui/material/styles";
@@ -23,6 +23,7 @@ import {
 import productImage from "../../../assets/img/avatar1.jpg";
 
 import CloseIcon from "@mui/icons-material/Close";
+import apiMain from "../../../apis/apiMain";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -72,6 +73,30 @@ function ReviewPurchased() {
     setOpen(false);
   };
 
+  const [myRevPurchaseds, setMyRevPurchaseds] = useState([])
+  const [totalPage, setTotalPage] = useState(10)
+  const [page, setPage] = useState(1)
+  const size = 5
+
+  useEffect(() => {
+    const getMyRevPurchaseds = async () => {
+      let param = {
+        _page: page,
+        _limit: size,
+      }
+      const response = await apiMain.getMyRevPurchaseds(param)
+      if (response) {
+        setMyRevPurchaseds(response.data)
+        setTotalPage(Math.ceil(response.pagination._totalRows / size))
+      }
+    }
+    getMyRevPurchaseds()
+  }, [page])
+
+  const handleChange = (event, value) => {
+    setPage(value);
+  }
+
   return (
     <Box
       sx={{
@@ -84,30 +109,28 @@ function ReviewPurchased() {
       </Typography>
 
       <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row">
-        <Card sx={{ border: "0px solid black", maxWidth: "13rem" }}>
-          <CardMedia component="img" image={productImage} height="200" />
-
-          <CardContent sx={{ padding: "5px 0 0 0" }}>
-            <Typography variant="caption" color="text.secondary">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit...
-            </Typography>
-          </CardContent>
-
-          <CardActions>
-            <Button
-              sx={{ width: "100%" }}
-              variant="contained"
-              size="small"
-              color="primary"
-              onClick={handleClickOpen}
-            >
-              Viết nhận xét
-            </Button>
-          </CardActions>
-        </Card>
+        {myRevPurchaseds.map((itemn) =>
+          <Card sx={{ border: "0px solid black", maxWidth: "13rem" }}>
+            <CardMedia component="img" image={productImage} height="200" />
+            <CardContent sx={{ padding: "5px 0 0 0" }}>
+              <Typography variant="caption" color="text.secondary">
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit...
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                sx={{ width: "100%" }}
+                variant="contained"
+                size="small"
+                color="primary"
+                onClick={handleClickOpen}
+              >
+                Viết nhận xét
+              </Button>
+            </CardActions>
+          </Card>
+        )}
       </Stack>
-
-      <Pagination count={10} page={1} />
 
       <div>
         <BootstrapDialog
@@ -179,6 +202,11 @@ function ReviewPurchased() {
           </DialogActions>
         </BootstrapDialog>
       </div>
+
+      {myRevPurchaseds.length !== 0 ? <Stack spacing={2}>
+        <Typography>Page: {page}</Typography>
+        <Pagination count={totalPage} page={page} onChange={handleChange} />
+      </Stack> : <></>}
     </Box>
   );
 }

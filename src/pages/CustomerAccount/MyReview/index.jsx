@@ -102,10 +102,10 @@ function MyRates() {
         ))}
       </Stack>
 
-      <Stack spacing={2}>
+      {myReviews.length !== 0 ? <Stack spacing={2}>
         <Typography>Page: {page}</Typography>
         <Pagination count={totalPage} page={page} onChange={handleChange} />
-      </Stack>
+      </Stack>:<></>}
     </Box>
   );
 }
