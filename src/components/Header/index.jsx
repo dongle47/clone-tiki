@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./Header.scss";
 import { useState, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate,useLocation} from "react-router-dom";
 
 import {
   Stack,
@@ -24,6 +24,10 @@ import Login from "../Login"
 import SignUp from "../SignUp"
 import Search from "../Search";
 
+const publicPath = [
+  '/product/', '/filter/', '/cart/'
+]
+
 function Header() {
   const [modalLogin, setModalLogin] = useState(false);
   const [loginForm, setLoginForm] = useState(true);
@@ -31,6 +35,8 @@ function Header() {
   const openModalLogin = () => setModalLogin(true);
   const cart = useSelector(state => state.cart.items)
   const user = useSelector(state => state.auth.user)//lấy user từ store
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const dispatch = useDispatch()
 
@@ -42,6 +48,9 @@ function Header() {
 
   const handleLogout = () => {
     dispatch(logoutSuccess())
+    const isPublic = publicPath.findIndex(e => location.pathname.includes(e)) >= 0 ? true : false
+    if (!isPublic)
+      navigate('/')
   }
 
   const closeModalLogin = () => {
@@ -151,10 +160,10 @@ function Header() {
                       Tài khoản
                     </Typography>
                     <Button
-                      sx={{ color: "white", padding:"6px 0" }}
+                      sx={{ color: "white", padding: "6px 0" }}
                       endIcon={<ArrowDropDownOutlinedIcon />}
                     >
-                      <Typography className="text-overflow-1-lines" sx={{ fontSize: "13px", textAlign:"start" }}>{user.fullName}</Typography>
+                      <Typography className="text-overflow-1-lines" sx={{ fontSize: "13px", textAlign: "start" }}>{user.fullName}</Typography>
                     </Button>
                   </Stack>
                   <Box className="header__dropdown">

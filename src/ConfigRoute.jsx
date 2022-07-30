@@ -7,18 +7,25 @@ import Admin from "./pages/Admin";
 import Payment from "./pages/Payment";
 import Error from "./pages/Error/index";
 import {  Route, Routes } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
 
 function ConfigRoute() {
   return (
     <Routes>
         <Route path="/" element={<Home />} />
         <Route path="cart" element={<ShoppingCart />} />
-        <Route path="payment" element={<Payment />} />
+        <Route element={<PrivateRoute roles={['ADMIN','USER']} />}>
+          <Route path="payment" element={<Payment />} />
+        </Route>
         {/* Routing customer account */}
+        <Route element={<PrivateRoute roles={['USER']} />}>
         <Route path="customer/*" element={<CustomerAccount />} />
+        </Route>
+        <Route element={<PrivateRoute roles={['ADMIN']} />}>
+           <Route path="admin/*" element={<Admin />}/>
+        </Route>
         <Route path="filter" element={<FilterProduct />} />
         <Route path="product/:id" element={<DetailProduct />} />
-        <Route path="admin/*" element={<Admin />}/>
         <Route path="*" element={<Error />} />
     </Routes>
   )
