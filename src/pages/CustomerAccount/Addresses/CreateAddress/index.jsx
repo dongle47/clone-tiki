@@ -17,21 +17,60 @@ import {
 } from "@mui/material";
 import "./CreateAddress.scss";
 import { styled } from '@mui/material/styles';
+import { useState } from "react";
+import apiAddress from "../../../../apis/apiAddress";
 function CreateAddress() {
-  const [tinh, setTinh] = React.useState("");
+  
+  const [fullName, setFullName] = useState("")
+  const [companyName, setCompanyName] = useState("")
+  const [phone, setPhone] = useState("")
+  const [addressDetail, setAddressDetail]= useState("")
+  const [addressType, setAddressType] = useState("")
+  
+  const [province, setProvince] = React.useState("");
   const handleChange1 = (event) => {
-    setTinh(event.target.value);
+    setProvince(event.target.value);
   };
 
-  const [huyen, setHuyen] = React.useState("");
+  const [district, setDistrict] = React.useState("");
   const handleChange2 = (event) => {
-    setHuyen(event.target.value);
+    setDistrict(event.target.value);
   };
 
-  const [xa, setXa] = React.useState("");
+  const [commune, setCommune] = React.useState("");
   const handleChange3 = (event) => {
-    setXa(event.target.value);
+    setCommune(event.target.value);
   };
+  const handleSave = () =>
+  {
+    const params = {
+      "addressDetail": addressDetail,
+      "addressType": Number(addressType),
+      "commune": commune,
+      "companyName": companyName,
+      "district": district,
+      "fullName": fullName,
+      "phone": phone,
+      "province": province
+
+    }
+    apiAddress.saveAddress(params)
+  }
+
+  const handleUpdate = () =>
+  {
+    const params ={
+      "addressDetail": addressDetail,
+      "addressType": Number(addressType),
+      "commune": commune,
+      "companyName": companyName,
+      "district": district,
+      "fullName": fullName,
+      "phone": phone,
+      "province": province
+    }
+    apiAddress.updateAddress(params)
+  }
 
   return (
     <Box className="create-address" px={0} m={0}>
@@ -43,7 +82,9 @@ function CreateAddress() {
             Họ và tên:
           </Typography>
           <Stack className="create-address__input">
-            <InputCustom
+            <InputCustom value={fullName} onChange={(event)=>{
+              setFullName(event.target.value)
+            }}
               placeholder="Nhập họ và tên"
               size="small"
             ></InputCustom>
@@ -55,7 +96,9 @@ function CreateAddress() {
             Công ty:
           </Typography>
           <Stack className="create-address__input">
-            <InputCustom
+            <InputCustom value={companyName} onChange={(event)=>{
+              setCompanyName(event.target.value)
+            }}
               size="small"
               placeholder="Nhập công ty"
             ></InputCustom>
@@ -67,7 +110,9 @@ function CreateAddress() {
             Số điện thoại:
           </Typography>
           <Stack className="create-address__input">
-            <InputCustom
+            <InputCustom value={phone} onChange={(event)=>{
+              setPhone(event.target.value)
+            }}
               size="small"
               placeholder="Nhập số điện thoại"
             ></InputCustom>
@@ -83,7 +128,7 @@ function CreateAddress() {
               size="small"
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
-              value={tinh}
+              value={province}
               label="Age"
               onChange={handleChange1}
               input={<InputCustom placeholder="Chọn Tỉnh/Thành phố" />}
@@ -105,7 +150,7 @@ function CreateAddress() {
               sx="flex:0.65"
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
-              value={huyen}
+              value={district}
               label="Age"
               onChange={handleChange2}
               input={<InputCustom placeholder="Chọn Quận/Huyện" />}
@@ -125,7 +170,7 @@ function CreateAddress() {
             <Select
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
-              value={xa}
+              value={commune}
               label="Age"
               onChange={handleChange3}
               input={<InputCustom placeholder="Chọn Xã/Thị trấn" />}
@@ -142,7 +187,9 @@ function CreateAddress() {
             Địa chỉ
           </Typography>
           <Stack className="create-address__input">
-            <InputCustom
+            <InputCustom value={addressDetail} onChange={(event)=>{
+              setAddressDetail(event.target.value)
+            }}
               multiline
               rows={4}
               placeholder="Nhập địa chỉ"
@@ -154,14 +201,14 @@ function CreateAddress() {
           <Typography className="create-address__label">
             Loại địa chỉ:
           </Typography>
-          <RadioGroup row>
+          <RadioGroup value={addressType} onChange={(event)=>{setAddressType(event.target.value)}} row>
             <FormControlLabel
-              value="Nhà riêng/ Chung cư"
+              value= "0"
               control={<Radio />}
               label="Nhà riêng/ Chung cư"
             />
             <FormControlLabel
-              value="Cơ quan/ Công ty"
+              value="1"
               control={<Radio />}
               label="Cơ quan/ Công ty"
             />
@@ -178,7 +225,7 @@ function CreateAddress() {
 
         <Stack direction="row">
           <Typography className="create-address__label"></Typography>
-          <Button className="btn__Update" variant="contained">
+          <Button onClick={handleSave} className="btn__Update" variant="contained">
             Cập nhật
           </Button>
         </Stack>
