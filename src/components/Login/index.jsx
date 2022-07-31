@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { loginSuccess } from '../../slices/authSlice'
-import { useDispatch } from 'react-redux';
-import apiAuth from '../../apis/apiAuth'
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import InputAdornment from '@mui/material/InputAdornment';
+
+import { loginSuccess } from "../../slices/authSlice";
+import { useDispatch } from "react-redux";
+import apiAuth from "../../apis/apiAuth";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import InputAdornment from "@mui/material/InputAdornment";
 import {
   Stack,
   IconButton,
@@ -19,34 +20,36 @@ import {
 
 import CloseIcon from "@mui/icons-material/Close";
 
-function Login(props) {
-  const dispatch = useDispatch()
+import { GgLogin, GgLogout } from "../GoogleLogin/index";
 
-  const [msgError, setMsgError] = useState()
-  const [phone, setPhone] = useState("")
+function Login(props) {
+  const dispatch = useDispatch();
+
+  const [msgError, setMsgError] = useState();
+  const [phone, setPhone] = useState("");
   const [pass, setPass] = React.useState({
     password: "",
     showPassword: false,
   });
 
-
   const handleLogin = () => {
     let params = {
       phone: phone,
       password: pass.password,
-    }
+    };
 
-    apiAuth.postLogin(params).then(res => {
-      dispatch(loginSuccess(res.data.user))
-      props.closeModalLogin()
-    }
-    ).catch(error => {
-      setMsgError(error.response.data.message)
-      console.log(error)
-    })
-  }
+    apiAuth
+      .postLogin(params)
+      .then((res) => {
+        dispatch(loginSuccess(res.data.user));
+        props.closeModalLogin();
+      })
+      .catch((error) => {
+        setMsgError(error.response.data.message);
+        console.log(error);
+      });
+  };
 
-  
   const handleChangePass = (prop) => (event) => {
     setPass({ ...pass, [prop]: event.target.value });
   };
@@ -72,16 +75,18 @@ function Login(props) {
           label="Số Điện Thoại"
           variant="standard"
           value={phone}
-          onChange={(event)=>setPhone(event.target.value)}
+          onChange={(event) => setPhone(event.target.value)}
         />
         <FormControl sx={{ width: "100%" }} variant="standard">
-          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+          <InputLabel htmlFor="outlined-adornment-password">
+            Password
+          </InputLabel>
           <Input
             variant="standard"
             id="password"
-            type={pass.showPassword ? 'text' : 'password'}
+            type={pass.showPassword ? "text" : "password"}
             value={pass.password}
-            onChange={handleChangePass('password')}
+            onChange={handleChangePass("password")}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -97,9 +102,7 @@ function Login(props) {
             label="Password"
           />
         </FormControl>
-        <Typography className="msgError">
-          {msgError}
-        </Typography>
+        <Typography className="msgError">{msgError}</Typography>
         <Button variant="contained" color="error" onClick={handleLogin}>
           Đăng nhập
         </Button>
@@ -124,15 +127,18 @@ function Login(props) {
           <img
             src="https://salt.tikicdn.com/ts/upload/3a/22/45/0f04dc6e4ed55fa62dcb305fd337db6c.png"
             alt="facebook"
-            width="58px"
-            height="58px"
+            width="40rem"
+            height="40rem"
           />
           <img
             src="https://salt.tikicdn.com/ts/upload/1c/ac/e8/141c68302262747f5988df2aae7eb161.png"
             alt="google"
-            width="58px"
-            height="58px"
+            width="40rem"
+            height="40rem"
           />
+
+          <GgLogin />
+          <GgLogout />
         </Stack>
         <p style={{ textAlign: "center" }}>
           Bằng việc tiếp tục, bạn đã chấp nhận{" "}
@@ -166,4 +172,4 @@ function Login(props) {
   );
 }
 
-export default Login
+export default Login;
