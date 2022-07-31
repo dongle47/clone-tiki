@@ -1,6 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ImageUploading from "react-images-uploading";
+import { toast } from 'react-toastify';
+import { loginSuccess } from '../../../slices/authSlice'
+import { useDispatch } from 'react-redux';
 
 import "./Info.scss";
 import avatar from "../../../assets/img/avatar.jpg";
@@ -40,16 +43,31 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import WallpaperIcon from "@mui/icons-material/Wallpaper";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import { useSelector } from "react-redux";
+import apiAuth from "../../../apis/apiAuth";
+import apiProfile from "../../../apis/apiProfile";
+
+
 
 function Info() {
-  const [day, setDay] = React.useState(null);
+  const user = useSelector(state => state.auth.user)//lấy user từ store
+  const dispatch = useDispatch();
+  const [day, setDay] = React.useState(user.birth_day ? user.birth_day[2] : null);
+  const [month, setMonth] = React.useState(user.birth_day ? user.birth_day[1] : null);
+  const [year, setYear] = React.useState(user.birth_day ? user.birth_day[0] : null);
+
+  const [country, setCountry] = React.useState(user.country);
 
   const [image, setImage] = React.useState([]);
   const onChange = (imageList, addUpdateIndex) => {
     // data for submit
     console.log(imageList, addUpdateIndex);
+    console.log(image);
     setImage(imageList);
   };
+  const [gender, setGender] = React.useState(user.gender)
+  const [fullname, setFullName] = React.useState(user.fullName)
+  const [nickname, setNickName] = React.useState(user.nickName)
 
   const [modalNational, setModalNational] = React.useState(false);
   const openModalNational = () => setModalNational(true);
@@ -61,8 +79,11 @@ function Info() {
 
   const [modalUploadAvatar, setModalUploadAvatar] = React.useState(false);
   const openModalUploadAvatar = () => setModalUploadAvatar(true);
-  const closeModalUploadAvatar = () => setModalUploadAvatar(false);
-
+  const closeModalUploadAvatar = () => {
+    let param = {file:image[0].data_url}
+    apiProfile.putUploadAvatar(param);
+    setModalUploadAvatar(false);
+  }
   const [modalDeleteAvatar, setModalDeleteAvatar] = React.useState(false);
   const openModalDeleteAvatar = () => setModalDeleteAvatar(true);
   const closeModalDeleteAvatar = () => setModalDeleteAvatar(false);
@@ -75,10 +96,59 @@ function Info() {
     setOpenAvatar(false);
   };
 
-  const handleChange = (event) => {
+  const handleChangeDay = (event) => {
     setDay(event.target.value);
   };
-
+  const handleChangeMonth = (event) => {
+    setMonth(event.target.value);
+  };
+  const handleChangeYear = (event) => {
+    setYear(event.target.value);
+  };
+  const onChangeFullName = (event) => {
+    setFullName(event.target.value);
+  }
+  const onChangeNickName = (event) => {
+    setNickName(event.target.value);
+  }
+  const onChangeGender = (event) => {
+    setGender(event.target.value);
+  }
+  const onChangeCountry = (event) => {
+    let newCountry = Country.find(item => item.id === event.target.value);
+    setCountry(newCountry);
+  }
+  const onSaveChange = () => {
+    let birthDay = `${year}-${month}-${day}`
+    const params = {
+      birthDay: birthDay, 
+      country: country.id, 
+      fullName: fullname,
+      gender: gender,
+      nickName: nickname
+    };
+    apiProfile
+      .putChangeInfo(params)
+      .then((response) => {
+        toast.success("Thay đổi thành công");
+        getUserProfile();
+      })
+      .catch((error) => {
+        toast.error("Thay đổi không thành công");
+        console.log(error)
+      });
+  };
+  const getUserProfile = () => {
+    const param = {id: user.id}
+    apiProfile.getUserbyID(param)
+    .then((res) => {
+      let newUser = res.data.user
+      dispatch(loginSuccess({ ...user,...newUser })) 
+    })
+    .catch((error) => {
+      console.log(error)
+    });
+  }
   return (
     <Stack className="customer-info" spacing={3}>
       <Typography variant="h6">Thông tin tài khoản</Typography>
@@ -102,7 +172,7 @@ function Info() {
                       height: 110,
                       border: "3px solid aquamarine",
                     }}
-                    src={avatar}
+                    src={image.length === 0 ? user.img : image[0].data_url}
                   />
                 </Badge>
                 {openAvatar ? (
@@ -139,7 +209,10 @@ function Info() {
                 justifyContent="space-between"
               >
                 <label>Họ & tên</label>
-                <input id="input-name" placeholder="Thêm họ tên" type="text" />
+                <input id="input-name" placeholder="Thêm họ tên" type="text" 
+                  value = {fullname}
+                  onChange={onChangeFullName}
+                />
               </Stack>
 
               <Stack
@@ -153,6 +226,8 @@ function Info() {
                   id="input-nickname"
                   placeholder="Thêm nickname"
                   type="text"
+                  value = {nickname}
+                  onChange={onChangeNickName}
                 />
               </Stack>
             </Stack>
@@ -164,37 +239,44 @@ function Info() {
               <Select
                 sx={{ maxHeight: 30, minWidth: 100 }}
                 value={day}
-                onChange={handleChange}
+                onChange={handleChangeDay}
                 displayEmpty
               >
                 <MenuItem value="">
                   <em>Ngày</em>
                 </MenuItem>
-                <MenuItem value={10}>10</MenuItem>
+                {Day.map(item => 
+                  <MenuItem value={item}>{item}</MenuItem>
+                )} 
               </Select>
 
               <Select
                 sx={{ maxHeight: 30, minWidth: 100 }}
-                value={day}
-                onChange={handleChange}
+                value={month}
+                onChange={handleChangeMonth}
                 displayEmpty
               >
                 <MenuItem value="">
                   <em>Tháng</em>
                 </MenuItem>
-                <MenuItem value={10}>10</MenuItem>
+                {Month.map(item => 
+                  <MenuItem value={item}>{item}</MenuItem>
+                )} 
               </Select>
 
               <Select
                 sx={{ maxHeight: 30, minWidth: 100 }}
-                value={day}
-                onChange={handleChange}
+                value={year}
+                onChange={handleChangeYear}
                 displayEmpty
               >
                 <MenuItem value="">
                   <em>Năm</em>
                 </MenuItem>
-                <MenuItem value={10}>10</MenuItem>
+                {Year.map(item => 
+                  <MenuItem value={item}>{item}</MenuItem>
+                )}
+            
               </Select>
             </Stack>
           </Stack>
@@ -205,11 +287,13 @@ function Info() {
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
+              value={gender}
+              onChange={onChangeGender}
             >
-              <FormControlLabel value="male" control={<Radio />} label="Nam" />
-              <FormControlLabel value="female" control={<Radio />} label="Nữ" />
+              <FormControlLabel value="Male" control={<Radio />} label="Nam" />
+              <FormControlLabel value="Female" control={<Radio />} label="Nữ" />
               <FormControlLabel
-                value="other"
+                value="Other"
                 control={<Radio />}
                 label="Khác"
               />
@@ -224,12 +308,15 @@ function Info() {
               endIcon={<KeyboardArrowDownIcon />}
               color="inherit"
               sx={{ color: hexToRgb("#ACABAB"), width: "73%" }}
+            
             >
-              Chọn quốc tịch
+              {country ? country.name : "Chọn Quốc tịch"}
             </Button>
           </Stack>
 
-          <Button variant="contained" sx={{ width: 200, alignSelf: "center" }}>
+          <Button variant="contained" sx={{ width: 200, alignSelf: "center" }}
+            onClick={onSaveChange}
+          >
             Lưu thay đổi
           </Button>
         </Stack>
@@ -344,18 +431,24 @@ function Info() {
             <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Tìm kiếm nhanh" />
           </Paper>
 
-          <RadioGroup>
+          <RadioGroup
+            value={country ? country.id : null}
+            onChange={onChangeCountry}
+          >
+            {Country.map(item =>
             <FormControlLabel
-              value="male"
-              control={<Radio />}
-              label="Việt Nam"
+            value= {item.id}
+            control={<Radio />}
+            label= {item.name}
             />
-            <FormControlLabel value="female" control={<Radio />} label="Khác" />
+            )}
+            
           </RadioGroup>
 
           <Button
             variant="contained"
             sx={{ alignSelf: "center", mr: "auto", ml: "auro", width: "100%" }}
+            onClick={closeModalNational}
           >
             Lưu thay đổi
           </Button>
@@ -532,5 +625,14 @@ function Info() {
     </Stack>
   );
 }
+
+
+const Day = Array.from({length: 31}, (x, i) => 1+i);
+
+const Month = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+
+const Year = Array.from({length: 65}, (x, i) => 1950+i);
+
+const Country = [{id:"1", name:"Việt Nam"}, {id:"2", name:"America"}];
 
 export default Info;
