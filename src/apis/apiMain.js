@@ -24,6 +24,17 @@ const apiMain = {
         return myReview.data;
     },
 
+    getMyFavorites: async (params) => {
+        const myFavorite = await axiosClient.get('', {params})
+        return myFavorite.data;
+    },
+
+    getMyRevPurchaseds: async (params) =>{
+        const myRevPurchaseds = await axiosClient.get('', {params})
+        return myRevPurchaseds.data;
+    },
+
+
     getCoupons: async (params) => {
         const res = await axiosClient.get('/coupons', {params})
         return res.data;
