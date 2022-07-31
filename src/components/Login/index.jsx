@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { ErrorInput, ErrorAfterSubmit } from "../ErrorHelper";
 
 import { loginSuccess } from "../../slices/authSlice";
 import { useDispatch } from "react-redux";
@@ -20,22 +22,28 @@ import {
 
 import CloseIcon from "@mui/icons-material/Close";
 
-import { GgLogin, GgLogout } from "../GoogleLogin/index";
+import { GgLogin, GgLogout } from "../GoogleLogin";
 
 function Login(props) {
   const dispatch = useDispatch();
 
-  const [msgError, setMsgError] = useState();
-  const [phone, setPhone] = useState("");
-  const [pass, setPass] = React.useState({
-    password: "",
-    showPassword: false,
-  });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
 
-  const handleLogin = () => {
+  const [isShowPass, setIsShowPass] = React.useState(false);
+
+  const [isNoAccount, setIsNoAccount] = useState(false);
+
+  const [wrongPass, setWrongPass] = useState(false);
+
+  const onSubmit = (data) => {
     let params = {
-      phone: phone,
-      password: pass.password,
+      password: data.pass,
+      phone: data.phoneNumber,
     };
 
     apiAuth
@@ -45,24 +53,15 @@ function Login(props) {
         props.closeModalLogin();
       })
       .catch((error) => {
-        setMsgError(error.response.data.message);
-        console.log(error);
+        console.log(error.response.data.message);
+        if (error.response.data.message === "No account found") {
+          setIsNoAccount(true);
+          setWrongPass(false);
+        } else {
+          setIsNoAccount(false);
+          setWrongPass(true);
+        }
       });
-  };
-
-  const handleChangePass = (prop) => (event) => {
-    setPass({ ...pass, [prop]: event.target.value });
-  };
-
-  const handleClickShowPass = () => {
-    setPass({
-      ...pass,
-      showPassword: !pass.showPassword,
-    });
-  };
-
-  const handleMouseDownPass = (event) => {
-    event.preventDefault();
   };
 
   return (
@@ -70,42 +69,75 @@ function Login(props) {
       <Stack direction="column" sx={{ flex: 5 }} spacing={2}>
         <h4 style={{ fontSize: "24px" }}>Xin chào,</h4>
         <p style={{ fontSize: "15px" }}>Đăng nhập hoặc tạo tài khoản</p>
-        <TextField
-          id="standard-basic"
-          label="Số Điện Thoại"
-          variant="standard"
-          value={phone}
-          onChange={(event) => setPhone(event.target.value)}
-        />
-        <FormControl sx={{ width: "100%" }} variant="standard">
-          <InputLabel htmlFor="outlined-adornment-password">
-            Password
-          </InputLabel>
-          <Input
-            variant="standard"
-            id="password"
-            type={pass.showPassword ? "text" : "password"}
-            value={pass.password}
-            onChange={handleChangePass("password")}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPass}
-                  onMouseDown={handleMouseDownPass}
-                  edge="end"
-                >
-                  {pass.showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Password"
-          />
-        </FormControl>
-        <Typography className="msgError">{msgError}</Typography>
-        <Button variant="contained" color="error" onClick={handleLogin}>
-          Đăng nhập
-        </Button>
+
+        <form>
+          <Stack spacing={2}>
+            <Stack>
+              <TextField
+                {...register("phoneNumber", {
+                  required: "Hãy nhập số điện thoại",
+                  pattern: {
+                    value: /\d+/,
+                    message: "Số điện thoại không hợp lệ",
+                  },
+                  minLength: {
+                    value: 10,
+                    message: "Số điện thoại phải có ít nhất 10 chữ số",
+                  },
+                })}
+                label="Số Điện Thoại"
+                variant="standard"
+              />
+              {errors.phoneNumber && (
+                <ErrorInput message={errors.phoneNumber.message} />
+              )}
+            </Stack>
+
+            <FormControl sx={{ width: "100%" }} variant="standard">
+              <InputLabel>Mật khẩu</InputLabel>
+
+              <Input
+                {...register("pass", {
+                  required: "Hãy nhập mật khẩu",
+                  minLength: {
+                    value: 8,
+                    message: "Mật khẩu phải có ít nhất 8 ký tự",
+                  },
+                })}
+                variant="standard"
+                type={isShowPass ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setIsShowPass(!isShowPass)}
+                      edge="end"
+                    >
+                      {isShowPass ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              {errors.pass && <ErrorInput message={errors.pass.message} />}
+            </FormControl>
+
+            {isNoAccount && (
+              <ErrorAfterSubmit message="Số điện thoại chưa được đăng ký" />
+            )}
+
+            {wrongPass && (
+              <ErrorAfterSubmit message="Mật khẩu đăng nhập không chính xác" />
+            )}
+
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleSubmit(onSubmit)}
+            >
+              Đăng nhập
+            </Button>
+          </Stack>
+        </form>
+
         <p style={{ textAlign: "center" }}>Đăng nhập bằng mail</p>
         <p style={{ textAlign: "center" }}>
           Nếu bạn chưa có tài khoản?
@@ -130,21 +162,15 @@ function Login(props) {
             width="40rem"
             height="40rem"
           />
-          <img
-            src="https://salt.tikicdn.com/ts/upload/1c/ac/e8/141c68302262747f5988df2aae7eb161.png"
-            alt="google"
-            width="40rem"
-            height="40rem"
-          />
 
           <GgLogin />
-          <GgLogout />
         </Stack>
         <p style={{ textAlign: "center" }}>
           Bằng việc tiếp tục, bạn đã chấp nhận{" "}
           <a href="/">điều khoản sử dụng</a>
         </p>
       </Stack>
+
       <Box
         sx={{
           flex: 3,
@@ -163,6 +189,7 @@ function Login(props) {
         <h4>Mua sắm tại Tiki</h4>
         <span>Siêu ưu đãi mỗi ngày</span>
       </Box>
+
       <span style={{ position: "absolute", top: 0, right: 0 }}>
         <IconButton onClick={props.closeModalLogin}>
           <CloseIcon />
