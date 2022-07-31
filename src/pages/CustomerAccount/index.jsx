@@ -99,6 +99,7 @@ function CustomerAccount() {
               <Routes>
                 <Route index element={<Addresses />} />
                 <Route path="create" element={<CreateAddress />} />
+                <Route path="edit/:id" element={<CreateAddress edit= {true}/>}></Route>
               </Routes>
             }/>
 

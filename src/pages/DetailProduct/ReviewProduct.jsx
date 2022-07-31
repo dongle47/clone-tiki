@@ -177,7 +177,7 @@ function ReviewProduct() {
 
             {/* Đánh giá của người mua */}
             {
-                reviews.map((item, i) => <Feedback key={i} />)
+                [1,2,3,4].map((item, i) => <Feedback key={i} />)
             }
 
             <Stack justifyContent={"flex-end"} direction="row" sx={{ padding: "0 48px" }}>

@@ -19,15 +19,43 @@ import "./CreateAddress.scss";
 import { styled } from '@mui/material/styles';
 import { useState } from "react";
 import apiAddress from "../../../../apis/apiAddress";
-function CreateAddress() {
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+function CreateAddress(props) {
   
   const [fullName, setFullName] = useState("")
   const [companyName, setCompanyName] = useState("")
   const [phone, setPhone] = useState("")
   const [addressDetail, setAddressDetail]= useState("")
   const [addressType, setAddressType] = useState("")
-  
+  const [addressid, setAddressid] = useState("")
+  const [edit, setEdit] = useState(props.edit)
   const [province, setProvince] = React.useState("");
+  const params = useParams();
+
+  useEffect(()=>{
+    const loaddata = ()=>{
+      if(edit===true)
+      {
+        apiAddress.getAddressById(params)
+        .then (res=>{
+          const address = res.data
+          setFullName(address.fullName)
+          setCompanyName(address.companyName)
+          setPhone(address.phone)
+          setAddressDetail(address.addressDetail)
+          setAddressType(address.addressType)
+          setCommune(address.commune)
+          setDistrict(address.district)
+          setProvince(address.province)
+        })
+      }
+      setAddressid(params.id)
+      console.log(params.id)
+    }
+    loaddata()
+  },[edit])
+
   const handleChange1 = (event) => {
     setProvince(event.target.value);
   };
@@ -54,6 +82,7 @@ function CreateAddress() {
       "province": province
 
     }
+    console.log("Save")
     apiAddress.saveAddress(params)
   }
 
@@ -69,6 +98,7 @@ function CreateAddress() {
       "phone": phone,
       "province": province
     }
+    console.log("update")
     apiAddress.updateAddress(params)
   }
 
@@ -147,7 +177,7 @@ function CreateAddress() {
           <FormControl className="create-address__input">
             <InputLabel id="demo-simple-select-helper-label"></InputLabel>
             <Select
-              sx="flex:0.65"
+              sx={{flex:0.65}}
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
               value={district}
@@ -225,7 +255,10 @@ function CreateAddress() {
 
         <Stack direction="row">
           <Typography className="create-address__label"></Typography>
-          <Button onClick={handleSave} className="btn__Update" variant="contained">
+          <Button 
+          onClick={
+            edit? handleUpdate
+            : handleSave} className="btn__Update" variant="contained">
             Cập nhật
           </Button>
         </Stack>

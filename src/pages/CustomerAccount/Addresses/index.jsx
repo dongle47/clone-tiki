@@ -57,7 +57,7 @@ function Addresses() {
       <EmptyNotify title="Bạn chưa có địa chỉ"/>
       : addresses.map((item) => {
         return (
-          <Stack
+          <Stack key={item.id}
             direction="row"
             width="100%"
             className="items"
@@ -69,9 +69,11 @@ function Addresses() {
             </Stack>
 
             <Stack direction="row" className="action">
+              <Link to={`edit/${item.id}`}
+      state={{ id: item.id }}> 
               <Button className="Modify" variant="text">
                 Chỉnh sửa
-              </Button>
+              </Button></Link>
               <Button onClick={() => openDialogDeleteAll(item)} className="Delete" variant="text">
                 Xóa
               </Button>
