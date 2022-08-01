@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 
 import apiAuth from "../../apis/apiAuth";
 
+import { ErrorInput, ErrorAfterSubmit } from "../ErrorHelper";
+
 import {
   Stack,
   IconButton,
@@ -22,7 +24,6 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 
-import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 function SignUp(props) {
@@ -79,9 +80,7 @@ function SignUp(props) {
           password: watch("pass"),
           phone: watch("phoneNumber"),
         };
-        apiAuth
-          .postRegister(param)
-          .then(setIsSuccess(true));
+        apiAuth.postRegister(param).then(setIsSuccess(true));
       }
     }
   };
@@ -91,7 +90,7 @@ function SignUp(props) {
       <Stack direction="column" sx={{ flex: 5 }} spacing={3}>
         <Typography variant="h5">Đăng ký</Typography>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form >
           <Stack spacing={2}>
             <Stack width="100%">
               <TextField
@@ -112,7 +111,7 @@ function SignUp(props) {
               />
 
               {errors.phoneNumber && (
-                <ErrorUnderInput message={errors.phoneNumber.message} />
+                <ErrorInput message={errors.phoneNumber.message} />
               )}
             </Stack>
 
@@ -142,7 +141,7 @@ function SignUp(props) {
                 }
               />
 
-              {errors.pass && <ErrorUnderInput message={errors.pass.message} />}
+              {errors.pass && <ErrorInput message={errors.pass.message} />}
             </FormControl>
 
             <FormControl sx={{ width: "100%" }} variant="standard">
@@ -172,16 +171,16 @@ function SignUp(props) {
               />
 
               {errors.passConf && (
-                <ErrorUnderInput message={errors.passConf.message} />
+                <ErrorInput message={errors.passConf.message} />
               )}
             </FormControl>
 
             <Stack sx={{ marginTop: "5rem" }}>
               {invalidPhone && (
-                <ErrorMessage message="Số điện thoại đã được đăng ký" />
+                <ErrorAfterSubmit message="Số điện thoại đã được đăng ký" />
               )}
               {isDiffPass ? (
-                <ErrorMessage message="Nhập mật khẩu trùng nhau dùm cái" />
+                <ErrorAfterSubmit message="Nhập mật khẩu trùng nhau dùm cái" />
               ) : null}
             </Stack>
 
@@ -259,27 +258,6 @@ function SignUp(props) {
 }
 
 export default SignUp;
-
-function ErrorMessage(props) {
-  return (
-    <Stack direction="row" alignItems="center" spacing={1}>
-      <ReportProblemOutlinedIcon size="small" color="error" />
-      <Typography variant="subtitle2" color="red">
-        {props.message}
-      </Typography>
-    </Stack>
-  );
-}
-
-function ErrorUnderInput(props) {
-  return (
-    <Stack direction="row" alignItems="center" spacing={1}>
-      <Typography variant="caption" color="gray">
-        {props.message}
-      </Typography>
-    </Stack>
-  );
-}
 
 function SuccessRegister(props) {
   return (

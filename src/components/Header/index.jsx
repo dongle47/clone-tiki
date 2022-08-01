@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./Header.scss";
 import { useState, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate,useLocation} from "react-router-dom";
 
 import { Stack, Button, Typography, Badge, Box, Modal } from "@mui/material";
 
@@ -17,13 +17,19 @@ import Login from "../Login";
 import SignUp from "../SignUp";
 import Search from "../Search";
 
+const publicPath = [
+  '/product/', '/filter/', '/cart/'
+]
+
 function Header() {
   const [modalLogin, setModalLogin] = useState(false);
   const [loginForm, setLoginForm] = useState(true);
   const [focusSearch, setFocusSearch] = useState(false);
   const openModalLogin = () => setModalLogin(true);
-  const cart = useSelector((state) => state.cart.items);
-  const user = useSelector((state) => state.auth.user); //lấy user từ store
+  const cart = useSelector(state => state.cart.items)
+  const user = useSelector(state => state.auth.user)//lấy user từ store
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const dispatch = useDispatch();
 
@@ -34,8 +40,11 @@ function Header() {
   };
 
   const handleLogout = () => {
-    dispatch(logoutSuccess());
-  };
+    dispatch(logoutSuccess())
+    const isPublic = publicPath.findIndex(e => location.pathname.includes(e)) >= 0 ? true : false
+    if (!isPublic)
+      navigate('/')
+  }
 
   const closeModalLogin = () => {
     setModalLogin(false);
@@ -139,42 +148,40 @@ function Header() {
             spacing="10px"
             sx={{ color: "white", width: "160px", maxWidth: "160px" }}
           >
-            {user ? (
-              <>
-                <img src={user.img} />
-                <Stack>
-                  <Typography sx={{ fontSize: "11px" }}>Tài khoản</Typography>
-                  <Button
-                    sx={{ color: "white", padding: "6px 0" }}
-                    endIcon={<ArrowDropDownOutlinedIcon />}
-                  >
-                    <Typography
-                      className="text-overflow-1-lines"
-                      sx={{ fontSize: "13px", textAlign: "start" }}
-                    >
-                      {user.fullName}
+            {
+              user ?
+                <>
+                  <img src={user.img} />
+                  <Stack>
+                    <Typography sx={{ fontSize: "11px" }}>
+                      Tài khoản
                     </Typography>
-                  </Button>
-                </Stack>
-                <Box className="header__dropdown">
-                  <Link to={"/customer/order/history"}>Đơn hàng của tôi</Link>
-                  <Link to={"/customer/wishlist"}>Sản phẩm yêu thích</Link>
-                  <Link to={"/customer/notification"}>Thông báo của tôi</Link>
-                  <Link to={"/customer/account/edit"}>Tài khoản của tôi</Link>
-                  <Link to="/">
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <img
-                        className="header__dropdown-img"
-                        alt=""
-                        src="https://salt.tikicdn.com/ts/ta/06/60/57/811aae78f04f81a6e00ba2681e02291f.png"
-                      />
-                      <Stack>
-                        <Box>SEP 0</Box>
-                        <Box>
-                          Bạn đang có <b>0 Astra</b>
-                        </Box>
+                    <Button
+                      sx={{ color: "white", padding: "6px 0" }}
+                      endIcon={<ArrowDropDownOutlinedIcon />}
+                    >
+                      <Typography className="text-overflow-1-lines" sx={{ fontSize: "13px", textAlign: "start" }}>{user.fullName}</Typography>
+                    </Button>
+                  </Stack>
+                  <Box className="header__dropdown">
+                    <Link to={"/customer/order/history"}>Đơn hàng của tôi</Link>
+                    <Link to={"/customer/wishlist"}>Sản phẩm yêu thích</Link>
+                    <Link to={"/customer/notification"}>Thông báo của tôi</Link>
+                    <Link to={"/customer/account/edit"}>Tài khoản của tôi</Link>
+                    <Link to="/">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <img
+                          className="header__dropdown-img"
+                          alt=""
+                          src="https://salt.tikicdn.com/ts/ta/06/60/57/811aae78f04f81a6e00ba2681e02291f.png"
+                        />
+                        <Stack>
+                          <Box>SEP 0</Box>
+                          <Box>
+                            Bạn đang có <b>0 Astra</b>
+                          </Box>
+                        </Stack>
                       </Stack>
-                    </Stack>
                   </Link>
                   <Link to="/">
                     <Stack direction="row" spacing={1} alignItems="center">
@@ -250,7 +257,7 @@ function Header() {
                   <a onClick={handleLogout}>Thoát tài khoản</a>
                 </Box>
               </>
-            ) : (
+             : (
               <>
                 <PersonOutlineOutlinedIcon fontSize="large" />
                 <Stack>

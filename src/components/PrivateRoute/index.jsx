@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import jwt_decode from 'jwt-decode'
 import { toast } from 'react-toastify';
-import { loginSuccess,logoutSuccess } from '../redux/authSlice';
+import { loginSuccess,logoutSuccess } from '../../slices/authSlice';
 import { useEffect, useState } from 'react';
 //Component tạo một định tuyến an toàn, khi muốn truy cập các đường dẫn cần có xác thực thì phải đi qua route này
 const PrivateRoute = ({
@@ -10,7 +10,7 @@ const PrivateRoute = ({
 }) => {
     const [auth, setAuth] = useState(null)
     let location = useLocation();
-    const user = useSelector(state => state.auth.login?.user);
+    const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch()
     useEffect(() => {
         const verify = async () => {
@@ -28,8 +28,7 @@ const PrivateRoute = ({
                     dispatch(logoutSuccess())
                     return
                 }
-                console.log(user)
-                const userHasRequiredRole = roles.includes(user.roles[0]) ? true : false
+                const userHasRequiredRole = roles.includes(user.roles[0].name) ? true : false
                 if (!userHasRequiredRole) {
                     toast.warning("Bạn không có quyền truy cập", { autoClose: 1000, pauseOnHover: false, hideProgressBar: true })
                     setAuth(false);
