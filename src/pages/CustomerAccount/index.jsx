@@ -1,5 +1,6 @@
 import React from "react";
-import { Outlet, Routes, Route, Link } from "react-router-dom";
+
+import { Routes, Route, Link } from "react-router-dom";
 
 import "./CustomerAccount.scss";
 
@@ -46,7 +47,7 @@ function CustomerAccount() {
               <ListItemAvatar>
                 <Avatar alt="hình đại diện" src={user.img} />
               </ListItemAvatar>
-              <ListItemText primary="Tài khoản của" secondary="Dong Le" />
+              <ListItemText primary="Tài khoản của" secondary={user.fullName} />
             </ListItem>
 
             {sidebarTab.map((item, index) => {
