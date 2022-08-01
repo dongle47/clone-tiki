@@ -1,8 +1,7 @@
-import { GoogleLogin } from "react-google-login";
-import { GoogleLogout } from "react-google-login";
-
-const clientId =
-  "314251983625-ihp41bbt2o388oits4j6apavb8hlo0hl.apps.googleusercontent.com";
+// import { GoogleLogin } from "react-google-login";
+// import { GoogleLogout } from "react-google-login";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 
 export function GgLogin() {
   const onSuccess = (res) => {
@@ -15,31 +14,32 @@ export function GgLogin() {
 
   return (
     <div>
-      <GoogleLogin
-        clientId={clientId}
-        buttonText="Login"
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-        cookiePolicy={"single_host_origin"}
-        style={{ marginTop: "10rem" }}
-        isSignedIn={true}
-      />
+      <GoogleOAuthProvider clientId="314251983625-j96d75o3qqu73m8jkaapumumhkuf3kau.apps.googleusercontent.com">
+        <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            console.log(credentialResponse);
+          }}
+          onError={() => {
+            console.log("Login Failed");
+          }}
+        />
+      </GoogleOAuthProvider>
     </div>
   );
 }
 
-export function GgLogout() {
-  const onSuccess = () => {
-    alert("Logout made successfully");
-  };
+// export function GgLogout() {
+//   const onSuccess = () => {
+//     alert("Logout made successfully");
+//   };
 
-  return (
-    <div>
-      <GoogleLogout
-        clientId={clientId}
-        buttonText="Logout"
-        onLogoutSuccess={onSuccess}
-      />
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <GoogleLogout
+//         clientId={clientId}
+//         buttonText="Logout"
+//         onLogoutSuccess={onSuccess}
+//       />
+//     </div>
+//   );
+// }

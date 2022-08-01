@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorInput, ErrorAfterSubmit } from "../ErrorHelper";
 
-import { loginSuccess } from "../../slices/authSlice";
+import { loginSuccess, logoutSuccess } from "../../slices/authSlice";
 import { useDispatch } from "react-redux";
 import apiAuth from "../../apis/apiAuth";
 import InputLabel from "@mui/material/InputLabel";
@@ -23,6 +23,8 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 
 import { GgLogin, GgLogout } from "../GoogleLogin";
+import { FbLogin } from "../FacebookLogin";
+import { axiosInstance } from "./../../apis/axiosClient";
 
 function Login(props) {
   const dispatch = useDispatch();
@@ -50,6 +52,10 @@ function Login(props) {
       .postLogin(params)
       .then((res) => {
         dispatch(loginSuccess(res.data.user));
+        let { accessToken, refreshToken, user } = res.data;
+        dispatch(loginSuccess({ accessToken, refreshToken, ...user }));
+
+        axiosInstance(user, dispatch, loginSuccess, logoutSuccess);
         props.closeModalLogin();
       })
       .catch((error) => {
@@ -156,12 +162,7 @@ function Login(props) {
           alignItems="center"
           spacing={2}
         >
-          <img
-            src="https://salt.tikicdn.com/ts/upload/3a/22/45/0f04dc6e4ed55fa62dcb305fd337db6c.png"
-            alt="facebook"
-            width="40rem"
-            height="40rem"
-          />
+          <FbLogin />
 
           <GgLogin />
         </Stack>

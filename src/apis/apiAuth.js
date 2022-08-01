@@ -1,14 +1,5 @@
-import axios from 'axios';
-import queryString from 'query-string';
-const baseURL = 'https://nhom3-tiki.herokuapp.com/api'
-const axiosClient = axios.create({
-    baseURL: baseURL,
-    headers: {
-        "Content-Type": "application/json"
-    },
-    withCredentials: true,
-    paramsSerializer: (params) => queryString.stringify(params)
-});
+
+import { axiosClient, axiosClientWithToken } from "./axiosClient";
 
 const apiAuth = {
     postLogin: async (params) => {
