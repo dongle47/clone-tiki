@@ -182,7 +182,6 @@ function Header() {
                           </Box>
                         </Stack>
                       </Stack>
-                    </Stack>
                   </Link>
                   <Link to="/">
                     <Stack direction="row" spacing={1} alignItems="center">
@@ -258,7 +257,7 @@ function Header() {
                   <a onClick={handleLogout}>Thoát tài khoản</a>
                 </Box>
               </>
-            ) : (
+             : (
               <>
                 <PersonOutlineOutlinedIcon fontSize="large" />
                 <Stack>
