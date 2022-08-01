@@ -1,16 +1,9 @@
 import React, { useEffect } from "react";
 import "./Header.scss";
 import { useState, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate,useLocation} from "react-router-dom";
 
-import {
-  Stack,
-  Button,
-  Typography,
-  Badge,
-  Box,
-  Modal,
-} from "@mui/material";
+import { Stack, Button, Typography, Badge, Box, Modal } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -19,10 +12,14 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 import { useSelector } from "react-redux";
 import { logoutSuccess } from "../../slices/authSlice";
-import { useDispatch } from 'react-redux';
-import Login from "../Login"
-import SignUp from "../SignUp"
+import { useDispatch } from "react-redux";
+import Login from "../Login";
+import SignUp from "../SignUp";
 import Search from "../Search";
+
+const publicPath = [
+  '/product/', '/filter/', '/cart/'
+]
 
 function Header() {
   const [modalLogin, setModalLogin] = useState(false);
@@ -31,17 +28,22 @@ function Header() {
   const openModalLogin = () => setModalLogin(true);
   const cart = useSelector(state => state.cart.items)
   const user = useSelector(state => state.auth.user)//lấy user từ store
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState("");
 
   const onChangeSearch = (event) => {
-    setSearch(event.target.value)
-  }
+    setSearch(event.target.value);
+  };
 
   const handleLogout = () => {
     dispatch(logoutSuccess())
+    const isPublic = publicPath.findIndex(e => location.pathname.includes(e)) >= 0 ? true : false
+    if (!isPublic)
+      navigate('/')
   }
 
   const closeModalLogin = () => {
@@ -51,6 +53,10 @@ function Header() {
 
   const handleLogin = useCallback(() => {
     setLoginForm(false);
+  }, []);
+
+  const handleSignUp = useCallback(() => {
+    setLoginForm(true);
   }, []);
 
   useEffect(() => {
@@ -65,7 +71,7 @@ function Header() {
         }
       }
     });
-    return () => document.removeEventListener("click", () => { });
+    return () => document.removeEventListener("click", () => {});
   }, []);
 
   return (
@@ -151,10 +157,10 @@ function Header() {
                       Tài khoản
                     </Typography>
                     <Button
-                      sx={{ color: "white", padding:"6px 0" }}
+                      sx={{ color: "white", padding: "6px 0" }}
                       endIcon={<ArrowDropDownOutlinedIcon />}
                     >
-                      <Typography className="text-overflow-1-lines" sx={{ fontSize: "13px", textAlign:"start" }}>{user.fullName}</Typography>
+                      <Typography className="text-overflow-1-lines" sx={{ fontSize: "13px", textAlign: "start" }}>{user.fullName}</Typography>
                     </Button>
                   </Stack>
                   <Box className="header__dropdown">
@@ -176,99 +182,98 @@ function Header() {
                           </Box>
                         </Stack>
                       </Stack>
-                    </Link>
-                    <Link to="/">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <img
-                          className="header__dropdown-img"
-                          alt=""
-                          src="https://frontend.tikicdn.com/_desktop-next/static/img/account/insurance.png"
-                        />
-                        <Stack>
-                          <Box>Hợp đồng bảo hiểm</Box>
-                        </Stack>
+                  </Link>
+                  <Link to="/">
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <img
+                        className="header__dropdown-img"
+                        alt=""
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/account/insurance.png"
+                      />
+                      <Stack>
+                        <Box>Hợp đồng bảo hiểm</Box>
                       </Stack>
-                    </Link>
-                    <Link to="/">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <img
-                          className="header__dropdown-img"
-                          alt=""
-                          src="https://salt.tikicdn.com/ts/upload/5b/70/af/ac0eacaa8ec6738ac474f7bbe767bd75.png"
-                        />
-                        <Stack>
-                          <Box>TikiNOW</Box>
-                          <Box>Thông tin Gói hội viên</Box>
-                        </Stack>
+                    </Stack>
+                  </Link>
+                  <Link to="/">
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <img
+                        className="header__dropdown-img"
+                        alt=""
+                        src="https://salt.tikicdn.com/ts/upload/5b/70/af/ac0eacaa8ec6738ac474f7bbe767bd75.png"
+                      />
+                      <Stack>
+                        <Box>TikiNOW</Box>
+                        <Box>Thông tin Gói hội viên</Box>
                       </Stack>
-                    </Link>
-                    <Link to="/customer/coupons">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <img
-                          className="header__dropdown-img"
-                          alt=""
-                          src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_code.svg"
-                        />
-                        <Stack>
-                          <Box>Mã giảm giá </Box>
-                          <Box>
-                            Bạn đang có <b>2</b> mã giảm giá
-                          </Box>
-                        </Stack>
+                    </Stack>
+                  </Link>
+                  <Link to="/customer/coupons">
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <img
+                        className="header__dropdown-img"
+                        alt=""
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_code.svg"
+                      />
+                      <Stack>
+                        <Box>Mã giảm giá </Box>
+                        <Box>
+                          Bạn đang có <b>2</b> mã giảm giá
+                        </Box>
                       </Stack>
-                    </Link>
-                    <Link to="/">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <img
-                          className="header__dropdown-img"
-                          alt=""
-                          src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg"
-                        />
-                        <Stack>
-                          <Box>Thông tin Tiki xu</Box>
-                          <Box>
-                            Bạn đang có <b>0</b> Tiki xu
-                          </Box>
-                        </Stack>
+                    </Stack>
+                  </Link>
+                  <Link to="/">
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <img
+                        className="header__dropdown-img"
+                        alt=""
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg"
+                      />
+                      <Stack>
+                        <Box>Thông tin Tiki xu</Box>
+                        <Box>
+                          Bạn đang có <b>0</b> Tiki xu
+                        </Box>
                       </Stack>
-                    </Link>
-                    <Link to="/">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <img
-                          className="header__dropdown-img"
-                          alt=""
-                          src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg"
-                        />
-                        <Stack>
-                          <Box>Thông tin BookCare</Box>
-                          <Box>
-                            Bạn đang có <b>0</b> BookCare
-                          </Box>
-                        </Stack>
+                    </Stack>
+                  </Link>
+                  <Link to="/">
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <img
+                        className="header__dropdown-img"
+                        alt=""
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg"
+                      />
+                      <Stack>
+                        <Box>Thông tin BookCare</Box>
+                        <Box>
+                          Bạn đang có <b>0</b> BookCare
+                        </Box>
                       </Stack>
-                    </Link>
-                    <Link to="/">Đổi trả dễ dàng</Link>
-                    <a onClick={handleLogout}>Thoát tài khoản</a>
-                  </Box>
-                </>
-                :
-                <>
-                  <PersonOutlineOutlinedIcon fontSize="large" />
-                  <Stack>
-                    <Typography sx={{ fontSize: "11px" }}>
-                      Đăng nhập / Đăng ký
-                    </Typography>
-                    <Button
-                      onClick={openModalLogin}
-                      sx={{ color: "white" }}
-                      endIcon={<ArrowDropDownOutlinedIcon />}
-                    >
-                      <Typography sx={{ fontSize: "13px" }}>Tài khoản</Typography>
-                    </Button>
-                  </Stack>
-                </>
-            }
-
+                    </Stack>
+                  </Link>
+                  <Link to="/">Đổi trả dễ dàng</Link>
+                  <a onClick={handleLogout}>Thoát tài khoản</a>
+                </Box>
+              </>
+             : (
+              <>
+                <PersonOutlineOutlinedIcon fontSize="large" />
+                <Stack>
+                  <Typography sx={{ fontSize: "11px" }}>
+                    Đăng nhập / Đăng ký
+                  </Typography>
+                  <Button
+                    onClick={openModalLogin}
+                    sx={{ color: "white" }}
+                    endIcon={<ArrowDropDownOutlinedIcon />}
+                  >
+                    <Typography sx={{ fontSize: "13px" }}>Tài khoản</Typography>
+                  </Button>
+                </Stack>
+              </>
+            )}
           </Stack>
         </Stack>
 
@@ -287,18 +292,19 @@ function Header() {
               <Typography fontSize="12px">Giỏ hàng</Typography>
             </Stack>
           </Link>
-          <a href="/admin"><Button
-            sx={{
-              color: "white",
-              borderRadius: "50px",
-              padding: "0.25rem 1rem ",
-              fontSize: "small",
-            }}
-            variant="contained"
-            startIcon={<StorefrontOutlinedIcon />}
-          >
-            <Typography fontSize="10px">Admin</Typography>
-          </Button>
+          <a href="/admin">
+            <Button
+              sx={{
+                color: "white",
+                borderRadius: "50px",
+                padding: "0.25rem 1rem ",
+                fontSize: "small",
+              }}
+              variant="contained"
+              startIcon={<StorefrontOutlinedIcon />}
+            >
+              <Typography fontSize="10px">Admin</Typography>
+            </Button>
           </a>
         </Stack>
       </Stack>
@@ -315,11 +321,14 @@ function Header() {
               closeModalLogin={closeModalLogin}
             />
           ) : (
-            <SignUp closeModalLogin={closeModalLogin} />
+            <SignUp
+              handleSignUp={handleSignUp}
+              closeModalLogin={closeModalLogin}
+            />
           )}
         </Box>
       </Modal>
-    </header >
+    </header>
   );
 }
 
