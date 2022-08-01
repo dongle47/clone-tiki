@@ -12,7 +12,9 @@ const apiProfile = {
         return res.data;
     },
     putUploadAvatar: async (params) => {
-        const res = await axiosClientWithToken.post('/user/profile/uploadAvatar', params)
+        const res = await axiosClientWithToken.post('/user/profile/uploadAvatar', params,{headers: {
+            'Content-Type': 'multipart/form-data'
+          }})
         return res.data;
     },
     putChangeInfo: async (params) => {
@@ -21,6 +23,10 @@ const apiProfile = {
     },
     getUserbyID: async (params) => {
         const res = await axiosClientWithToken.get(`/user/${params.id}`)
+        return res.data;
+    },
+    getUserProfile: async () => {
+        const res = await axiosClientWithToken.get(`/user/profile`)
         return res.data;
     },
     putChangePhone: async (params) => {

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import queryString from 'query-string';
 import jwt_decode from 'jwt-decode';
+import { useSelector } from 'react-redux';
 // const baseURL='https://playerhostedapitest.herokuapp.com/api/'
 //const baseURL='http://localhost:5000/api'
 const baseURL='https://nhom3-tiki.herokuapp.com/api'
@@ -31,14 +32,18 @@ export const axiosClientWithToken = axios.create({
 export const axiosInstance = (user, dispatch, stateSuccess,stateFail) => {
     axiosClientWithToken.interceptors.request.use(
         async (config) => {
+            console.log("Start")
             let date = new Date();
+            console.log(user)
             const decodeToken = jwt_decode(user?.accessToken);
+            
             if (decodeToken.exp < date.getTime() / 1000) {
                 try{
                     const newAccessToken = await refreshToken(user);
                     const newUser = {
                         ...user,
-                        accessToken: newAccessToken.accessToken
+                        accessToken: newAccessToken.data.accessToken,
+                        refreshToken: newAccessToken.data.refreshToken
                     }
                     dispatch(stateSuccess(newUser))
                     config.headers['Authorization'] = `Bearer ${newAccessToken.accessToken}`;
@@ -49,6 +54,7 @@ export const axiosInstance = (user, dispatch, stateSuccess,stateFail) => {
             }else{
                 config.headers['Authorization'] = `Bearer ${user.accessToken}`;
             }
+            console.log("End")
             return config;
         },
         err => {

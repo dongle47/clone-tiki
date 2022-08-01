@@ -51,10 +51,9 @@ import apiProfile from "../../../apis/apiProfile";
 
 function Info() {
 
-  let Day = Array.from({ length: 31 }, (x, i) => 1 + i);
   const Month = Array.from({ length: 12 }, (x, i) => 1 + i);
   const Year = Array.from({ length: 65 }, (x, i) => 1950 + i);
-  const Country = [{ id: "1", name: "Việt Nam" }, { id: "2", name: "America" }, {id: "3", name:"Úc"}];
+  const Country = [{ id: "1", name: "Việt Nam" }, { id: "2", name: "America" }, { id: "3", name: "Úc" }];
 
   const user = useSelector(state => state.auth.user);
 
@@ -70,8 +69,6 @@ function Info() {
 
   const [image, setImage] = React.useState([]);
   const onChange = (imageList, addUpdateIndex) => {
-    console.log(imageList, addUpdateIndex);
-    console.log(image);
     setImage(imageList);
   };
 
@@ -90,9 +87,22 @@ function Info() {
   const [modalUploadAvatar, setModalUploadAvatar] = React.useState(false);
   const openModalUploadAvatar = () => setModalUploadAvatar(true);
   const closeModalUploadAvatar = () => {
-    let param = { file: image[0].data_url }
-    apiProfile.putUploadAvatar(param);
-    setModalUploadAvatar(false);
+    if (image.length === 0) {
+      toast.warning("Vui lòng chọn ảnh")
+      return
+    }
+    let param = { file: image[0].file }
+    apiProfile.putUploadAvatar(param)
+      .then(res => {
+        toast.success("Cập nhật ảnh đại diện thành công")
+        getUserProfile()
+      })
+      .catch(error => {
+        toast.error("Cập nhật ảnh đại diện thất bại")
+      })
+      .finally(() => {
+        setModalUploadAvatar(false);
+      })
   }
   const [modalDeleteAvatar, setModalDeleteAvatar] = React.useState(false);
   const openModalDeleteAvatar = () => setModalDeleteAvatar(true);
@@ -150,13 +160,13 @@ function Info() {
     setCountry(newCountry);
   }
   const onSaveChange = () => {
-    if (!(day && month && year && country && fullname && gender && nickname))
-    {
+    console.log(day)
+    if (!(RegExp("\\d+").test(day) && RegExp("\\d+").test(month) && RegExp("\\d+").test(year)
+      && country && fullname && gender && nickname)) {
       toast.warning("Vui lòng nhập đầy đủ thông tin !!");
-      return 
+      return
     }
     let birth_day = `${year}-${('0' + month).slice(-2)}-${('0' + day).slice(-2)}`
-    console.log(birth_day)
     const params = {
       birthDay: birth_day,
       country: country.id,
@@ -176,8 +186,7 @@ function Info() {
       });
   };
   const getUserProfile = () => {
-    const param = { id: user.id }
-    apiProfile.getUserbyID(param)
+    apiProfile.getUserProfile()
       .then((res) => {
         let newUser = res.data.user
         dispatch(loginSuccess({ ...user, ...newUser }))
@@ -212,7 +221,7 @@ function Info() {
                 </Badge>
                 {openAvatar ? (
                   <Stack className="avatar-control">
-                    <Stack autoFocusItem={openAvatar}>
+                    <Stack autofocusitem={openAvatar.toString()}>
                       <MenuItem onClick={openModalViewAvatar}>
                         <WallpaperIcon sx={{ mr: 2 }} color="disabled" />
                         Xem ảnh đại diện
@@ -281,7 +290,7 @@ function Info() {
                   <em>Ngày</em>
                 </MenuItem>
                 {listday.map(item =>
-                  <MenuItem value={item}>{item}</MenuItem>
+                  <MenuItem key={item} value={item}>{item}</MenuItem>
                 )}
               </Select>
 
@@ -295,7 +304,7 @@ function Info() {
                   <em>Tháng</em>
                 </MenuItem>
                 {Month.map(item =>
-                  <MenuItem value={item}>{item}</MenuItem>
+                  <MenuItem key={item} value={item}>{item}</MenuItem>
                 )}
               </Select>
 
@@ -309,7 +318,7 @@ function Info() {
                   <em>Năm</em>
                 </MenuItem>
                 {Year.map(item =>
-                  <MenuItem value={item}>{item}</MenuItem>
+                  <MenuItem key={item} value={item}>{item}</MenuItem>
                 )}
 
               </Select>
@@ -472,6 +481,7 @@ function Info() {
           >
             {Country.map(item =>
               <FormControlLabel
+              key={item.id}
                 value={item.id}
                 control={<Radio />}
                 label={item.name}

@@ -51,11 +51,8 @@ function Login(props) {
     apiAuth
       .postLogin(params)
       .then((res) => {
-        dispatch(loginSuccess(res.data.user));
         let { accessToken, refreshToken, user } = res.data;
-        dispatch(loginSuccess({ accessToken, refreshToken, ...user }));
-
-        axiosInstance(user, dispatch, loginSuccess, logoutSuccess);
+        dispatch(loginSuccess({ accessToken, refreshToken, ...user }))
         props.closeModalLogin();
       })
       .catch((error) => {
@@ -68,6 +65,12 @@ function Login(props) {
           setWrongPass(true);
         }
       });
+
+      const refreshAxios = (user)=>{
+        setTimeout(()=>{
+          axiosInstance(user, dispatch, loginSuccess, logoutSuccess);
+        },0)
+      }
   };
 
   return (
