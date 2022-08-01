@@ -163,7 +163,6 @@ function Login(props) {
           spacing={2}
         >
           <FbLogin />
-
           <GgLogin />
         </Stack>
         <p style={{ textAlign: "center" }}>

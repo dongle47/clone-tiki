@@ -23,11 +23,15 @@ const publicPath = [
 
 function Header() {
   const [modalLogin, setModalLogin] = useState(false);
+  const openModalLogin = () => setModalLogin(true);
+
   const [loginForm, setLoginForm] = useState(true);
   const [focusSearch, setFocusSearch] = useState(false);
-  const openModalLogin = () => setModalLogin(true);
+
   const cart = useSelector(state => state.cart.items)
+
   const user = useSelector(state => state.auth.user)//lấy user từ store
+  
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -151,7 +155,7 @@ function Header() {
             {
               user ?
                 <>
-                  <img src={user.img} />
+                  <img alt='' src={user.img} />
                   <Stack>
                     <Typography sx={{ fontSize: "11px" }}>
                       Tài khoản
