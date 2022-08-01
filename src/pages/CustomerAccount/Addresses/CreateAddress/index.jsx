@@ -21,47 +21,83 @@ import { useState } from "react";
 import apiAddress from "../../../../apis/apiAddress";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { id } from "date-fns/locale";
 function CreateAddress(props) {
-  
+
   const [fullName, setFullName] = useState("")
   const [companyName, setCompanyName] = useState("")
   const [phone, setPhone] = useState("")
-  const [addressDetail, setAddressDetail]= useState("")
+  const [addressDetail, setAddressDetail] = useState("")
   const [addressType, setAddressType] = useState("")
+  const [listprovince, setListProvince]= useState([])
+  const [listdistrict, setListDistrict]= useState([])
+  const [listcommune, setListCommune]= useState([])
   const [addressid, setAddressid] = useState("")
   const [edit, setEdit] = useState(props.edit)
   const [province, setProvince] = React.useState("");
   const params = useParams();
-
-  useEffect(()=>{
-    const loaddata = ()=>{
-      if(edit===true)
-      {
-        apiAddress.getAddressById(params)
-        .then (res=>{
-          const address = res.data
-          setFullName(address.fullName)
-          setCompanyName(address.companyName)
-          setPhone(address.phone)
-          setAddressDetail(address.addressDetail)
-          setAddressType(address.addressType)
-          setCommune(address.commune)
-          setDistrict(address.district)
-          setProvince(address.province)
+  useEffect(() => {
+    const getData = async () => {
+      apiAddress.getAllProvince()
+        .then(res => {
+          setListProvince(res.data.list);
+          console.log(res.data.list)
         })
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    const loaddata = () => {
+      if (edit === true) {
+        apiAddress.getUserAddress(params)
+          .then(res => {
+            const address = res.data
+            setFullName(address.fullName)
+            setCompanyName(address.companyName)
+            setPhone(address.phone)
+            setAddressDetail(address.addressDetail)
+            setAddressType(address.addressType)
+            setCommune(address.commune)
+            setDistrict(address.district)
+            setProvince(address.province)
+          })
       }
       setAddressid(params.id)
       console.log(params.id)
     }
     loaddata()
-  },[edit])
+  }, [edit])  
+
+  // useEffect(() => {
+  //   const handleChange1 = (params) => {
+  //     apiAddress.getDistrictInProvinceById(params)
+  //       .then(res => {
+  //         setDistrict(res.data.list);
+  //         console.log(res.data.list)
+  //       })
+  //     setDistrict(params);
+  //   }
+  //   handleChange1
+  // },[])
 
   const handleChange1 = (event) => {
+    const params = {id:event.target.value}
+    apiAddress.getDistrictInProvinceById(params)
+        .then(res => {
+          setListDistrict(res.data.list);
+          console.log(res.data.list)
+        })
     setProvince(event.target.value);
   };
-
   const [district, setDistrict] = React.useState("");
   const handleChange2 = (event) => {
+    const params = {id:event.target.value}
+    apiAddress.getCommuneInDistrictById(params)
+        .then(res => {
+          setListCommune(res.data.list);
+          console.log(res.data.list)
+        })
     setDistrict(event.target.value);
   };
 
@@ -69,8 +105,7 @@ function CreateAddress(props) {
   const handleChange3 = (event) => {
     setCommune(event.target.value);
   };
-  const handleSave = () =>
-  {
+  const handleSave = () => {
     const params = {
       "addressDetail": addressDetail,
       "addressType": Number(addressType),
@@ -86,9 +121,8 @@ function CreateAddress(props) {
     apiAddress.saveAddress(params)
   }
 
-  const handleUpdate = () =>
-  {
-    const params ={
+  const handleUpdate = () => {
+    const params = {
       "addressDetail": addressDetail,
       "addressType": Number(addressType),
       "commune": commune,
@@ -112,7 +146,7 @@ function CreateAddress(props) {
             Họ và tên:
           </Typography>
           <Stack className="create-address__input">
-            <InputCustom value={fullName} onChange={(event)=>{
+            <InputCustom value={fullName} onChange={(event) => {
               setFullName(event.target.value)
             }}
               placeholder="Nhập họ và tên"
@@ -126,7 +160,7 @@ function CreateAddress(props) {
             Công ty:
           </Typography>
           <Stack className="create-address__input">
-            <InputCustom value={companyName} onChange={(event)=>{
+            <InputCustom value={companyName} onChange={(event) => {
               setCompanyName(event.target.value)
             }}
               size="small"
@@ -140,7 +174,7 @@ function CreateAddress(props) {
             Số điện thoại:
           </Typography>
           <Stack className="create-address__input">
-            <InputCustom value={phone} onChange={(event)=>{
+            <InputCustom value={phone} onChange={(event) => {
               setPhone(event.target.value)
             }}
               size="small"
@@ -163,9 +197,9 @@ function CreateAddress(props) {
               onChange={handleChange1}
               input={<InputCustom placeholder="Chọn Tỉnh/Thành phố" />}
             >
-              <MenuItem value="1">Hà nội</MenuItem>
-              <MenuItem value="2">Hải phòng</MenuItem>
-              <MenuItem value="3">Hồ Chí Minh</MenuItem>
+              {
+                listprovince.map(item => <MenuItem value={item.id}>{item.name}</MenuItem>)
+              }
             </Select>
           </FormControl>
         </Stack>
@@ -177,7 +211,7 @@ function CreateAddress(props) {
           <FormControl className="create-address__input">
             <InputLabel id="demo-simple-select-helper-label"></InputLabel>
             <Select
-              sx={{flex:0.65}}
+              sx={{ flex: 0.65 }}
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
               value={district}
@@ -185,9 +219,9 @@ function CreateAddress(props) {
               onChange={handleChange2}
               input={<InputCustom placeholder="Chọn Quận/Huyện" />}
             >
-              <MenuItem value="1">Hà nội</MenuItem>
-              <MenuItem value="2">Hải phòng</MenuItem>
-              <MenuItem value="3">Hồ Chí Minh</MenuItem>
+              {
+                listdistrict.map(item => <MenuItem value={item.id}>{item.name}</MenuItem>)
+              }
             </Select>
           </FormControl>
         </Stack>
@@ -205,9 +239,9 @@ function CreateAddress(props) {
               onChange={handleChange3}
               input={<InputCustom placeholder="Chọn Xã/Thị trấn" />}
             >
-              <MenuItem value="1">Hà nội</MenuItem>
-              <MenuItem value="2">Hải phòng</MenuItem>
-              <MenuItem value="3">Hồ Chí Minh</MenuItem>
+              {
+                listcommune.map(item => <MenuItem value={item.id}>{item.name}</MenuItem>)
+              }
             </Select>
           </FormControl>
         </Stack>
@@ -217,7 +251,7 @@ function CreateAddress(props) {
             Địa chỉ
           </Typography>
           <Stack className="create-address__input">
-            <InputCustom value={addressDetail} onChange={(event)=>{
+            <InputCustom value={addressDetail} onChange={(event) => {
               setAddressDetail(event.target.value)
             }}
               multiline
@@ -231,9 +265,9 @@ function CreateAddress(props) {
           <Typography className="create-address__label">
             Loại địa chỉ:
           </Typography>
-          <RadioGroup value={addressType} onChange={(event)=>{setAddressType(event.target.value)}} row>
+          <RadioGroup value={addressType} onChange={(event) => { setAddressType(event.target.value) }} row>
             <FormControlLabel
-              value= "0"
+              value="0"
               control={<Radio />}
               label="Nhà riêng/ Chung cư"
             />
@@ -255,10 +289,10 @@ function CreateAddress(props) {
 
         <Stack direction="row">
           <Typography className="create-address__label"></Typography>
-          <Button 
-          onClick={
-            edit? handleUpdate
-            : handleSave} className="btn__Update" variant="contained">
+          <Button
+            onClick={
+              edit ? handleUpdate
+                : handleSave} className="btn__Update" variant="contained">
             Cập nhật
           </Button>
         </Stack>

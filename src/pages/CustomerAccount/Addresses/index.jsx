@@ -1,27 +1,24 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from "react-router-dom";
 import "./Addresses.scss";
-import { address } from "../../../constraints/Profile";
-
 import { Typography, Button, Stack, Box, Dialog } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import apiAddress from '../../../apis/apiAddress';
 import EmptyNotify from '../../../components/EmptyNotify';
 
 
-
 function Addresses() {
   const [itemdelete, setItemdelete] = useState(null)
   const [addresses, setAddresses] = useState([]);
   const [dialogDelete, setDialogDelete] = useState(false);
-
+  
   useEffect(() => {
     const getData = async () => {
-      setAddresses(address)
-      // apiAddress.getAddresses()
-      //   .then(res=>{
-      //     setAddresses((pre) => [...pre, ...res.data]);
-      //   })
+      apiAddress.getUserAddress()
+        .then(res=>{
+          setAddresses(res.data.addressList);
+          console.log(res.data.addressList)
+        })
     };
     getData();
   }, []);
@@ -55,7 +52,7 @@ function Addresses() {
       <Stack spacing={5}>{
       addresses.length === 0 ?
       <EmptyNotify title="Bạn chưa có địa chỉ"/>
-      : addresses.map((item) => {
+      :addresses.map((item) => {
         return (
           <Stack key={item.id}
             direction="row"
@@ -63,9 +60,10 @@ function Addresses() {
             className="items"
           >
             <Stack className="info">
-              <Typography className="name">{item.name}</Typography>
-              <Typography className="address">Địa chỉ: {item.address}</Typography>
-              <Typography className="number">Điện thoại: {item.phone}</Typography>
+              <Typography className="name">{item.fullName}</Typography>
+              <Typography className="name">{item.companyName}</Typography>
+              <Typography className="address">Địa chỉ: {`${item.addressDetail}, ${item.commune.name}, ${item.district.name}, ${item.province.name}`}</Typography>
+              <Typography className="number">Điện thoại: {item.phoneNumber}</Typography>
             </Stack>
 
             <Stack direction="row" className="action">
