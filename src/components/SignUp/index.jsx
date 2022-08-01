@@ -9,18 +9,15 @@ import {
   Stack,
   IconButton,
   Button,
-  Box,
   TextField,
   Input,
   Typography,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputAdornment from "@mui/material/InputAdornment";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 
@@ -58,18 +55,10 @@ function SignUp(props) {
     await apiAuth
       .postCheckPhone(param)
       .then((res) => {
-        console.log(res);
+        setInvalidPhone(false)
       })
       .catch((error) => {
-        console.log(error.response.data.status);
-        setInvalidPhone(false);
-
-        if (error.response.data.status === 400) {
-          setInvalidPhone(true);
-          return true;
-        } else {
-          setInvalidPhone(false);
-        }
+        setInvalidPhone(true);
       });
   };
 
