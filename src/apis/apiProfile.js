@@ -23,6 +23,10 @@ const apiProfile = {
         const res = await axiosClientWithToken.get(`/user/${params.id}`)
         return res.data;
     },
+    putChangePhone: async (params) => {
+        const res = await axiosClientWithToken.put('/user/profile/changePhone', params)
+        return res.data;
+    },
 
 }
     
