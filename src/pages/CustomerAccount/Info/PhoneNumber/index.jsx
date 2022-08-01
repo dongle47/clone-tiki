@@ -1,7 +1,40 @@
 import { Box, Stack, InputBase, Typography, Button } from "@mui/material";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
+import * as React from "react";
+import apiProfile from "../../../../apis/apiProfile";
+
 
 function PhoneNumber() {
+  const [phone, setPhone] = React.useState("");
+  const [message, setMessage] = React.useState("");
+  const [fcolor, setColor] = React.useState("#ee0033");
+
+  const onChangePhone = (event) => {
+    setPhone(event.target.value);
+    const regex =
+      /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
+    if (regex.test(event.target.value)) {
+      setMessage("");
+    } else {
+      setMessage("*Số điện thoại không hợp lệ");
+    }
+  };
+
+  const handleChange = () => {
+    const params = {
+      phone: phone
+    };
+    apiProfile
+      .putChangePhone(params)
+      .then((response) => {
+        setColor("#2196f3")
+        setMessage("Thay đổi thành công");
+      })
+      .catch((error) => {
+        setColor("#ee0033")
+        setMessage("Thay đổi không thành công!");
+      });
+  };
   return (
     <Box sx={{ mt: "1rem" }}>
       <Typography variant="h6" >Cập nhật số điện thoại</Typography>
@@ -22,10 +55,17 @@ function PhoneNumber() {
               spacing={1}
             >
               <LocalPhoneOutlinedIcon sx={{ ml: "6px" }} color="disabled" />
-              <InputBase placeholder="Nhập số điện thoại" />
+              <InputBase placeholder="Nhập số điện thoại"
+                value={phone}
+                onChange={onChangePhone} />
             </Stack>
-
-            <Button variant="contained">Lưu thay đổi</Button>
+            <Box height="25px">
+              <Typography color={fcolor} fontSize="14px" >{message}</Typography>
+            </Box>
+            <Button variant="contained"
+              onClick={(event) => {
+                handleChange(event);
+              }}>Lưu thay đổi</Button>
           </Stack>
         </Stack>
       </Stack>

@@ -1,5 +1,6 @@
 import React from "react";
-import { Outlet, Routes, Route, Link } from "react-router-dom";
+
+import { Routes, Route, Link } from "react-router-dom";
 
 import "./CustomerAccount.scss";
 
@@ -17,7 +18,6 @@ import {
   Box,
 } from "@mui/material";
 
-import avatarProfile from "../../assets/img/avatar.jpg";
 
 import Info from "./Info/index";
 import PhoneNumber from "./Info/PhoneNumber/index";
@@ -33,10 +33,11 @@ import FavoriteProduct from "./FavoriteProduct/index";
 import MyReview from "./MyReview/index";
 import DiscountCode from "./Coupon/index";
 import DetailOrder from "./Orders/DetailOrder";
+import { useSelector } from "react-redux";
 
 function CustomerAccount() {
   const [selectedTabId, setSelectedTabId] = React.useState(0);
-
+  const user = useSelector(state => state.auth.user)//lấy user từ store
   return (
     <Box className="container">
       <Box className="customer-account">
@@ -44,9 +45,9 @@ function CustomerAccount() {
           <List sx={{maxWidth:"300px"}}>
             <ListItem>
               <ListItemAvatar>
-                <Avatar alt="hình đại diện" src={avatarProfile} />
+                <Avatar alt="hình đại diện" src={user.img} />
               </ListItemAvatar>
-              <ListItemText primary="Tài khoản của" secondary="Dong Le" />
+              <ListItemText primary="Tài khoản của" secondary={user.fullName} />
             </ListItem>
 
             {sidebarTab.map((item, index) => {

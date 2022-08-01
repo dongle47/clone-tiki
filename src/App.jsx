@@ -14,7 +14,11 @@ function App() {
   const isAdmin = window.location.href.includes("admin");
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
-  axiosInstance(user, dispatch, loginSuccess, logoutSuccess);
+  if(user){
+    console.log("reset axios")
+    axiosInstance(user, dispatch, loginSuccess, logoutSuccess);
+  }
+    
   return (
     <BrowserRouter>
       {isAdmin ? null : <Header />}
@@ -22,8 +26,8 @@ function App() {
       {isAdmin ? null : <Footer />}
 
       <ToastContainer
-        autoClose={1000}
-        hideProgressBar
+        autoClose={1200}
+        hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
         pauseOnFocusLoss

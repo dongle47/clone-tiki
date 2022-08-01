@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { sidebarTab } from "../../../constraints/Profile";
 
-import avatarProfile from "../../../assets/img/avatar.jpg";
+import { useSelector } from "react-redux";
 
 import {
   List,
@@ -16,12 +16,13 @@ import {
 } from "@mui/material";
 
 export default function PermanentDrawerLeft(props) {
+  const user = useSelector(state => state.auth.user)//lấy user từ store
   return (
     <React.Fragment>
       <List sx={{ maxWidth: 300 }}>
         <ListItem>
           <ListItemAvatar>
-            <Avatar alt="hình đại diện" src={avatarProfile} />
+            <Avatar alt="hình đại diện" src={user.img} />
           </ListItemAvatar>
           <ListItemText primary="Tài khoản của" secondary="Dong Le" />
         </ListItem>

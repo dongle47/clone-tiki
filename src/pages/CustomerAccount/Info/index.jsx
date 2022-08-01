@@ -1,6 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ImageUploading from "react-images-uploading";
+import { toast } from 'react-toastify';
+import { loginSuccess } from '../../../slices/authSlice'
+import { useDispatch } from 'react-redux';
 
 import "./Info.scss";
 import avatar from "../../../assets/img/avatar.jpg";
@@ -40,16 +43,38 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import WallpaperIcon from "@mui/icons-material/Wallpaper";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import { useSelector } from "react-redux";
+
+import apiProfile from "../../../apis/apiProfile";
+
+
 
 function Info() {
-  const [day, setDay] = React.useState(null);
+
+  const Month = Array.from({ length: 12 }, (x, i) => 1 + i);
+  const Year = Array.from({ length: 65 }, (x, i) => 1950 + i);
+  const Country = [{ id: "1", name: "Việt Nam" }, { id: "2", name: "America" }, { id: "3", name: "Úc" }];
+
+  const user = useSelector(state => state.auth.user);
+
+  const dispatch = useDispatch();
+
+  const [listday, setListday] = React.useState(Array.from({ length: 31 }, (x, i) => 1 + i))
+
+  const [day, setDay] = React.useState(user.birth_day ? user.birth_day[2] : null);
+  const [month, setMonth] = React.useState(user.birth_day ? user.birth_day[1] : null);
+  const [year, setYear] = React.useState(user.birth_day ? user.birth_day[0] : null);
+
+  const [country, setCountry] = React.useState(user.country ? user.country : null);
 
   const [image, setImage] = React.useState([]);
   const onChange = (imageList, addUpdateIndex) => {
-    // data for submit
-    console.log(imageList, addUpdateIndex);
     setImage(imageList);
   };
+
+  const [gender, setGender] = React.useState(user.gender)
+  const [fullname, setFullName] = React.useState(user.fullName)
+  const [nickname, setNickName] = React.useState(user.nickName)
 
   const [modalNational, setModalNational] = React.useState(false);
   const openModalNational = () => setModalNational(true);
@@ -61,8 +86,24 @@ function Info() {
 
   const [modalUploadAvatar, setModalUploadAvatar] = React.useState(false);
   const openModalUploadAvatar = () => setModalUploadAvatar(true);
-  const closeModalUploadAvatar = () => setModalUploadAvatar(false);
-
+  const closeModalUploadAvatar = () => {
+    if (image.length === 0) {
+      toast.warning("Vui lòng chọn ảnh")
+      return
+    }
+    let param = { file: image[0].file }
+    apiProfile.putUploadAvatar(param)
+      .then(res => {
+        toast.success("Cập nhật ảnh đại diện thành công")
+        getUserProfile()
+      })
+      .catch(error => {
+        toast.error("Cập nhật ảnh đại diện thất bại")
+      })
+      .finally(() => {
+        setModalUploadAvatar(false);
+      })
+  }
   const [modalDeleteAvatar, setModalDeleteAvatar] = React.useState(false);
   const openModalDeleteAvatar = () => setModalDeleteAvatar(true);
   const closeModalDeleteAvatar = () => setModalDeleteAvatar(false);
@@ -75,18 +116,91 @@ function Info() {
     setOpenAvatar(false);
   };
 
-  const handleChange = (event) => {
+  const handleChangeDay = (event) => {
     setDay(event.target.value);
   };
 
+  const handleChangeMonth = (event) => {
+    setMonth(event.target.value);
+    let Maxday = maxDayofmonth(event.target.value, year);
+    setListday(Array.from({ length: Maxday }, (x, i) => 1 + i))
+    if (day > Maxday)
+      setDay(1)
+  };
+  const handleChangeYear = (event) => {
+    setYear(event.target.value);
+    let Maxday = maxDayofmonth(month, event.target.value);
+    setListday(Array.from({ length: Maxday }, (x, i) => 1 + i))
+    if (day > Maxday)
+      setDay(1)
+  };
+
+  const maxDayofmonth = (month, year) => {
+    if (month === 2) {
+      if ((year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) || (year % 100 === 0 && year % 400 === 0)) {
+        return 29;
+      }
+      else return 28;
+    }
+    else if ([4, 6, 9, 11].includes(month))
+      return 30;
+    else return 31;
+  }
+  const onChangeFullName = (event) => {
+    setFullName(event.target.value);
+  }
+  const onChangeNickName = (event) => {
+    setNickName(event.target.value);
+  }
+  const onChangeGender = (event) => {
+    setGender(event.target.value);
+  }
+  const onChangeCountry = (event) => {
+    let newCountry = Country.find(item => item.id === event.target.value);
+    setCountry(newCountry);
+  }
+  const onSaveChange = () => {
+    console.log(day)
+    if (!(RegExp("\\d+").test(day) && RegExp("\\d+").test(month) && RegExp("\\d+").test(year)
+      && country && fullname && gender && nickname)) {
+      toast.warning("Vui lòng nhập đầy đủ thông tin !!");
+      return
+    }
+    let birth_day = `${year}-${('0' + month).slice(-2)}-${('0' + day).slice(-2)}`
+    const params = {
+      birthDay: birth_day,
+      country: country.id,
+      fullName: fullname,
+      gender: gender,
+      nickName: nickname
+    };
+    apiProfile
+      .putChangeInfo(params)
+      .then((response) => {
+        toast.success("Thay đổi thành công");
+        getUserProfile();
+      })
+      .catch((error) => {
+        toast.error("Thay đổi không thành công");
+        console.log(error)
+      });
+  };
+  const getUserProfile = () => {
+    apiProfile.getUserProfile()
+      .then((res) => {
+        let newUser = res.data.user
+        dispatch(loginSuccess({ ...user, ...newUser }))
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
   return (
     <Stack className="customer-info" spacing={3}>
       <Typography variant="h6">Thông tin tài khoản</Typography>
-
       <Stack direction="row" spacing={3}>
         <Stack spacing={3}>
           <Typography>Thông tin cá nhân</Typography>
-
           <Stack direction="row" spacing={4}>
             <ClickAwayListener onClickAway={handleClickAwayAvatar}>
               <Box sx={{ position: "relative" }} onClick={handleClickAvatar}>
@@ -102,12 +216,12 @@ function Info() {
                       height: 110,
                       border: "3px solid aquamarine",
                     }}
-                    src={avatar}
+                    src={image.length === 0 ? user.img : image[0].data_url}
                   />
                 </Badge>
                 {openAvatar ? (
                   <Stack className="avatar-control">
-                    <Stack autoFocusItem={openAvatar}>
+                    <Stack autofocusitem={openAvatar.toString()}>
                       <MenuItem onClick={openModalViewAvatar}>
                         <WallpaperIcon sx={{ mr: 2 }} color="disabled" />
                         Xem ảnh đại diện
@@ -139,7 +253,10 @@ function Info() {
                 justifyContent="space-between"
               >
                 <label>Họ & tên</label>
-                <input id="input-name" placeholder="Thêm họ tên" type="text" />
+                <input id="input-name" placeholder="Thêm họ tên" type="text"
+                  value={fullname}
+                  onChange={onChangeFullName}
+                />
               </Stack>
 
               <Stack
@@ -153,6 +270,8 @@ function Info() {
                   id="input-nickname"
                   placeholder="Thêm nickname"
                   type="text"
+                  value={nickname}
+                  onChange={onChangeNickName}
                 />
               </Stack>
             </Stack>
@@ -164,37 +283,44 @@ function Info() {
               <Select
                 sx={{ maxHeight: 30, minWidth: 100 }}
                 value={day}
-                onChange={handleChange}
+                onChange={handleChangeDay}
                 displayEmpty
               >
                 <MenuItem value="">
                   <em>Ngày</em>
                 </MenuItem>
-                <MenuItem value={10}>10</MenuItem>
+                {listday.map(item =>
+                  <MenuItem key={item} value={item}>{item}</MenuItem>
+                )}
               </Select>
 
               <Select
                 sx={{ maxHeight: 30, minWidth: 100 }}
-                value={day}
-                onChange={handleChange}
+                value={month}
+                onChange={handleChangeMonth}
                 displayEmpty
               >
                 <MenuItem value="">
                   <em>Tháng</em>
                 </MenuItem>
-                <MenuItem value={10}>10</MenuItem>
+                {Month.map(item =>
+                  <MenuItem key={item} value={item}>{item}</MenuItem>
+                )}
               </Select>
 
               <Select
                 sx={{ maxHeight: 30, minWidth: 100 }}
-                value={day}
-                onChange={handleChange}
+                value={year}
+                onChange={handleChangeYear}
                 displayEmpty
               >
                 <MenuItem value="">
                   <em>Năm</em>
                 </MenuItem>
-                <MenuItem value={10}>10</MenuItem>
+                {Year.map(item =>
+                  <MenuItem key={item} value={item}>{item}</MenuItem>
+                )}
+
               </Select>
             </Stack>
           </Stack>
@@ -205,11 +331,13 @@ function Info() {
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
+              value={gender}
+              onChange={onChangeGender}
             >
-              <FormControlLabel value="male" control={<Radio />} label="Nam" />
-              <FormControlLabel value="female" control={<Radio />} label="Nữ" />
+              <FormControlLabel value="Male" control={<Radio />} label="Nam" />
+              <FormControlLabel value="Female" control={<Radio />} label="Nữ" />
               <FormControlLabel
-                value="other"
+                value="Other"
                 control={<Radio />}
                 label="Khác"
               />
@@ -224,12 +352,15 @@ function Info() {
               endIcon={<KeyboardArrowDownIcon />}
               color="inherit"
               sx={{ color: hexToRgb("#ACABAB"), width: "73%" }}
+
             >
-              Chọn quốc tịch
+              {country ? country.name : "Chọn Quốc tịch"}
             </Button>
           </Stack>
 
-          <Button variant="contained" sx={{ width: 200, alignSelf: "center" }}>
+          <Button variant="contained" sx={{ width: 200, alignSelf: "center" }}
+            onClick={onSaveChange}
+          >
             Lưu thay đổi
           </Button>
         </Stack>
@@ -246,7 +377,7 @@ function Info() {
           >
             <Stack direction="row" spacing={1}>
               <LocalPhoneOutlinedIcon color="disabled" />
-              <ListItemText primary="Số điện thoại" secondary="0123456789" />
+              <ListItemText primary="Số điện thoại" secondary={user.phone} />
             </Stack>
             <Link to="/customer/account/edit/phone">
               <Button size="small" variant="outlined">
@@ -266,7 +397,7 @@ function Info() {
 
               <ListItemText
                 primary="Địa chỉ email"
-                secondary="dong.le47@yahoo.com"
+                secondary={user.email}
               />
             </Stack>
 
@@ -344,18 +475,25 @@ function Info() {
             <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Tìm kiếm nhanh" />
           </Paper>
 
-          <RadioGroup>
-            <FormControlLabel
-              value="male"
-              control={<Radio />}
-              label="Việt Nam"
-            />
-            <FormControlLabel value="female" control={<Radio />} label="Khác" />
+          <RadioGroup
+            value={country ? country.id : null}
+            onChange={onChangeCountry}
+          >
+            {Country.map(item =>
+              <FormControlLabel
+              key={item.id}
+                value={item.id}
+                control={<Radio />}
+                label={item.name}
+              />
+            )}
+
           </RadioGroup>
 
           <Button
             variant="contained"
             sx={{ alignSelf: "center", mr: "auto", ml: "auro", width: "100%" }}
+            onClick={closeModalNational}
           >
             Lưu thay đổi
           </Button>
@@ -532,5 +670,4 @@ function Info() {
     </Stack>
   );
 }
-
 export default Info;

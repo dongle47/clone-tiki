@@ -21,7 +21,7 @@ function Email() {
 
   const handleChange = () => {
     const params = {
-      email,
+      email: email
     };
     apiProfile
       .putChangeEmail(params)
