@@ -5,7 +5,7 @@ import {
   Typography
 } from "@mui/material";
 
-function EmptyNotify() {
+function EmptyNotify(props) {
   return (
     <Stack
       sx={{
@@ -20,7 +20,7 @@ function EmptyNotify() {
         alt=""
         src="https://frontend.tikicdn.com/_desktop-next/static/img/mascot_fail.svg"
       />
-      <Typography variant="body1">Bạn chưa có thông báo</Typography>
+      <Typography variant="body1">{props.title}</Typography>
 
       <Button variant="contained" color="warning">
         Tiếp tục mua sắm
