@@ -146,6 +146,11 @@ function CreateAddress(props) {
       "province": province
 
     }
+    if(!(addressDetail&& addressType && commune && companyName && district && fullName && phone && province)) {
+      toast.warning("Vui lòng nhập đầy đủ thông tin !!");
+      return
+    }
+    else{
     apiAddress.saveAddress(params)
       .then(res => {
         toast.success("Thêm địa chỉ thành công")
@@ -161,6 +166,7 @@ function CreateAddress(props) {
       .catch(error => {
         toast.error("Thêm địa chỉ thất bại!")
       })
+    }
   }
 
   const handleUpdate = () => {
@@ -173,6 +179,10 @@ function CreateAddress(props) {
       "fullName": fullName,
       "phone": phone,
       "province": province
+    }
+    if(!(addressDetail&& addressType && commune && companyName && district && fullName && phone && province)) {
+      toast.warning("Vui lòng nhập đầy đủ thông tin !!");
+      return
     }
     apiAddress.updateUserAddressById(params, addressid)
       .then(res => {
