@@ -14,26 +14,26 @@ function App() {
   const isAdmin = window.location.href.includes("admin");
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
-  if(user){
-    console.log("reset axios")
+  if (user) {
+    console.log("reset axios");
     axiosInstance(user, dispatch, loginSuccess, logoutSuccess);
   }
-    
-  return (
-    <BrowserRouter>
-      {isAdmin ? null : <Header />}
-      <ConfigRoute />
-      {isAdmin ? null : <Footer />}
 
-      <ToastContainer
-        autoClose={1200}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        pauseOnFocusLoss
-        pauseOnHover={false}
-      />
-    </BrowserRouter>
+  return (
+      <BrowserRouter>
+        {isAdmin ? null : <Header />}
+        <ConfigRoute />
+        {isAdmin ? null : <Footer />}
+
+        <ToastContainer
+          autoClose={1200}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnFocusLoss
+          pauseOnHover={false}
+        />
+      </BrowserRouter>
   );
 }
 

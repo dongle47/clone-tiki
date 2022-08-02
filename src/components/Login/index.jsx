@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorInput, ErrorAfterSubmit } from "../ErrorHelper";
 
+import { GgLogin } from "../GoogleLogin";
+import { FbLogin } from "../FacebookLogin";
+
 import { loginSuccess, logoutSuccess } from "../../slices/authSlice";
 import { useDispatch } from "react-redux";
 import apiAuth from "../../apis/apiAuth";
+
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { axiosInstance } from "./../../apis/axiosClient";
 import InputAdornment from "@mui/material/InputAdornment";
 import {
   Stack,
@@ -20,11 +23,9 @@ import {
   Input,
 } from "@mui/material";
 
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CloseIcon from "@mui/icons-material/Close";
-
-import { GgLogin, GgLogout } from "../GoogleLogin";
-import { FbLogin } from "../FacebookLogin";
-import { axiosInstance } from "./../../apis/axiosClient";
 
 function Login(props) {
   const dispatch = useDispatch();
@@ -52,7 +53,7 @@ function Login(props) {
       .postLogin(params)
       .then((res) => {
         let { accessToken, refreshToken, user } = res.data;
-        dispatch(loginSuccess({ accessToken, refreshToken, ...user }))
+        dispatch(loginSuccess({ accessToken, refreshToken, ...user }));
         props.closeModalLogin();
       })
       .catch((error) => {
@@ -66,11 +67,11 @@ function Login(props) {
         }
       });
 
-      const refreshAxios = (user)=>{
-        setTimeout(()=>{
-          axiosInstance(user, dispatch, loginSuccess, logoutSuccess);
-        },0)
-      }
+    const refreshAxios = (user) => {
+      setTimeout(() => {
+        axiosInstance(user, dispatch, loginSuccess, logoutSuccess);
+      }, 0);
+    };
   };
 
   return (
