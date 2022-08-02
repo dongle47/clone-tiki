@@ -32,9 +32,10 @@ export const axiosClientWithToken = axios.create({
 export const axiosInstance = (user, dispatch, stateSuccess,stateFail) => {
     axiosClientWithToken.interceptors.request.use(
         async (config) => {
-            console.log("Start")
             let date = new Date();
-            console.log(user)
+            if(!(user && user.accessToken)){
+                return config;
+            }
             const decodeToken = jwt_decode(user?.accessToken);
             
             if (decodeToken.exp < date.getTime() / 1000) {
@@ -54,7 +55,6 @@ export const axiosInstance = (user, dispatch, stateSuccess,stateFail) => {
             }else{
                 config.headers['Authorization'] = `Bearer ${user.accessToken}`;
             }
-            console.log("End")
             return config;
         },
         err => {

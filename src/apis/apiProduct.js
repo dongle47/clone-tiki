@@ -1,5 +1,16 @@
 
-import { axiosClient, axiosInstance } from "./axiosClient";
+//import { axiosClient, axiosInstance } from "./axiosClient";
+import axios from 'axios';
+import queryString from 'query-string';
+const baseURL='https://playerhostedapitest.herokuapp.com/api/'
+export const axiosClient = axios.create({
+    baseURL: baseURL,
+    headers: {
+        "Content-Type": "application/json"
+    },
+    withCredentials: true,
+    paramsSerializer: (params) => queryString.stringify(params)
+});
 
 const apiProduct = {
 
@@ -7,10 +18,9 @@ const apiProduct = {
         const res = await axiosClient.get('/products', {params:{id}})
         return res.data;
     },
-    verifyToken: async (user, dispatch, stateSuccess) => {
-        const url = `/auth/verifytoken`
-        let axi = axiosInstance(user, dispatch, stateSuccess)
-        return (await axi.get(url, { headers: { Authorization: `Bearer ${user.accessToken}` } })).data;
+    getProducts: async (params) => {
+        const res = await axiosClient.get('/products', {params})
+        return res.data;
     },
     
     
