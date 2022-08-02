@@ -9,13 +9,9 @@ export function FbLogin(props) {
       <FacebookLogin
         style={{
           display: "flex",
-          backgroundColor: "#4267b2",
-          color: "#fff",
-          fontSize: "16px",
+          backgroundColor: "white",
           padding: "0.5rem",
           border: "none",
-          borderRadius: "50%",
-          alignItem: "center",
         }}
         appId="2245302728954327"
         onSuccess={(response) => {
@@ -27,10 +23,12 @@ export function FbLogin(props) {
         onProfileSuccess={(response) => {
           console.log("Get Profile Success!", response);
         }}
-        children={<FacebookRoundedIcon />}
+        children={
+          <FacebookRoundedIcon sx={{ color: "#4267b2", fontSize: "3rem" }} />
+        }
       />
 
-      <button
+      {/* <button
         onClick={() =>
           FacebookLoginClient.logout(() => {
             console.log("logout completed!");
@@ -38,7 +36,7 @@ export function FbLogin(props) {
         }
       >
         Logout
-      </button>
+      </button> */}
     </div>
   );
 }

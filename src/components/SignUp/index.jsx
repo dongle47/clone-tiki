@@ -22,6 +22,8 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { GgLogin } from "../GoogleLogin";
+import { FbLogin } from "../FacebookLogin";
 
 function SignUp(props) {
   const [showPass, setShowPass] = React.useState(false);
@@ -55,7 +57,7 @@ function SignUp(props) {
     await apiAuth
       .postCheckPhone(param)
       .then((res) => {
-        setInvalidPhone(false)
+        setInvalidPhone(false);
       })
       .catch((error) => {
         setInvalidPhone(true);
@@ -79,7 +81,7 @@ function SignUp(props) {
       <Stack direction="column" sx={{ flex: 5 }} spacing={3}>
         <Typography variant="h5">Đăng ký</Typography>
 
-        <form >
+        <form>
           <Stack spacing={2}>
             <Stack width="100%">
               <TextField
@@ -200,18 +202,8 @@ function SignUp(props) {
           alignItems="center"
           spacing={2}
         >
-          <img
-            src="https://salt.tikicdn.com/ts/upload/3a/22/45/0f04dc6e4ed55fa62dcb305fd337db6c.png"
-            alt="facebook"
-            width="40rem"
-            height="40rem"
-          />
-          <img
-            src="https://salt.tikicdn.com/ts/upload/1c/ac/e8/141c68302262747f5988df2aae7eb161.png"
-            alt="google"
-            width="40rem"
-            height="40rem"
-          />
+          <FbLogin />
+          <GgLogin />
         </Stack>
 
         <p style={{ textAlign: "center" }}>
