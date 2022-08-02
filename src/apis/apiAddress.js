@@ -16,8 +16,8 @@ const apiAddress = {
         return res.data;
     },
 
-    updateUserAddressById: async (params) => {
-        const res = await axiosClientWithToken.post(`/address/${params.id}`)
+    updateUserAddressById: async (params, id) => {
+        const res = await axiosClientWithToken.post(`/address/${id}`, params)
         return res.data;
     },
     getAddressById: async (params) => {

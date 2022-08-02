@@ -20,8 +20,9 @@ import { styled } from '@mui/material/styles';
 import { useState } from "react";
 import apiAddress from "../../../../apis/apiAddress";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { id } from "date-fns/locale";
+import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 function CreateAddress(props) {
 
   const [fullName, setFullName] = useState("")
@@ -29,45 +30,83 @@ function CreateAddress(props) {
   const [phone, setPhone] = useState("")
   const [addressDetail, setAddressDetail] = useState("")
   const [addressType, setAddressType] = useState("")
-  const [listprovince, setListProvince]= useState([])
-  const [listdistrict, setListDistrict]= useState([])
-  const [listcommune, setListCommune]= useState([])
+  const [listprovince, setListProvince] = useState([])
+  const [listdistrict, setListDistrict] = useState([])
+  const [listcommune, setListCommune] = useState([])
   const [addressid, setAddressid] = useState("")
   const [edit, setEdit] = useState(props.edit)
   const [province, setProvince] = React.useState("");
+  const [district, setDistrict] = React.useState("");
+  const [commune, setCommune] = React.useState("");
+  const navigate = useNavigate();
   const params = useParams();
   useEffect(() => {
     const getData = async () => {
       apiAddress.getAllProvince()
         .then(res => {
           setListProvince(res.data.list);
-          console.log(res.data.list)
         })
     };
     getData();
   }, []);
 
   useEffect(() => {
+    const getData = async () => {
+      const params = { id: province }
+      apiAddress.getDistrictInProvinceById(params)
+        .then(res => {
+          setListDistrict(res.data.list);
+        })
+    };
+    getData();
+  }, [province])
+
+  useEffect(() => {
+    const getData = async () => {
+      const params = { id: district }
+      apiAddress.getCommuneInDistrictById(params)
+        .then(res => {
+          setListCommune(res.data.list);
+        })
+    };
+    getData();
+  }, [district])
+
+  useEffect(() => {
     const loaddata = () => {
       if (edit === true) {
-        apiAddress.getUserAddress(params)
+        apiAddress.getUserAddress()
           .then(res => {
-            const address = res.data
-            setFullName(address.fullName)
-            setCompanyName(address.companyName)
-            setPhone(address.phone)
-            setAddressDetail(address.addressDetail)
-            setAddressType(address.addressType)
-            setCommune(address.commune)
-            setDistrict(address.district)
-            setProvince(address.province)
+            const addresses = res.data.addressList
+            if (addresses) {
+              const address = addresses.find((item) => item.id === params.id)
+
+              if (address) {
+                setFullName(address.fullName)
+                setCompanyName(address.companyName)
+                setPhone(address.phoneNumber)
+                setAddressDetail(address.addressDetail)
+                setAddressType(address.addressType.id)
+                setCommune(address.commune.id)
+                setDistrict(address.district.id)
+                setProvince(address.province.id)
+              }
+              else {
+                navigate("/customer/address/create")
+                toast.error("Địa chỉ này không tồn tại!")
+              }
+            }
+            else {
+              navigate("/customer/address/create")
+              toast.error("Địa chỉ này không tồn tại!")
+            }
+
           })
       }
       setAddressid(params.id)
-      console.log(params.id)
     }
     loaddata()
-  }, [edit])  
+  }, [edit])
 
   // useEffect(() => {
   //   const handleChange1 = (params) => {
@@ -82,26 +121,16 @@ function CreateAddress(props) {
   // },[])
 
   const handleChange1 = (event) => {
-    const params = {id:event.target.value}
-    apiAddress.getDistrictInProvinceById(params)
-        .then(res => {
-          setListDistrict(res.data.list);
-          console.log(res.data.list)
-        })
+
     setProvince(event.target.value);
   };
-  const [district, setDistrict] = React.useState("");
+
   const handleChange2 = (event) => {
-    const params = {id:event.target.value}
-    apiAddress.getCommuneInDistrictById(params)
-        .then(res => {
-          setListCommune(res.data.list);
-          console.log(res.data.list)
-        })
+
     setDistrict(event.target.value);
   };
 
-  const [commune, setCommune] = React.useState("");
+
   const handleChange3 = (event) => {
     setCommune(event.target.value);
   };
@@ -117,8 +146,21 @@ function CreateAddress(props) {
       "province": province
 
     }
-    console.log("Save")
     apiAddress.saveAddress(params)
+      .then(res => {
+        toast.success("Thêm địa chỉ thành công")
+        setFullName("")
+        setCompanyName("")
+        setPhone("")
+        setAddressDetail("")
+        setAddressType(1)
+        setCommune("")
+        setDistrict("")
+        setProvince("")
+      })
+      .catch(error => {
+        toast.error("Thêm địa chỉ thất bại!")
+      })
   }
 
   const handleUpdate = () => {
@@ -132,8 +174,13 @@ function CreateAddress(props) {
       "phone": phone,
       "province": province
     }
-    console.log("update")
-    apiAddress.updateAddress(params)
+    apiAddress.updateUserAddressById(params, addressid)
+      .then(res => {
+        toast.success("Cập nhật thành công")
+      })
+      .catch(error => {
+        toast.error("Cập nhật thất bại!")
+      })
   }
 
   return (
@@ -267,12 +314,12 @@ function CreateAddress(props) {
           </Typography>
           <RadioGroup value={addressType} onChange={(event) => { setAddressType(event.target.value) }} row>
             <FormControlLabel
-              value="0"
+              value="1"
               control={<Radio />}
               label="Nhà riêng/ Chung cư"
             />
             <FormControlLabel
-              value="1"
+              value="2"
               control={<Radio />}
               label="Cơ quan/ Công ty"
             />

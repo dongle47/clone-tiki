@@ -5,7 +5,7 @@ import { Typography, Button, Stack, Box, Dialog } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import apiAddress from '../../../apis/apiAddress';
 import EmptyNotify from '../../../components/EmptyNotify';
-
+import { toast } from "react-toastify";
 
 function Addresses() {
   const [itemdelete, setItemdelete] = useState(null)
@@ -32,6 +32,12 @@ function Addresses() {
     setAddresses(newaddress)
     closeDialogDeleteAll()
     apiAddress.deleteAddressById({ id: itemdelete.id })
+    .then(res=>{
+      toast.success("Xóa thành công")
+    })
+    .catch(error=>{
+      toast.error("Xóa không thành công!")
+    })
   }
   const openDialogDeleteAll = (itemdelete) => {
     setItemdelete(itemdelete)
@@ -90,7 +96,7 @@ function Addresses() {
                     <Button
                       variant="outlined"
                       onClick={handleDelete}
-                      sx={{ width: "94px", height: "36px" }}
+                      sx={{ width: "120px", height: "36px" }}
                     >
                       Xác nhận
                     </Button>
