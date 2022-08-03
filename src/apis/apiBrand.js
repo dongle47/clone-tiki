@@ -17,8 +17,8 @@ const apiBrand = {
         const res = await axiosClientWithToken.post('/brand/insert', params) 
         return res.data;
     },
-    updateBrand : async (params) =>{
-        const res = await axiosClientWithToken.put(`/brand/update/${params.id}`)
+    updateBrand : async (params,id) =>{
+        const res = await axiosClientWithToken.put(`/brand/update/${id}`, params)
         return res.data;
     },
     uploadLogo : async (params) =>{

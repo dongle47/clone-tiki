@@ -18,8 +18,10 @@ import { toast } from "react-toastify";
 import { styled } from '@mui/material/styles';
 import rev from "../../../../assets/img/test.png";
 import SelectBoxAddress from "../../../../components/SelectBoxAddress";
-function CrudBrand() {
+import { useParams,useNavigate } from "react-router-dom";
+function CrudBrand(props) {
   const [review, setReview] = React.useState(rev)
+  const [edit, setEdit] = useState(props.edit)
   const [brand, setBrand] = useState([])
   const [country, setCountry] = useState("")
   const [province, setProvince] = useState("")
@@ -28,7 +30,11 @@ function CrudBrand() {
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
   const [phone, setPhone] = useState("")
-  const [addressDetail, setAddressDetail] = useState("")
+  const [addressDetails, setAddressDetails] = useState("")
+  const navigate = useNavigate();
+  
+  const idBrand=useParams().id
+  
   useEffect(() => {
     const getData = async () => {
       apiBrand.getAllBrand()
@@ -62,7 +68,7 @@ function CrudBrand() {
   };
   const handleInsert = () => {
     const params = {
-      "addressDetail": addressDetail,
+      "addressDetails": addressDetails,
       "country": country,
       "commune": commune,
       "description": description,
@@ -72,7 +78,7 @@ function CrudBrand() {
       "province": province
 
     }
-    if(!(addressDetail&& country && commune && description && district && name && phone && province)) {
+    if(!(addressDetails&& country && commune && description && district && name && phone && province)) {
       toast.warning("Vui lòng nhập đầy đủ thông tin !!");
       return
     }
@@ -84,7 +90,7 @@ function CrudBrand() {
         setDescription("")
         setPhone("")
         setName("")
-        setAddressDetail("")
+        setAddressDetails("")
         setCommune("")
         setDistrict("")
         setProvince("")
@@ -94,6 +100,59 @@ function CrudBrand() {
       })
     }
   }
+  const handleUpdate = () => {
+    const params = {
+      "addressDetails": addressDetails,
+      "country": country,
+      "commune": commune,
+      "description": description,
+      "district": district,
+      "name": name,
+      "phone": phone,
+      "province": province
+
+    }
+    if(!(addressDetails&& country && commune && description && district && name && phone && province)) {
+      toast.warning("Vui lòng nhập đầy đủ thông tin !!");
+      return
+    }
+    else{
+    apiBrand.updateBrand(params,idBrand)
+      .then(res => {
+        toast.success("Sửa thương hiệu thành công")
+      })
+      .catch(error => {
+        toast.error("Sửa thương hiệu thất bại!")
+      })
+    }
+  }
+  useEffect(() => {
+    const loaddata = () => {
+      if (edit === true) {
+        apiBrand.getBrandByID({id:idBrand})
+          .then(res => {
+            const brand = res.data.brand
+            console.log(brand)
+              if (brand) {
+                setName(brand.name)
+                
+                setPhone(brand.phone)
+                setAddressDetails(brand.addressDetails)
+                setDescription(brand.description)
+                setCommune(brand.brandCommune.id)
+                setDistrict(brand.brandDistrict.id)
+                setProvince(brand.brandProvince.id)
+                setCountry(brand.brandCountry.id)
+              }
+              else {
+                navigate("/admin/brand/create")
+                toast.error("Địa chỉ này không tồn tại!")
+              }
+          })
+      }
+    }
+    loaddata()
+  }, [edit])
 
   return (
     <Box width={'100%'} bgcolor='#fff'>
@@ -110,7 +169,7 @@ function CrudBrand() {
         </Stack>
         <Stack direction="row" >
           <Typography className="cruBrand__label">Địa chỉ</Typography>
-          <TextField value={addressDetail} onChange={(event) => { setAddressDetail(event.target.value) }} size="small" id="outlined-basic" variant="outlined" sx={{ flex: "1" }} />
+          <TextField value={addressDetails} onChange={(event) => { setAddressDetails(event.target.value) }} size="small" id="outlined-basic" variant="outlined" sx={{ flex: "1" }} />
         </Stack>
 
         <Stack direction="row">
@@ -155,7 +214,8 @@ function CrudBrand() {
         </Stack> */}
 
         <Stack justifyContent="center">
-          <Button width="450px" variant="contained" onClick={handleInsert} >Thêm</Button>
+          <Button width="450px" variant="contained" onClick={edit ? handleUpdate
+                : handleInsert} >Thêm</Button>
         </Stack>
       </Stack>
     </Box>

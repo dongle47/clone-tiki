@@ -63,7 +63,7 @@ function createData(name, description, address, contact, image) {
 
 // ];
 
-function Brand(props) {
+function Brand() {
   const [modalDelete, setModalDelete] = React.useState(false);
   const closeModalDelete = () => setModalDelete(false);
   const [itemdelete, setItemdelete] = useState("")
@@ -76,9 +76,6 @@ function Brand(props) {
   const [description, setDescription] = useState("")
   const [phone, setPhone] = useState("")
   const [addressDetail, setAddressDetail] = useState("")
-  const [edit, setEdit] = useState(props.edit)
-  const navigate = useNavigate();
-  const params = useParams();
   const openModalDelete = (itemdelete) => {
     setItemdelete(itemdelete)
     setModalDelete(true)
@@ -92,39 +89,6 @@ function Brand(props) {
     };
     getData();
   }, []);
-  useEffect(() => {
-    const loaddata = () => {
-      if (edit === true) {
-        apiBrand.getAllBrand()
-          .then(res => {
-            const brands = res.data.listBrand
-            if (brands) {
-              const brandd = brands.find((item) => item.id === params.id)
-
-              if (brandd) {
-                setName(brandd.name)
-                setCountry(brandd.country)
-                setPhone(brandd.phone)
-                setAddressDetail(brandd.addressDetail)
-                setDescription(brandd.description)
-                setCommune(brandd.commune.id)
-                setDistrict(brandd.district.id)
-                setProvince(brandd.province.id)
-              }
-              else {
-                navigate("/customer/address/create")
-                toast.error("Địa chỉ này không tồn tại!")
-              }
-            }
-            else {
-              navigate("/customer/address/create")
-              toast.error("Địa chỉ này không tồn tại!")
-            }
-          })
-      }
-    }
-    loaddata()
-  }, [edit])
   const handleDelete = () => {
     const newbrand = brand.filter(item => {
       return itemdelete.id !== item.id
