@@ -132,7 +132,7 @@ function CrudCategory(props) {
                 <Stack justifyContent="center" alignItems="center">
                     <Button onClick={
                         edit ? handleUpdate
-                            : handleSave} sx={{ width: "30%" }} variant="contained">Cập nhật</Button>
+                            : handleSave} sx={{ width: "30%" }} variant="contained">{edit ? "Cập nhật":"Thêm"}</Button>
                 </Stack>
             </Stack>
         </Box>
