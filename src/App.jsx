@@ -9,6 +9,7 @@ import ConfigRoute from "./ConfigRoute";
 import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance } from "./apis/axiosClient";
 import { loginSuccess, logoutSuccess } from "./slices/authSlice";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const isAdmin = window.location.href.includes("admin");
@@ -20,6 +21,7 @@ function App() {
 
   return (
       <BrowserRouter>
+      <ScrollToTop>
         {isAdmin ? null : <Header />}
         <ConfigRoute />
         {isAdmin ? null : <Footer />}
@@ -32,6 +34,8 @@ function App() {
           pauseOnFocusLoss
           pauseOnHover={false}
         />
+      </ScrollToTop>
+        
       </BrowserRouter>
   );
 }

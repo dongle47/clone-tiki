@@ -43,7 +43,7 @@ function Home() {
         _page: page,
         _limit: size,
       };
-      apiMain.getProducts(param)
+      apiHome.getProducts(param)
         .then(res=>{
           setProducts((pre) => [...pre, ...res.data]);
         })

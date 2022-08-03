@@ -55,24 +55,27 @@ function FilterProduct(props) {
             if (filter.rate)
                 data = data.filter(item => item.rate >= filter.rate)
             category.properties.forEach(item => {
-                if (item.name !== "origins" || item.name !== "brands")
+                if (item.name !== "origins" && item.name !== "brands")
                     data = data.filter(product => {
                         if (!filter[item.name] || filter[item.name].length === 0)
                             return true
-                        if (product.details.options[item.name]) {
-                            return product.details.options[item.name].list.some(item2 => filter[item.name].includes(item2.name))
+                        let option = product.details.options.find(option => option.name === item.name)
+                        if (option) {
+                            return option.list.some(item2 => filter[item.name].includes(item2.name))
                         }
                         return false
                     })
-                // else
-                //     data = data.filter(product => {
-                //         if (!filter[item.name] || filter[item.name].length === 0)
-                //             return true
-                //         if (product.details.specifications[item.name]) {
-                //             return product.details.specifications[item.name].list.some(item2 => filter[item.name].includes(item2.name))
-                //         }
-                //         return false
-                //     })
+                else{
+                    data = data.filter(product => {                
+                        if (!filter[item.name] || filter[item.name].length === 0)
+                            return true
+                        let specification = product.details.specifications.find(spec => spec.name === item.name)
+                        if (specification) {
+                            return filter[item.name].includes(specification.value)
+                        }
+                        return false
+                    })
+                }
             })
             if (filterPrice.apply) {
                 switch (filterPrice.option) {
@@ -90,7 +93,7 @@ function FilterProduct(props) {
                         break
                     }
                     case 4: {
-                        data = data.filter(item => item.price * (1 - item.discount / 100)> filterPrice.minPrice
+                        data = data.filter(item => item.price * (1 - item.discount / 100) > filterPrice.minPrice
                             && item.price * (1 - item.discount / 100) < filterPrice.maxPrice)
                         break
                     }

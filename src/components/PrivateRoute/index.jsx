@@ -20,6 +20,12 @@ const PrivateRoute = ({
                     toast.warning("Phiên làm việc của bạn đã hết. Vui lòng đăng nhập lại", { autoClose: 1000, pauseOnHover: false, hideProgressBar: true })
                     setAuth(false);
                 }*/
+                if(!user.refreshToken){
+                    toast.warning("Phiên làm việc của bạn đã hết. Vui lòng đăng nhập lại")
+                    setAuth(false);
+                    dispatch(logoutSuccess())
+                    return
+                }
                 const tokenDecode = jwt_decode(user?.refreshToken)
                 let date = new Date();
                 if (tokenDecode.exp < date.getTime() / 1000) {
