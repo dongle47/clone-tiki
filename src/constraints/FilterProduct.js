@@ -58,7 +58,7 @@ export const categories = [
         properties: [
             {
                 id: 1,
-                name: "branch",
+                name: "brands",
                 display: "Thương hiệu",
                 items: [
                     {
@@ -85,7 +85,7 @@ export const categories = [
             },
             {
                 id: 2,
-                name: "color",
+                name: "colors",
                 display: "Màu sắc",
                 items: [
                     {
@@ -112,7 +112,7 @@ export const categories = [
             },
             {
                 id: 3,
-                name: "origin",
+                name: "origins",
                 display: "Xuất xứ",
                 items: [
                     {

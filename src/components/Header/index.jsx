@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./Header.scss";
 import { useState, useCallback } from "react";
-import { Link,useNavigate,useLocation} from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import { Stack, Button, Typography, Badge, Box, Modal } from "@mui/material";
 
@@ -31,7 +31,7 @@ function Header() {
   const cart = useSelector(state => state.cart.items)
 
   const user = useSelector(state => state.auth.user)//lấy user từ store
-  
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -42,6 +42,7 @@ function Header() {
   const onChangeSearch = (event) => {
     setSearch(event.target.value);
   };
+
 
   const handleLogout = () => {
     dispatch(logoutSuccess())
@@ -75,7 +76,7 @@ function Header() {
         }
       }
     });
-    return () => document.removeEventListener("click", () => {});
+    return () => document.removeEventListener("click", () => { });
   }, []);
 
   return (
@@ -186,98 +187,98 @@ function Header() {
                           </Box>
                         </Stack>
                       </Stack>
-                  </Link>
-                  <Link to="/">
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <img
-                        className="header__dropdown-img"
-                        alt=""
-                        src="https://frontend.tikicdn.com/_desktop-next/static/img/account/insurance.png"
-                      />
-                      <Stack>
-                        <Box>Hợp đồng bảo hiểm</Box>
+                    </Link>
+                    <Link to="/">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <img
+                          className="header__dropdown-img"
+                          alt=""
+                          src="https://frontend.tikicdn.com/_desktop-next/static/img/account/insurance.png"
+                        />
+                        <Stack>
+                          <Box>Hợp đồng bảo hiểm</Box>
+                        </Stack>
                       </Stack>
-                    </Stack>
-                  </Link>
-                  <Link to="/">
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <img
-                        className="header__dropdown-img"
-                        alt=""
-                        src="https://salt.tikicdn.com/ts/upload/5b/70/af/ac0eacaa8ec6738ac474f7bbe767bd75.png"
-                      />
-                      <Stack>
-                        <Box>TikiNOW</Box>
-                        <Box>Thông tin Gói hội viên</Box>
+                    </Link>
+                    <Link to="/">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <img
+                          className="header__dropdown-img"
+                          alt=""
+                          src="https://salt.tikicdn.com/ts/upload/5b/70/af/ac0eacaa8ec6738ac474f7bbe767bd75.png"
+                        />
+                        <Stack>
+                          <Box>TikiNOW</Box>
+                          <Box>Thông tin Gói hội viên</Box>
+                        </Stack>
                       </Stack>
-                    </Stack>
-                  </Link>
-                  <Link to="/customer/coupons">
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <img
-                        className="header__dropdown-img"
-                        alt=""
-                        src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_code.svg"
-                      />
-                      <Stack>
-                        <Box>Mã giảm giá </Box>
-                        <Box>
-                          Bạn đang có <b>2</b> mã giảm giá
-                        </Box>
+                    </Link>
+                    <Link to="/customer/coupons">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <img
+                          className="header__dropdown-img"
+                          alt=""
+                          src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_code.svg"
+                        />
+                        <Stack>
+                          <Box>Mã giảm giá </Box>
+                          <Box>
+                            Bạn đang có <b>2</b> mã giảm giá
+                          </Box>
+                        </Stack>
                       </Stack>
-                    </Stack>
-                  </Link>
-                  <Link to="/">
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <img
-                        className="header__dropdown-img"
-                        alt=""
-                        src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg"
-                      />
-                      <Stack>
-                        <Box>Thông tin Tiki xu</Box>
-                        <Box>
-                          Bạn đang có <b>0</b> Tiki xu
-                        </Box>
+                    </Link>
+                    <Link to="/">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <img
+                          className="header__dropdown-img"
+                          alt=""
+                          src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg"
+                        />
+                        <Stack>
+                          <Box>Thông tin Tiki xu</Box>
+                          <Box>
+                            Bạn đang có <b>0</b> Tiki xu
+                          </Box>
+                        </Stack>
                       </Stack>
-                    </Stack>
-                  </Link>
-                  <Link to="/">
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <img
-                        className="header__dropdown-img"
-                        alt=""
-                        src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg"
-                      />
-                      <Stack>
-                        <Box>Thông tin BookCare</Box>
-                        <Box>
-                          Bạn đang có <b>0</b> BookCare
-                        </Box>
+                    </Link>
+                    <Link to="/">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <img
+                          className="header__dropdown-img"
+                          alt=""
+                          src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg"
+                        />
+                        <Stack>
+                          <Box>Thông tin BookCare</Box>
+                          <Box>
+                            Bạn đang có <b>0</b> BookCare
+                          </Box>
+                        </Stack>
                       </Stack>
+                    </Link>
+                    <Link to="/">Đổi trả dễ dàng</Link>
+                    <a onClick={handleLogout}>Thoát tài khoản</a>
+                  </Box>
+                </>
+                : (
+                  <>
+                    <PersonOutlineOutlinedIcon fontSize="large" />
+                    <Stack>
+                      <Typography sx={{ fontSize: "11px" }}>
+                        Đăng nhập / Đăng ký
+                      </Typography>
+                      <Button
+                        onClick={openModalLogin}
+                        sx={{ color: "white" }}
+                        endIcon={<ArrowDropDownOutlinedIcon />}
+                      >
+                        <Typography sx={{ fontSize: "13px" }}>Tài khoản</Typography>
+                      </Button>
                     </Stack>
-                  </Link>
-                  <Link to="/">Đổi trả dễ dàng</Link>
-                  <a onClick={handleLogout}>Thoát tài khoản</a>
-                </Box>
-              </>
-             : (
-              <>
-                <PersonOutlineOutlinedIcon fontSize="large" />
-                <Stack>
-                  <Typography sx={{ fontSize: "11px" }}>
-                    Đăng nhập / Đăng ký
-                  </Typography>
-                  <Button
-                    onClick={openModalLogin}
-                    sx={{ color: "white" }}
-                    endIcon={<ArrowDropDownOutlinedIcon />}
-                  >
-                    <Typography sx={{ fontSize: "13px" }}>Tài khoản</Typography>
-                  </Button>
-                </Stack>
-              </>
-            )}
+                  </>
+                )}
           </Stack>
         </Stack>
 

@@ -115,7 +115,7 @@ function Notify() {
             indicatorColor="primary"
             textColor="primary"
             aria-label="icon tabs example"
-            backgroundColor="#ffffff"
+            bgcolor="#ffffff"
           >
             <Tab
               icon={

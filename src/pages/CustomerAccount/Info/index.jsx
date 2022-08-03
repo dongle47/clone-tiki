@@ -1,4 +1,4 @@
-import React from "react";
+import {useState} from "react";
 import { Link } from "react-router-dom";
 import ImageUploading from "react-images-uploading";
 import { toast } from 'react-toastify';
@@ -6,8 +6,8 @@ import { loginSuccess } from '../../../slices/authSlice'
 import { useDispatch } from 'react-redux';
 
 import "./Info.scss";
-import avatar from "../../../assets/img/avatar.jpg";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import avatar from "../../../assets/img/avatar.png"
 
 import {
   Avatar,
@@ -46,6 +46,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { useSelector } from "react-redux";
 
 import apiProfile from "../../../apis/apiProfile";
+import Loading from "../../../components/Loading/Loading";
 
 
 
@@ -54,43 +55,59 @@ function Info() {
   const Month = Array.from({ length: 12 }, (x, i) => 1 + i);
   const Year = Array.from({ length: 65 }, (x, i) => 1950 + i);
   const Country = [{ id: "1", name: "Việt Nam" }, { id: "2", name: "America" }, { id: "3", name: "Úc" }];
-
   const user = useSelector(state => state.auth.user);
-
   const dispatch = useDispatch();
+  const [listday, setListday] = useState(Array.from({ length: 31 }, (x, i) => 1 + i))
+  const [day, setDay] = useState(user.birth_day ? user.birth_day[2] : null);
+  const [month, setMonth] = useState(user.birth_day ? user.birth_day[1] : null);
+  const [year, setYear] = useState(user.birth_day ? user.birth_day[0] : null);
+  const [country, setCountry] = useState(user.country ? user.country : null);
+  const [image, setImage] = useState([]);
+  const [gender, setGender] = useState(user.gender)
+  const [fullname, setFullName] = useState(user.fullName)
+  const [nickname, setNickName] = useState(user.nickName)
+  const [modalDeleteAvatar, setModalDeleteAvatar] = useState(false);
+  const [modalViewAvatar, setModalViewAvatar] = useState(false);
+  const [modalNational, setModalNational] = useState(false);
+  const [modalUploadAvatar, setModalUploadAvatar] = useState(false);
+  const [openAvatar, setOpenAvatar] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [updating, setUpdating] = useState(false);
 
-  const [listday, setListday] = React.useState(Array.from({ length: 31 }, (x, i) => 1 + i))
+  const openModalNational = () => setModalNational(true);
+  const closeModalNational = () => setModalNational(false);
 
-  const [day, setDay] = React.useState(user.birth_day ? user.birth_day[2] : null);
-  const [month, setMonth] = React.useState(user.birth_day ? user.birth_day[1] : null);
-  const [year, setYear] = React.useState(user.birth_day ? user.birth_day[0] : null);
+  const openModalViewAvatar = () => setModalViewAvatar(true);
+  const closeModalViewAvatar = () => setModalViewAvatar(false);
 
-  const [country, setCountry] = React.useState(user.country ? user.country : null);
+  const openModalUploadAvatar = () => setModalUploadAvatar(true);
+  const closeModalUploadAvatar = () => setModalUploadAvatar(false);
 
-  const [image, setImage] = React.useState([]);
+  const openModalDeleteAvatar = () => setModalDeleteAvatar(true);
+  const closeModalDeleteAvatar = () => setModalDeleteAvatar(false);
+
+  const handleClickAvatar = () => {
+    setOpenAvatar((prev) => !prev);
+  };
+  const handleClickAwayAvatar = () => {
+    setOpenAvatar(false);
+  };
   const onChange = (imageList, addUpdateIndex) => {
     setImage(imageList);
   };
 
-  const [gender, setGender] = React.useState(user.gender)
-  const [fullname, setFullName] = React.useState(user.fullName)
-  const [nickname, setNickName] = React.useState(user.nickName)
 
-  const [modalNational, setModalNational] = React.useState(false);
-  const openModalNational = () => setModalNational(true);
-  const closeModalNational = () => setModalNational(false);
-
-  const [modalViewAvatar, setModalViewAvatar] = React.useState(false);
-  const openModalViewAvatar = () => setModalViewAvatar(true);
-  const closeModalViewAvatar = () => setModalViewAvatar(false);
-
-  const [modalUploadAvatar, setModalUploadAvatar] = React.useState(false);
-  const openModalUploadAvatar = () => setModalUploadAvatar(true);
-  const closeModalUploadAvatar = () => {
+  const handleUploadAvatar = ()=>{
     if (image.length === 0) {
       toast.warning("Vui lòng chọn ảnh")
       return
     }
+    if(uploading){
+      toast.warning("Hình ảnh đang được cập nhật, vui lòng không thao tác quá nhiều lần")
+      return
+    }
+    setUploading(true)
     let param = { file: image[0].file }
     apiProfile.putUploadAvatar(param)
       .then(res => {
@@ -102,19 +119,26 @@ function Info() {
       })
       .finally(() => {
         setModalUploadAvatar(false);
+        setUploading(false)
       })
   }
-  const [modalDeleteAvatar, setModalDeleteAvatar] = React.useState(false);
-  const openModalDeleteAvatar = () => setModalDeleteAvatar(true);
-  const closeModalDeleteAvatar = () => setModalDeleteAvatar(false);
 
-  const [openAvatar, setOpenAvatar] = React.useState(false);
-  const handleClickAvatar = () => {
-    setOpenAvatar((prev) => !prev);
-  };
-  const handleClickAwayAvatar = () => {
-    setOpenAvatar(false);
-  };
+  const handleDeleteAvatar = ()=>{
+    let imgDefault = {data_url:avatar,
+      file:new File([avatar], "avatar", {
+      type: 'image/png'})}
+
+      let param = { file: imgDefault.file }
+    apiProfile.putUploadAvatar(param)
+      .then(res => {
+        toast.success("Xoá ảnh đại diện thành công")
+        getUserProfile()
+      })
+      .catch(error => {
+        toast.error("Xoá ảnh đại diện thất bại")
+      })
+      setModalDeleteAvatar(false);
+  }
 
   const handleChangeDay = (event) => {
     setDay(event.target.value);
@@ -160,7 +184,6 @@ function Info() {
     setCountry(newCountry);
   }
   const onSaveChange = () => {
-    console.log(day)
     if (!(RegExp("\\d+").test(day) && RegExp("\\d+").test(month) && RegExp("\\d+").test(year)
       && country && fullname && gender && nickname)) {
       toast.warning("Vui lòng nhập đầy đủ thông tin !!");
@@ -174,6 +197,7 @@ function Info() {
       gender: gender,
       nickName: nickname
     };
+    setUpdating(true)
     apiProfile
       .putChangeInfo(params)
       .then((response) => {
@@ -183,7 +207,8 @@ function Info() {
       .catch((error) => {
         toast.error("Thay đổi không thành công");
         console.log(error)
-      });
+      })
+      .finally(()=>setUpdating(false))
   };
   const getUserProfile = () => {
     apiProfile.getUserProfile()
@@ -191,9 +216,6 @@ function Info() {
         let newUser = res.data.user
         dispatch(loginSuccess({ ...user, ...newUser }))
       })
-      .catch((error) => {
-        console.log(error)
-      });
   }
   return (
     <Stack className="customer-info" spacing={3}>
@@ -361,7 +383,7 @@ function Info() {
           <Button variant="contained" sx={{ width: 200, alignSelf: "center" }}
             onClick={onSaveChange}
           >
-            Lưu thay đổi
+            {updating&&<Loading color="#fff"/>}Lưu thay đổi
           </Button>
         </Stack>
 
@@ -517,8 +539,8 @@ function Info() {
           </Stack>
           <Divider />
           <img
-            style={{ width: "35rem", height: "35rem", alignSelf: "center" }}
-            src={avatar}
+            style={{ width: "24rem", height: "24rem", alignSelf: "center" }}
+            src={user.img}
             alt="ảnh đại diện"
           />
         </Stack>
@@ -559,7 +581,7 @@ function Info() {
                 dragProps,
               }) => (
                 // write your building UI
-                <div className="upload__image-wrapper">
+                <Box className="upload__image-wrapper">
                   {imageList.length === 0 ? (
                     <Stack
                       sx={{
@@ -582,8 +604,9 @@ function Info() {
                     </Stack>
                   ) : null}
 
-                  {imageList.map((image) => (
+                  {imageList.map((image,i) => (
                     <Stack
+                      key={i}
                       sx={{
                         width: "100%",
                         height: "30rem",
@@ -617,14 +640,14 @@ function Info() {
                         <Button
                           sx={{ width: "50%" }}
                           variant="contained"
-                          onClick={closeModalUploadAvatar}
+                          onClick={handleUploadAvatar}
                         >
-                          Lưu thay đổi
+                         {uploading&&<Loading color="#fff"/>} Lưu thay đổi
                         </Button>
                       </Stack>
                     </Stack>
                   ))}
-                </div>
+                </Box>
               )}
             </ImageUploading>
           </Box>
@@ -662,7 +685,7 @@ function Info() {
               <Button onClick={closeModalDeleteAvatar} variant="outlined">
                 Hủy
               </Button>
-              <Button variant="contained">Xóa bỏ</Button>
+              <Button onClick={handleDeleteAvatar} variant="contained">Xóa bỏ</Button>
             </Stack>
           </Stack>
         </Stack>
