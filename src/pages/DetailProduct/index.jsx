@@ -6,6 +6,8 @@ import {
     Box,
     Stack,
     Typography,
+    Modal,
+    FormControlLabel,
 } from "@mui/material"
 import "./DetailProduct.scss"
 import CheckIcon from '@mui/icons-material/Check';
@@ -19,8 +21,14 @@ import apiProduct from '../../apis/apiProduct';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../../slices/cartSlice';
 import apiMain from '../../apis/apiMain';
+import apiAddress from '../../apis/apiAddress';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
 import Pagination from '@mui/material/Pagination';
+
 import { numWithCommas, roundPrice } from "../../constraints/Util"
+import SelectBoxAddress from '../../components/SelectBoxAddress';
+import { useCallback } from 'react';
 
 function DetailProduct() {
     const [expandContent, setExpandContent] = useState(false);
@@ -30,7 +38,27 @@ function DetailProduct() {
     const [revProduct, setRevProduct] = useState([])
     const [totalPage, setTotalPage] = useState(10)
     const [page, setPage] = useState(1)
+    const [listAddress, setListAddress] = useState([{id:0,text:"Chọn địa chỉ khác"}])
     const size = 5
+
+    const [province, setProvince] = useState([])
+    const [district, setDistrict] = useState([])
+    const [commune, setCommune] = useState([])
+
+    const [value, setValue] = React.useState('address');
+
+
+    const handleChangeAddress = (event) => {
+        setValue(event.target.value);
+    };
+
+    const [modal, setModal] = useState(false);
+    const openModal = () => setModal(true);
+
+    const closeModal = () => {
+        setModal(false);
+    };
+
 
     useEffect(() => {
         const getRevProduct = async () => {
@@ -47,9 +75,38 @@ function DetailProduct() {
         getRevProduct()
     }, [page])
 
+    useEffect(() => {
+        const getListAddress = async () => {
+            apiAddress.getUserAddress()
+            .then(response=>{
+                console.log(response.data)
+                setListAddress([...listAddress,...response.data.addressList])
+            })
+            .catch(err=>{
+                console.log(listAddress)
+                setListAddress([...listAddress])
+            })
+           
+        }
+        getListAddress()
+    }, [])
+
     const handleChange = (event, value) => {
         setPage(value);
     }
+
+    const handleChangeProvince = useCallback((value) => {
+        setProvince(value);
+    }, [])
+
+    const handleChangeDistrict = useCallback((value) => {
+
+        setDistrict(value);
+    }, [])
+
+    const handleChangeCommune = useCallback((value) => {
+        setCommune(value);
+    }, [])
 
     const [choose, setChoose] = useState({});
 
@@ -126,6 +183,10 @@ function DetailProduct() {
         setIndexImg(index)
     }
 
+    const openSelectBox = () => {
+
+    }
+
     const link_image = "https://salt.tikicdn.com/cache/400x400/ts/product/a3/cf/a9/0b59f8742708d27a25315078edf91bda.png.webp"
     const link_option_color = "https://salt.tikicdn.com/cache/100x100/ts/product/d5/40/5e/754dcea83b913f7585861d083491a917.png.webp"
 
@@ -150,8 +211,6 @@ function DetailProduct() {
                                     <img src={link_image} alt="" />
                                 </Box> */}
                                 </>
-
-
                             )} </Stack>
                     </Box>
                     <Box flex={1}>
@@ -213,7 +272,7 @@ function DetailProduct() {
                             <span>Giao đến </span>
                             <span>TP. Nha Trang, P. Vĩnh Trường, Khánh Hòa</span>
                             <span> - </span>
-                            <span>Đổi địa chỉ</span>
+                            <span onClick={openModal} sx={{cursor:"pointer"}}>Đổi địa chỉ</span>
                         </Box>
 
                         <Box className="product-quanlity">
@@ -291,6 +350,41 @@ function DetailProduct() {
                     <Pagination count={totalPage} page={page} onChange={handleChange} />
                 </Stack> : <></>}
             </Box>
+
+            <Modal
+                sx={{ overflowY: "scroll" }}
+                open={modal}
+                onClose={closeModal}
+            >
+                <Box className="modal-login" width="800px">
+                    <Stack spacing="16px">
+                        <Typography style={{ fontSize: "24px" }}> Địa chỉ giao hàng</Typography>
+                        <Typography> Hãy chọn địa chỉ nhận hàng để được dự báo thời gian giao hàng cùng phí đóng gói, vận chuyển một cách chính xác nhất.</Typography>
+                        
+
+                            <RadioGroup
+                            aria-labelledby="demo-controlled-radio-buttons-group"
+                                name="radio-buttons-group"
+                                value={value}
+                                onChange={handleChangeAddress}
+                            >{listAddress.map(addr =>
+                                // <Radio value={addr.id} label={'pppppppp'} /> )}
+                                <FormControlLabel value={addr.id} control={<Radio />} 
+                                label={addr.id===0?addr.text:`${addr.commune.name}, ${addr.district.name}, ${addr.province.name}` }/>)}
+                            </RadioGroup>
+                       
+
+                        <SelectBoxAddress
+                            province={province}
+                            district={district}
+                            commune={commune}
+                            onChangeProvince={handleChangeProvince}
+                            onChangeDistrict={handleChangeDistrict}
+                            onChangeCommune={handleChangeCommune} />
+                    </Stack>
+
+                </Box>
+            </Modal>
             <ReviewProduct />
         </>
     )
