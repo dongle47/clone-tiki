@@ -55,6 +55,11 @@ const apiMain = {
         const mySearch = await axiosClient.post('', params)
         return mySearch.data;
     },
+
+    getOptions: async (params) =>{
+        const myOptions = await axiosClient.get('', params)
+        return myOptions.data;
+    }
 }
     
 export default apiMain;
