@@ -72,9 +72,14 @@ function CrudBrand() {
       "province": province
 
     }
+    if(!(addressDetail&& country && commune && description && district && name && phone && province)) {
+      toast.warning("Vui lòng nhập đầy đủ thông tin !!");
+      return
+    }
+    else{
     apiBrand.insertBrand(params)
       .then(res => {
-        toast.success("Thêm địa chỉ thành công")
+        toast.success("Thêm thương hiệu thành công")
         setCountry("")
         setDescription("")
         setPhone("")
@@ -85,8 +90,9 @@ function CrudBrand() {
         setProvince("")
       })
       .catch(error => {
-        toast.error("Thêm địa chỉ thất bại!")
+        toast.error("Thêm thương hiệu thất bại!")
       })
+    }
   }
 
   return (
