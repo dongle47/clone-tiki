@@ -31,9 +31,6 @@ function CreateAddress(props) {
   const [phone, setPhone] = useState("")
   const [addressDetail, setAddressDetail] = useState("")
   const [addressType, setAddressType] = useState("")
-  const [listprovince, setListProvince] = useState([])
-  const [listdistrict, setListDistrict] = useState([])
-  const [listcommune, setListCommune] = useState([])
   const [addressid, setAddressid] = useState("")
   const [edit, setEdit] = useState(props.edit)
   const [province, setProvince] = React.useState("");
