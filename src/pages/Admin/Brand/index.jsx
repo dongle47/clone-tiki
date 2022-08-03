@@ -11,7 +11,8 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-
+import { toast } from "react-toastify";
+import { useParams, useNavigate } from "react-router-dom";
 function createData(name, description, address, contact, image) {
   return { name, description, address, contact, image };
 }
@@ -62,11 +63,22 @@ function createData(name, description, address, contact, image) {
 
 // ];
 
-function Brand() {
+function Brand(props) {
   const [modalDelete, setModalDelete] = React.useState(false);
   const closeModalDelete = () => setModalDelete(false);
-  const [itemdelete, setItemdelete]= useState("")
+  const [itemdelete, setItemdelete] = useState("")
   const [brand, setBrand] = useState([])
+  const [country, setCountry] = useState("")
+  const [province, setProvince] = useState("")
+  const [district, setDistrict] = useState("")
+  const [commune, setCommune] = useState("")
+  const [name, setName] = useState("")
+  const [description, setDescription] = useState("")
+  const [phone, setPhone] = useState("")
+  const [addressDetail, setAddressDetail] = useState("")
+  const [edit, setEdit] = useState(props.edit)
+  const navigate = useNavigate();
+  const params = useParams();
   const openModalDelete = (itemdelete) => {
     setItemdelete(itemdelete)
     setModalDelete(true)
@@ -80,15 +92,88 @@ function Brand() {
     };
     getData();
   }, []);
+  useEffect(() => {
+    const loaddata = () => {
+      if (edit === true) {
+        apiBrand.getAllBrand()
+          .then(res => {
+            const brands = res.data.listBrand
+            if (brands) {
+              const brandd = brands.find((item) => item.id === params.id)
 
+              if (brandd) {
+                setName(brandd.name)
+                setCountry(brandd.country)
+                setPhone(brandd.phone)
+                setAddressDetail(brandd.addressDetail)
+                setDescription(brandd.description)
+                setCommune(brandd.commune.id)
+                setDistrict(brandd.district.id)
+                setProvince(brandd.province.id)
+              }
+              else {
+                navigate("/customer/address/create")
+                toast.error("Địa chỉ này không tồn tại!")
+              }
+            }
+            else {
+              navigate("/customer/address/create")
+              toast.error("Địa chỉ này không tồn tại!")
+            }
+          })
+      }
+    }
+    loaddata()
+  }, [edit])
   const handleDelete = () => {
     const newbrand = brand.filter(item => {
       return itemdelete.id !== item.id
     }
     )
+    apiBrand.deleteBrandById({id:itemdelete.id})
+    .then(res=>{
+      toast.success("Xóa thành công")
+    })
+    .catch(error=>{
+      toast.error("Xóa không thành công!")
+    })
     setBrand(newbrand)
     console.log(newbrand)
     closeModalDelete()
+  }
+  const handleUpdate = () => {
+    const params = {
+      "addressDetail": addressDetail,
+      "country": country,
+      "commune": commune,
+      "description": description,
+      "district": district,
+      "name": name,
+      "phone": phone,
+      "province": province
+
+    }
+    if (!(addressDetail && country && commune && description && district && name && phone && province)) {
+      toast.warning("Vui lòng nhập đầy đủ thông tin !!");
+      return
+    }
+    else {
+      apiBrand.updateBrand(params)
+        .then(res => {
+          toast.success("Sửa thương hiệu thành công")
+          setCountry("")
+          setDescription("")
+          setPhone("")
+          setName("")
+          setAddressDetail("")
+          setCommune("")
+          setDistrict("")
+          setProvince("")
+        })
+        .catch(error => {
+          toast.error("Sửa thương hiệu thất bại!")
+        })
+    }
   }
   return (
     <Stack direction="row" sx={{ backgroundColor: "#fff" }} p={3}>
@@ -159,9 +244,10 @@ function Brand() {
                 </TableCell>
                 <TableCell>
                   <Stack spacing={1} justifyContent="center" py={1}>
-                    <Button variant="contained">Sửa</Button>
+                  <Link to={`edit/${item.id}`}>
+                    <Button variant="contained" >Sửa</Button> </Link>
                     <Button
-                      onClick={openModalDelete}
+                      onClick={()=>openModalDelete(item)}
                       variant="outlined"
                       color="error"
                     >
