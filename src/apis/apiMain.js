@@ -34,6 +34,10 @@ const apiMain = {
         return myRevPurchaseds.data;
     },
 
+    getRevProduct: async (params) => {
+        const revProduct = await axiosClient.get('', {params})
+        return revProduct.data;
+    },
 
     getCoupons: async (params) => {
         const res = await axiosClient.get('/coupons', {params})
@@ -55,6 +59,11 @@ const apiMain = {
         const mySearch = await axiosClient.post('', params)
         return mySearch.data;
     },
+
+    getOptions: async (params) =>{
+        const myOptions = await axiosClient.get('', params)
+        return myOptions.data;
+    }
 }
     
 export default apiMain;
