@@ -2,6 +2,9 @@ import React from "react";
 import { useEffect, useState } from "react";
 import "./CruCategory.scss";
 import apiCategory from "../../../../apis/apiCategory";
+import { toast } from "react-toastify";
+import { useParams, useNavigate } from "react-router-dom";
+
 
 import {
     Box,
@@ -16,53 +19,120 @@ import {
     styled
 } from "@mui/material";
 
-
-
-function CrudCategory() {
+function CrudCategory(props) {
     const [categoryId, setCategoryId] = useState("");
+    const [name, setName] = useState("")
+    const [parent, setParent] = useState("")
     const [listType, setListType] = useState([]);
+    const [edit, setEdit] = useState(props.edit);
+    const params = useParams();
+    const navigate = useNavigate();
+    useEffect(() => {
+        const loaddata = () => {
+            if (edit === true) {
+                apiCategory.findCategoryById({ id: params.id })
+                    .then(res => {
+                        const category = res.data
+                        console.log(category)
+                        if (category) {
+                            setName(category.name)
+                            setParent(category.parent)
+                        }
+                        else {
+                            navigate("/admin/category")
+                            toast.error("Sản phẩm này không tồn tại!")
+                        }
+                    }
+                    )
+                setCategoryId(params.id)
+            }
+        }
+        loaddata()
+    }, [edit])
 
     useEffect(() => {
         const getData = async () => {
             apiCategory.showAllCategory()
                 .then(res => {
                     setListType(res.data.listCategory);
-                    console.log(res.data.listCategory.map(item => item.name));
                 })
         };
         getData();
     }, []);
 
     const handleChangeType = (event) => {
-        setCategoryId(event.target.value);
+        setParent(event.target.value);
     };
+    const [detail, setDetail] = useState("")
+    const handleUpdate = () => {
+        const params = {
+            "id": categoryId,
+            "name": name,
+            "parent": parent
+        }
+        if (!(name && parent)) {
+            toast.warning("Vui lòng nhập đầy đủ thông tin !!");
+            return
+        }
+        apiCategory.updateCategory(params, categoryId)
+            .then(res => {
+                toast.success("Cập nhật thành công")
+            })
+            .catch(error => {
+                toast.error("Cập nhật thất bại!")
+            })
+    }
+    const handleSave = () => {
+        const params = {
+            "name": name,
+            "parent": parent
+        }
+        if (!(name && parent)) {
+            toast.warning("Vui lòng nhập đầy đủ thông tin !!");
+            return
+        }
+        else {
+            apiCategory.insertCategory(params)
+                .then(res => {
+                    toast.success("Thêm sản phẩm thành công")
+                    setName("")
+                    setParent("")
+                })
+                .catch(error => {
+                    toast.error("Thêm sản phẩm thất bại!")
+                })
+        }
+    }
     return (
         <Box>
             <Stack p={3} justifyContent="center" sx={{ width: "700px" }} spacing={3}>
                 <Stack direction="row" p={2} >
-                    <Typography sx={{ width: "200px" }}>Tên danh mục</Typography>
-                    <FormControl className="create-address__input" sx={{flex:1}}>
+                    <Typography sx={{ width: "200px" }}>Danh mục cha</Typography>
+                    <FormControl className="create-address__input" sx={{ flex: 1 }}>
                         <Select
                             size="small"
                             labelId="demo-simple-select-helper-label"
                             id="demo-simple-select-helper"
-                            value={categoryId}
-                            label="Age"
+                            value={parent}
                             onChange={handleChangeType}
                             input={<InputCustom placeholder="Chọn Loại" />}
                         >
                             {
-                                listType.map(item => <MenuItem value={item.id} >{item.name}</MenuItem>)
+                                listType.map(item => item.name !== name && <MenuItem value={item.id} >{item.name}</MenuItem>)
                             }
                         </Select>
                     </FormControl>
                 </Stack>
                 <Stack direction="row" p={2} >
-                    <Typography sx={{ width: "200px" }}>Loại</Typography>
-                    <TextField size="small" id="outlined-basic" variant="outlined" sx={{flex:1}}/>
+                    <Typography sx={{ width: "200px" }}>Tên danh mục</Typography>
+                    <TextField value={name} onChange={(event) => {
+                        setName(event.target.value)
+                    }} size="small" id="outlined-basic" variant="outlined" sx={{ flex: 1 }} />
                 </Stack>
                 <Stack justifyContent="center" alignItems="center">
-                    <Button sx={{ width: "30%" }} variant="contained">Thêm</Button>
+                    <Button onClick={
+                        edit ? handleUpdate
+                            : handleSave} sx={{ width: "30%" }} variant="contained">Cập nhật</Button>
                 </Stack>
             </Stack>
         </Box>

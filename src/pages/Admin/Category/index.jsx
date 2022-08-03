@@ -31,7 +31,6 @@ function Category() {
       apiCategory.showAllCategory()
         .then(res => {
           setCategory(res.data.listCategory);
-          console.log(res.data.listCategory);
         })
     };
     getData();
@@ -91,7 +90,7 @@ function Category() {
               <TableCell sx={{ width: "15%", top: "64px" }}>
                 Tên danh mục
               </TableCell>
-              <TableCell sx={{ width: "15%", top: "64px" }}>Loại</TableCell>
+              <TableCell sx={{ width: "15%", top: "64px" }}>Danh mục cha</TableCell>
               <TableCell align="center" sx={{ width: "10%", top: "64px" }}>
                 Thao tác&nbsp;
               </TableCell>
@@ -109,8 +108,7 @@ function Category() {
                 <TableCell align="left">{item.parent}</TableCell>
                 <TableCell>
                   <Stack spacing={1} justifyContent="center" py={1}>
-                    <Link to={`edit/${item.id}`}
-                      state={{ id: item.id }}>
+                    <Link to={`edit/${item.id}`}>
                       <Button sx={{flex:1}} variant="contained" >Sửa</Button>
                     </Link>
                     <Button onClick={() => openDialogDeleteAll(item)} variant="outlined" color="error">
