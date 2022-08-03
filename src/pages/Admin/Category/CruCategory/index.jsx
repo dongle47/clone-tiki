@@ -1,51 +1,92 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import "./CruCategory.scss";
+import apiCategory from "../../../../apis/apiCategory";
+
 import {
-    Stack,
-    Button,
-    Typography,
-    TextField,
     Box,
+    Typography,
+    Stack,
+    TextField,
+    MenuItem,
+    Select,
+    FormControl,
+    Button,
+    InputBase,
+    styled
 } from "@mui/material";
-import rev from "../../../../assets/img/test.png";
+
+
+
 function CrudCategory() {
-    const [review, setReview] = React.useState(rev)
+    const [categoryId, setCategoryId] = useState("");
+    const [listType, setListType] = useState([]);
 
-    const onChangeImg = (e) => {
-        console.log(e.target.files)
-        if (e.target.files.length > 0) {
-            setReview(URL.createObjectURL(e.target.files[0]))
-            console.log(e.target.files[0])
-        }
+    useEffect(() => {
+        const getData = async () => {
+            apiCategory.showAllCategory()
+                .then(res => {
+                    setListType(res.data.listCategory);
+                    console.log(res.data.listCategory.map(item => item.name));
+                })
+        };
+        getData();
+    }, []);
 
-    }
+    const handleChangeType = (event) => {
+        setCategoryId(event.target.value);
+    };
     return (
         <Box>
-            <Stack p={3} justifyContent="center" sx={{ width: "700px" }}>
+            <Stack p={3} justifyContent="center" sx={{ width: "700px" }} spacing={3}>
                 <Stack direction="row" p={2} >
-                    <Typography sx={{ width: "200px" }}>Nhập tên danh mục mới</Typography>
-                    <TextField size="small" id="outlined-basic" variant="outlined" />
+                    <Typography sx={{ width: "200px" }}>Tên danh mục</Typography>
+                    <FormControl className="create-address__input" sx={{flex:1}}>
+                        <Select
+                            size="small"
+                            labelId="demo-simple-select-helper-label"
+                            id="demo-simple-select-helper"
+                            value={categoryId}
+                            label="Age"
+                            onChange={handleChangeType}
+                            input={<InputCustom placeholder="Chọn Loại" />}
+                        >
+                            {
+                                listType.map(item => <MenuItem value={item.id} >{item.name}</MenuItem>)
+                            }
+                        </Select>
+                    </FormControl>
                 </Stack>
-
                 <Stack direction="row" p={2} >
-                    <Typography sx={{ width: "200px" }}>Mô Tả</Typography>
-                    <TextField size="small" id="outlined-basic" variant="outlined" />
+                    <Typography sx={{ width: "200px" }}>Loại</Typography>
+                    <TextField size="small" id="outlined-basic" variant="outlined" sx={{flex:1}}/>
                 </Stack>
-
-                <Stack direction="row" p={2}>
-                    <Typography sx={{ width: "200px" }}>Thêm ảnh</Typography>
-                    <Stack>
-                        <img src={review} style={{ width: "210px", height: "210px" }} alt="" />
-                        <input type="file" id="myfile" name="myfile" onChange={onChangeImg}></input>
-                    </Stack>
-                </Stack>
-
-                <Stack justifyContent="center">
-                    <Button sx={{ width: "450px"}} variant="contained">Thêm</Button>
+                <Stack justifyContent="center" alignItems="center">
+                    <Button sx={{ width: "30%" }} variant="contained">Thêm</Button>
                 </Stack>
             </Stack>
         </Box>
     )
 }
+const InputCustom = styled(InputBase)(({ theme }) => ({
+    '& .MuiInputBase-input': {
+        boxSizing: "border-box",
+        borderRadius: 4,
+        position: 'relative',
+        backgroundColor: theme.palette.background.paper,
+        border: '1px solid #ced4da',
+        fontSize: 16,
+        display: "flex",
+        height: "40px !important",
+        padding: '0px 26px 0px 12px',
+        alignItems: "center",
+        transition: theme.transitions.create(['border-color', 'box-shadow']),
+        '&:focus': {
+            borderRadius: 4,
+            borderColor: '#1890ff',
+            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+        },
+    },
+}));
 
 export default CrudCategory
