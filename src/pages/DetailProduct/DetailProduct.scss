@@ -16,6 +16,7 @@
         &__item-img {
             width: 64px;
             height: 64px;
+            border: 1px solid transparent;
             border-radius: 4px;
             overflow: hidden;
             position: relative;
@@ -110,6 +111,7 @@
     
     .productSpecification {
         padding: 0 12px;
+        width: 80%;
         &__title {
             font-size: 20px;
             height: 48px;
@@ -173,6 +175,7 @@
         }
         &__item {
             border-radius: 4px;
+            border: 1px solid transparent;
             cursor: pointer;
             padding: 2px;
             &::after,
