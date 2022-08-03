@@ -4,8 +4,8 @@ import {
     Rating,
     Button, Grid,
     Box,
-    Stack
-
+    Stack,
+    Typography,
 } from "@mui/material"
 import "./DetailProduct.scss"
 import CheckIcon from '@mui/icons-material/Check';
@@ -19,6 +19,7 @@ import apiProduct from '../../apis/apiProduct';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../../slices/cartSlice';
 import apiMain from '../../apis/apiMain';
+import Pagination from '@mui/material/Pagination';
 import { numWithCommas, roundPrice } from "../../constraints/Util"
 
 function DetailProduct() {
@@ -26,6 +27,29 @@ function DetailProduct() {
     const [product, setProduct] = useState(null)
     const [productSimilars, setProductSimilars] = useState([])
     const [quantity, setQuantity] = useState(1)
+    const [revProduct, setRevProduct] = useState([])
+    const [totalPage, setTotalPage] = useState(10)
+    const [page, setPage] = useState(1)
+    const size = 5
+
+    useEffect(() => {
+        const getRevProduct = async () => {
+            let param = {
+                _page: page,
+                _limit: size
+            }
+            const response = await apiMain.getRevProduct(param)
+            if (response) {
+                getRevProduct(response.data)
+                setTotalPage(Math.ceil(response.pagination._totalRows / size))
+            }
+        }
+        getRevProduct()
+    }, [page])
+
+    const handleChange = (event, value) => {
+        setPage(value);
+    }
 
     const [choose, setChoose] = useState({});
 
@@ -228,7 +252,7 @@ function DetailProduct() {
                         }
                     </Grid>
                 </Box>
-                <Box className="productSpecification" bgcolor="white" p={2}  borderRadius="4px">
+                <Box className="productSpecification" bgcolor="white" p={2} borderRadius="4px">
                     <Box className="productSpecification__title">
                         Thông Tin Chi Tiết
                     </Box>
@@ -251,7 +275,7 @@ function DetailProduct() {
                     </Box>
                     <Box className="descriptionProduct__content" >
                         {product &&
-                            (expandContent ? product?.details.description.split("\n") :  product?.details.description.split("\n").splice(0, 40))
+                            (expandContent ? product?.details.description.split("\n") : product?.details.description.split("\n").splice(0, 40))
                                 .map((item, i) => <p key={i}>{item}</p>)
                         }
                         {expandContent ? "" : <Box className="bg-gradient"></Box>}
@@ -262,12 +286,13 @@ function DetailProduct() {
 
                     </Box>
                 </Box>
+                {revProduct.length !== 0 ? <Stack spacing={2}>
+                    <Typography>Page: {page}</Typography>
+                    <Pagination count={totalPage} page={page} onChange={handleChange} />
+                </Stack> : <></>}
             </Box>
             <ReviewProduct />
         </>
-
-
-
     )
 }
 

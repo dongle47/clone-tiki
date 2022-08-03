@@ -34,6 +34,10 @@ const apiMain = {
         return myRevPurchaseds.data;
     },
 
+    getRevProduct: async (params) => {
+        const revProduct = await axiosClient.get('', {params})
+        return revProduct.data;
+    },
 
     getCoupons: async (params) => {
         const res = await axiosClient.get('/coupons', {params})
