@@ -25,15 +25,15 @@ const apiAddress = {
         return res.data;
     },
     getCommuneInDistrictById: async (params) => {
-        const res = await axiosClientWithToken.get(`address/commune/${params.id}`)
+        const res = await axiosClient.get(`address/commune/${params.id}`)
         return res.data;
     },
     getDistrictInProvinceById: async (params)=>{
-        const res= await axiosClientWithToken.get(`address/district/${params.id}`)
+        const res= await axiosClient.get(`address/district/${params.id}`)
         return res.data;
     },
     getAllProvince : async (params)=>{
-        const res = await axiosClientWithToken.get('address/province')
+        const res = await axiosClient.get('address/province')
         return res.data;
     },
 

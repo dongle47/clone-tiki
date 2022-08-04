@@ -137,10 +137,18 @@
         width: 80%;
         margin-bottom: 24px;
         &__content {
+            width: 100%;
             position: relative;
             & p {
                 font-size: 14px;
                 line-height: 34px;
+            }
+            &.collapse {
+                max-height: 600px;
+                overflow: hidden;
+            }
+            & * {
+                max-width: 100%;
             }
         }
         &__showmore {
