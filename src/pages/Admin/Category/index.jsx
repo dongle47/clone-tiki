@@ -22,7 +22,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 
 function Category() {
-  const [query, setQuery] = useState();
+  const [query, setQuery] = useState("");
   const [category, setCategory] = React.useState([]);
   const [itemdelete, setItemdelete] = useState(null);
   const [dialogDelete, setDialogDelete] = useState(false);
