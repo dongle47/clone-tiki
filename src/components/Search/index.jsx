@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import "./Search.scss";
 
@@ -20,30 +21,32 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import HistoryIcon from "@mui/icons-material/History";
 
 import { searchData } from "./../../constraints/Search";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 
 import { addItem, removeItem } from "../../slices/searchSlice";
+import apiBrand from "./../../apis/apiBrand";
+import apiProduct from "../../apis/apiProduct";
 
 function Search(props) {
-  const [searchText, setSearchText] = useState([]);
+  const dispatch = useDispatch();
 
   const [expandSearch, setExpandSearch] = useState(false);
-
-  const searchItems = useSelector((state) => state.search.items);
-
-  const dispatch = useDispatch();
 
   const handleRemoveSearch = (data) => {
     dispatch(removeItem(data));
   };
 
-  const SearchItemsFull = props.searchedItems.map((item) => (
-    <SearchItem text={item} handleRemoveSearch={handleRemoveSearch} />
-  ));
-
-  const SearchItemsHalf = props.searchedItems
+  const SearchItemsHalf = props.suggestions
     .slice(0, 5)
+    .map((item) => (
+      <SearchItem
+        setSearchText={props.setSearchText}
+        text={item}
+        handleRemoveSearch={handleRemoveSearch}
+      />
+    ));
+
+  const SearchItemsFull = props.suggestions
+    .slice(0, 10)
     .map((item) => (
       <SearchItem text={item} handleRemoveSearch={handleRemoveSearch} />
     ));
@@ -136,6 +139,7 @@ function SearchItem(props) {
       direction="row"
       spacing={2}
       alignItems="center"
+      onClick={() => props.setSearchText(props.text)}
     >
       <HistoryIcon fontSize="medium" sx={{ color: "silver" }} />
 

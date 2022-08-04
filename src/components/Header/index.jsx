@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+
 import "./Header.scss";
 import { useState, useCallback } from "react";
 
@@ -18,10 +20,39 @@ import Login from "../Login";
 import SignUp from "../SignUp";
 import Search from "../Search";
 import { addItem } from "../../slices/searchSlice";
+import apiProduct from "../../apis/apiProduct";
 
 const publicPath = ["/product/", "/filter/", "/cart/"];
 
 function Header() {
+  const [suggestions, setSuggestions] = useState([]);
+
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+
+  const [searchText, setSearchText] = useState("");
+
+  useEffect(() => {
+    const getData = async () => {
+      apiProduct.getProducts().then((res) => {
+        const names = res.map((item) => item.name);
+        setSuggestions(names);
+      });
+    };
+
+    getData();
+  }, []);
+
+  console.log(suggestions);
+
+  useEffect(() => {
+    const abc = suggestions
+      .map((item) => item.toLowerCase())
+      .filter((item) => item.includes(searchText));
+    setFilteredSuggestions(abc);
+  }, [searchText]);
+
+  console.log(filteredSuggestions);
+
   const [modalLogin, setModalLogin] = useState(false);
   const openModalLogin = () => setModalLogin(true);
 
@@ -39,17 +70,14 @@ function Header() {
 
   const dispatch = useDispatch();
 
-  const [searchText, setSearchText] = useState("");
-
-  const onChangeSearch = (event) => {
-    setSearchText(event.target.value);
-  };
-
   const handleSearch = () => {
     console.log(searchText);
     dispatch(addItem(searchText));
   };
 
+  const onChangeSearch = (event) => {
+    setSearchText(event.target.value);
+  };
 
   const handleLogout = () => {
     dispatch(logoutSuccess());
@@ -85,7 +113,7 @@ function Header() {
         }
       }
     });
-    return () => document.removeEventListener("click", () => { });
+    return () => document.removeEventListener("click", () => {});
   }, []);
 
   return (
@@ -128,11 +156,16 @@ function Header() {
               id="input-search"
               placeholder="Tìm sản phẩm, danh mục hay thương hiệu mong muốn ..."
               onFocus={() => setFocusSearch(true)}
-              value={searchText}
               onChange={onChangeSearch}
+              value={searchText}
             />
             {focusSearch && (
-              <Search searchedItems={searchedItems} searchText={searchText} />
+              <Search
+                setSearchText={setSearchText}
+                suggestions={filteredSuggestions}
+                searchedItems={searchedItems}
+                searchText={searchText}
+              />
             )}
             <Button
               sx={{
@@ -165,7 +198,7 @@ function Header() {
             spacing="10px"
             sx={{ color: "white", width: "160px", maxWidth: "160px" }}
           >
-            {user ? 
+            {user ? (
               <>
                 <img alt="" src={user.img} />
                 <Stack>
@@ -237,78 +270,78 @@ function Header() {
                     </Stack>
                   </Link>
 
-                    <Link to="/customer/coupons">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <img
-                          className="header__dropdown-img"
-                          alt=""
-                          src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_code.svg"
-                        />
-                        <Stack>
-                          <Box>Mã giảm giá </Box>
-                          <Box>
-                            Bạn đang có <b>2</b> mã giảm giá
-                          </Box>
-                        </Stack>
+                  <Link to="/customer/coupons">
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <img
+                        className="header__dropdown-img"
+                        alt=""
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_code.svg"
+                      />
+                      <Stack>
+                        <Box>Mã giảm giá </Box>
+                        <Box>
+                          Bạn đang có <b>2</b> mã giảm giá
+                        </Box>
                       </Stack>
-                    </Link>
-
-                    <Link to="/">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <img
-                          className="header__dropdown-img"
-                          alt=""
-                          src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg"
-                        />
-                        <Stack>
-                          <Box>Thông tin Tiki xu</Box>
-                          <Box>
-                            Bạn đang có <b>0</b> Tiki xu
-                          </Box>
-                        </Stack>
-                      </Stack>
-                    </Link>
-
-                    <Link to="/">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <img
-                          className="header__dropdown-img"
-                          alt=""
-                          src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg"
-                        />
-                        <Stack>
-                          <Box>Thông tin BookCare</Box>
-                          <Box>
-                            Bạn đang có <b>0</b> BookCare
-                          </Box>
-                        </Stack>
-                      </Stack>
-                    </Link>
-
-                    <Link to="/">Đổi trả dễ dàng</Link>
-
-                    <a onClick={handleLogout}>Thoát tài khoản</a>
-                  </Box>
-              </>
-                : (
-                  <>
-                    <PersonOutlineOutlinedIcon fontSize="large" />
-
-                    <Stack>
-                      <Typography sx={{ fontSize: "11px" }}>
-                        Đăng nhập / Đăng ký
-                      </Typography>
-
-                      <Button
-                        onClick={openModalLogin}
-                        sx={{ color: "white" }}
-                        endIcon={<ArrowDropDownOutlinedIcon />}
-                      >
-                        <Typography sx={{ fontSize: "13px" }}>Tài khoản</Typography>
-                      </Button>
                     </Stack>
-                  </>
-                )}
+                  </Link>
+
+                  <Link to="/">
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <img
+                        className="header__dropdown-img"
+                        alt=""
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg"
+                      />
+                      <Stack>
+                        <Box>Thông tin Tiki xu</Box>
+                        <Box>
+                          Bạn đang có <b>0</b> Tiki xu
+                        </Box>
+                      </Stack>
+                    </Stack>
+                  </Link>
+
+                  <Link to="/">
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <img
+                        className="header__dropdown-img"
+                        alt=""
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg"
+                      />
+                      <Stack>
+                        <Box>Thông tin BookCare</Box>
+                        <Box>
+                          Bạn đang có <b>0</b> BookCare
+                        </Box>
+                      </Stack>
+                    </Stack>
+                  </Link>
+
+                  <Link to="/">Đổi trả dễ dàng</Link>
+
+                  <a onClick={handleLogout}>Thoát tài khoản</a>
+                </Box>
+              </>
+            ) : (
+              <>
+                <PersonOutlineOutlinedIcon fontSize="large" />
+
+                <Stack>
+                  <Typography sx={{ fontSize: "11px" }}>
+                    Đăng nhập / Đăng ký
+                  </Typography>
+
+                  <Button
+                    onClick={openModalLogin}
+                    sx={{ color: "white" }}
+                    endIcon={<ArrowDropDownOutlinedIcon />}
+                  >
+                    <Typography sx={{ fontSize: "13px" }}>Tài khoản</Typography>
+                  </Button>
+                </Stack>
+              </>
+            )}
           </Stack>
         </Stack>
 
