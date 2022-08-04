@@ -71,9 +71,9 @@ function Category() {
         <Stack direction="row" width="100%" position="relative">
           <TextField
             id="outlined-basic"
-            label="Search"
+            placeholder="Tìm danh mục"
             variant="outlined"
-            width="100%"
+            width="100% !important"
             onChange={(event) => setQuery(event.target.value)}
 
           />
@@ -100,27 +100,30 @@ function Category() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {category.filter((category) => category.name.toLowerCase().includes(query)).map((item, id) => (
-              <TableRow
-                key={item.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {item.name}
-                </TableCell>
-                <TableCell align="left">{item.parent}</TableCell>
-                <TableCell>
-                  <Stack spacing={1} justifyContent="center" py={1}>
-                    <Link to={`edit/${item.id}`}>
-                      <Button sx={{flex:1}} variant="contained" >Sửa</Button>
-                    </Link>
-                    <Button onClick={() => openDialogDeleteAll(item)} variant="outlined" color="error">
-                      Xóa
-                    </Button>
-                  </Stack>
-                </TableCell>
-              </TableRow>
-            ))}
+            { 
+              category.filter((category) => (category.name.toLowerCase().includes(query)) || (category.parent.toLowerCase().includes(query))).map((item, id) => (
+                <TableRow
+                  key={item.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {item.name}
+                  </TableCell>
+                  <TableCell align="left">{item.parent}</TableCell>
+                  <TableCell>
+                    <Stack spacing={1} justifyContent="center" py={1}>
+                      <Link to={`edit/${item.id}`} >
+                        <Button sx={{ flex: 1 }} variant="contained" className="btn__update">Sửa</Button>
+                      </Link>
+                      <Button onClick={() => openDialogDeleteAll(item)} variant="outlined" color="error">
+                        Xóa
+                      </Button>
+                    </Stack>
+                  </TableCell>
+                </TableRow>
+              ))
+            }
+
           </TableBody>
         </Table>
       </Stack>
