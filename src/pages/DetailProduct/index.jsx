@@ -20,7 +20,6 @@ import { useEffect } from 'react';
 import apiProduct from '../../apis/apiProduct';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../../slices/cartSlice';
-
 import apiMain from '../../apis/apiMain';
 import apiAddress from '../../apis/apiAddress';
 import Radio from '@mui/material/Radio';
@@ -187,6 +186,9 @@ function DetailProduct() {
     const openSelectBox = () => {
 
     }
+
+    const link_image = "https://salt.tikicdn.com/cache/400x400/ts/product/a3/cf/a9/0b59f8742708d27a25315078edf91bda.png.webp"
+    const link_option_color = "https://salt.tikicdn.com/cache/100x100/ts/product/d5/40/5e/754dcea83b913f7585861d083491a917.png.webp"
 
     return (
         <>
