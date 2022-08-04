@@ -17,7 +17,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 function ForgetPassword(props) {
   //const dispatch = useDispatch();
-  const [invalidPhone, setInvalidPhone] = React.useState(false);
+  const [isNoAccount, setIsNoAccount] = React.useState(false);
 
   const {
     register,
@@ -33,10 +33,11 @@ function ForgetPassword(props) {
     await apiAuth
       .postCheckPhone(param)
       .then((res) => {
-        setInvalidPhone(false);
+        console.log(res)
+        setIsNoAccount(true);
       })
       .catch((error) => {
-        setInvalidPhone(true);
+        setIsNoAccount(false);
       });
   };
 
@@ -76,7 +77,7 @@ function ForgetPassword(props) {
               )}
             </Stack>
 
-            {!invalidPhone && (
+            {isNoAccount && (
               <ErrorAfterSubmit message="Số điện thoại chưa được đằng ký" />
             )}
 
