@@ -20,32 +20,33 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import HistoryIcon from "@mui/icons-material/History";
 
 import { searchData } from "./../../constraints/Search";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+
+import { addItem, removeItem } from "../../slices/searchSlice";
 
 function Search(props) {
-  const [search, setSearch] = useState([]);
+  const [searchText, setSearchText] = useState([]);
 
   const [expandSearch, setExpandSearch] = useState(false);
 
-  useEffect(() => {
-    const getSearch = async () => {
-      let param = {
-        _page: "",
-        _limit: "",
-      };
-      const response = await apiMain.getSearch(param);
-      if (response) {
-        setSearch(response.data);
-      }
-    };
-    getSearch();
-  }, [props.search]);
+  const searchItems = useSelector((state) => state.search.items);
 
-  const SearchItemsFull = searchData.map((item) => (
-    <SearchItem text={item.text} />
+  const dispatch = useDispatch();
+
+  const handleRemoveSearch = (data) => {
+    dispatch(removeItem(data));
+  };
+
+  const SearchItemsFull = props.searchedItems.map((item) => (
+    <SearchItem text={item} handleRemoveSearch={handleRemoveSearch} />
   ));
-  const SearchItemsHalf = searchData
+
+  const SearchItemsHalf = props.searchedItems
     .slice(0, 5)
-    .map((item) => <SearchItem text={item.text} />);
+    .map((item) => (
+      <SearchItem text={item} handleRemoveSearch={handleRemoveSearch} />
+    ));
 
   return (
     <Stack
@@ -54,6 +55,7 @@ function Search(props) {
       className="header-search__result"
     >
       {expandSearch ? SearchItemsFull : SearchItemsHalf}
+
       <Button
         onClick={() => setExpandSearch((prev) => !prev)}
         variant="text"
@@ -74,30 +76,31 @@ function Search(props) {
           ></img>
           <Typography>Tìm kiếm phổ biến</Typography>
         </Stack>
-      </Box>
 
-      <Grid container spacing={2}>
-        {[1, 2, 3, 4, 5, 6].map((number) => (
-          <Grid key={number} item xs={4}>
-            <Stack direction="row">
-              <img
-                alt=""
-                src="https://salt.tikicdn.com/cache/280x280/ts/product/4e/51/a9/d3c765cea429477a2f1a769b39d589bc.jpg"
-                width="38px"
-                height="38px"
-              ></img>
-              <Typography my={0.5} sx={{ fontSize: "12px" }}>
-                Người đua diều
-              </Typography>
-            </Stack>
-          </Grid>
-        ))}
-      </Grid>
+        <Grid container spacing={2}>
+          {[1, 2, 3, 4, 5, 6].map((number) => (
+            <Grid key={number} item xs={4}>
+              <Stack direction="row">
+                <img
+                  alt=""
+                  src="https://salt.tikicdn.com/cache/280x280/ts/product/4e/51/a9/d3c765cea429477a2f1a769b39d589bc.jpg"
+                  width="38px"
+                  height="38px"
+                ></img>
+                <Typography my={0.5} sx={{ fontSize: "12px" }}>
+                  Người đua diều
+                </Typography>
+              </Stack>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
 
       <Box pt={1} pb={1.5}>
         <Typography sx={{ height: "24px" }} mb={1}>
           Danh Mục Nổi Bật
         </Typography>
+
         <Grid container spacing={2}>
           {[1, 2, 3, 4, 5, 6, 7, 8].map((number) => (
             <Grid key={number} item xs={3}>
@@ -143,7 +146,7 @@ function SearchItem(props) {
         {props.text}
       </Typography>
 
-      <IconButton>
+      <IconButton onClick={() => props.handleRemoveSearch(props.text)}>
         <ClearIcon sx={{ color: "silver" }}></ClearIcon>
       </IconButton>
     </Stack>

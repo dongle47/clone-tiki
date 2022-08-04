@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import "./Header.scss";
 import { useState, useCallback } from "react";
-import { Link,useNavigate,useLocation} from "react-router-dom";
+
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import { Stack, Button, Typography, Badge, Box, Modal } from "@mui/material";
 
@@ -16,10 +17,9 @@ import { useDispatch } from "react-redux";
 import Login from "../Login";
 import SignUp from "../SignUp";
 import Search from "../Search";
+import { addItem } from "../../slices/searchSlice";
 
-const publicPath = [
-  '/product/', '/filter/', '/cart/'
-]
+const publicPath = ["/product/", "/filter/", "/cart/"];
 
 function Header() {
   const [modalLogin, setModalLogin] = useState(false);
@@ -28,27 +28,36 @@ function Header() {
   const [loginForm, setLoginForm] = useState(true);
   const [focusSearch, setFocusSearch] = useState(false);
 
-  const cart = useSelector(state => state.cart.items)
+  const cart = useSelector((state) => state.cart.items);
 
-  const user = useSelector(state => state.auth.user)//lấy user từ store
-  
+  const user = useSelector((state) => state.auth.user); //lấy user từ store
+
+  const searchedItems = useSelector((state) => state.search.items);
+
   const navigate = useNavigate();
   const location = useLocation();
 
   const dispatch = useDispatch();
 
-  const [search, setSearch] = useState("");
+  const [searchText, setSearchText] = useState("");
 
   const onChangeSearch = (event) => {
-    setSearch(event.target.value);
+    setSearchText(event.target.value);
+  };
+
+  const handleSearch = () => {
+    console.log(searchText);
+    dispatch(addItem(searchText));
   };
 
   const handleLogout = () => {
-    dispatch(logoutSuccess())
-    const isPublic = publicPath.findIndex(e => location.pathname.includes(e)) >= 0 ? true : false
-    if (!isPublic)
-      navigate('/')
-  }
+    dispatch(logoutSuccess());
+    const isPublic =
+      publicPath.findIndex((e) => location.pathname.includes(e)) >= 0
+        ? true
+        : false;
+    if (!isPublic) navigate("/");
+  };
 
   const closeModalLogin = () => {
     setModalLogin(false);
@@ -118,10 +127,12 @@ function Header() {
               id="input-search"
               placeholder="Tìm sản phẩm, danh mục hay thương hiệu mong muốn ..."
               onFocus={() => setFocusSearch(true)}
-              value={search}
+              value={searchText}
               onChange={onChangeSearch}
             />
-            {focusSearch && <Search search={search} />}
+            {focusSearch && (
+              <Search searchedItems={searchedItems} searchText={searchText} />
+            )}
             <Button
               sx={{
                 height: "100%",
@@ -132,6 +143,7 @@ function Header() {
               }}
               variant="contained"
               startIcon={<SearchIcon />}
+              onClick={handleSearch}
             >
               Tìm kiếm
             </Button>
@@ -152,40 +164,42 @@ function Header() {
             spacing="10px"
             sx={{ color: "white", width: "160px", maxWidth: "160px" }}
           >
-            {
-              user ?
-                <>
-                  <img alt='' src={user.img} />
-                  <Stack>
-                    <Typography sx={{ fontSize: "11px" }}>
-                      Tài khoản
-                    </Typography>
-                    <Button
-                      sx={{ color: "white", padding: "6px 0" }}
-                      endIcon={<ArrowDropDownOutlinedIcon />}
+            {user ? (
+              <>
+                <img alt="" src={user.img} />
+                <Stack>
+                  <Typography sx={{ fontSize: "11px" }}>Tài khoản</Typography>
+                  <Button
+                    sx={{ color: "white", padding: "6px 0" }}
+                    endIcon={<ArrowDropDownOutlinedIcon />}
+                  >
+                    <Typography
+                      className="text-overflow-1-lines"
+                      sx={{ fontSize: "13px", textAlign: "start" }}
                     >
-                      <Typography className="text-overflow-1-lines" sx={{ fontSize: "13px", textAlign: "start" }}>{user.fullName}</Typography>
-                    </Button>
-                  </Stack>
-                  <Box className="header__dropdown">
-                    <Link to={"/customer/order/history"}>Đơn hàng của tôi</Link>
-                    <Link to={"/customer/wishlist"}>Sản phẩm yêu thích</Link>
-                    <Link to={"/customer/notification"}>Thông báo của tôi</Link>
-                    <Link to={"/customer/account/edit"}>Tài khoản của tôi</Link>
-                    <Link to="/">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <img
-                          className="header__dropdown-img"
-                          alt=""
-                          src="https://salt.tikicdn.com/ts/ta/06/60/57/811aae78f04f81a6e00ba2681e02291f.png"
-                        />
-                        <Stack>
-                          <Box>SEP 0</Box>
-                          <Box>
-                            Bạn đang có <b>0 Astra</b>
-                          </Box>
-                        </Stack>
+                      {user.fullName}
+                    </Typography>
+                  </Button>
+                </Stack>
+                <Box className="header__dropdown">
+                  <Link to={"/customer/order/history"}>Đơn hàng của tôi</Link>
+                  <Link to={"/customer/wishlist"}>Sản phẩm yêu thích</Link>
+                  <Link to={"/customer/notification"}>Thông báo của tôi</Link>
+                  <Link to={"/customer/account/edit"}>Tài khoản của tôi</Link>
+                  <Link to="/">
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <img
+                        className="header__dropdown-img"
+                        alt=""
+                        src="https://salt.tikicdn.com/ts/ta/06/60/57/811aae78f04f81a6e00ba2681e02291f.png"
+                      />
+                      <Stack>
+                        <Box>SEP 0</Box>
+                        <Box>
+                          Bạn đang có <b>0 Astra</b>
+                        </Box>
                       </Stack>
+                    </Stack>
                   </Link>
                   <Link to="/">
                     <Stack direction="row" spacing={1} alignItems="center">
@@ -261,7 +275,7 @@ function Header() {
                   <a onClick={handleLogout}>Thoát tài khoản</a>
                 </Box>
               </>
-             : (
+            ) : (
               <>
                 <PersonOutlineOutlinedIcon fontSize="large" />
                 <Stack>

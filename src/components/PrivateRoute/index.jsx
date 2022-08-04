@@ -4,6 +4,7 @@ import jwt_decode from 'jwt-decode'
 import { toast } from 'react-toastify';
 import { loginSuccess,logoutSuccess } from '../../slices/authSlice';
 import { useEffect, useState } from 'react';
+
 //Component tạo một định tuyến an toàn, khi muốn truy cập các đường dẫn cần có xác thực thì phải đi qua route này
 const PrivateRoute = ({
     roles,

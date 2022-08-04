@@ -18,6 +18,7 @@ import { useEffect } from 'react';
 import apiProduct from '../../apis/apiProduct';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../../slices/cartSlice';
+
 import apiMain from '../../apis/apiMain';
 
 function DetailProduct() {
