@@ -22,8 +22,9 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 
 function Category() {
+  const [query, setQuery] = useState();
   const [category, setCategory] = React.useState([]);
-  const [itemdelete, setItemdelete] = useState(null)
+  const [itemdelete, setItemdelete] = useState(null);
   const [dialogDelete, setDialogDelete] = useState(false);
 
   useEffect(() => {
@@ -73,6 +74,8 @@ function Category() {
             label="Search"
             variant="outlined"
             width="100%"
+            onChange={(event) => setQuery(event.target.value)}
+
           />
           <span className="category__iconSearch">
             <SearchIcon sx={{ fontSize: "28px" }} />
@@ -97,7 +100,7 @@ function Category() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {category.map((item, id) => (
+            {category.filter((category) => category.name.toLowerCase().includes(query)).map((item, id) => (
               <TableRow
                 key={item.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
