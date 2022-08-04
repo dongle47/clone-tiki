@@ -38,15 +38,16 @@ function DetailProduct() {
     const [revProduct, setRevProduct] = useState([])
     const [totalPage, setTotalPage] = useState(10)
     const [page, setPage] = useState(1)
-    const [listAddress, setListAddress] = useState([{id:0,text:"Chọn địa chỉ khác"}])
+    const [listAddress, setListAddress] = useState([{ id: 0, text: "Chọn địa chỉ khác" }])
     const size = 5
 
     const [province, setProvince] = useState([])
     const [district, setDistrict] = useState([])
     const [commune, setCommune] = useState([])
 
-    const [value, setValue] = React.useState('address');
+    const [value, setValue] = React.useState('0');
 
+    const [address, setAddress] = useState('')
 
     const handleChangeAddress = (event) => {
         setValue(event.target.value);
@@ -58,6 +59,21 @@ function DetailProduct() {
     const closeModal = () => {
         setModal(false);
     };
+
+    useEffect(() => {
+        const onChangeValue = () => {
+            if (value === '0') {
+                setAddress('')
+            }
+            else {
+                let addressSelect = listAddress.find(item => item.id === value)
+                if (addressSelect){
+                    setAddress(`${addressSelect.commune.name}, ${addressSelect.district.name}, ${addressSelect.province.name}`)
+                }
+            }
+        }
+        onChangeValue()
+    }, [value])
 
 
     useEffect(() => {
@@ -78,15 +94,15 @@ function DetailProduct() {
     useEffect(() => {
         const getListAddress = async () => {
             apiAddress.getUserAddress()
-            .then(response=>{
-                console.log(response.data)
-                setListAddress([...listAddress,...response.data.addressList])
-            })
-            .catch(err=>{
-                console.log(listAddress)
-                setListAddress([...listAddress])
-            })
-           
+                .then(response => {
+                    console.log(response.data)
+                    setListAddress([...response.data.addressList, ...listAddress])
+                })
+                .catch(err => {
+                    console.log(listAddress)
+                    setListAddress([...listAddress])
+                })
+
         }
         getListAddress()
     }, [])
@@ -270,9 +286,9 @@ function DetailProduct() {
 
                         <Box className="detailProduct__address">
                             <span>Giao đến </span>
-                            <span>TP. Nha Trang, P. Vĩnh Trường, Khánh Hòa</span>
+                            <span>{address?address:'TP. Nha Trang, P. Vĩnh Trường, Khánh Hòa'}</span>
                             <span> - </span>
-                            <span onClick={openModal} sx={{cursor:"pointer"}}>Đổi địa chỉ</span>
+                            <span onClick={openModal} sx={{ cursor: "pointer" }}>Đổi địa chỉ</span>
                         </Box>
 
                         <Box className="product-quanlity">
@@ -360,27 +376,25 @@ function DetailProduct() {
                     <Stack spacing="16px">
                         <Typography style={{ fontSize: "24px" }}> Địa chỉ giao hàng</Typography>
                         <Typography> Hãy chọn địa chỉ nhận hàng để được dự báo thời gian giao hàng cùng phí đóng gói, vận chuyển một cách chính xác nhất.</Typography>
-                        
 
-                            <RadioGroup
+
+                        <RadioGroup
                             aria-labelledby="demo-controlled-radio-buttons-group"
-                                name="radio-buttons-group"
-                                value={value}
-                                onChange={handleChangeAddress}
-                            >{listAddress.map(addr =>
-                                // <Radio value={addr.id} label={'pppppppp'} /> )}
-                                <FormControlLabel value={addr.id} control={<Radio />} 
-                                label={addr.id===0?addr.text:`${addr.commune.name}, ${addr.district.name}, ${addr.province.name}` }/>)}
-                            </RadioGroup>
-                       
-
-                        <SelectBoxAddress
-                            province={province}
-                            district={district}
-                            commune={commune}
-                            onChangeProvince={handleChangeProvince}
-                            onChangeDistrict={handleChangeDistrict}
-                            onChangeCommune={handleChangeCommune} />
+                            name="radio-buttons-group"
+                            value={value}
+                            onChange={handleChangeAddress}
+                        >{listAddress.map(addr =>
+                            <FormControlLabel value={addr.id} control={<Radio />}
+                                label={addr.id === 0 ? addr.text : `${addr.commune.name}, ${addr.district.name}, ${addr.province.name}`} />)}
+                        </RadioGroup>
+                        {value === '0' &&
+                            <SelectBoxAddress
+                                province={province}
+                                district={district}
+                                commune={commune}
+                                onChangeProvince={handleChangeProvince}
+                                onChangeDistrict={handleChangeDistrict}
+                                onChangeCommune={handleChangeCommune} />}
                     </Stack>
 
                 </Box>
