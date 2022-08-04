@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance } from "./apis/axiosClient";
 import { loginSuccess, logoutSuccess } from "./slices/authSlice";
 import ScrollToTop from "./components/ScrollToTop";
+import CheckAuthentication from "./components/CheckAuthentication";
 
 function App() {
   const isAdmin = window.location.href.includes("admin");
@@ -21,6 +22,7 @@ function App() {
 
   return (
       <BrowserRouter>
+      <CheckAuthentication/>
       <ScrollToTop>
         {isAdmin ? null : <Header />}
         <ConfigRoute />

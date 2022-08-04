@@ -43,7 +43,7 @@ function FilterProduct(props) {
         const getData = async () => {
             const response = await apiProduct.getProducts({});
             if (response) {
-                setProducts((pre) => [...pre, ...response]);
+                setProducts(response);
             }
         };
         getData();
@@ -103,13 +103,33 @@ function FilterProduct(props) {
                     default: {
                         break
                     }
-
                 }
+            }
+            switch (value) {
+                case 1: {
+                    data.sort((a,b)=>b.sold - a.sold)
+                    break
+                }
+                case 2: {
+                    break
+                }
+                case 3: {
+                    data.sort((a,b)=>a.price * (1 - a.discount / 100) -b.price * (1 - b.discount / 100))
+                    break
+                }
+                case 4: {
+                    data.sort((a,b)=>b.price * (1 - b.discount / 100) - a.price * (1 - a.discount / 100))
+                    break
+                }
+                default: {
+                    break
+                }
+
             }
             setProductFilter(data)
         }
         filterData()
-    }, [products, filter, category, filterPrice])
+    }, [products, filter, category, filterPrice,value])
 
     const onChangeMinPrice = (e) => {
         let value = Number(e.target.value)
