@@ -7,21 +7,27 @@ import {
     Typography,
     Rating,
     Stack,
-    Box
+    Box,
+    Skeleton,
 }from '@mui/material';
 import {Link} from 'react-router-dom'
-import {numWithCommas} from "../../constraints/Util"
+import { numWithCommas } from "../../constraints/Util"
 
 function CardProduct({ data }) {
+    const [loading, setLoading] = React.useState(true)
+
     return (
         <Link className="card__wrap" to={`/product/${data.id}`}>
             <Card className="card">
+                <Box className="card__img">
+                    {loading&&<Skeleton variant="rectangular" width='100%' height='100%' />}
                 <CardMedia
                     component="img"
-                    alt="green iguana"
-                    width="183px"
+                        alt="green iguana"
+                        onLoad={()=>setLoading(false)}
                     image={data?.image}
                 />
+                </Box>
                 <CardContent className="card__content">
                     <Typography className="card__title" variant="h5" component="div" fontSize="13px">
                         {data?.name}
@@ -30,15 +36,19 @@ function CardProduct({ data }) {
                         <Rating name="read-only" value={data?.rate || 0} sx={{ fontSize: "0.875rem" }} readOnly />
                         <span style={{ color: "#787878", fontSize: "11px" }}>| Đã bán {data?.sold}</span>
                     </Stack>
-                    <Typography className="card__price" color={`${data?.discount!==0 ? "#ff0000" : "#000000"}`} variant="h5" component="div">
-                    {
-                        data?.discount!==0 ?
-                        <>{numWithCommas(Math.round(data?.price*(1-0.01*data.discount)))} ₫ <Box className="card__sale">{data?.discount}%</Box>
-                        </>
-                        :
-                        <>{numWithCommas(data?.price)} ₫ </>
-                    } 
-                    </Typography>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center">
+                        <Typography className="card__price" color={`${data?.discount!==0 ? "#ff0000" : "#000000"}`} variant="h5" component="div">
+                        {
+                            data?.discount!==0 ?
+                            <>{numWithCommas(Math.round(data?.price*(1-0.01*data.discount)))} ₫ <Box className="card__sale">{data?.discount}%</Box>
+                            </>
+                            :
+                            <>{numWithCommas(data?.price)} ₫ </>
+                            
+                        } 
+                        </Typography> 
+                    </Stack>
+                    
                 </CardContent>
             </Card>
         </Link>

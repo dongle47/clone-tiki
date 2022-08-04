@@ -337,6 +337,7 @@ function Admin() {
           <Route path="brand/*" element={
             <Routes>
               <Route path="create" element={<CreateBrand />} />
+              <Route path="edit/:id" element={<CreateBrand edit={true}/>} />
               <Route index element={<Brand />} />
             </Routes>
           }/>

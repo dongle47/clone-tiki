@@ -1,12 +1,12 @@
 import React from 'react'
 import {CircularProgress}  from "@mui/material"
 
-function Loading() {
+function Loading(props) {
 
   return (
     <CircularProgress 
         sx={{
-            color:"#1890ff",
+            color:props.color||"#1890ff",
             mr:"4px"
         }}
         size={20}

@@ -1,11 +1,26 @@
+import axios from 'axios';
+import queryString from 'query-string';
 
 import { axiosClient, axiosInstance } from "./axiosClient";
+
+// create axiosProducts to test favorite product
+const baseURL='https://playerhostedapitest.herokuapp.com/api/'
+//const baseURL='http://localhost:5000/api'
+//const baseURL='https://nhom3-tiki.herokuapp.com/api'
+export const axiosProducts = axios.create({
+    baseURL: baseURL,
+    headers: {
+        "Content-Type": "application/json"
+    },
+    withCredentials: true,
+    paramsSerializer: (params) => queryString.stringify(params)
+});
 
 const apiMain = {
 
     ///authentication
     getProducts: async (params) => {
-        const res = await axiosClient.get('/products', {params})
+        const res = await axiosProducts.get('/products', {params})
         return res.data;
     },
 
@@ -34,6 +49,10 @@ const apiMain = {
         return myRevPurchaseds.data;
     },
 
+    getRevProduct: async (params) => {
+        const revProduct = await axiosClient.get('', {params})
+        return revProduct.data;
+    },
 
     getCoupons: async (params) => {
         const res = await axiosClient.get('/coupons', {params})
@@ -55,6 +74,11 @@ const apiMain = {
         const mySearch = await axiosClient.post('', params)
         return mySearch.data;
     },
+
+    getOptions: async (params) =>{
+        const myOptions = await axiosClient.get('', params)
+        return myOptions.data;
+    }
 }
     
 export default apiMain;
