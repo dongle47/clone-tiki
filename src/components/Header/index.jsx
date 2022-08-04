@@ -34,8 +34,6 @@ function Header() {
 
   const searchedItems = useSelector((state) => state.search.items);
 
-  const user = useSelector(state => state.auth.user)//lấy user từ store
-
   const navigate = useNavigate();
   const location = useLocation();
 
