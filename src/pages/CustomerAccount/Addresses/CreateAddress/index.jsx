@@ -150,10 +150,10 @@ function CreateAddress(props) {
   }
 
   return (
-    <Box className="create-address" px={0} m={0}>
+    <Box className="create-address" p={2} m={2}>
       <Typography variant="h6">Tạo sổ địa chỉ</Typography>
 
-      <Stack bgcolor="#fff" p='2rem' spacing={1.875}>
+      <Stack p='2rem' spacing={1.875} width='80%'>
         <Stack direction="row">
           <Typography className="create-address__label">
             Họ và tên:
