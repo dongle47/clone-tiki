@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 
 function CrudCategory(props) {
-    const [categoryId, setCategoryId] = useState("");
+    const [id, setId] = useState("");
     const [name, setName] = useState("")
     const [parent, setParent] = useState("")
     const [listType, setListType] = useState([]);
@@ -33,7 +33,6 @@ function CrudCategory(props) {
                 apiCategory.findCategoryById({ id: params.id })
                     .then(res => {
                         const category = res.data
-                        console.log(category)
                         if (category) {
                             setName(category.name)
                             setParent(category.parent)
@@ -44,7 +43,7 @@ function CrudCategory(props) {
                         }
                     }
                     )
-                setCategoryId(params.id)
+                setId(params.id)
             }
         }
         loaddata()
@@ -63,18 +62,17 @@ function CrudCategory(props) {
     const handleChangeType = (event) => {
         setParent(event.target.value);
     };
-    const [detail, setDetail] = useState("")
     const handleUpdate = () => {
         const params = {
-            "id": categoryId,
+            "id": id,
             "name": name,
             "parent": parent
         }
         if (!(name && parent)) {
             toast.warning("Vui lòng nhập đầy đủ thông tin !!");
             return
-        }
-        apiCategory.updateCategory(params, categoryId)
+        }    
+        apiCategory.updateCategory(params)
             .then(res => {
                 toast.success("Cập nhật thành công")
             })

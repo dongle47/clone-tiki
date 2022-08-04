@@ -2,7 +2,7 @@ import { axiosClient, axiosClientWithToken } from "./axiosClient";
 
 const apiCategory = {
     showAllCategory: async (params) => {
-        const res = await axiosClientWithToken.get('/category/all')
+        const res = await axiosClientWithToken.get('/category/all', params)
         return res.data;
     },
     deleteCategory: async (params) => {
