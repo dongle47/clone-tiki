@@ -25,6 +25,7 @@ function ShoppingCart() {
   const [checkAll, setCheckAll] = useState(false)
   const CartItems = useSelector(state => state.cart.items)
   const dispatch = useDispatch()
+  
   useEffect(() => {
     const calcPrice = () => {
       const total = CartItems.reduce((t, num) => num.choose ? t + num.price * num.quantity : t, 0)
