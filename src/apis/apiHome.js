@@ -1,6 +1,16 @@
-
-import { axiosClient, axiosInstance } from "./axiosClient";
-
+import axios from 'axios';
+import queryString from 'query-string';
+import jwt_decode from 'jwt-decode';
+const baseURL='https://playerhostedapitest.herokuapp.com/api/'
+// const baseURL='https://nhom3-tiki.herokuapp.com/api'
+export const axiosClient = axios.create({
+    baseURL: baseURL,
+    headers: {
+        "Content-Type": "application/json"
+    },
+    withCredentials: true,
+    paramsSerializer: (params) => queryString.stringify(params)
+});
 const apiHome = {
 
     getSlideKhuyenMai: async (params) => {
@@ -25,6 +35,10 @@ const apiHome = {
 
     getSuggestions: async (params) => {
         const res = await axiosClient.get('/suggestions', {params})
+        return res.data;
+    },
+    getProducts: async (params) => {
+        const res = await axiosClient.get('/products', {params})
         return res.data;
     },
 
