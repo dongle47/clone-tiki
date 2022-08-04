@@ -15,6 +15,7 @@ import {
   InputLabel,
   InputBase
 } from "@mui/material";
+import SelectBoxAddress from "../../../../components/SelectBoxAddress";
 import "./CreateAddress.scss";
 import { styled } from '@mui/material/styles';
 import { useState } from "react";
@@ -30,9 +31,6 @@ function CreateAddress(props) {
   const [phone, setPhone] = useState("")
   const [addressDetail, setAddressDetail] = useState("")
   const [addressType, setAddressType] = useState("")
-  const [listprovince, setListProvince] = useState([])
-  const [listdistrict, setListDistrict] = useState([])
-  const [listcommune, setListCommune] = useState([])
   const [addressid, setAddressid] = useState("")
   const [edit, setEdit] = useState(props.edit)
   const [province, setProvince] = React.useState("");
@@ -40,37 +38,6 @@ function CreateAddress(props) {
   const [commune, setCommune] = React.useState("");
   const navigate = useNavigate();
   const params = useParams();
-  useEffect(() => {
-    const getData = async () => {
-      apiAddress.getAllProvince()
-        .then(res => {
-          setListProvince(res.data.list);
-        })
-    };
-    getData();
-  }, []);
-
-  useEffect(() => {
-    const getData = async () => {
-      const params = { id: province }
-      apiAddress.getDistrictInProvinceById(params)
-        .then(res => {
-          setListDistrict(res.data.list);
-        })
-    };
-    getData();
-  }, [province])
-
-  useEffect(() => {
-    const getData = async () => {
-      const params = { id: district }
-      apiAddress.getCommuneInDistrictById(params)
-        .then(res => {
-          setListCommune(res.data.list);
-        })
-    };
-    getData();
-  }, [district])
 
   useEffect(() => {
     const loaddata = () => {
@@ -108,31 +75,20 @@ function CreateAddress(props) {
     loaddata()
   }, [edit])
 
-  // useEffect(() => {
-  //   const handleChange1 = (params) => {
-  //     apiAddress.getDistrictInProvinceById(params)
-  //       .then(res => {
-  //         setDistrict(res.data.list);
-  //         console.log(res.data.list)
-  //       })
-  //     setDistrict(params);
-  //   }
-  //   handleChange1
-  // },[])
 
-  const handleChange1 = (event) => {
+  const handleChangeProvince = (value) => {
 
-    setProvince(event.target.value);
+    setProvince(value);
   };
 
-  const handleChange2 = (event) => {
+  const handleChangeDistrict = (value) => {
 
-    setDistrict(event.target.value);
+    setDistrict(value);
   };
 
 
-  const handleChange3 = (event) => {
-    setCommune(event.target.value);
+  const handleChangeCommune = (value) => {
+    setCommune(value);
   };
   const handleSave = () => {
     const params = {
@@ -240,69 +196,11 @@ function CreateAddress(props) {
           </Stack>
         </Stack>
 
-        <Stack direction="row">
-          <Typography className="create-address__label">
-            Tỉnh/Thành phố:
-          </Typography>
-          <FormControl className="create-address__input">
-            <Select
-              size="small"
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={province}
-              label="Age"
-              onChange={handleChange1}
-              input={<InputCustom placeholder="Chọn Tỉnh/Thành phố" />}
-            >
-              {
-                listprovince.map(item => <MenuItem value={item.id}>{item.name}</MenuItem>)
-              }
-            </Select>
-          </FormControl>
-        </Stack>
-
-        <Stack direction="row">
-          <Typography className="create-address__label">
-            Quận huyện:
-          </Typography>
-          <FormControl className="create-address__input">
-            <InputLabel id="demo-simple-select-helper-label"></InputLabel>
-            <Select
-              sx={{ flex: 0.65 }}
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={district}
-              label="Age"
-              onChange={handleChange2}
-              input={<InputCustom placeholder="Chọn Quận/Huyện" />}
-            >
-              {
-                listdistrict.map(item => <MenuItem value={item.id}>{item.name}</MenuItem>)
-              }
-            </Select>
-          </FormControl>
-        </Stack>
-
-        <Stack direction="row">
-          <Typography className="create-address__label">
-            Phường xã:
-          </Typography>
-          <FormControl className="create-address__input">
-            <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={commune}
-              label="Age"
-              onChange={handleChange3}
-              input={<InputCustom placeholder="Chọn Xã/Thị trấn" />}
-            >
-              {
-                listcommune.map(item => <MenuItem value={item.id}>{item.name}</MenuItem>)
-              }
-            </Select>
-          </FormControl>
-        </Stack>
-
+        <SelectBoxAddress province={province} district={district} commune={commune}
+          onChangeProvince={handleChangeProvince}
+          onChangeDistrict={handleChangeDistrict}
+          onChangeCommune={handleChangeCommune}
+        />
         <Stack direction="row">
           <Typography className="create-address__label">
             Địa chỉ
