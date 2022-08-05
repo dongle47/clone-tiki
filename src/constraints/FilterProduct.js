@@ -49,11 +49,11 @@ export const sidebar_items = [
 
 export const categories = [
     {
-        id: 1,
-        name: "Điện tử - điện lạnh",
+        id: 4,
+        name: "Điện Thoại - Máy Tính Bảng",
         rangePrice: {
-            min: 200000,
-            max: 500000
+            min: 500000,
+            max: 5000000
         },
         properties: [
             {
@@ -63,7 +63,7 @@ export const categories = [
                 items: [
                     {
                         id: 1,
-                        name: "Behringer",
+                        name: "Iphone",
                     },
                     {
                         id: 2,

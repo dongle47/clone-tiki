@@ -25,7 +25,7 @@ function ConfigRoute() {
         <Route element={<PrivateRoute roles={['USER']} />}>
            <Route path="admin/*" element={<Admin />}/>
         </Route>
-        <Route path="filter" element={<FilterProduct />} />
+        <Route path="filter/:id" element={<FilterProduct />} />
         <Route path="product/:id" element={<DetailProduct />} />
         <Route path="*" element={<Error />} />
         <Route path = "changepwd" element={<ChangePassword />}/>

@@ -23,7 +23,9 @@ import { numWithCommas } from "../../constraints/Util"
 import { categories } from "../../constraints/FilterProduct"
 import CardProduct from '../../components/CardProduct';
 import apiProduct from '../../apis/apiProduct';
+import { useParams } from 'react-router-dom';
 function FilterProduct(props) {
+    const idCategory = useParams().id
     const category = categories[0]
     const [value, setValue] = useState(0);
     const [products, setProducts] = useState([]);
@@ -43,11 +45,12 @@ function FilterProduct(props) {
         const getData = async () => {
             const response = await apiProduct.getProducts({});
             if (response) {
-                setProducts((pre) => [...pre, ...response]);
+                let data = response.filter(item=>item?.details.category.name===category.name)
+                setProducts(data);
             }
         };
         getData();
-    }, [page]);
+    }, [page,category]);
 
     useEffect(() => {
         const filterData = () => {
@@ -55,24 +58,27 @@ function FilterProduct(props) {
             if (filter.rate)
                 data = data.filter(item => item.rate >= filter.rate)
             category.properties.forEach(item => {
-                if (item.name !== "origins" || item.name !== "brands")
+                if (item.name !== "origins" && item.name !== "brands")
                     data = data.filter(product => {
                         if (!filter[item.name] || filter[item.name].length === 0)
                             return true
-                        if (product.details.options[item.name]) {
-                            return product.details.options[item.name].list.some(item2 => filter[item.name].includes(item2.name))
+                        let option = product.details.options.find(option => option.name === item.name)
+                        if (option) {
+                            return option.list.some(item2 => filter[item.name].includes(item2.name))
                         }
                         return false
                     })
-                // else
-                //     data = data.filter(product => {
-                //         if (!filter[item.name] || filter[item.name].length === 0)
-                //             return true
-                //         if (product.details.specifications[item.name]) {
-                //             return product.details.specifications[item.name].list.some(item2 => filter[item.name].includes(item2.name))
-                //         }
-                //         return false
-                //     })
+                else{
+                    data = data.filter(product => {                
+                        if (!filter[item.name] || filter[item.name].length === 0)
+                            return true
+                        let specification = product.details.specifications.find(spec => spec.name === item.name)
+                        if (specification) {
+                            return filter[item.name].includes(specification.value)
+                        }
+                        return false
+                    })
+                }
             })
             if (filterPrice.apply) {
                 switch (filterPrice.option) {
@@ -90,7 +96,7 @@ function FilterProduct(props) {
                         break
                     }
                     case 4: {
-                        data = data.filter(item => item.price * (1 - item.discount / 100)> filterPrice.minPrice
+                        data = data.filter(item => item.price * (1 - item.discount / 100) > filterPrice.minPrice
                             && item.price * (1 - item.discount / 100) < filterPrice.maxPrice)
                         break
                     }
@@ -100,13 +106,33 @@ function FilterProduct(props) {
                     default: {
                         break
                     }
-
                 }
+            }
+            switch (value) {
+                case 1: {
+                    data.sort((a,b)=>b.sold - a.sold)
+                    break
+                }
+                case 2: {
+                    break
+                }
+                case 3: {
+                    data.sort((a,b)=>a.price * (1 - a.discount / 100) -b.price * (1 - b.discount / 100))
+                    break
+                }
+                case 4: {
+                    data.sort((a,b)=>b.price * (1 - b.discount / 100) - a.price * (1 - a.discount / 100))
+                    break
+                }
+                default: {
+                    break
+                }
+
             }
             setProductFilter(data)
         }
         filterData()
-    }, [products, filter, category, filterPrice])
+    }, [products, filter, category, filterPrice,value])
 
     const onChangeMinPrice = (e) => {
         let value = Number(e.target.value)
@@ -208,19 +234,19 @@ function FilterProduct(props) {
                         className={`filterPrice ${filterPrice.option === 1 ? 'selected' : ''}`}
                         onClick={() => setFilterPrice({ ...filterPrice, option: 1 })}
                     >
-                        Dưới {numWithCommas(category.rangePrice.min)}
+                        Dưới {numWithCommas(category?.rangePrice.min||0)}
                     </span>
                     <span
                         className={`filterPrice ${filterPrice.option === 2 ? 'selected' : ''}`}
                         onClick={() => setFilterPrice({ ...filterPrice, option: 2 })}
                     >
-                        Từ {numWithCommas(category.rangePrice.min)} đến {numWithCommas(category.rangePrice.max)}
+                        Từ {numWithCommas(category?.rangePrice.min||0)} đến {numWithCommas(category?.rangePrice.max||0)}
                     </span>
                     <span
                         className={`filterPrice ${filterPrice.option === 3 ? 'selected' : ''}`}
                         onClick={() => setFilterPrice({ ...filterPrice, option: 3 })}
                     >
-                        Trên {numWithCommas(category.rangePrice.max)}
+                        Trên {numWithCommas(category?.rangePrice.max||0)}
                     </span>
                     <Typography sx={{ fontSize: "13px", fontWeight: 400, color: "#888" }}>Chọn khoảng giá</Typography>
                     <Box className="filterPrice__groupInput">
@@ -235,7 +261,7 @@ function FilterProduct(props) {
                 </Box>
 
                 {
-                    category.properties.map(property =>
+                    category?.properties.map(property =>
                         <FilterForm key={property.id} property={property} onChangeFilter={onChangeFilter} />
                     )
                 }

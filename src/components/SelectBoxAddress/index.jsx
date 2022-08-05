@@ -22,6 +22,7 @@ function SelectBoxAddress(props) {
     const {province,district,commune} = props
     useEffect(() => {
       const getData = async () => {
+        console.log("render")
         apiAddress.getAllProvince()
           .then(res => {
             setListProvince(res.data.list);
@@ -32,7 +33,7 @@ function SelectBoxAddress(props) {
   
     useEffect(() => {
       const getData = async () => {
-        const params = { id: province }
+        const params = { id: props.province }
         setListCommune([]);
         setListDistrict([]);
         apiAddress.getDistrictInProvinceById(params)
@@ -46,7 +47,7 @@ function SelectBoxAddress(props) {
   
     useEffect(() => {
       const getData = async () => {
-        const params = { id: district }
+        const params = { id: props.district }
         setListCommune([]);
         apiAddress.getCommuneInDistrictById(params)
           .then(res => {
@@ -55,16 +56,30 @@ function SelectBoxAddress(props) {
       };
       getData();
     }, [props.district])
+
+    useEffect(()=>{
+      const handle = ()=>{
+        let province = listprovince?.find(item=>item.id === props.province)
+        let district = listdistrict?.find(item=>item.id === props.district)
+        let commune = listcommune?.find(item=>item.id === props.commune)
+        if(province && district && commune && props.setAddressDetails)
+            props.setAddressDetails(`${province.name}, ${district.name}, ${commune.name}`)
+        else
+            props.setAddressDetails('')
+      }
+      handle()
+      
+    },[props.district,props.commune,props.province])
   
    
   
   return (
     <>
     <Stack direction="row">
-          <Typography className="create-address__label">
+          <Typography className={props.classLabel||"create-address__label"}>
             Tỉnh/Thành phố:
           </Typography>
-          <FormControl className="create-address__input">
+          <FormControl className="create-address__input" sx={{flex:"1"}}>
             <Select
               size="small"
               labelId="demo-simple-select-helper-label"
@@ -72,6 +87,7 @@ function SelectBoxAddress(props) {
               value={province}
               label="Age"
               onChange={e=>props.onChangeProvince(e.target.value)}
+              
               input={<InputCustom placeholder="Chọn Tỉnh/Thành phố" />}
             >
               {
@@ -82,10 +98,10 @@ function SelectBoxAddress(props) {
         </Stack>
 
         <Stack direction="row">
-          <Typography className="create-address__label">
+          <Typography  className={props.classLabel||"create-address__label"}>
             Quận huyện:
           </Typography>
-          <FormControl className="create-address__input">
+          <FormControl className="create-address__input" sx={{flex:"1"}}>
             <InputLabel id="demo-simple-select-helper-label"></InputLabel>
             <Select
               sx={{ flex: 0.65 }}
@@ -104,10 +120,10 @@ function SelectBoxAddress(props) {
         </Stack>
 
         <Stack direction="row">
-          <Typography className="create-address__label">
+          <Typography  className={props.classLabel||"create-address__label"}>
             Phường xã:
           </Typography>
-          <FormControl className="create-address__input">
+          <FormControl className="create-address__input" sx={{flex:"1"}}>
             <Select
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"

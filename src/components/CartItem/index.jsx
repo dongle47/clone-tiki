@@ -9,6 +9,7 @@ import { removeItem, updateItem } from "../../slices/cartSlice";
 function CartItem(props) {
   const [data, setData] = useState(props.data);
   const [quantity, setQuantity] = useState(props.data.quantity);
+  
   const dispatch = useDispatch();
 
   const [open, setOpen] = React.useState(false);
