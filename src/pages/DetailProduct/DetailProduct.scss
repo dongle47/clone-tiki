@@ -300,5 +300,13 @@
                     border: 1px solid #1890ff;
                 }
             }
+
         }
+    }
+    .modal-images{
+        position: absolute;
+        left: 0;
+        background-color: rgba(0, 0, 0,0.6);
+        padding: 32px;
+        height: 100%;
     }
