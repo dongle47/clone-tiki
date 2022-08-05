@@ -208,8 +208,8 @@ function Brand() {
                 </TableCell>
                 <TableCell>
                   <Stack spacing={1} justifyContent="center" py={1}>
-                  <Link to={`edit/${item.id}`}>
-                    <Button variant="contained" >Sửa</Button> </Link>
+                  <Link to={`edit/${item.id}`} style={{flex:1}}>
+                    <Button variant="contained" sx={{width:"100%"}}>Sửa</Button> </Link>
                     <Button
                       onClick={()=>openModalDelete(item)}
                       variant="outlined"

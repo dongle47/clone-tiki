@@ -205,17 +205,17 @@ function CrudBrand(props) {
           onChangeCommune={handleChangeCommune}
           classLabel="cruBrand__label"
         />
-        {/* <Stack direction="row" p={2}>
+        <Stack direction="row" p={2}>
           <Typography className="cruBrand__label">Thêm ảnh</Typography>
           <Stack>
             <img src={review} width="210px" height="210px" alt="" />
             <input type="file" id="myfile" name="myfile" onChange={onChangeImg}></input>
           </Stack>
-        </Stack> */}
+        </Stack>
 
         <Stack justifyContent="center">
           <Button width="450px" variant="contained" onClick={edit ? handleUpdate
-                : handleInsert} >Thêm</Button>
+                : handleInsert} >{edit? "Cập nhật":"Thêm"}</Button>
         </Stack>
       </Stack>
     </Box>
