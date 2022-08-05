@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate ,useLocation} from 'react-router-dom'
 import { logoutSuccess } from '../../slices/authSlice'
@@ -6,7 +6,7 @@ import {toast} from 'react-toastify'
 import jwt_decode from 'jwt-decode'
 
 const publicPath = [
-    '/product/', '/filter/', '/cart/'
+    '/product/', '/filter/', '/payment/'
 ]
 
 function CheckAuthentication() {

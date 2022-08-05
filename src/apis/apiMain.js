@@ -25,37 +25,37 @@ const apiMain = {
     },
 
     getNotification: async (params) => {
-        const res = await axiosClient.get('/notifications', {params})
+        const res = await axiosProducts.get('/notifications', {params})
         return res.data;
     },
 
     getOrders: async (params) => {
-        const res = await axiosClient.get('/myorder', {params})
+        const res = await axiosProducts.get('/myorder', {params})
         return res.data;
     },
     
     getMyReviews: async (params) => {
-        const myReview = await axiosClient.get('/myreview', {params})
+        const myReview = await axiosProducts.get('/myreview', {params})
         return myReview.data;
     },
 
     getMyFavorites: async (params) => {
-        const myFavorite = await axiosClient.get('', {params})
+        const myFavorite = await axiosProducts.get('', {params})
         return myFavorite.data;
     },
 
     getMyRevPurchaseds: async (params) =>{
-        const myRevPurchaseds = await axiosClient.get('', {params})
+        const myRevPurchaseds = await axiosProducts.get('', {params})
         return myRevPurchaseds.data;
     },
 
     getRevProduct: async (params) => {
-        const revProduct = await axiosClient.get('', {params})
+        const revProduct = await axiosProducts.get('', {params})
         return revProduct.data;
     },
 
     getCoupons: async (params) => {
-        const res = await axiosClient.get('/coupons', {params})
+        const res = await axiosProducts.get('/coupons', {params})
         return res.data;
     },
 

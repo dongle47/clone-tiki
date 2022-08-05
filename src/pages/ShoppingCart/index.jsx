@@ -10,22 +10,23 @@ import { numWithCommas } from "../../constraints/Util"
 import { useSelector, useDispatch } from 'react-redux'
 import ChooseCoupon from '../../components/ChooseCoupon';
 import { unchooseAll, chooseAll, deleteAll } from '../../slices/cartSlice'
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import ChooseAddress from '../../components/ChooseAddress';
-import { address } from "../../constraints/Profile";
+import {toast} from 'react-toastify'
+import { clearCoupon } from '../../slices/paymentSlice';
 
 function ShoppingCart() {
   const [open, setOpen] = useState(false);
   const [openAddress, setOpenAddress] = useState(false);
   const [dialogDelete, setDialogDelete] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [coupon, setCoupon] = useState(null)
-  const [addressShip, setAddressShip] = useState(address[0])
-  const [couponPrice, setCouponPrice] = useState(20000);
   const [checkAll, setCheckAll] = useState(false)
   const CartItems = useSelector(state => state.cart.items)
   const dispatch = useDispatch()
-  
+  const user = useSelector(state => state.auth.user)
+  const coupon = useSelector(state => state.payment.coupon)
+  const addressShip = useSelector(state => state.payment.address)
+
   useEffect(() => {
     const calcPrice = () => {
       const total = CartItems.reduce((t, num) => num.choose ? t + num.price * num.quantity : t, 0)
@@ -40,6 +41,13 @@ function ShoppingCart() {
     calcPrice()
     checkChooseAll()
   }, [CartItems])
+
+  useEffect(()=>{
+    const loadTitle = ()=>{
+      document.title =  "Giỏ hàng | Tiki.vn"
+    }
+    loadTitle()
+  },[])
 
   const handleChooseAll = () => {
     if (checkAll) {
@@ -64,18 +72,32 @@ function ShoppingCart() {
   }
   const handleOpen = useCallback(() => setOpen(true), []);
   const handleClose = useCallback(() => setOpen(false), []);
-  const handleOpenAddress = useCallback(() => setOpenAddress(true), []);
+  const handleOpenAddress = useCallback(() => {
+    if(user){
+      setOpenAddress(true)
+    }
+    else{
+      toast.warning("Vui lòng đăng nhập để chọn địa chỉ")
+    }
+  }, [user]);
   const handleCloseAddress = useCallback(() => setOpenAddress(false), []);
-  const chooseCoupon = useCallback((coupon) => {
-    setCoupon({...coupon,value:Math.ceil(Math.random() * 10)*10000})
-  }, [])
+  
   const unchooseCoupon = () => {
-    setCoupon(null)
+    dispatch(clearCoupon())
   }
-  const chooseAddressShip = useCallback((address) => {
-    setAddressShip(address)
-  }, [])
-
+const navigate = useNavigate()
+  const handleBuy = ()=>{
+    if(CartItems.filter(item=>item.choose).length===0){
+      toast.warning("Vui lòng chọn ít nhất một món hàng")
+    }
+    else{
+      navigate('/payment')
+    }
+  }
+  const finalPrice = () => {
+    return totalPrice - (coupon?.value || 0)  > 0 ?
+      totalPrice - (coupon?.value || 0) : 0
+  }
   return (<>
     <Box className="container" >
       <Grid container spacing={2} style={{ marginTop: "24px" }}>
@@ -105,16 +127,16 @@ function ShoppingCart() {
           </Box>
         </Grid>
         <Grid item lg={3} md={12} sm={12} xs={12}>
-
           <Box className='cart__address'>
             <Stack direction="row" mb={1.5} justifyContent="space-between">
               <Typography style={{ fontSize: "16px", fontWeight: 500, color: "#888" }}>Giao tới</Typography>
               <Typography onClick={handleOpenAddress} color="#1890ff" sx={{ cursor: "pointer" }}>Thay đổi</Typography>
             </Stack>
-            {
+            {user?
               addressShip && <>
                 <Typography mb={0.25} fontWeight={500}>{addressShip.name}&nbsp;&nbsp;&nbsp;{addressShip.phone}</Typography>
-                <Typography color="#888">{addressShip.address}</Typography></>
+                <Typography color="#888">{`${addressShip.addressDetail}, ${addressShip.commune.name}, ${addressShip.district.name}, ${addressShip.province.name}`}</Typography></>
+            :<Typography mb={0.25} fontWeight={500}>Vui lòng đăng nhập để chọn địa chỉ</Typography>
             }
           </Box>
           <Box className='cart-coupon'>
@@ -162,23 +184,22 @@ function ShoppingCart() {
                   Tổng tiền
                 </span>
                 <Box className="cart-summary__valueprice">
-                  <span>{numWithCommas(totalPrice - couponPrice > 0 ? totalPrice - couponPrice : 0)} ₫</span>
+                  <span>{numWithCommas(finalPrice())} ₫</span>
                   <span>(Đã bao gồm VAT nếu có)</span>
                 </Box>
               </Box>
             </Box>
-            <Link to={"/payment"}>
-              <Button variant="contained"
+              <Button variant="contained" onClick={handleBuy}
                 sx={{ width: "100%", height: "42px", backgroundColor: "#ff424e", "&:hover": { opacity: 0.8, backgroundColor: "#ff424e" } }}>
-                Mua hàng</Button>
-            </Link>
+                Mua hàng ({CartItems.filter(item=>item.choose).length})
+              </Button>
 
           </Box>
         </Grid>
       </Grid>
     </Box>
-    <ChooseCoupon handleOpen={handleOpen} handleClose={handleClose} chooseCoupon={chooseCoupon} open={open} />
-    {openAddress && <ChooseAddress handleOpen={handleOpenAddress} handleClose={handleCloseAddress} chooseAddressShip={chooseAddressShip} open={openAddress} />}
+    <ChooseCoupon handleOpen={handleOpen} handleClose={handleClose}  open={open} />
+    {user&&<ChooseAddress handleOpen={handleOpenAddress} handleClose={handleCloseAddress} open={openAddress} />}
     {dialogDelete &&
       <Dialog onClose={closeDialogDeleteAll} open={dialogDelete}>
         <Box className="dialog-removecart">
