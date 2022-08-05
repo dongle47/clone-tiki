@@ -46,7 +46,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { useSelector } from "react-redux";
 
 import apiProfile from "../../../apis/apiProfile";
-import Loading from "../../../components/Loading/Loading";
+import Loading from "../../../components/Loading";
 
 
 

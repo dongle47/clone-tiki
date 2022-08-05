@@ -91,7 +91,7 @@ function Header() {
       }
     };
     getDataCategorySpecify();
-  });
+  },[]);
 
   const [modalLogin, setModalLogin] = useState(false);
   const openModalLogin = () => setModalLogin(true);

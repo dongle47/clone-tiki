@@ -24,6 +24,7 @@ import FormControl from "@mui/material/FormControl";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { GgLogin } from "../GoogleLogin";
 import { FbLogin } from "../FacebookLogin";
+import {toast} from 'react-toastify'
 
 function SignUp(props) {
   const [showPass, setShowPass] = React.useState(false);
@@ -31,7 +32,7 @@ function SignUp(props) {
 
   const [invalidPhone, setInvalidPhone] = React.useState(false);
   const [isDiffPass, setIsDiffPass] = React.useState(false);
-
+  const [loading, setLoading] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
 
   const {
@@ -65,13 +66,19 @@ function SignUp(props) {
   };
 
   const onSubmit = async () => {
+    if(loading){
+      toast.warning("Thao tác đang thực hiện. Vui lòng không thao tác quá nhanh")
+      return
+    }
+    setLoading(true)
     if (handleCheckPhone() && handleCheckPass()) {
       if (invalidPhone === false && isDiffPass === false) {
         let param = {
           password: watch("pass"),
           phone: watch("phoneNumber"),
         };
-        apiAuth.postRegister(param).then(setIsSuccess(true));
+        apiAuth.postRegister(param).then(setIsSuccess(true))
+        .finally(()=>setLoading(false));
       }
     }
   };
