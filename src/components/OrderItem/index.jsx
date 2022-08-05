@@ -9,7 +9,7 @@ function OrderItem(props) {
   return (
     <Box className="orderItem">
       <Stack direction='row' className="orderItem__heading">
-        {state.icon && <>
+        {state?.icon && <>
         <state.icon/> <Typography>{order.type.name}</Typography>
         </>}
 
@@ -18,10 +18,10 @@ function OrderItem(props) {
           variant="h3"
           fontWeight={500} color="#888"
         >
-          {state.display}
+          {state?.display}
         </Typography>
       </Stack>
-      {order.products.map((item) => (
+      {order?.products.slice(0,2).map((item) => (
         <Stack
           key={item.id}
           className="orderItem__product"

@@ -26,6 +26,9 @@ import RadioGroup from '@mui/material/RadioGroup';
 
 import { numWithCommas, roundPrice } from "../../constraints/Util"
 import SelectBoxAddress from '../../components/SelectBoxAddress';
+
+import {toast} from 'react-toastify'
+
 import SliderImage from './SliderImage'
 
 function DetailProduct() {
@@ -153,6 +156,7 @@ function DetailProduct() {
             price: product.price,
             quantity
         }))
+        toast.success("Đã thêm vào giỏ hàng")
     }
 
     const onChangeQuantity = (e) => {

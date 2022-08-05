@@ -20,7 +20,7 @@ import Search from "../Search";
 import ForgetPassword from "../ForgetPassword";
 import { addItem } from "../../slices/searchSlice";
 
-const publicPath = ["/product/", "/filter/", "/cart/"];
+const publicPath = ["/product/", "/filter/", "/payment/"];
 
 function Header() {
   const [modalLogin, setModalLogin] = useState(false);

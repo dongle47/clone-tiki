@@ -4,7 +4,7 @@ import { Box, Tabs, Tab, Typography, Pagination, Stack } from "@mui/material";
 import "./Orders.scss";
 import SearchIcon from "@mui/icons-material/Search";
 import OrderItem from "../../../components/OrderItem/index.jsx";
-import { orderTabs, orderItems } from "../../../constraints/OrderItem";
+import { orderTabs} from "../../../constraints/OrderItem";
 import { useEffect } from "react";
 import apiMain from "../../../apis/apiMain";
 
@@ -13,7 +13,7 @@ function Orders() {
   const theme = useTheme();
   const [value, setValue] = useState(0);
   const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(10);
+  const [totalPage, setTotalPage] = useState(1);
   
   const size = 10;
 
@@ -25,7 +25,7 @@ function Orders() {
       };
       const response = await apiMain.getOrders(param);
       if (response) {
-        setOrders(response.data);
+        setOrders(response.data.sort((a,b)=>a.createdAt - b.createdAt));
         setTotalPage(Math.ceil(response.pagination._totalRows / size))
       }
     };
@@ -34,6 +34,9 @@ function Orders() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+  const handleChangePage = (event, newValue) => {
+    setPage(newValue);
   };
 
   return (
@@ -78,11 +81,13 @@ function Orders() {
 
         <Box>
           <TabPanel value={value} index={0} dir={theme.direction}>
-            {orders ? (
+            {orders.length!==0 ? (
               orders.map((item) => <OrderItem key={item.id} order={item} />)
             ) : (
-              <Box>
+              <Box  className="myorder__none">
                 <img
+                 height="200px"
+                 width="200px"
                   src="https://frontend.tikicdn.com/_desktop-next/static/img/account/empty-order.png"
                   alt=""
                 />
@@ -116,9 +121,9 @@ function Orders() {
               );
           })}
 
-          {orders.length !== 0 ? <Stack spacing={2}>
+          {totalPage > 1 ? <Stack spacing={2}>
             <Typography>Page: {page}</Typography>
-            <Pagination count={totalPage} page={page} onChange={handleChange} />
+            <Pagination count={totalPage} page={page} onChange={handleChangePage} />
           </Stack> : <></>}
         </Box>
       </Box>

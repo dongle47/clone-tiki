@@ -2,30 +2,30 @@ import { useEffect, useState } from 'react'
 import './ChooseAddress.scss'
 import { Button, Modal, Box, Stack, Typography } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
-import apiMain from '../../apis/apiMain';
+import apiAddress from '../../apis/apiAddress'
 import { address } from "../../constraints/Profile";
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { setAddress } from '../../slices/paymentSlice';
 
 function ChooseAddress(props) {
-    const [coupons, setCoupons] = useState([]);
+    const [addresses, setAddresses] = useState([]);
+    const dispatch = useDispatch()
     
     useEffect(() => {
-        const getCoupons = () => {
-            let params = {
-                _page: 1,
-                _limit: 10
-            }
-            apiMain.getCoupons(params)
+        const getAddresses = () => {
+            apiAddress.getUserAddress()
                 .then(res => {
-                    setCoupons(res.data)
+                    setAddresses(res.data.addressList)
                 })
         }
-        getCoupons()
+        getAddresses()
     }, [])
 
     const chooseAddressShip = (address)=>{
-        props.chooseAddressShip(address)
+    //props.chooseAddressShip(address)
         props.handleClose()
+        dispatch(setAddress(address))
     }
 
     return (
@@ -39,17 +39,18 @@ function ChooseAddress(props) {
                     <CloseIcon onClick={props.handleClose} height="24px" />
                 </Stack>
                 <Stack spacing={5}>{
-                    address.map((item) => {
+                    addresses.map((item) => {
                         return (
                             <Stack
                                 direction="row"
                                 width="100%"
                                 className="items"
+                                key={item.id}
                             >
                                 <Stack className="info">
-                                    <Typography className="name">{item.name}</Typography>
-                                    <Typography className="address">Địa chỉ: {item.address}</Typography>
-                                    <Typography className="number">Điện thoại: {item.phone}</Typography>
+                                    <Typography className="name">{item.fullName}</Typography>
+                                    <Typography className="address">Địa chỉ: {`${item.addressDetail}, ${item.commune.name}, ${item.district.name}, ${item.province.name}`}</Typography>
+                                    <Typography className="number">Điện thoại: {item.phoneNumber}</Typography>
                                 </Stack>
 
                                 <Stack direction="row" className="action">
