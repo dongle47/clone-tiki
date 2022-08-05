@@ -18,6 +18,7 @@ import Login from "../Login";
 import SignUp from "../SignUp";
 import Search from "../Search";
 import ForgetPassword from "../ForgetPassword";
+import { addItem } from "../../slices/searchSlice";
 
 const publicPath = ["/product/", "/filter/", "/cart/"];
 
@@ -183,6 +184,7 @@ function Header() {
             {user ? 
               <>
                 <img alt="" src={user.img} />
+
                 <Stack>
                   <Typography sx={{ fontSize: "11px" }}>Tài khoản</Typography>
 
@@ -217,6 +219,7 @@ function Header() {
                       />
                       <Stack>
                         <Box>SEP 0</Box>
+
                         <Box>
                           Bạn đang có <b>0 Astra</b>
                         </Box>
@@ -247,6 +250,7 @@ function Header() {
                       />
                       <Stack>
                         <Box>TikiNOW</Box>
+
                         <Box>Thông tin Gói hội viên</Box>
                       </Stack>
                     </Stack>
@@ -261,6 +265,7 @@ function Header() {
                         />
                         <Stack>
                           <Box>Mã giảm giá </Box>
+
                           <Box>
                             Bạn đang có <b>2</b> mã giảm giá
                           </Box>
@@ -275,6 +280,7 @@ function Header() {
                           alt=""
                           src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg"
                         />
+
                         <Stack>
                           <Box>Thông tin Tiki xu</Box>
                           <Box>
@@ -293,6 +299,7 @@ function Header() {
                         />
                         <Stack>
                           <Box>Thông tin BookCare</Box>
+                          
                           <Box>
                             Bạn đang có <b>0</b> BookCare
                           </Box>
@@ -305,31 +312,10 @@ function Header() {
                     <a onClick={handleLogout}>Thoát tài khoản</a>
                   </Box>
               </>
-                : (
-                  <>
-                    <PersonOutlineOutlinedIcon fontSize="large" />
-
-                    <Stack>
-                      <Typography sx={{ fontSize: "11px" }}>
-                        Đăng nhập / Đăng ký
-                      </Typography>
-
-                      <Button
-                        onClick={openModalLogin}
-                        sx={{ color: "white" }}
-                        endIcon={<ArrowDropDownOutlinedIcon />}
-                      >
-                        <Typography sx={{ fontSize: "13px" }}>Tài khoản</Typography>
-                      </Button>
-                    </Stack>
-                  </Link>
-                  <Link to="/">Đổi trả dễ dàng</Link>
-                  <a onClick={handleLogout}>Thoát tài khoản</a>
-                </Box>
-              </>
             : (
               <>
                 <PersonOutlineOutlinedIcon fontSize="large" />
+                
                 <Stack>
                   <Typography sx={{ fontSize: "11px" }}>
                     Đăng nhập / Đăng ký
