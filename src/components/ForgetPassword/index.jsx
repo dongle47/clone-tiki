@@ -78,7 +78,7 @@ function ForgetPassword(props) {
             </Stack>
 
             {isNoAccount && (
-              <ErrorAfterSubmit message="Số điện thoại chưa được đằng ký" />
+              <ErrorAfterSubmit message="Số điện thoại chưa được đăng ký" />
             )}
 
             <Button
