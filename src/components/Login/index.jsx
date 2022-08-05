@@ -26,6 +26,8 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CloseIcon from "@mui/icons-material/Close";
+import Loading from '../Loading'
+import { toast } from "react-toastify";
 
 function Login(props) {
   const dispatch = useDispatch();
@@ -43,7 +45,14 @@ function Login(props) {
 
   const [wrongPass, setWrongPass] = useState(false);
 
+  const [loading, setLoading] = useState(false)
+
   const onSubmit = (data) => {
+    if(loading){
+      toast.warning("Thao tác đang thực hiện. Vui lòng không thao tác quá nhanh")
+      return
+    }
+    setLoading(true)
     let params = {
       password: data.pass,
       phone: data.phoneNumber,
@@ -65,13 +74,12 @@ function Login(props) {
           setIsNoAccount(false);
           setWrongPass(true);
         }
-      });
+      })
+      .finally(()=>{
+        setLoading(false)
+      })
 
-    const refreshAxios = (user) => {
-      setTimeout(() => {
-        axiosInstance(user, dispatch, loginSuccess, logoutSuccess);
-      }, 0);
-    };
+    
   };
 
   return (
@@ -143,6 +151,7 @@ function Login(props) {
               color="error"
               onClick={handleSubmit(onSubmit)}
             >
+              {loading&& <Loading color="#fff"/>}
               Đăng nhập
             </Button>
           </Stack>

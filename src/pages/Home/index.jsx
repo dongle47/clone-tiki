@@ -24,7 +24,7 @@ import "swiper/css/navigation";
 
 import apiMain from "../../apis/apiMain";
 import apiHome from "../../apis/apiHome";
-import Loading from "../../components/Loading/Loading";
+import Loading from "../../components/Loading";
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -32,6 +32,7 @@ function Home() {
   const [CategorySpecify, setCategorySpecify] = useState([]);
   const [Suggestions, setSuggestions] = useState([]);
   const [loadingShowmore, setLoadingShowmore] = useState(false)
+  const [chooseSuggestion, setChooseSuggestion] = useState(0)
 
   const [page, setPage] = useState(1);
   const size = 30;
@@ -67,6 +68,7 @@ function Home() {
       let param = {};
       const response = await apiHome.getCategorySpecify(param);
       if (response) {
+        console.log('render')
         setCategorySpecify(response);
       }
     };
@@ -224,10 +226,11 @@ function Home() {
               <Box className="section__title">Gợi Ý Hôm Nay</Box>
             </Box>
             <Box className="suggestion__wrap">
-              {Suggestions.map((item) => (
+              {Suggestions.map((item,index) => (
                 <Link key={item.id} to={item.link}>
                   <Box
-                    className={`suggestion__item ${item.id === 1 ? "active" : ""
+                    onClick = {()=>setChooseSuggestion(index)}
+                    className={`suggestion__item ${index=== chooseSuggestion? "active" : ""
                       }`}
                   >
                     <img
