@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+
 import "./Header.scss";
 import { useState, useCallback } from "react";
 
@@ -19,10 +21,78 @@ import SignUp from "../SignUp";
 import Search from "../Search";
 import ForgetPassword from "../ForgetPassword";
 import { addItem } from "../../slices/searchSlice";
+import apiProduct from "../../apis/apiProduct";
+import apiHome from "../../apis/apiHome";
 
 const publicPath = ["/product/", "/filter/", "/payment/"];
 
 function Header() {
+  const [CategorySpecify, setCategorySpecify] = useState([]);
+
+  const [suggestions, setSuggestions] = useState([]);
+
+  const [trendingSearch, setTrendingSearch] = useState([]);
+
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+
+  const searchedItems = useSelector((state) => state.search.items);
+
+  const [searchText, setSearchText] = useState("");
+
+  useEffect(() => {
+    const getData = async () => {
+      apiProduct.getProducts().then((res) => {
+        const names = res.map((item) => item.name);
+        setSuggestions(names);
+      });
+    };
+
+    getData();
+  }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      apiProduct.getProducts().then((res) => {
+        const products = res.map((item) => ({
+          id: item.id,
+          name: item.name,
+          imgUrl: item.image,
+        }));
+
+        var randomIndex = [];
+        let i = 0;
+        while (i < 6) {
+          const number = Math.floor(Math.random() * 188);
+          if (randomIndex.includes(number) === false) {
+            randomIndex.push(number);
+
+            setTrendingSearch((prev) => [...prev, products[number]]);
+            i++;
+          }
+        }
+      });
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    const abc = suggestions
+      .map((item) => item.toLowerCase())
+      .filter((item) => item.includes(searchText));
+    setFilteredSuggestions(abc);
+  }, [searchText]);
+
+  useEffect(() => {
+    const getDataCategorySpecify = async () => {
+      let param = {};
+      const response = await apiHome.getCategorySpecify(param);
+      if (response) {
+        setCategorySpecify(response);
+      }
+    };
+    getDataCategorySpecify();
+  });
+
   const [modalLogin, setModalLogin] = useState(false);
   const openModalLogin = () => setModalLogin(true);
 
@@ -35,22 +105,17 @@ function Header() {
 
   const user = useSelector((state) => state.auth.user); //lấy user từ store
 
-  const searchedItems = useSelector((state) => state.search.items);
-
   const navigate = useNavigate();
   const location = useLocation();
 
   const dispatch = useDispatch();
 
-  const [searchText, setSearchText] = useState("");
+  const handleSearch = () => {
+    dispatch(addItem(searchText));
+  };
 
   const onChangeSearch = (event) => {
     setSearchText(event.target.value);
-  };
-
-  const handleSearch = () => {
-    console.log(searchText);
-    dispatch(addItem(searchText));
   };
 
   const handleLogout = () => {
@@ -69,7 +134,6 @@ function Header() {
     setIsForgetPwd(false);
   };
 
-
   const handleOpenSignup = useCallback(() => {
     setIsRegister(true);
     setIsForgetPwd(false);
@@ -86,8 +150,7 @@ function Header() {
     setIsForgetPwd(true);
     setIsRegister(false);
     setIsLoginForm(false);
-  })
-
+  });
 
   useEffect(() => {
     document.addEventListener("click", (event) => {
@@ -144,11 +207,18 @@ function Header() {
               id="input-search"
               placeholder="Tìm sản phẩm, danh mục hay thương hiệu mong muốn ..."
               onFocus={() => setFocusSearch(true)}
-              value={searchText}
               onChange={onChangeSearch}
+              value={searchText}
             />
             {focusSearch && (
-              <Search searchedItems={searchedItems} searchText={searchText} />
+              <Search
+                trendingCategory={CategorySpecify}
+                trendingSearch={trendingSearch}
+                setSearchText={setSearchText}
+                suggestions={filteredSuggestions}
+                searchedItems={searchedItems}
+                searchText={searchText}
+              />
             )}
             <Button
               sx={{
@@ -181,7 +251,7 @@ function Header() {
             spacing="10px"
             sx={{ color: "white", width: "160px", maxWidth: "160px" }}
           >
-            {user ? 
+            {user ? (
               <>
                 <img alt="" src={user.img} />
 
@@ -256,70 +326,68 @@ function Header() {
                     </Stack>
                   </Link>
 
-                    <Link to="/customer/coupons">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <img
-                          className="header__dropdown-img"
-                          alt=""
-                          src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_code.svg"
-                        />
-                        <Stack>
-                          <Box>Mã giảm giá </Box>
-
-                          <Box>
-                            Bạn đang có <b>2</b> mã giảm giá
-                          </Box>
-                        </Stack>
+                  <Link to="/customer/coupons">
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <img
+                        className="header__dropdown-img"
+                        alt=""
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_code.svg"
+                      />
+                      <Stack>
+                        <Box>Mã giảm giá </Box>
+                        <Box>
+                          Bạn đang có <b>2</b> mã giảm giá
+                        </Box>
                       </Stack>
-                    </Link>
+                    </Stack>
+                  </Link>
 
-                    <Link to="/">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <img
-                          className="header__dropdown-img"
-                          alt=""
-                          src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg"
-                        />
-
-                        <Stack>
-                          <Box>Thông tin Tiki xu</Box>
-                          <Box>
-                            Bạn đang có <b>0</b> Tiki xu
-                          </Box>
-                        </Stack>
+                  <Link to="/">
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <img
+                        className="header__dropdown-img"
+                        alt=""
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg"
+                      />
+                      <Stack>
+                        <Box>Thông tin Tiki xu</Box>
+                        <Box>
+                          Bạn đang có <b>0</b> Tiki xu
+                        </Box>
                       </Stack>
-                    </Link>
+                    </Stack>
+                  </Link>
 
-                    <Link to="/">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <img
-                          className="header__dropdown-img"
-                          alt=""
-                          src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg"
-                        />
-                        <Stack>
-                          <Box>Thông tin BookCare</Box>
-                          
-                          <Box>
-                            Bạn đang có <b>0</b> BookCare
-                          </Box>
-                        </Stack>
+                  <Link to="/">
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <img
+                        className="header__dropdown-img"
+                        alt=""
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg"
+                      />
+                      <Stack>
+                        <Box>Thông tin BookCare</Box>
+                        <Box>
+                          Bạn đang có <b>0</b> BookCare
+                        </Box>
                       </Stack>
-                    </Link>
+                    </Stack>
+                  </Link>
 
-                    <Link to="/">Đổi trả dễ dàng</Link>
+                  <Link to="/">Đổi trả dễ dàng</Link>
 
-                    <a onClick={handleLogout}>Thoát tài khoản</a>
-                  </Box>
+                  <a onClick={handleLogout}>Thoát tài khoản</a>
+                </Box>
               </>
-            : (
+            ) : (
               <>
                 <PersonOutlineOutlinedIcon fontSize="large" />
-                
+
                 <Stack>
                   <Typography sx={{ fontSize: "11px" }}>
                     Đăng nhập / Đăng ký
                   </Typography>
+
                   <Button
                     onClick={openModalLogin}
                     sx={{ color: "white" }}
@@ -382,25 +450,20 @@ function Header() {
               closeModalLogin={closeModalLogin}
             />
           )} */}
-          {
-            isLoginForm && <Login
-            handleOpenSignup={handleOpenSignup}
+          {isLoginForm && (
+            <Login
+              handleOpenSignup={handleOpenSignup}
               closeModalLogin={closeModalLogin}
               handleOpenForgetPwd={handleOpenForgetPwd}
             />
-          
-          }
-          {
-            isRegister && <SignUp
-            handleOpenLogin={handleOpenLogin}
+          )}
+          {isRegister && (
+            <SignUp
+              handleOpenLogin={handleOpenLogin}
               closeModalLogin={closeModalLogin}
             />
-          }
-          {
-            isForgetPwd && <ForgetPassword
-              closeModalLogin={closeModalLogin}
-            />
-          } 
+          )}
+          {isForgetPwd && <ForgetPassword closeModalLogin={closeModalLogin} />}
         </Box>
       </Modal>
     </header>
