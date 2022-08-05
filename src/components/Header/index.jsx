@@ -27,7 +27,11 @@ const publicPath = ["/product/", "/filter/", "/cart/"];
 function Header() {
   const [suggestions, setSuggestions] = useState([]);
 
+  const [trendingSearch, setTrendingSearch] = useState([]);
+
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+
+  const searchedItems = useSelector((state) => state.search.items);
 
   const [searchText, setSearchText] = useState("");
 
@@ -42,7 +46,30 @@ function Header() {
     getData();
   }, []);
 
-  console.log(suggestions);
+  useEffect(() => {
+    const getData = async () => {
+      apiProduct.getProducts().then((res) => {
+        const products = res.map((item) => ({
+          id: item.id,
+          name: item.name,
+          imgUrl: item.image,
+        }));
+
+        var randomIndex = [];
+        let i = 0;
+        while (i < 6) {
+          const number = Math.floor(Math.random() * 188);
+          if (randomIndex.includes(number) === false) {
+            randomIndex.push(number);
+
+            setTrendingSearch((prev) => [...prev, products[number]]);
+            i++;
+          }
+        }
+      });
+    };
+    getData();
+  }, []);
 
   useEffect(() => {
     const abc = suggestions
@@ -50,8 +77,6 @@ function Header() {
       .filter((item) => item.includes(searchText));
     setFilteredSuggestions(abc);
   }, [searchText]);
-
-  console.log(filteredSuggestions);
 
   const [modalLogin, setModalLogin] = useState(false);
   const openModalLogin = () => setModalLogin(true);
@@ -63,15 +88,12 @@ function Header() {
 
   const user = useSelector((state) => state.auth.user); //lấy user từ store
 
-  const searchedItems = useSelector((state) => state.search.items);
-
   const navigate = useNavigate();
   const location = useLocation();
 
   const dispatch = useDispatch();
 
   const handleSearch = () => {
-    console.log(searchText);
     dispatch(addItem(searchText));
   };
 
@@ -161,6 +183,7 @@ function Header() {
             />
             {focusSearch && (
               <Search
+                trendingSearch={trendingSearch}
                 setSearchText={setSearchText}
                 suggestions={filteredSuggestions}
                 searchedItems={searchedItems}
