@@ -331,6 +331,7 @@ function Admin() {
             <Routes>
               <Route index element={<Category />} />
               <Route path="create" element={<CreateCategory />} />
+              <Route path="edit/:id" element={<CreateCategory edit={true}/>} />
             </Routes>
           } />
           

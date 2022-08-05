@@ -16,3 +16,8 @@
         cursor:pointer;
     }
 }
+.btn {
+    &__update {
+        width:100% !important;
+    }
+}

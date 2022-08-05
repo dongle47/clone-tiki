@@ -26,7 +26,10 @@ import RadioGroup from '@mui/material/RadioGroup';
 
 import { numWithCommas, roundPrice } from "../../constraints/Util"
 import SelectBoxAddress from '../../components/SelectBoxAddress';
+
 import {toast} from 'react-toastify'
+
+import SliderImage from './SliderImage'
 
 function DetailProduct() {
     const [expandContent, setExpandContent] = useState(false);
@@ -41,6 +44,12 @@ function DetailProduct() {
     const [value, setValue] = React.useState('0');
     const [address, setAddress] = useState('')
     const [addressCustom, setAddressCustom] = useState('')
+    const [modalSlider, setModelSlider] = useState(false);
+    const openModalSlider = () => setModelSlider(true);
+
+    const closeModalSlider = () => {
+        setModelSlider(false);
+    };
 
     const user = useSelector(state => state.auth.user)
 
@@ -192,7 +201,7 @@ function DetailProduct() {
                 <Box className="detailProduct">
                     <Box className="detailProduct__img">
                         <Box className="detailProduct__primary-img">
-                            <img src={product?.details.images[indexImg]} alt="" />
+                            <Button onClick={openModalSlider}><img src={product?.details.images[indexImg]} alt="" /></Button>
                         </Box> <Stack direction="row" justifyContent="flex-start" mt={3} spacing={1}>
                             {product?.details?.images?.slice(0, 6).map((imgs, index) =>
                                 <>
@@ -205,7 +214,7 @@ function DetailProduct() {
                                             <Box className={`detailProduct__item-img ${indexImg === index ? 'selected' : ''}`}>
                                                 {
                                                     product.details.images.length > 6 &&
-                                                    <Box className="lastimage">+{product.details.images.length - 6}</Box>
+                                                    <Box onClick={openModalSlider} className="lastimage">+{product.details.images.length - 6}</Box>
                                                 }
 
                                                 <img src={imgs} alt="" />
@@ -383,6 +392,14 @@ function DetailProduct() {
                     </Stack>
 
                 </Box>
+            </Modal>
+            <Modal
+                open={modalSlider}
+                onClose={closeModalSlider}
+            >
+                <Box className="modal-images" sx={{ width: "100%" }}> 
+          <SliderImage images={product?.details.images} onClose={closeModalSlider} ></SliderImage>
+        </Box>
             </Modal>
             <ReviewProduct />
         </>
