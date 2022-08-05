@@ -87,7 +87,7 @@ function Search(props) {
         {expandSearch ? "Thu gọn" : "Xem thêm"}
       </Button>
 
-      <Box pt={1} pb={1.5}>
+      <Box pt={2} pb={1.5}>
         <Stack sx={{ height: "24px" }} direction="row" mb={1}>
           <img
             alt=""
@@ -105,18 +105,18 @@ function Search(props) {
         </Grid>
       </Box>
 
-      <Box pt={1} pb={1.5}>
+      <Box pt={2} pb={1.5}>
         <Typography sx={{ height: "24px" }} mb={1}>
           Danh Mục Nổi Bật
         </Typography>
 
         <Grid container spacing={2}>
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((number) => (
-            <Grid key={number} item xs={3}>
+          {props.trendingCategory.slice(0, 8).map((item) => (
+            <Grid key={item.id} item xs={3}>
               <Stack justifyContent="center" alignItems="center">
                 <img
-                  alt=""
-                  src="https://salt.tikicdn.com/cache/280x280/ts/product/90/55/ea/340eb77f1170e4c381c866c275138a82.jpg"
+                  alt={item.alt}
+                  src={item.image}
                   width="64,5px"
                   height="64,5px"
                 ></img>
@@ -124,7 +124,7 @@ function Search(props) {
                   my={0.5}
                   sx={{ textAlign: "center", fontSize: "12px" }}
                 >
-                  Tai nghe Bluetooth nhét tai
+                  {item.alt}
                 </Typography>
               </Stack>
             </Grid>

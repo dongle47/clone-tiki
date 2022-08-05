@@ -21,10 +21,13 @@ import SignUp from "../SignUp";
 import Search from "../Search";
 import { addItem } from "../../slices/searchSlice";
 import apiProduct from "../../apis/apiProduct";
+import apiHome from "../../apis/apiHome";
 
 const publicPath = ["/product/", "/filter/", "/cart/"];
 
 function Header() {
+  const [CategorySpecify, setCategorySpecify] = useState([]);
+
   const [suggestions, setSuggestions] = useState([]);
 
   const [trendingSearch, setTrendingSearch] = useState([]);
@@ -77,6 +80,17 @@ function Header() {
       .filter((item) => item.includes(searchText));
     setFilteredSuggestions(abc);
   }, [searchText]);
+
+  useEffect(() => {
+    const getDataCategorySpecify = async () => {
+      let param = {};
+      const response = await apiHome.getCategorySpecify(param);
+      if (response) {
+        setCategorySpecify(response);
+      }
+    };
+    getDataCategorySpecify();
+  });
 
   const [modalLogin, setModalLogin] = useState(false);
   const openModalLogin = () => setModalLogin(true);
@@ -183,6 +197,7 @@ function Header() {
             />
             {focusSearch && (
               <Search
+                trendingCategory={CategorySpecify}
                 trendingSearch={trendingSearch}
                 setSearchText={setSearchText}
                 suggestions={filteredSuggestions}
