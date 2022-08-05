@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 import Login from "../Login";
 import SignUp from "../SignUp";
 import Search from "../Search";
-import { addItem } from "../../slices/searchSlice";
+import ForgetPassword from "../ForgetPassword";
 
 const publicPath = ["/product/", "/filter/", "/cart/"];
 
@@ -25,7 +25,9 @@ function Header() {
   const [modalLogin, setModalLogin] = useState(false);
   const openModalLogin = () => setModalLogin(true);
 
-  const [loginForm, setLoginForm] = useState(true);
+  const [isLoginForm, setIsLoginForm] = useState(true);
+  const [isRegister, setIsRegister] = useState(false);
+  const [isForgetPwd, setIsForgetPwd] = useState(false);
   const [focusSearch, setFocusSearch] = useState(false);
 
   const cart = useSelector((state) => state.cart.items);
@@ -50,7 +52,6 @@ function Header() {
     dispatch(addItem(searchText));
   };
 
-
   const handleLogout = () => {
     dispatch(logoutSuccess());
     const isPublic =
@@ -62,16 +63,30 @@ function Header() {
 
   const closeModalLogin = () => {
     setModalLogin(false);
-    setLoginForm(true);
+    setIsLoginForm(true);
+    setIsRegister(false);
+    setIsForgetPwd(false);
   };
 
-  const handleLogin = useCallback(() => {
-    setLoginForm(false);
+
+  const handleOpenSignup = useCallback(() => {
+    setIsRegister(true);
+    setIsForgetPwd(false);
+    setIsLoginForm(false);
   }, []);
 
-  const handleSignUp = useCallback(() => {
-    setLoginForm(true);
+  const handleOpenLogin = useCallback(() => {
+    setIsLoginForm(true);
+    setIsRegister(false);
+    setIsForgetPwd(false);
   }, []);
+
+  const handleOpenForgetPwd = useCallback(() => {
+    setIsForgetPwd(true);
+    setIsRegister(false);
+    setIsLoginForm(false);
+  })
+
 
   useEffect(() => {
     document.addEventListener("click", (event) => {
@@ -85,7 +100,7 @@ function Header() {
         }
       }
     });
-    return () => document.removeEventListener("click", () => { });
+    return () => document.removeEventListener("click", () => {});
   }, []);
 
   return (
@@ -307,8 +322,28 @@ function Header() {
                         <Typography sx={{ fontSize: "13px" }}>Tài khoản</Typography>
                       </Button>
                     </Stack>
-                  </>
-                )}
+                  </Link>
+                  <Link to="/">Đổi trả dễ dàng</Link>
+                  <a onClick={handleLogout}>Thoát tài khoản</a>
+                </Box>
+              </>
+            : (
+              <>
+                <PersonOutlineOutlinedIcon fontSize="large" />
+                <Stack>
+                  <Typography sx={{ fontSize: "11px" }}>
+                    Đăng nhập / Đăng ký
+                  </Typography>
+                  <Button
+                    onClick={openModalLogin}
+                    sx={{ color: "white" }}
+                    endIcon={<ArrowDropDownOutlinedIcon />}
+                  >
+                    <Typography sx={{ fontSize: "13px" }}>Tài khoản</Typography>
+                  </Button>
+                </Stack>
+              </>
+            )}
           </Stack>
         </Stack>
 
@@ -350,17 +385,36 @@ function Header() {
         onClose={closeModalLogin}
       >
         <Box className="modal-login" sx={{ width: "800px" }}>
-          {loginForm ? (
+          {/* {isLoginForm ? (
             <Login
-              handleLogin={handleLogin}
+            handleOpenSignup={handleOpenSignup}
               closeModalLogin={closeModalLogin}
             />
           ) : (
             <SignUp
-              handleSignUp={handleSignUp}
+            handleOpenLogin={handleOpenLogin}
               closeModalLogin={closeModalLogin}
             />
-          )}
+          )} */}
+          {
+            isLoginForm && <Login
+            handleOpenSignup={handleOpenSignup}
+              closeModalLogin={closeModalLogin}
+              handleOpenForgetPwd={handleOpenForgetPwd}
+            />
+          
+          }
+          {
+            isRegister && <SignUp
+            handleOpenLogin={handleOpenLogin}
+              closeModalLogin={closeModalLogin}
+            />
+          }
+          {
+            isForgetPwd && <ForgetPassword
+              closeModalLogin={closeModalLogin}
+            />
+          } 
         </Box>
       </Modal>
     </header>
