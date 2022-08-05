@@ -1,6 +1,6 @@
-import React from "react";
 import { Link } from "react-router-dom";
-
+import apiProfile from "../../../apis/apiProfile";
+import React, { useState, useRef, useCallback, useEffect } from 'react'
 import {
   Stack,
   Button,
@@ -14,6 +14,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { toast } from "react-toastify";
 
 import SearchIcon from "@mui/icons-material/Search";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -21,19 +22,19 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 const data = [
   {
     id: "1",
-    name: "Emma Stone",
+    fullName: "Emma Stone",
     registerDate: "01/01/2022",
     phone: "0123456789",
   },
   {
     id: "2",
-    name: "Margot Robbie",
+    fullName: "Margot Robbie",
     registerDate: "01/01/2022",
     phone: "0123456789",
   },
   {
     id: "3",
-    name: "Scarlett Johansson",
+    fullName: "Scarlett Johansson",
     registerDate: "01/01/2022",
     phone: "0123456789",
   },
@@ -44,11 +45,31 @@ function User() {
   const openModalDelete = () => setModalDelete(true);
   const closeModalDelete = () => setModalDelete(false);
 
+  const [users, setUsers] = useState([])
+
+  useEffect(() => {
+    const getData = async () => {
+      let param = {
+        _page: 1,
+        _limit: 6,
+      };
+      apiProfile.getAllUser()
+        .then(res => {
+          setUsers(res.data.user)
+        })
+        .catch(error=>{
+          toast.error("không có user")
+          setUsers(data)
+        })
+    };
+    getData();
+  }, []);
+
   return (
     <Stack direction="row" sx={{ backgroundColor: "#fff" }} p={3}>
       <Stack spacing={2}>
         <Stack direction="row" justifyContent="space-between">
-          <Typography>Danh sách thương hiệu</Typography>
+          <Typography>Danh sách người dùng</Typography>
         </Stack>
 
         <Stack direction="row" justifyContent="flex-end"></Stack>
@@ -92,14 +113,14 @@ function User() {
           </TableHead>
 
           <TableBody>
-            {data.map((item) => (
+            {users.map((item) => (
               <TableRow
                 key={item.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell align="center">{item.id}</TableCell>
 
-                <TableCell align="center">{item.name}</TableCell>
+                <TableCell align="center">{item.fullName}</TableCell>
 
                 <TableCell align="center">{item.registerDate}</TableCell>
 
@@ -109,7 +130,7 @@ function User() {
 
                 <TableCell align="center" >
                   <Stack spacing={1} justifyContent="center" py={1}>
-                    <Link to="/admin/user/detail">
+                    <Link to={`/admin/user/detail/ ${item.id}`}>
                       <Button variant="contained">Xem</Button>
                     </Link>
                   </Stack>

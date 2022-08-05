@@ -1,10 +1,12 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import imgProfile from "../../../../assets/img/profile.jpg";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { address } from "../../../../constraints/Profile";
 import "./DetailUser.scss"
+import apiProfile from "../../../../apis/apiProfile";
+import apiAddress from '../../../../apis/apiAddress';
 import {
   Stack,
   Button,
@@ -70,9 +72,45 @@ const data = [
 
 
 function DetailUser() {
+  const [user, setUser] = useState([])
+  const [userProfile, setUserProfile] = useState([])
+  const [addresses, setAddresses] = useState([]);
+  const idUser = useParams().id
+
+  useEffect(() => {
+    const getUser = async () => {
+      apiProfile.getUserbyID(idUser)
+        .then(res => {
+          setUser(res.data.user);
+        })
+    };
+    getUser();
+  }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      apiAddress.getUserAddress()
+        .then(res => {
+          setAddresses(res.data.addressList);
+          console.log(res.data.addressList)
+        })
+    };
+    getData();
+  }, []);
+
+  // useEffect(() => {
+  //   const getProfile = async () => {
+  //     apiProfile.getUserProfile()
+  //       .then(res => {
+  //         setUserProfile(res.data.user);
+  //       })
+  //     getProfile();
+  //   };
+  // }, []);
+
   return (
     <Box p="2rem" bgcolor="#fff">
-      <Typography variant="h6">Chi tiết khách hàng</Typography>
+      <Typography variant="h6">Chi tiết thông tin khách hàng</Typography>
       <Stack p="1rem" spacing={3}>
         <Stack direction="row" spacing={3}>
           <Stack className="detailUser__infowrap" spacing={5}>
@@ -84,12 +122,13 @@ function DetailUser() {
               <Avatar
                 sx={{ width: 100, height: 100 }}
                 alt=""
-                src={imgProfile}
+                src={user?.img}
               />
-              <Typography color="silver"variant="caption">
+              <Typography color="silver" variant="caption">
                 ID
               </Typography>
-              <Typography variant="h6">ABCD</Typography>
+              <Typography variant="h6">{user?.id}</Typography>
+              <Typography variant="h6">Họ tên: {user?.fullName}</Typography>
             </Stack>
 
             <Stack
@@ -99,17 +138,17 @@ function DetailUser() {
             >
               <Stack direction="row" alignItem="center">
                 <PhoneAndroidIcon />
-                <Typography>0123456789</Typography>
+                <Typography  ml={1}>{user?.phone}</Typography>
               </Stack>
 
               <Stack direction="row" alignItem="center">
                 <EmailIcon />
-                <Typography>abcd@gmail.com</Typography>
+                <Typography  ml={1}>{user?.email}</Typography>
               </Stack>
 
               <Stack direction="row" alignItem="center">
-                <CakeIcon/>
-                <Typography>01/01/2001</Typography>
+                <CakeIcon />
+                <Typography ml={1}>{user.birth_day && `${user.birth_day[2]}/${user?.birth_day[1]}/${user?.birth_day[0]}`}</Typography>
               </Stack>
             </Stack>
           </Stack>
@@ -137,6 +176,7 @@ function DetailUser() {
               <Stack direction="row" justifyContent="space-between">
                 <Typography>Sản phẩm yêu thích</Typography>
                 <Typography>30</Typography>
+                {/* <Typography>{res.liked}</Typography> */}
               </Stack>
 
               <Stack>
@@ -152,6 +192,7 @@ function DetailUser() {
               <Stack direction="row" justifyContent="space-between">
                 <Typography>Sản phẩm đã mua</Typography>
                 <Typography>30</Typography>
+                {/* <Typography>{res.bought}</Typography> */}
               </Stack>
 
               <LinearProgress
@@ -165,6 +206,7 @@ function DetailUser() {
               <Stack direction="row" justifyContent="space-between">
                 <Typography>Sản phẩm đã đánh giá</Typography>
                 <Typography>30</Typography>
+                {/* <Typography>{res.rated}</Typography> */}
               </Stack>
               <LinearProgress
                 color="warning"
@@ -177,29 +219,37 @@ function DetailUser() {
 
         <Stack className="detailUser__infowrap" width="100% !important">
           <Typography fontWeight="bold">Sổ địa chỉ</Typography>
-          {address.map((item) => {
+          {addresses.map((item) => {
+            // return (
+            //   <Stack
+            //     width="50rem"
+            //     direction="row"
+            //     justifyContent="space-between"
+            //     className="items"
+            //   >
+            //     <Stack className="info">
+            //       <Typography className="name">{item.name}</Typography>
+            //       <Typography className="address">
+            //         Địa chỉ: {item.address}
+            //       </Typography>
+            //       <Typography className="number">
+            //         Điện thoại: {item.phone}
+            //       </Typography>
+            //     </Stack>
+            //   </Stack>
+            // );
             return (
-              <Stack
-                width="50rem"
-                direction="row"
-                justifyContent="space-between"
-                className="items"
-              >
-                <Stack className="info">
-                  <Typography className="name">{item.name}</Typography>
-                  <Typography className="address">
-                    Địa chỉ: {item.address}
-                  </Typography>
-                  <Typography className="number">
-                    Điện thoại: {item.phone}
-                  </Typography>
-                </Stack>
+              <Stack className="info" key={item.id} mb={2}>
+                <Typography className="name">{item.fullName}</Typography>
+                <Typography className="name">{item.companyName}</Typography>
+                <Typography className="address">Địa chỉ: {`${item.addressDetail}, ${item.commune.name}, ${item.district.name}, ${item.province.name}`}</Typography>
+                <Typography className="number">Điện thoại: {item.phoneNumber}</Typography>
               </Stack>
-            );
+            )
           })}
         </Stack>
 
-        <Stack  className="detailUser__infowrap" width="fit-content  !important">
+        <Stack className="detailUser__infowrap" width="fit-content  !important">
           <Typography fontWeight="bold">
             Danh sách đơn hàng
           </Typography>
