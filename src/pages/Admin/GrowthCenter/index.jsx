@@ -1,5 +1,6 @@
 import * as React from "react";
 import "./GrowthCenter.scss";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
@@ -22,6 +23,8 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import apiBrand from "../../../apis/apiBrand";
+import apiGrowthCenter from "../../../apis/apiGrowthCenter";
 
 ChartJS.register(
   CategoryScale,
@@ -84,6 +87,22 @@ export const data = {
 
 function GrowthCenter() {
   const [value, setValue] = React.useState([null, null]);
+  const [growthCenter , setGrowthCenter] = useState([])
+
+  useEffect(()=>{
+    const getData = async () =>{
+      apiGrowthCenter.getGrowthCenter()
+      .then(res=>{
+        setGrowthCenter(res.data);
+      })
+      .catch(error=>{
+        setGrowthCenter(items);
+      })
+    };
+    getData();
+  },[])
+
+
   return (
     <Box p="1rem" width="100%" className="growthCenter">
       <Stack spacing={2}>
@@ -144,8 +163,8 @@ function GrowthCenter() {
 
           <Stack direction="row" spacing={2} className="growthCenter__listBox">
             {
-              items.map(item =>
-                <Stack className="boxInfo" >
+              growthCenter.map(item =>
+                <Stack className="boxInfo">
                   <Stack direction="row" justifyContent="space-between">
                     <Typography>{item.title}</Typography>
                     <InfoOutlinedIcon className="boxInfo__icon" />
