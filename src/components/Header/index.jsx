@@ -134,7 +134,6 @@ function Header() {
     setIsForgetPwd(false);
   };
 
-
   const handleOpenSignup = useCallback(() => {
     setIsRegister(true);
     setIsForgetPwd(false);
@@ -151,8 +150,7 @@ function Header() {
     setIsForgetPwd(true);
     setIsRegister(false);
     setIsLoginForm(false);
-  })
-
+  });
 
   useEffect(() => {
     document.addEventListener("click", (event) => {
@@ -253,7 +251,7 @@ function Header() {
             spacing="10px"
             sx={{ color: "white", width: "160px", maxWidth: "160px" }}
           >
-            {user ? 
+            {user ? (
               <>
                 <img alt="" src={user.img} />
 
@@ -372,58 +370,6 @@ function Header() {
                         <Box>
                           Bạn đang có <b>0</b> BookCare
                         </Box>
-
-
-
-                    <Link to="/customer/coupons">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <img
-                          className="header__dropdown-img"
-                          alt=""
-                          src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_code.svg"
-                        />
-                        <Stack>
-                          <Box>Mã giảm giá </Box>
-
-                          <Box>
-                            Bạn đang có <b>2</b> mã giảm giá
-                          </Box>
-                        </Stack>
-                      </Stack>
-                    </Link>
-
-                    <Link to="/">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <img
-                          className="header__dropdown-img"
-                          alt=""
-                          src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg"
-                        />
-
-                        <Stack>
-                          <Box>Thông tin Tiki xu</Box>
-                          <Box>
-                            Bạn đang có <b>0</b> Tiki xu
-                          </Box>
-                        </Stack>
-                      </Stack>
-                    </Link>
-
-                    <Link to="/">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <img
-                          className="header__dropdown-img"
-                          alt=""
-                          src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg"
-                        />
-                        <Stack>
-                          <Box>Thông tin BookCare</Box>
-                          
-                          <Box>
-                            Bạn đang có <b>0</b> BookCare
-                          </Box>
-                        </Stack>
-
                       </Stack>
                     </Stack>
                   </Link>
@@ -433,10 +379,10 @@ function Header() {
                   <a onClick={handleLogout}>Thoát tài khoản</a>
                 </Box>
               </>
-            : (
+            ) : (
               <>
                 <PersonOutlineOutlinedIcon fontSize="large" />
-            
+
                 <Stack>
                   <Typography sx={{ fontSize: "11px" }}>
                     Đăng nhập / Đăng ký
@@ -504,25 +450,20 @@ function Header() {
               closeModalLogin={closeModalLogin}
             />
           )} */}
-          {
-            isLoginForm && <Login
-            handleOpenSignup={handleOpenSignup}
+          {isLoginForm && (
+            <Login
+              handleOpenSignup={handleOpenSignup}
               closeModalLogin={closeModalLogin}
               handleOpenForgetPwd={handleOpenForgetPwd}
             />
-          
-          }
-          {
-            isRegister && <SignUp
-            handleOpenLogin={handleOpenLogin}
+          )}
+          {isRegister && (
+            <SignUp
+              handleOpenLogin={handleOpenLogin}
               closeModalLogin={closeModalLogin}
             />
-          }
-          {
-            isForgetPwd && <ForgetPassword
-              closeModalLogin={closeModalLogin}
-            />
-          } 
+          )}
+          {isForgetPwd && <ForgetPassword closeModalLogin={closeModalLogin} />}
         </Box>
       </Modal>
     </header>
