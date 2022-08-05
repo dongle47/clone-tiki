@@ -13,9 +13,10 @@ import {
   REGISTER,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import paymentSlice from '../slices/paymentSlice';
 
 
-const rootReducer = combineReducers({ auth: authReducer, cart: cartReducer, search: searchReducer })
+const rootReducer = combineReducers({ auth: authReducer, cart: cartReducer, search: searchReducer,payment:paymentSlice })
 
 const persistConfig = {
   key: 'root',

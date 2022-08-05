@@ -40,6 +40,9 @@ export const cartSlice = createSlice({
         },
         deleteAll:(state,action)=>{
             state.items = []
+        },
+        deleteItemsPayment:(state,action)=>{
+            state.items= state.items.filter(item=>!item.choose)
         }
 
     }
@@ -54,7 +57,8 @@ export const {
     chooseAll,
     unchooseAll,
     deleteAll,
-    addItem
+    addItem,
+    deleteItemsPayment
 }=cartSlice.actions
 
 export default cartSlice.reducer

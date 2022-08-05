@@ -8,10 +8,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import CancelIcon from '@mui/icons-material/Cancel';
 import apiMain from '../../apis/apiMain';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { setCoupon } from '../../slices/paymentSlice';
 
 function ChooseCoupon(props) {
     const [coupons, setCoupons] = useState([]);
-    
+    const dispatch = useDispatch()
     useEffect(()=>{
         const getCoupons = ()=>{
             let params = {
@@ -27,7 +29,7 @@ function ChooseCoupon(props) {
     },[])
 
     const handleChooseCoupon=(item)=>{
-        props.chooseCoupon(item)
+        dispatch(setCoupon({...item,value:Math.ceil(Math.random() * 10)*10000}))
         props.handleClose()
     }
     return (

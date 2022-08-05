@@ -19,11 +19,12 @@ import { useDispatch } from "react-redux";
 import Login from "../Login";
 import SignUp from "../SignUp";
 import Search from "../Search";
+import ForgetPassword from "../ForgetPassword";
 import { addItem } from "../../slices/searchSlice";
 import apiProduct from "../../apis/apiProduct";
 import apiHome from "../../apis/apiHome";
 
-const publicPath = ["/product/", "/filter/", "/cart/"];
+const publicPath = ["/product/", "/filter/", "/payment/"];
 
 function Header() {
   const [CategorySpecify, setCategorySpecify] = useState([]);
@@ -95,7 +96,9 @@ function Header() {
   const [modalLogin, setModalLogin] = useState(false);
   const openModalLogin = () => setModalLogin(true);
 
-  const [loginForm, setLoginForm] = useState(true);
+  const [isLoginForm, setIsLoginForm] = useState(true);
+  const [isRegister, setIsRegister] = useState(false);
+  const [isForgetPwd, setIsForgetPwd] = useState(false);
   const [focusSearch, setFocusSearch] = useState(false);
 
   const cart = useSelector((state) => state.cart.items);
@@ -126,16 +129,30 @@ function Header() {
 
   const closeModalLogin = () => {
     setModalLogin(false);
-    setLoginForm(true);
+    setIsLoginForm(true);
+    setIsRegister(false);
+    setIsForgetPwd(false);
   };
 
-  const handleLogin = useCallback(() => {
-    setLoginForm(false);
+
+  const handleOpenSignup = useCallback(() => {
+    setIsRegister(true);
+    setIsForgetPwd(false);
+    setIsLoginForm(false);
   }, []);
 
-  const handleSignUp = useCallback(() => {
-    setLoginForm(true);
+  const handleOpenLogin = useCallback(() => {
+    setIsLoginForm(true);
+    setIsRegister(false);
+    setIsForgetPwd(false);
   }, []);
+
+  const handleOpenForgetPwd = useCallback(() => {
+    setIsForgetPwd(true);
+    setIsRegister(false);
+    setIsLoginForm(false);
+  })
+
 
   useEffect(() => {
     document.addEventListener("click", (event) => {
@@ -236,9 +253,10 @@ function Header() {
             spacing="10px"
             sx={{ color: "white", width: "160px", maxWidth: "160px" }}
           >
-            {user ? (
+            {user ? 
               <>
                 <img alt="" src={user.img} />
+
                 <Stack>
                   <Typography sx={{ fontSize: "11px" }}>Tài khoản</Typography>
 
@@ -273,6 +291,7 @@ function Header() {
                       />
                       <Stack>
                         <Box>SEP 0</Box>
+
                         <Box>
                           Bạn đang có <b>0 Astra</b>
                         </Box>
@@ -303,6 +322,7 @@ function Header() {
                       />
                       <Stack>
                         <Box>TikiNOW</Box>
+
                         <Box>Thông tin Gói hội viên</Box>
                       </Stack>
                     </Stack>
@@ -352,6 +372,58 @@ function Header() {
                         <Box>
                           Bạn đang có <b>0</b> BookCare
                         </Box>
+
+
+
+                    <Link to="/customer/coupons">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <img
+                          className="header__dropdown-img"
+                          alt=""
+                          src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_code.svg"
+                        />
+                        <Stack>
+                          <Box>Mã giảm giá </Box>
+
+                          <Box>
+                            Bạn đang có <b>2</b> mã giảm giá
+                          </Box>
+                        </Stack>
+                      </Stack>
+                    </Link>
+
+                    <Link to="/">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <img
+                          className="header__dropdown-img"
+                          alt=""
+                          src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/TopUpXu/xu-icon.svg"
+                        />
+
+                        <Stack>
+                          <Box>Thông tin Tiki xu</Box>
+                          <Box>
+                            Bạn đang có <b>0</b> Tiki xu
+                          </Box>
+                        </Stack>
+                      </Stack>
+                    </Link>
+
+                    <Link to="/">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <img
+                          className="header__dropdown-img"
+                          alt=""
+                          src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg"
+                        />
+                        <Stack>
+                          <Box>Thông tin BookCare</Box>
+                          
+                          <Box>
+                            Bạn đang có <b>0</b> BookCare
+                          </Box>
+                        </Stack>
+
                       </Stack>
                     </Stack>
                   </Link>
@@ -361,10 +433,10 @@ function Header() {
                   <a onClick={handleLogout}>Thoát tài khoản</a>
                 </Box>
               </>
-            ) : (
+            : (
               <>
                 <PersonOutlineOutlinedIcon fontSize="large" />
-
+            
                 <Stack>
                   <Typography sx={{ fontSize: "11px" }}>
                     Đăng nhập / Đăng ký
@@ -421,17 +493,36 @@ function Header() {
         onClose={closeModalLogin}
       >
         <Box className="modal-login" sx={{ width: "800px" }}>
-          {loginForm ? (
+          {/* {isLoginForm ? (
             <Login
-              handleLogin={handleLogin}
+            handleOpenSignup={handleOpenSignup}
               closeModalLogin={closeModalLogin}
             />
           ) : (
             <SignUp
-              handleSignUp={handleSignUp}
+            handleOpenLogin={handleOpenLogin}
               closeModalLogin={closeModalLogin}
             />
-          )}
+          )} */}
+          {
+            isLoginForm && <Login
+            handleOpenSignup={handleOpenSignup}
+              closeModalLogin={closeModalLogin}
+              handleOpenForgetPwd={handleOpenForgetPwd}
+            />
+          
+          }
+          {
+            isRegister && <SignUp
+            handleOpenLogin={handleOpenLogin}
+              closeModalLogin={closeModalLogin}
+            />
+          }
+          {
+            isForgetPwd && <ForgetPassword
+              closeModalLogin={closeModalLogin}
+            />
+          } 
         </Box>
       </Modal>
     </header>

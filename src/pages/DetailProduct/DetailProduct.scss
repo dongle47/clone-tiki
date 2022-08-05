@@ -137,10 +137,18 @@
         width: 80%;
         margin-bottom: 24px;
         &__content {
+            width: 100%;
             position: relative;
             & p {
                 font-size: 14px;
                 line-height: 34px;
+            }
+            &.collapse {
+                max-height: 600px;
+                overflow: hidden;
+            }
+            & * {
+                max-width: 100%;
             }
         }
         &__showmore {
@@ -292,5 +300,13 @@
                     border: 1px solid #1890ff;
                 }
             }
+
         }
+    }
+    .modal-images{
+        position: absolute;
+        left: 0;
+        background-color: rgba(0, 0, 0,0.6);
+        padding: 32px;
+        height: 100%;
     }

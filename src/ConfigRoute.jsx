@@ -8,6 +8,7 @@ import Payment from "./pages/Payment";
 import Error from "./pages/Error/index";
 import {  Route, Routes } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
+import ChangePassword from "./components/ChangePassword";
 
 function ConfigRoute() {
   return (
@@ -24,9 +25,10 @@ function ConfigRoute() {
         <Route element={<PrivateRoute roles={['USER']} />}>
            <Route path="admin/*" element={<Admin />}/>
         </Route>
-        <Route path="filter" element={<FilterProduct />} />
+        <Route path="filter/:id" element={<FilterProduct />} />
         <Route path="product/:id" element={<DetailProduct />} />
         <Route path="*" element={<Error />} />
+        <Route path = "changepwd" element={<ChangePassword />}/>
     </Routes>
   )
 }

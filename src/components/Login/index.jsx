@@ -149,11 +149,17 @@ function Login(props) {
         </form>
 
         <p style={{ textAlign: "center" }}>Đăng nhập bằng mail</p>
+        <Stack alignItems="center">       
+          <span style={{ color: "#1890ff", cursor: "pointer" }} onClick={props.handleOpenForgetPwd}>
+          {" "}
+            Quên mật khẩu
+          </span>
+        </Stack>
         <p style={{ textAlign: "center" }}>
           Nếu bạn chưa có tài khoản?
           <span
             style={{ color: "#1890ff", cursor: "pointer" }}
-            onClick={props.handleLogin}
+            onClick={props.handleOpenSignup}
           >
             {" "}
             Đăng ký

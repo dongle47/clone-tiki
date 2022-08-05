@@ -22,6 +22,7 @@ function SelectBoxAddress(props) {
     const {province,district,commune} = props
     useEffect(() => {
       const getData = async () => {
+        console.log("render")
         apiAddress.getAllProvince()
           .then(res => {
             setListProvince(res.data.list);
@@ -32,7 +33,7 @@ function SelectBoxAddress(props) {
   
     useEffect(() => {
       const getData = async () => {
-        const params = { id: province }
+        const params = { id: props.province }
         setListCommune([]);
         setListDistrict([]);
         apiAddress.getDistrictInProvinceById(params)
@@ -46,7 +47,7 @@ function SelectBoxAddress(props) {
   
     useEffect(() => {
       const getData = async () => {
-        const params = { id: district }
+        const params = { id: props.district }
         setListCommune([]);
         apiAddress.getCommuneInDistrictById(params)
           .then(res => {
@@ -55,6 +56,20 @@ function SelectBoxAddress(props) {
       };
       getData();
     }, [props.district])
+
+    useEffect(()=>{
+      const handle = ()=>{
+        let province = listprovince?.find(item=>item.id === props.province)
+        let district = listdistrict?.find(item=>item.id === props.district)
+        let commune = listcommune?.find(item=>item.id === props.commune)
+        if(province && district && commune && props.setAddressDetails)
+            props.setAddressDetails(`${province.name}, ${district.name}, ${commune.name}`)
+        else
+            props.setAddressDetails('')
+      }
+      handle()
+      
+    },[props.district,props.commune,props.province])
   
    
   

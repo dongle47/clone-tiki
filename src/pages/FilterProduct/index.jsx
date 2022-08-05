@@ -23,7 +23,9 @@ import { numWithCommas } from "../../constraints/Util"
 import { categories } from "../../constraints/FilterProduct"
 import CardProduct from '../../components/CardProduct';
 import apiProduct from '../../apis/apiProduct';
+import { useParams } from 'react-router-dom';
 function FilterProduct(props) {
+    const idCategory = useParams().id
     const category = categories[0]
     const [value, setValue] = useState(0);
     const [products, setProducts] = useState([]);
@@ -43,11 +45,12 @@ function FilterProduct(props) {
         const getData = async () => {
             const response = await apiProduct.getProducts({});
             if (response) {
-                setProducts(response);
+                let data = response.filter(item=>item?.details.category.name===category.name)
+                setProducts(data);
             }
         };
         getData();
-    }, [page]);
+    }, [page,category]);
 
     useEffect(() => {
         const filterData = () => {
@@ -231,19 +234,19 @@ function FilterProduct(props) {
                         className={`filterPrice ${filterPrice.option === 1 ? 'selected' : ''}`}
                         onClick={() => setFilterPrice({ ...filterPrice, option: 1 })}
                     >
-                        Dưới {numWithCommas(category.rangePrice.min)}
+                        Dưới {numWithCommas(category?.rangePrice.min||0)}
                     </span>
                     <span
                         className={`filterPrice ${filterPrice.option === 2 ? 'selected' : ''}`}
                         onClick={() => setFilterPrice({ ...filterPrice, option: 2 })}
                     >
-                        Từ {numWithCommas(category.rangePrice.min)} đến {numWithCommas(category.rangePrice.max)}
+                        Từ {numWithCommas(category?.rangePrice.min||0)} đến {numWithCommas(category?.rangePrice.max||0)}
                     </span>
                     <span
                         className={`filterPrice ${filterPrice.option === 3 ? 'selected' : ''}`}
                         onClick={() => setFilterPrice({ ...filterPrice, option: 3 })}
                     >
-                        Trên {numWithCommas(category.rangePrice.max)}
+                        Trên {numWithCommas(category?.rangePrice.max||0)}
                     </span>
                     <Typography sx={{ fontSize: "13px", fontWeight: 400, color: "#888" }}>Chọn khoảng giá</Typography>
                     <Box className="filterPrice__groupInput">
@@ -258,7 +261,7 @@ function FilterProduct(props) {
                 </Box>
 
                 {
-                    category.properties.map(property =>
+                    category?.properties.map(property =>
                         <FilterForm key={property.id} property={property} onChangeFilter={onChangeFilter} />
                     )
                 }

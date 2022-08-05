@@ -1,73 +1,66 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import apiCategory from '../../../apis/apiCategory';
+import { useEffect, useState } from 'react';
+import { toast } from "react-toastify";
 import "./Category.scss";
 import {
   Stack,
   Button,
   Typography,
   Modal,
+  Dialog,
   TextField,
   Table,
   TableHead,
   TableBody,
   TableRow,
-  TableCell,
+  TableCell
 } from "@mui/material";
-
 import SearchIcon from "@mui/icons-material/Search";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 
-function createData(name, description, image) {
-  return { name, description, image };
-}
-
-const rows = [
-  createData(
-    "Giày thể thao nam",
-    "Bán lẻ theo đôi",
-    "https://salt.tikicdn.com/cache/w100/ts/product/53/2a/16/36bcda30194826dff631e0d1e2b83390.jpg"
-  ),
-  createData(
-    "Giày thể thao nam",
-    "Bán lẻ theo đôi",
-    "https://salt.tikicdn.com/cache/w100/ts/product/53/2a/16/36bcda30194826dff631e0d1e2b83390.jpg"
-  ),
-  createData(
-    "Giày thể thao nam",
-    "Bán lẻ theo đôi",
-    "https://salt.tikicdn.com/cache/w100/ts/product/53/2a/16/36bcda30194826dff631e0d1e2b83390.jpg"
-  ),
-  createData(
-    "Giày thể thao nam",
-    "Bán lẻ theo đôi",
-    "https://salt.tikicdn.com/cache/w100/ts/product/53/2a/16/36bcda30194826dff631e0d1e2b83390.jpg"
-  ),
-  createData(
-    "Giày thể thao nam",
-    "Bán lẻ theo đôi",
-    "https://salt.tikicdn.com/cache/w100/ts/product/53/2a/16/36bcda30194826dff631e0d1e2b83390.jpg"
-  ),
-  createData(
-    "Giày thể thao nam",
-    "Bán lẻ theo đôi",
-    "https://salt.tikicdn.com/cache/w100/ts/product/53/2a/16/36bcda30194826dff631e0d1e2b83390.jpg"
-  ),
-  createData(
-    "Giày thể thao nam",
-    "Bán lẻ theo đôi",
-    "https://salt.tikicdn.com/cache/w100/ts/product/53/2a/16/36bcda30194826dff631e0d1e2b83390.jpg"
-  ),
-];
-
 function Category() {
-  const [modalDelete, setModalDelete] = React.useState(false);
-  const openModalDelete = () => setModalDelete(true);
-  const closeModalDelete = () => setModalDelete(false);
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = React.useState([]);
+  const [itemdelete, setItemdelete] = useState(null);
+  const [dialogDelete, setDialogDelete] = useState(false);
+
+  useEffect(() => {
+    const getData = async () => {
+      apiCategory.showAllCategory()
+        .then(res => {
+          setCategory(res.data.listCategory);
+        })
+    };
+    getData();
+  }, []);
+  const handleDelete = () => {
+    const newcategory = category.filter(item => {
+      return itemdelete.id !== item.id
+    }
+    )
+    setCategory(newcategory)
+    closeDialogDeleteAll()
+    apiCategory.deleteCategory({ id: itemdelete.id })
+      .then(res => {
+        toast.success("Xóa thành công")
+      })
+      .catch(error => {
+        toast.error("Xóa không thành công!")
+      })
+  }
+  const openDialogDeleteAll = (itemdelete) => {
+    setItemdelete(itemdelete)
+    setDialogDelete(true)
+  }
+  const closeDialogDeleteAll = () => {
+    setDialogDelete(false)
+  }
 
   return (
-    <Stack direction="row" bgcolor ="#fff" p={3}>
+    <Stack direction="row" bgcolor="#fff" p={3}>
       <Stack spacing={2}>
         <Stack direction="row" justifyContent="space-between">
           <Typography>Danh sách danh mục sản phẩm</Typography>
@@ -78,9 +71,11 @@ function Category() {
         <Stack direction="row" width="100%" position="relative">
           <TextField
             id="outlined-basic"
-            label="Search"
+            placeholder="Tìm danh mục"
             variant="outlined"
-            width= "100%"
+            width="100% !important"
+            onChange={(event) => setQuery(event.target.value)}
+
           />
           <span className="category__iconSearch">
             <SearchIcon sx={{ fontSize: "28px" }} />
@@ -98,66 +93,67 @@ function Category() {
               <TableCell sx={{ width: "15%", top: "64px" }}>
                 Tên danh mục
               </TableCell>
-              <TableCell sx={{ width: "15%", top: "64px" }}>Mô tả</TableCell>
-              <TableCell align="center" sx={{ width: "10%", top: "64px" }}>
-                Ảnh&nbsp;
-              </TableCell>
+              <TableCell sx={{ width: "15%", top: "64px" }}>Danh mục cha</TableCell>
               <TableCell align="center" sx={{ width: "10%", top: "64px" }}>
                 Thao tác&nbsp;
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row,index) => (
-              <TableRow
-                key={index}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="left">{row.description}</TableCell>
-                <TableCell align="center">
-                  <img alt="" width="80px" height="80px" src={row.image} />
-                </TableCell>
-                <TableCell>
-                  <Stack spacing={1} justifyContent="center" py={1}>
-                    <Button variant="contained">Sửa</Button>
-                    <Button onClick={openModalDelete} variant="outlined" color="error">
-                      Xóa
-                    </Button>
-                  </Stack>
-                </TableCell>
-              </TableRow>
-            ))}
+            { 
+              category.filter((category) => (category.name.toLowerCase().includes(query)) || (category.parent.toLowerCase().includes(query))).map((item, id) => (
+                <TableRow
+                  key={item.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {item.name}
+                  </TableCell>
+                  <TableCell align="left">{item.parent}</TableCell>
+                  <TableCell>
+                    <Stack spacing={1} justifyContent="center" py={1}>
+                      <Link to={`edit/${item.id}`} >
+                        <Button sx={{ flex: 1 }} variant="contained" className="btn__update">Sửa</Button>
+                      </Link>
+                      <Button onClick={() => openDialogDeleteAll(item)} variant="outlined" color="error">
+                        Xóa
+                      </Button>
+                    </Stack>
+                  </TableCell>
+                </TableRow>
+              ))
+            }
+
           </TableBody>
         </Table>
       </Stack>
-
-      <Modal
-        sx={{ overflowY: "scroll" }}
-        open={modalDelete}
-        onClose={closeModalDelete}
-      >
-        <Stack className="modal-info" direction="row" spacing={2} justifyContent='center' width='26rem' >
-          <Stack>
-            <InfoOutlinedIcon color="primary" />
-          </Stack>
-
-          <Stack spacing={3}>
+      {
+        dialogDelete &&
+        <Modal
+          sx={{ overflowY: "scroll" }}
+          onClose={closeDialogDeleteAll}
+          open={dialogDelete}
+        >
+          <Stack className="modal-info" direction="row" spacing={2} justifyContent='center' width='26rem' >
             <Stack>
-              <Typography fontWeight= "bold">
-                Bạn có chắc muốn xóa danh mục này ?
-              </Typography>
+              <InfoOutlinedIcon color="primary" />
             </Stack>
 
-            <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              <Button onClick={closeModalDelete} variant="outlined">Hủy</Button>
-              <Button variant="contained">Xóa bỏ</Button>
+            <Stack spacing={3}>
+              <Stack>
+                <Typography fontWeight="bold">
+                  Bạn có chắc muốn xóa danh mục này ?
+                </Typography>
+              </Stack>
+              <Stack direction="row" justifyContent="flex-end" spacing={1}>
+                <Button onClick={closeDialogDeleteAll} variant="outlined">Hủy</Button>
+                <Button variant="contained" onClick={handleDelete}>Xác nhận</Button>
+              </Stack>
             </Stack>
           </Stack>
-        </Stack>
-      </Modal>
+        </Modal>
+      }
+
     </Stack>
   );
 }
