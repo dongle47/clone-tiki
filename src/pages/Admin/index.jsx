@@ -354,7 +354,7 @@ function Admin() {
           <Route path="user/*" element={
           <Routes>
             <Route index element={<User />} />
-            <Route path="detail" element={<DetailUser />} />
+            <Route path="detail/:id"  element={<DetailUser />} />
           </Routes>}/>
 
           <Route path="review" element={<Review />} />

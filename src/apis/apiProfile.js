@@ -22,7 +22,7 @@ const apiProfile = {
         return res.data;
     },
     getUserbyID: async (params) => {
-        const res = await axiosClientWithToken.get(`/user/${params.id}`)
+        const res = await axiosClientWithToken.get(`/user/${params}`)
         return res.data;
     },
     getUserProfile: async () => {
@@ -31,6 +31,11 @@ const apiProfile = {
     },
     putChangePhone: async (params) => {
         const res = await axiosClientWithToken.put('/user/profile/changePhone', params)
+        return res.data;
+    },
+
+    getAllUser: async (params) => {
+        const res = await axiosClientWithToken.get('user/profile/all', params)
         return res.data;
     },
 
