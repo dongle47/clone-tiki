@@ -1,9 +1,7 @@
-import { useState, useRef, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import "./Search.scss";
-
-import apiMain from "../../apis/apiMain";
 
 import {
   Grid,
@@ -31,6 +29,11 @@ function Search(props) {
     dispatch(removeItem(data));
   };
 
+  const handleClickSubmit = (data) => {
+    props.setSearchText(data);
+    props.handleSubmitSearch(data);
+  };
+
   const SearchedItemsHalf = props.searchedItems
     .slice(0, 5)
     .map((item) => (
@@ -54,13 +57,20 @@ function Search(props) {
   const SuggestItemsHalf = props.suggestions
     .slice(0, 5)
     .map((item) => (
-      <SuggestItem setSearchText={props.setSearchText} text={item} />
+      <SuggestItem
+        handleClickSubmit={handleClickSubmit}
+        setSearchText={props.setSearchText}
+        text={item.lowerCaseName}
+      />
     ));
 
   const SuggestItemsFull = props.suggestions
     .slice(0, 10)
     .map((item) => (
-      <SuggestItem setSearchText={props.setSearchText} text={item} />
+      <SuggestItem
+        setSearchText={props.setSearchText}
+        text={item.lowerCaseName}
+      />
     ));
 
   return (
@@ -171,7 +181,7 @@ function SuggestItem(props) {
       direction="row"
       spacing={2}
       alignItems="center"
-      onClick={() => props.setSearchText(props.text)}
+      onClick={() => props.handleClickSubmit(props.text)}
     >
       <SearchIcon fontSize="medium" sx={{ color: "silver" }} />
 

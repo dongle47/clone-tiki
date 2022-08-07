@@ -13,6 +13,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { axiosInstance } from "./../../apis/axiosClient";
 import InputAdornment from "@mui/material/InputAdornment";
+
 import {
   Stack,
   IconButton,
@@ -26,7 +27,7 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CloseIcon from "@mui/icons-material/Close";
-import Loading from '../Loading'
+import Loading from "../Loading";
 import { toast } from "react-toastify";
 
 function Login(props) {
@@ -45,14 +46,16 @@ function Login(props) {
 
   const [wrongPass, setWrongPass] = useState(false);
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = (data) => {
-    if(loading){
-      toast.warning("Thao tác đang thực hiện. Vui lòng không thao tác quá nhanh")
-      return
+    if (loading) {
+      toast.warning(
+        "Thao tác đang thực hiện. Vui lòng không thao tác quá nhanh"
+      );
+      return;
     }
-    setLoading(true)
+    setLoading(true);
     let params = {
       password: data.pass,
       phone: data.phoneNumber,
@@ -75,11 +78,9 @@ function Login(props) {
           setWrongPass(true);
         }
       })
-      .finally(()=>{
-        setLoading(false)
-      })
-
-    
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -151,16 +152,19 @@ function Login(props) {
               color="error"
               onClick={handleSubmit(onSubmit)}
             >
-              {loading&& <Loading color="#fff"/>}
+              {loading && <Loading color="#fff" />}
               Đăng nhập
             </Button>
           </Stack>
         </form>
 
         <p style={{ textAlign: "center" }}>Đăng nhập bằng mail</p>
-        <Stack alignItems="center">       
-          <span style={{ color: "#1890ff", cursor: "pointer" }} onClick={props.handleOpenForgetPwd}>
-          {" "}
+        <Stack alignItems="center">
+          <span
+            style={{ color: "#1890ff", cursor: "pointer" }}
+            onClick={props.handleOpenForgetPwd}
+          >
+            {" "}
             Quên mật khẩu
           </span>
         </Stack>
@@ -182,6 +186,7 @@ function Login(props) {
           spacing={2}
         >
           <FbLogin />
+
           <GgLogin />
         </Stack>
         <p style={{ textAlign: "center" }}>
