@@ -1,57 +1,63 @@
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import React, { useEffect, useState, useCallback } from "react";
 
-import "./Header.scss";
-import { useState, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import { Stack, Button, Typography, Badge, Box, Modal } from "@mui/material";
+
+import "./Header.scss";
+
+import Login from "../Login";
+import SignUp from "../SignUp";
+import Search from "../Search";
+import ForgetPassword from "../ForgetPassword";
+
+import { addItem } from "../../slices/searchSlice";
+import { logoutSuccess } from "../../slices/authSlice";
+
+import apiProduct from "../../apis/apiProduct";
+import apiHome from "../../apis/apiHome";
 
 import SearchIcon from "@mui/icons-material/Search";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
-import { useSelector } from "react-redux";
-import { logoutSuccess } from "../../slices/authSlice";
-import { useDispatch } from "react-redux";
-import Login from "../Login";
-import SignUp from "../SignUp";
-import Search from "../Search";
-import ForgetPassword from "../ForgetPassword";
-import { addItem } from "../../slices/searchSlice";
-import apiProduct from "../../apis/apiProduct";
-import apiHome from "../../apis/apiHome";
 
 const publicPath = ["/product/", "/filter/", "/payment/"];
 
 function Header() {
-  const [CategorySpecify, setCategorySpecify] = useState([]);
-
-  const [suggestions, setSuggestions] = useState([]);
-
-  const [trendingSearch, setTrendingSearch] = useState([]);
-
-  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
 
   const searchedItems = useSelector((state) => state.search.items);
 
   const [searchText, setSearchText] = useState("");
 
+  const [suggestions, setSuggestions] = useState([]);
+
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+
+  const [trendingSearch, setTrendingSearch] = useState([]);
+
+  const [categorySpecify, setCategorySpecify] = useState([]);
+
   useEffect(() => {
-    const getData = async () => {
+    const getSuggestions = async () => {
       apiProduct.getProducts().then((res) => {
-        const names = res.map((item) => item.name);
+        const names = res.map((item) => ({
+          id: item.id,
+          name: item.name,
+          lowerCaseName: item.name.toLowerCase(),
+        }));
+
         setSuggestions(names);
       });
     };
 
-    getData();
-  }, []);
-
-  useEffect(() => {
-    const getData = async () => {
+    const getTrendingSearch = async () => {
       apiProduct.getProducts().then((res) => {
         const products = res.map((item) => ({
           id: item.id,
@@ -72,17 +78,7 @@ function Header() {
         }
       });
     };
-    getData();
-  }, []);
 
-  useEffect(() => {
-    const abc = suggestions
-      .map((item) => item.toLowerCase())
-      .filter((item) => item.includes(searchText));
-    setFilteredSuggestions(abc);
-  }, [searchText]);
-
-  useEffect(() => {
     const getDataCategorySpecify = async () => {
       let param = {};
       const response = await apiHome.getCategorySpecify(param);
@@ -90,8 +86,19 @@ function Header() {
         setCategorySpecify(response);
       }
     };
+
+    getSuggestions();
+    getTrendingSearch();
     getDataCategorySpecify();
-  },[]);
+  }, []);
+
+  useEffect(() => {
+    const filter = suggestions.filter((item) =>
+      item.lowerCaseName.includes(searchText)
+    );
+
+    setFilteredSuggestions(filter);
+  }, [searchText]);
 
   const [modalLogin, setModalLogin] = useState(false);
   const openModalLogin = () => setModalLogin(true);
@@ -99,19 +106,15 @@ function Header() {
   const [isLoginForm, setIsLoginForm] = useState(true);
   const [isRegister, setIsRegister] = useState(false);
   const [isForgetPwd, setIsForgetPwd] = useState(false);
+
   const [focusSearch, setFocusSearch] = useState(false);
 
   const cart = useSelector((state) => state.cart.items);
 
   const user = useSelector((state) => state.auth.user); //lấy user từ store
 
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const dispatch = useDispatch();
-
-  const handleSearch = () => {
-    dispatch(addItem(searchText));
+  const handleSubmitSearch = (data) => {
+    dispatch(addItem(data));
   };
 
   const onChangeSearch = (event) => {
@@ -150,7 +153,7 @@ function Header() {
     setIsForgetPwd(true);
     setIsRegister(false);
     setIsLoginForm(false);
-  });
+  }, []);
 
   useEffect(() => {
     document.addEventListener("click", (event) => {
@@ -212,8 +215,9 @@ function Header() {
             />
             {focusSearch && (
               <Search
-                trendingCategory={CategorySpecify}
+                trendingCategory={categorySpecify}
                 trendingSearch={trendingSearch}
+                handleSubmitSearch={handleSubmitSearch}
                 setSearchText={setSearchText}
                 suggestions={filteredSuggestions}
                 searchedItems={searchedItems}
@@ -230,7 +234,7 @@ function Header() {
               }}
               variant="contained"
               startIcon={<SearchIcon />}
-              onClick={handleSearch}
+              onClick={() => handleSubmitSearch(searchText)}
             >
               Tìm kiếm
             </Button>
@@ -280,52 +284,6 @@ function Header() {
 
                   <Link to={"/customer/account/edit"}>Tài khoản của tôi</Link>
 
-                  <Link to="/">
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <img
-                        className="header__dropdown-img"
-                        alt=""
-                        src="https://salt.tikicdn.com/ts/ta/06/60/57/811aae78f04f81a6e00ba2681e02291f.png"
-                      />
-                      <Stack>
-                        <Box>SEP 0</Box>
-
-                        <Box>
-                          Bạn đang có <b>0 Astra</b>
-                        </Box>
-                      </Stack>
-                    </Stack>
-                  </Link>
-
-                  <Link to="/">
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <img
-                        className="header__dropdown-img"
-                        alt=""
-                        src="https://frontend.tikicdn.com/_desktop-next/static/img/account/insurance.png"
-                      />
-
-                      <Stack>
-                        <Box>Hợp đồng bảo hiểm</Box>
-                      </Stack>
-                    </Stack>
-                  </Link>
-
-                  <Link to="/">
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <img
-                        className="header__dropdown-img"
-                        alt=""
-                        src="https://salt.tikicdn.com/ts/upload/5b/70/af/ac0eacaa8ec6738ac474f7bbe767bd75.png"
-                      />
-                      <Stack>
-                        <Box>TikiNOW</Box>
-
-                        <Box>Thông tin Gói hội viên</Box>
-                      </Stack>
-                    </Stack>
-                  </Link>
-
                   <Link to="/customer/coupons">
                     <Stack direction="row" spacing={1} alignItems="center">
                       <img
@@ -358,25 +316,9 @@ function Header() {
                     </Stack>
                   </Link>
 
-                  <Link to="/">
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <img
-                        className="header__dropdown-img"
-                        alt=""
-                        src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/bookcare.svg"
-                      />
-                      <Stack>
-                        <Box>Thông tin BookCare</Box>
-                        <Box>
-                          Bạn đang có <b>0</b> BookCare
-                        </Box>
-                      </Stack>
-                    </Stack>
-                  </Link>
-
-                  <Link to="/">Đổi trả dễ dàng</Link>
-
-                  <a onClick={handleLogout}>Thoát tài khoản</a>
+                  <a href="/" onClick={handleLogout}>
+                    Thoát tài khoản
+                  </a>
                 </Box>
               </>
             ) : (
@@ -416,6 +358,7 @@ function Header() {
               <Typography fontSize="12px">Giỏ hàng</Typography>
             </Stack>
           </Link>
+
           <a href="/admin">
             <Button
               sx={{
@@ -439,17 +382,6 @@ function Header() {
         onClose={closeModalLogin}
       >
         <Box className="modal-login" sx={{ width: "800px" }}>
-          {/* {isLoginForm ? (
-            <Login
-            handleOpenSignup={handleOpenSignup}
-              closeModalLogin={closeModalLogin}
-            />
-          ) : (
-            <SignUp
-            handleOpenLogin={handleOpenLogin}
-              closeModalLogin={closeModalLogin}
-            />
-          )} */}
           {isLoginForm && (
             <Login
               handleOpenSignup={handleOpenSignup}
@@ -457,12 +389,14 @@ function Header() {
               handleOpenForgetPwd={handleOpenForgetPwd}
             />
           )}
+
           {isRegister && (
             <SignUp
               handleOpenLogin={handleOpenLogin}
               closeModalLogin={closeModalLogin}
             />
           )}
+
           {isForgetPwd && <ForgetPassword closeModalLogin={closeModalLogin} />}
         </Box>
       </Modal>
