@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import CloseIcon from "@mui/icons-material/Close";
 
 function ForgetPassword(props) {
   //const dispatch = useDispatch();
@@ -41,11 +42,12 @@ function ForgetPassword(props) {
       });
   };
 
+
   return (
-    <Stack sx={{padding:"0px"}} direction="row">
+    <Stack direction="row">
       <Stack sx={{ flex: 5 }} spacing={2}>
         <Box>
-          <IconButton>
+          <IconButton onClick={props.handleReturnLogin}>
             <ArrowBackIosIcon />
           </IconButton>
         </Box>
@@ -106,6 +108,12 @@ function ForgetPassword(props) {
         <Typography sx={{color:"#0b74e5", fontSize:"17px", fontWeight:"500"}}>Mua sắm tại Tiki</Typography>
         <Typography sx={{color:"#0b74e5", fontSize:"13px", fontWeight:"500"}}>Siêu ưu đãi mỗi ngày</Typography>
       </Stack>
+      <span style={{ position: "absolute", top: 0, right: 0 }}>
+        <IconButton onClick={props.closeModalForgetPWD}>
+          <CloseIcon />
+        </IconButton>
+      </span>
+
     </Stack>
   );
 }
