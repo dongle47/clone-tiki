@@ -6,19 +6,6 @@ import AutoModeIcon from '@mui/icons-material/AutoMode';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-export const orderStates = [
-    {
-        id: 1,
-        display: "Thất bại",
-        icon: DoDisturbIcon
-    },
-    {
-        id: 2,
-        display: "Giao hàng thành công",
-        icon: LocalShippingIcon
-    }
-]
-
 export const orderItems = [
     {
         id: 1,
