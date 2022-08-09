@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles";
 
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
-
+import "./Admin.scss"
 import {
   Box,
   Toolbar,
@@ -132,7 +132,7 @@ function Admin() {
   const formNotify = () => {
     return (
       <Box sx={{ zIndex: "10" }}>
-        <Typography>dadsadadsa</Typography>
+        <Typography></Typography>
       </Box>
     );
   };
@@ -142,7 +142,7 @@ function Admin() {
     top: 48,
     right: 0,
     zIndex: 1,
-    border: "0px ",
+    border: "1px solid #333",
     bgcolor: "background.paper",
     width: "16rem",
     paddingTop: "4px"
@@ -220,7 +220,7 @@ function Admin() {
                     padding: "4px",
                     cursor: "pointer"
                   }}
-                  className="header"
+                  className="admin__dropdown"
                   direction="row"
                   alignItems="center"
                   spacing={1}

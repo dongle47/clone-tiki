@@ -1,4 +1,5 @@
-.header:hover {
-    color: blue;
-    background-color: yellow;
+.admin {
+    &__dropdown:hover {
+        color: #1890ff;
+    }
 }
