@@ -1,6 +1,8 @@
+/* eslint-disable jsx-a11y/alt-text */
 import * as React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import { sidebar } from "../../constraints/Admin";
+import { Notifies } from "../../constraints/AdminNotify";
 import { styled } from "@mui/material/styles";
 
 import MuiDrawer from "@mui/material/Drawer";
@@ -30,6 +32,9 @@ import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CloseIcon from "@mui/icons-material/Close";
 
 import CreateCoupon from "./Coupon/CreateCoupon";
 import AdminLogin from "./Login";
@@ -130,8 +135,31 @@ function Admin() {
 
   const formNotify = () => {
     return (
-      <Box sx={{ zIndex: "10" }}>
-        <Typography>dadsadadsa</Typography>
+      <Box sx={{ zIndex: "10", width: '400px', mt: "5rem" }}> 
+        <Stack>
+            <Stack direction="row" justifyContent="space-between">
+              <Stack>
+                <Typography>Cập nhật nhà bán</Typography>
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <Button startIcon={<FormatListBulletedIcon />}>Xem tất cả</Button>
+                <Divider orientation="vertical" sx={{height: "0.9rem"}} />
+                <Button startIcon={<CheckCircleOutlineIcon />}>Đã đọc tất cả</Button>
+                </Stack>
+              </Stack>
+              <IconButton >
+                <CloseIcon />
+              </IconButton>
+            </Stack>
+          <Divider light />
+          <Stack  >   
+            {Notifies.map((item) => (
+              <Stack direction="row">
+                <img src="https://salt.tikicdn.com/ts/sellercenterFE/bb/d5/88/7898a8f9179435d5cf3f28bb3d99a82c.jpeg" />
+                <Stack></Stack>
+              </Stack>           
+            ))}
+           </Stack> 
+        </Stack>
       </Box>
     );
   };
