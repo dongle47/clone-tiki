@@ -3,6 +3,7 @@ import React from "react";
 import "./OrderItem.scss";
 import { orderTabs } from "../../constraints/OrderItem";
 import { numWithCommas } from "../../constraints/Util";
+import { Link } from "react-router-dom";
 function OrderItem(props) {
   const { order } = props;
   const state = getState(order.type);
@@ -64,7 +65,9 @@ function OrderItem(props) {
         </Box>
         <Box className="orderItem__groupbtn">
           <Button variant="outlined">Mua lại</Button>
-          <Button variant="outlined">Xem chi tiết</Button>
+          <Link to={`/customer/order/detail/${order.id}`}><Button variant="outlined">Xem chi tiết</Button>
+          </Link>
+          
         </Box>
       </Box>
     </Box>

@@ -57,6 +57,21 @@ function DetailProduct() {
   const [addressCustom, setAddressCustom] = useState("");
   const [modalSlider, setModelSlider] = useState(false);
   const [loading, setLoading] = React.useState(true)
+  const [choose, setChoose] = useState({});
+  const [indexImg, setIndexImg] = useState(0);
+  const dispatch = useDispatch();
+  const { slug } = useParams();
+
+  useEffect(() => {
+    const getProduct = async () => {
+      const response = await apiProduct.getProductsBySlug(slug);
+      if (response) {
+        if (response.length !== 0) setProduct(response[0]);
+      }
+    };
+    getProduct();
+  }, [slug]);
+
   const openModalSlider = () => setModelSlider(true);
 
   const handleClickFavorite = () => {
@@ -129,13 +144,7 @@ function DetailProduct() {
     setCommune(value);
   }, []);
 
-  const [choose, setChoose] = useState({});
-
-  const [indexImg, setIndexImg] = useState(0);
-
-  const dispatch = useDispatch();
-
-  const { id } = useParams();
+  
 
   useEffect(() => {
     const getData = async () => {
@@ -151,15 +160,7 @@ function DetailProduct() {
     getData();
   }, []);
 
-  useEffect(() => {
-    const getProduct = async () => {
-      const response = await apiProduct.getProductsById(id);
-      if (response) {
-        if (response.length !== 0) setProduct(response[0]);
-      }
-    };
-    getProduct();
-  }, [id]);
+  
 
   const handleClickBuy = () => {
     dispatch(
@@ -228,7 +229,7 @@ function DetailProduct() {
         <Box className="detailProduct">
           <Box className="detailProduct__img">
             <Box className="detailProduct__primary-img" onClick={openModalSlider}>
-                {loading && <Skeleton variant="rectangular" width='100%' height='100%' />}
+                {loading && <Skeleton  variant="rectangular" width='100%' height='100%' />}
                 <img onLoad={() => setLoading(false)}
                   src={product?.details.images[indexImg]} alt="" />
             </Box>{" "}
