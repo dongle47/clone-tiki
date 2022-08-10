@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { styled } from "@mui/material/styles";
+import { Link, useNavigate } from 'react-router-dom'
 import {
   Box,
   Stack,
@@ -27,7 +28,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import apiMain from "../../../apis/apiMain";
 import apiCart from "../../../apis/apiCart";
 import { useSelector } from "react-redux";
-
+import { toast } from "react-toastify";
+import "./ReviewPurchased.scss"
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -69,13 +71,19 @@ BootstrapDialogTitle.propTypes = {
 
 function ReviewPurchased() {
   const [open, setOpen] = useState(false);
-
-  
+  const [productName, setProductName] = useState("")
+  const [productImg, setProductImg] = useState("")
+  const [imgRate, setImgRate] = useState()
+  const [storeName, setStoreName] = useState("")
+  const [content, setContent] = useState("")
+  const [satisfy, setSatisfy] = useState("")
+  const [rating, setRating] = useState(0)
+  const navigate = useNavigate()
   const handleClose = () => {
     setOpen(false);
   };
   const [chosenProduct, setChosenProduct] = useState()
-  
+
   const [myRevPurchaseds, setMyRevPurchaseds] = useState([])
   const [totalPage, setTotalPage] = useState(10)
   const [page, setPage] = useState(1)
@@ -104,12 +112,37 @@ function ReviewPurchased() {
   const handleChange = (event, value) => {
     setPage(value);
   }
+  const handleChangeContent =(event) =>{
+    setContent(event.target.value)
+  }
+  const handleChangeRating =(event, value) =>{
+    setRating(value);
+  }
   const handleClickOpen = (product) => {
     setChosenProduct(product)
     setOpen(true);
-    
+
   };
-  
+  const handleSaveCmt = () => {
+    const params = {
+      "imgRate": [],
+      "productName": chosenProduct?.name|| "",
+      "storeName": "Tiki",
+      "rating": rating,
+      "satisfy": satisfy,
+      "content": content,
+      "productImg" :chosenProduct?.image||"",
+    }
+    apiMain.postMyReviews(params)
+    .then(res =>{
+      toast.success("Đã đánh giá")
+      handleClose()
+    })
+    .catch(error =>{
+      toast.error("Đánh giá thất bại!")
+    })
+  }
+
   return (
     <Box
       sx={{
@@ -121,12 +154,12 @@ function ReviewPurchased() {
         Nhận xét sản phẩm đã mua
       </Typography>
 
-      <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row">
+      <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing ={2}>
         {myRevPurchaseds.map((item) =>
           <Card key={item.id} sx={{ border: "0px solid black", maxWidth: "13rem" }}>
             <CardMedia component="img" image={item.image} height="200" />
             <CardContent sx={{ padding: "5px 0 0 0" }}>
-              <Typography variant="caption" color="text.secondary">
+              <Typography className="reviewpurchased__name" variant="caption" color="text.secondary">
                 {item.name}
               </Typography>
             </CardContent>
@@ -168,7 +201,7 @@ function ReviewPurchased() {
                   sx={{ height: 100, width: 100 }}
                   component="img"
                   alt=""
-                  src={chosenProduct?.image }
+                  src={chosenProduct?.image}
                 />
 
                 <Stack>
@@ -183,14 +216,15 @@ function ReviewPurchased() {
                 alignItems="center"
                 spacing={3}
               >
-                <Rating
+                <Rating onChange = {handleChangeRating}
                   sx={{}}
                   name="size-large"
-                  defaultValue={2}
+                  defaultValue= {5}
+                  value = {rating}
                   size="large"
                 />
 
-                <TextareaAutosize
+                <TextareaAutosize onChange ={handleChangeContent}
                   minRows={6}
                   maxRows={10}
                   aria-label="maximum height"
@@ -210,7 +244,7 @@ function ReviewPurchased() {
               Trở lại
             </Button>
 
-            <Button variant="contained">Hoàn thành</Button>
+            <Button variant="contained" onClick={handleSaveCmt} >Hoàn thành</Button>
           </DialogActions>
         </BootstrapDialog>
       </div>
