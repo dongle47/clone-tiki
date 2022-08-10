@@ -7,13 +7,10 @@ import CardProduct from "../../components/CardProduct";
 import CardFlashsale from "../../components/CardFlashsale";
 
 import {
-  Categories,
   SlideThuongHieu1,
   SlideThuongHieu2,
 } from "../../constraints/Home";
-
 import { Swiper, SwiperSlide } from "swiper/react";
-
 // import required modules
 import { Pagination, Navigation, Autoplay } from "swiper";
 
@@ -21,10 +18,11 @@ import { Pagination, Navigation, Autoplay } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
 import apiMain from "../../apis/apiMain";
 import apiHome from "../../apis/apiHome";
 import Loading from "../../components/Loading";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -45,14 +43,15 @@ function Home() {
         _limit: size,
       };
       apiHome.getProducts(param)
-        .then(res=>{
+        .then(res => {
+          console.log(res.data)
           setProducts((pre) => [...pre, ...res.data]);
         })
-        .finally(()=>setLoadingShowmore(false))
+        .finally(() => setLoadingShowmore(false))
     };
     getData();
   }, [page]);
-  
+
 
   useEffect(() => {
     const getDataQuickLink = async () => {
@@ -226,11 +225,11 @@ function Home() {
               <Box className="section__title">Gợi Ý Hôm Nay</Box>
             </Box>
             <Box className="suggestion__wrap">
-              {Suggestions.map((item,index) => (
+              {Suggestions.map((item, index) => (
                 <Link key={item.id} to={item.link}>
                   <Box
-                    onClick = {()=>setChooseSuggestion(index)}
-                    className={`suggestion__item ${index=== chooseSuggestion? "active" : ""
+                    onClick={() => setChooseSuggestion(index)}
+                    className={`suggestion__item ${index === chooseSuggestion ? "active" : ""
                       }`}
                   >
                     <img
@@ -246,7 +245,7 @@ function Home() {
           </Box>
           <Grid container>
             {products.map((item) => (
-              <Grid key={item.id} item lg={2} md={4} sm={6} xs={6}>
+              <Grid key={`product-${item.id}`} item lg={2} md={4} sm={6} xs={6}>
                 <CardProduct data={item} />
               </Grid>
             ))}
@@ -258,7 +257,7 @@ function Home() {
               color="primary"
               variant="outlined"
               onClick={handleLoadMore}
-            >{loadingShowmore&&<Loading/>}
+            >{loadingShowmore && <Loading />}
               Xem thêm
             </Button>
           </Stack>
@@ -387,14 +386,14 @@ function SlideThuongHieu() {
 
 function SectionFlashsale() {
   const [sales, setSales] = useState([]);
-  const [countDown, setCountDown] = useState({hour:0,minute:0,second:0});
+  const [countDown, setCountDown] = useState({ hour: 0, minute: 0, second: 0 });
   const size = 12;
 
   useEffect(() => {
     const countDownFlashsale = () => {
       let initTime = new Date()
-      let hourFlashsale = Math.ceil((initTime.getHours() + initTime.getMinutes()/60) / 3) * 3
-      
+      let hourFlashsale = Math.ceil((initTime.getHours() + initTime.getMinutes() / 60) / 3) * 3
+
       initTime.setHours(hourFlashsale)
       initTime.setMinutes(0)
       initTime.setSeconds(0)
@@ -409,22 +408,23 @@ function SectionFlashsale() {
         // Time calculations for days, hours, minutes and seconds
         setCountDown({
           hour: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minute:Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+          minute: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
           second: Math.floor((distance % (1000 * 60)) / 1000)
-        } )
+        })
         if (distance < 0) {
           clearInterval(x);
         }
       }, 1000);
     }
     countDownFlashsale()
-  },[])
+  }, [])
 
   useEffect(() => {
     const getData = async () => {
-      const response = await apiMain.getProducts({});
+      const response = await apiMain.getProducts({_page:2,_limit:20});
       if (response) {
-        setSales(response.slice(0, size));
+        
+        setSales(response.data);
       }
     };
     getData();
@@ -442,11 +442,11 @@ function SectionFlashsale() {
             <img alt="" src="https://frontend.tikicdn.com/_desktop-next/static/img/giasoc.svg" />
             <img alt="" src="https://frontend.tikicdn.com/_desktop-next/static/img/dealFlashIcon.svg" />
             <img src="https://frontend.tikicdn.com/_desktop-next/static/img/homnay.svg" alt="" />
-            <span className="flashsale__time">{("0"+countDown.hour).slice(-2)}</span>
+            <span className="flashsale__time">{("0" + countDown.hour).slice(-2)}</span>
             <span>:</span>
-            <span className="flashsale__time">{("0"+countDown.minute).slice(-2)}</span>
+            <span className="flashsale__time">{("0" + countDown.minute).slice(-2)}</span>
             <span>:</span>
-            <span className="flashsale__time">{("0"+countDown.second).slice(-2)}</span>
+            <span className="flashsale__time">{("0" + countDown.second).slice(-2)}</span>
           </Box>
           <Link id="section2__more" to={"/xemthem"}>
             Xem thêm
@@ -478,39 +478,101 @@ function SectionFlashsale() {
   );
 }
 
-function Category(props) {
+function Category() {
   const categoryRef = useRef();
 
-  const handleReachEnd = () => {
+  const [translate,setTranslate] = useState(0)
+  const [categories, setCategories] = useState([])
+
+  useEffect(() => {
+    const getData = async () => {
+      apiHome.getCategories({})
+        .then(res => {
+          setCategories(res)
+        })
+        .catch(error => {
+          setCategories([])
+        })
+    }
+    getData()
+  }, [])
+
+  const onClickPrev = () => {
     if (categoryRef) {
-      categoryRef.current.children[2].style.display = "none";
-      categoryRef.current.children[1].style.removeProperty("display");
+      let offset = categoryRef.current.offsetWidth - 50
+      if ( translate + offset >= 0){
+        setTranslate(0)
+        categoryRef.current.children[0].style.display = "none";
+      }
+      else{
+        setTranslate(translate + offset)
+        categoryRef.current.children[0].style.removeProperty("display");
+        categoryRef.current.children[2].style.removeProperty("display");
+      }
     }
   };
 
-  const handleReachBeginning = () => {
+  const onClickNext = () => {
     if (categoryRef) {
-      categoryRef.current.children[1].style.display = "none";
-      categoryRef.current.children[2].style.removeProperty("display");
+      let offset = categoryRef.current.offsetWidth - 50
+      if(translate - 2*offset <= -categoryRef.current.children[1].offsetWidth){
+        categoryRef.current.children[2].style.display = "none";
+        setTranslate(-categoryRef.current.children[1].offsetWidth + offset)
+      }
+      else{
+        setTranslate(translate - offset)
+        categoryRef.current.children[0].style.removeProperty("display");
+        categoryRef.current.children[2].style.removeProperty("display");
+      }
     }
   };
 
   return (
-    <Swiper
-      slidesPerView={13}
-      slidesPerGroup={13}
-      navigation={true}
-      modules={[Navigation]}
-      className="mySwiper"
+    // <Swiper
+    //    slidesPerView={8}
+    //   slidesPerGroup={8}
+    //   spaceBetween={10}
+    //   navigation={true}
+    //   modules={[Navigation]}
+    //   className="mySwiper"
+    //   ref={categoryRef}
+    //   onReachEnd={handleReachEnd}
+    //   onReachBeginning={handleReachBeginning}
+    //   onInit={handleReachBeginning}
+    // >
+    //   <Stack direction="row" justifyContent="center">
+    //     {categories.map((item) => (
+    //       <SwiperSlide key={item.id}>
+    //         <Link to={`filter/${item.slug}`}>
+    //           <Box
+    //             style={{
+    //               fontSize: "14px",
+    //               textAlign: "center",
+    //               whiteSpace: "nowrap",
+    //             }}
+    //           >
+    //             {item.name}
+    //           </Box>
+    //         </Link>
+    //       </SwiperSlide>
+    //     ))}
+    //   </Stack>
+    // </Swiper>
+    <Stack className='catogory'
       ref={categoryRef}
-      onReachEnd={handleReachEnd}
-      onReachBeginning={handleReachBeginning}
-      onInit={handleReachBeginning}
+      direction='row'
+      justifyContent="space-between"
+      alignItems={'center'}
     >
-      <Stack direction="row" justifyContent="center">
-        {Categories.map((item) => (
-          <SwiperSlide key={item.id}>
-            <Link to={item.link}>
+      <Box className='catogory__prev' onClick = {onClickPrev} style={{display:'none'}}>
+        <ArrowBackIosIcon />
+      </Box>
+      <Stack sx={{transform:`translateX(${translate}px)`}}
+      className='catogory__content' direction="row" justifyContent="space-between" spacing="16px"
+      >
+        {categories.map((item) => (
+          <Box key={item.id} >
+            <Link to={`filter/${item.slug}`}>
               <Box
                 style={{
                   fontSize: "14px",
@@ -518,13 +580,17 @@ function Category(props) {
                   whiteSpace: "nowrap",
                 }}
               >
-                {item.display}
+                {item.name}
               </Box>
             </Link>
-          </SwiperSlide>
+          </Box>
         ))}
       </Stack>
-    </Swiper>
+      <Box className='catogory__next' onClick={onClickNext}>
+        <ArrowForwardIosIcon />
+      </Box>
+    </Stack>
+
   );
 }
 export default Home;

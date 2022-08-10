@@ -365,3 +365,29 @@
         color: #fff;
     }
 }
+
+.catogory {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    overflow: hidden;
+    &__prev,
+    &__next {
+        background-color: #fff;
+        z-index: 1;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+    &__prev {
+        left: 0;
+    }
+    &__next {
+        right: 0;
+    }
+    &__content {
+        margin: 0 20px;
+        transition: transform 0.3s ease-in-out;
+    }
+}

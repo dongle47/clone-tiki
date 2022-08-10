@@ -6,59 +6,7 @@ import AutoModeIcon from '@mui/icons-material/AutoMode';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-export const orderItems = [
-    {
-        id: 1,
-        state: "Giao hàng thành công",
-        type: "Đã giao",
-        totalPrice: 1400000,
-        products: [
-            {
-                id: 1,
-                name: "Sạc Dự Phòng Xiaomi 10000mAh Gen 3 PLM13ZM - Hàng Nhập Khẩu - Đen",
-                image: "https://salt.tikicdn.com/cache/200x200/ts/product/03/c5/fa/de1f68f3247b1a407d725800925f341a.jpg",
-                link: "",
-                coupon: 10000,
-                price: 350000,
-                quanlity: 1,
-            },
-            {
-                id: 2,
-                name: "Sạc Dự Phòng Xiaomi 10000mAh Gen 3 PLM13ZM - Hàng Nhập Khẩu - Đen",
-                image: "https://salt.tikicdn.com/cache/200x200/ts/product/03/c5/fa/de1f68f3247b1a407d725800925f341a.jpg",
-                link: "",
-                coupon: 10000,
-                price: 350000,
-                quanlity: 2,
-            }
-        ]
-    },
-    {
-        id: 2,
-        state: "Thất bại",
-        type: "Thất bại",
-        totalPrice: 1400000,
-        products: [
-            {
-                id: 1,
-                name: "Sạc Dự Phòng Xiaomi 10000mAh Gen 3 PLM13ZM - Hàng Nhập Khẩu - Đen",
-                image: "https://salt.tikicdn.com/cache/200x200/ts/product/03/c5/fa/de1f68f3247b1a407d725800925f341a.jpg",
-                link: "",
 
-                price: 350000,
-                quanlity: 1,
-            },
-            {
-                id: 2,
-                name: "Sạc Dự Phòng Xiaomi 10000mAh Gen 3 PLM13ZM - Hàng Nhập Khẩu - Đen",
-                image: "https://salt.tikicdn.com/cache/200x200/ts/product/03/c5/fa/de1f68f3247b1a407d725800925f341a.jpg",
-                link: "",
-                price: 350000,
-                quanlity: 1,
-            }
-        ]
-    }
-]
 
 export const orderTabs = [
     {
