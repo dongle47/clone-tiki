@@ -1,9 +1,11 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable jsx-a11y/alt-text */
 import * as React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import { sidebar } from "../../constraints/Admin";
 import { Notifies } from "../../constraints/AdminNotify";
 import { styled } from "@mui/material/styles";
+import "./Admin.scss";
 
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -32,8 +34,8 @@ import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
 
 import CreateCoupon from "./Coupon/CreateCoupon";
@@ -133,32 +135,59 @@ function Admin() {
 
   const [openNotify, setOpenNotify] = React.useState(false);
 
+  const CloseNotify = () => {
+    setOpenNotify(false);
+  }
+
   const formNotify = () => {
     return (
-      <Box sx={{ zIndex: "10", width: '400px', mt: "5rem" }}> 
+      <Box sx={{ zIndex: "10", width: "400px", mt: "5rem" }}>
         <Stack>
-            <Stack direction="row" justifyContent="space-between">
-              <Stack>
-                <Typography>Cập nhật nhà bán</Typography>
-                <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <Button startIcon={<FormatListBulletedIcon />}>Xem tất cả</Button>
-                <Divider orientation="vertical" sx={{height: "0.9rem"}} />
-                <Button startIcon={<CheckCircleOutlineIcon />}>Đã đọc tất cả</Button>
-                </Stack>
+          <Stack direction="row" justifyContent="space-between">
+            <Stack sx={{padding:"12px"}}>
+              <Typography sx={{fontSize:"16px", fontWeight:"600"}}>Cập nhật nhà bán</Typography>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Button size="medium" sx={{fontWeight:"400"}}  startIcon={<FormatListBulletedIcon fontSize="small"/>}>
+                  Xem tất cả
+                </Button>
+                <Divider orientation="vertical" sx={{ height: "0.9rem", marginRight:"6px", marginLeft:"6px" }} />
+                <Button size="medium" sx={{fontWeight:"400"}}  startIcon={<CheckCircleOutlineIcon fontSize="small"/>}>
+                  Đã đọc tất cả
+                </Button>
               </Stack>
-              <IconButton >
-                <CloseIcon />
-              </IconButton>
             </Stack>
+            <IconButton onClick={CloseNotify}>
+              <CloseIcon fontSize="small"/>
+            </IconButton>
+          </Stack>
           <Divider light />
-          <Stack  >   
+          <Stack sx={{padding:"12px"}}>
             {Notifies.map((item) => (
-              <Stack direction="row">
-                <img src="https://salt.tikicdn.com/ts/sellercenterFE/bb/d5/88/7898a8f9179435d5cf3f28bb3d99a82c.jpeg" />
-                <Stack></Stack>
-              </Stack>           
+              <Stack>
+                <Stack direction="row" spacing={2} sx={{padding:"12px"}}>
+                  <Stack width="56px" height="56px" >
+                    <img  style={{borderRadius:"8px"}} src="https://salt.tikicdn.com/ts/sellercenterFE/bb/d5/88/7898a8f9179435d5cf3f28bb3d99a82c.jpeg"/>
+                  </Stack>
+                  <Stack sx={{ overflow: "auto" }}>
+                    <Stack>
+                      <a  href={item.link}>
+                        <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>{item.title}</Typography>
+                        {item.info.map((itemI) => (
+                          <Typography sx={{fontSize: "14px"}}>{itemI.text}</Typography>
+                        ))}
+                      </a>
+                    </Stack>
+                    <Typography sx={{fontSize: "12px"}}>{item.datetime}</Typography>
+                  </Stack>
+                </Stack>   
+                <Divider light />
+              </Stack>  
             ))}
-           </Stack> 
+          </Stack>
         </Stack>
       </Box>
     );
@@ -175,7 +204,6 @@ function Admin() {
     bgcolor: "background.paper",
     width: "16rem",
   };
-
 
   const [selectedTabId, setSelectedTabId] = React.useState(0);
 
@@ -342,48 +370,73 @@ function Admin() {
         </List>
       </Drawer>
 
-      <Box component="main" flexGrow={1} p={0} bgcolor="#f5f5fa" minHeight="40rem">
+      <Box
+        component="main"
+        flexGrow={1}
+        p={0}
+        bgcolor="#f5f5fa"
+        minHeight="40rem"
+      >
         <DrawerHeader />
         <Routes>
           <Route index element={<Dashboard />} />
           <Route path="login" element={<AdminLogin />} />
           <Route path="order/*" element={<Order />} />
-          <Route path="product/*" element={
-            <Routes>
-              <Route index element={<Product />} />
-              <Route path="create" element={<CreateProduct />} />
-            </Routes>
-          } />
-          
-          <Route path="category/*" element={
-            <Routes>
-              <Route index element={<Category />} />
-              <Route path="create" element={<CreateCategory />} />
-              <Route path="edit/:id" element={<CreateCategory edit={true}/>} />
-            </Routes>
-          } />
-          
-          <Route path="brand/*" element={
-            <Routes>
-              <Route path="create" element={<CreateBrand />} />
-              <Route path="edit/:id" element={<CreateBrand edit={true}/>} />
-              <Route index element={<Brand />} />
-            </Routes>
-          }/>
+          <Route
+            path="product/*"
+            element={
+              <Routes>
+                <Route index element={<Product />} />
+                <Route path="create" element={<CreateProduct />} />
+              </Routes>
+            }
+          />
+
+          <Route
+            path="category/*"
+            element={
+              <Routes>
+                <Route index element={<Category />} />
+                <Route path="create" element={<CreateCategory />} />
+                <Route
+                  path="edit/:id"
+                  element={<CreateCategory edit={true} />}
+                />
+              </Routes>
+            }
+          />
+
+          <Route
+            path="brand/*"
+            element={
+              <Routes>
+                <Route path="create" element={<CreateBrand />} />
+                <Route path="edit/:id" element={<CreateBrand edit={true} />} />
+                <Route index element={<Brand />} />
+              </Routes>
+            }
+          />
 
           <Route path="develop" element={<GrowthCenter />} />
-          <Route path="coupon/*" element={
-            <Routes>
-              <Route index element={<CouponAdmin />} />
-              <Route path="create" element={<CreateCoupon />} />
-            </Routes>
-          } />
+          <Route
+            path="coupon/*"
+            element={
+              <Routes>
+                <Route index element={<CouponAdmin />} />
+                <Route path="create" element={<CreateCoupon />} />
+              </Routes>
+            }
+          />
 
-          <Route path="user/*" element={
-          <Routes>
-            <Route index element={<User />} />
-            <Route path="detail/:id"  element={<DetailUser />} />
-          </Routes>}/>
+          <Route
+            path="user/*"
+            element={
+              <Routes>
+                <Route index element={<User />} />
+                <Route path="detail/:id" element={<DetailUser />} />
+              </Routes>
+            }
+          />
 
           <Route path="review" element={<Review />} />
         </Routes>
