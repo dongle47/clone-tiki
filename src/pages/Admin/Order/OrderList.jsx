@@ -37,12 +37,17 @@ const rows = [
     ),
 ]
 const items = [
-    { id: 1, label: 'Tất cả', value: "-" },
-    { id: 2, label: 'Chờ xác nhận', value: "đơn quá hạn XN" },
-    { id: 3, label: 'Đang xử lý', value: "-" },
-    { id: 4, label: 'Đang vận chuyển', value: "-" },
-    { id: 5, label: 'Đã giao hàng', value: "-" },
-    { id: 6, label: 'Đã hủy', value: "-" },
+    // { id: 1, label: 'Tất cả', value: "-" },
+    // { id: 2, label: 'Chờ xác nhận', value: "đơn quá hạn XN" },
+    // { id: 3, label: 'Đang xử lý', value: "-" },
+    // { id: 4, label: 'Đang vận chuyển', value: "-" },
+    // { id: 5, label: 'Đã giao hàng', value: "-" },
+    // { id: 6, label: 'Đã hủy', value: "-" },
+    { id: 1, label: 'Tất cả'},
+    { id: 2, label: 'Đang xử lý'},
+    { id: 3, label: 'Đang vận chuyển'},
+    { id: 4, label: 'Đã giao hàng'},
+    { id: 5, label: 'Đã hủy'},
 ]
 
 function OrderList() {
@@ -81,7 +86,7 @@ function OrderList() {
                         alignItems="center" justifyContent="center"
                         className={`orderTab__item ${i === selected ? "selected" : ""}`}>
                             <Typography fontWeight="500 !important">{item.label}</Typography>
-                            <Typography>{item.value}</Typography>
+                            {/* <Typography>{item.value}</Typography> */}
                         </Stack>)
                 }
             </Stack>
@@ -111,7 +116,7 @@ function OrderList() {
                         <SearchIcon sx={{ fontSize: "28px" }} />
                     </span>
                 </Stack>
-                <Stack width="256px">
+                {/* <Stack width="256px">
                     <Select
                         value={orderDate}
                         onChange={onChangeOrderDate}
@@ -121,7 +126,7 @@ function OrderList() {
                                 <MenuItem value={item}>{listOrderDate[item]}</MenuItem>)
                         }
                     </Select>
-                </Stack>
+                </Stack> */}
             </Stack>
 
             <Stack direction="row" p={2} spacing="16px">

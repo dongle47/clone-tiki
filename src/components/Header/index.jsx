@@ -137,11 +137,25 @@ function Header() {
     setIsForgetPwd(false);
   };
 
+  const closeModalForgetPWD = () => {
+    setIsForgetPwd(false);
+    setModalLogin(false);
+    setIsLoginForm(true);
+    setIsRegister(false);
+  };
+
+  const handleReturnLogin = useCallback(() => {
+    setIsLoginForm(true);
+    setIsForgetPwd(false);
+    setIsRegister(false);
+  }, []);
+
   const handleOpenSignup = useCallback(() => {
     setIsRegister(true);
     setIsForgetPwd(false);
     setIsLoginForm(false);
   }, []);
+
 
   const handleOpenLogin = useCallback(() => {
     setIsLoginForm(true);
@@ -397,7 +411,10 @@ function Header() {
             />
           )}
 
-          {isForgetPwd && <ForgetPassword closeModalLogin={closeModalLogin} />}
+          {isForgetPwd && <ForgetPassword
+            closeModalForgetPWD={closeModalForgetPWD}
+            handleReturnLogin={handleReturnLogin}
+          />}
         </Box>
       </Modal>
     </header>
