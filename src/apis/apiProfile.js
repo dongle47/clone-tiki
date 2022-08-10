@@ -39,6 +39,8 @@ const apiProfile = {
         return res.data;
     },
 
+    
+
 }
     
 export default apiProfile;
