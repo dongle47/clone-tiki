@@ -14,6 +14,7 @@ import {
   Modal,
   FormControlLabel,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 
 import "./DetailProduct.scss";
@@ -47,39 +48,56 @@ function DetailProduct() {
   const { id } = useParams();
 
   const [isFavorite, setIsFavorite] = useState(false);
-  const [itemId, setItemId] = useState("");
 
   useEffect(() => {
-    let param = {
-      userId: user.id,
-      productId: id,
+    const checkFavorite = async () => {
+      let param = {
+        userId: user.id,
+        productId: id,
+      };
+      await apiAccount.checkWishItem(param).then((res) => {
+        if (res.length > 0) {
+          setIsFavorite(true);
+        }
+      });
     };
 
-    apiAccount.checkWishItem(param).then((res) => {
-      console.log(res);
-      if (res.length > 0) {
-        setIsFavorite(true);
-        setItemId(res[0].id);
-      }
-    });
-  }, []);
+    checkFavorite();
+  }, [id]);
 
-  const handleClickFavorite = () => {
-    let param = {
-      userId: user.id,
-      productId: id,
-    };
-    setIsFavorite((prev) => !prev);
-
-    if (isFavorite === false) {
-      apiAccount
-        .postWishItem(param)
-        .then(console.log("da them vao ds yeu thich"))
-        .catch((err) => console.log(err));
+  const handleClickFavorite = async () => {
+    if (user === null) {
+      toast.warning("Vui lòng đăng nhập để thực hiện chức năng này");
     } else {
-      apiAccount
-        .deleteWishItem(itemId)
-        .then(console.log("da xoa khoi ds yeu thich"));
+      let param = {
+        userId: user.id,
+        productId: id,
+        productImg: product.image,
+        productName: product.name,
+        productPrice: product.price,
+        productDiscount: product.discount,
+        productRate: product.rate,
+        productSold: product.sold,
+      };
+      setIsFavorite((prev) => !prev);
+
+      if (isFavorite === false) {
+        await apiAccount
+          .postWishItem(param)
+          .then(toast.success("Đã thêm vào danh sách yêu thích"))
+          .catch((err) => toast.error(err));
+      } else {
+        var itemId;
+
+        await apiAccount.checkWishItem(param).then((res) => {
+          itemId = res[0].id;
+        });
+
+        await apiAccount
+          .deleteWishItem(itemId)
+          .then(toast.info("Đã xóa khỏi danh sách yêu thích"))
+          .catch((err) => toast.error(err));
+      }
     }
   };
 
@@ -154,7 +172,6 @@ function DetailProduct() {
 
   const setAddressDetails = useCallback((newAddress) => {
     setAddressCustom(newAddress);
-    console.log(newAddress);
   }, []);
 
   const handleChangeProvince = useCallback((value) => {
@@ -217,7 +234,6 @@ function DetailProduct() {
     setQuantity(e.target.value);
     if (e.target.value === "") return;
     let quantity = Number(e.target.value);
-    console.log(quantity);
     if (Number.isInteger(quantity)) {
       setQuantity(quantity);
     } else {
@@ -429,7 +445,15 @@ function DetailProduct() {
                 size="large"
                 onClick={handleClickFavorite}
               >
-                {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                {isFavorite ? (
+                  <Tooltip title="Xóa khỏi danh sách yêu thích">
+                    <FavoriteIcon />
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Thêm vào danh sách yêu thích">
+                    <FavoriteBorderIcon />
+                  </Tooltip>
+                )}
               </IconButton>
             </Stack>
           </Box>

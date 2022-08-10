@@ -14,22 +14,22 @@ export const axiosClient = axios.create({
 const apiAccount = {
 
     checkWishItem: async (params) => {
-        const res = await axiosClient.get(`/wishlist?params.userId=${params.userId}&params.productId=${params.productId}`)
+        const res = await axiosClient.get(`/wishlist?userId=${params.userId}&productId=${params.productId}`)
         return res.data
     },
 
-    getWishListByUser: async (params) => {
-        const res = await axiosClient.get(`/wishlist?params.userId=${params.userId}`, { params })
+    getWishListByUser: async (userId) => {
+        const res = await axiosClient.get(`/wishlist?userId=${userId}`)
         return res.data;
     },
 
     postWishItem: async (params) => {
-        const res = await axiosClient.post('/wishlist', { params })
+        const res = await axiosClient.post('/wishlist', params)
         return res.data
     },
 
     deleteWishItem: async (params) => {
-        const res = await axiosClient.delete(`/wishlist/${params.itemId}`)
+        const res = await axiosClient.delete(`/wishlist/${params}`)
         return res.data
     }
 

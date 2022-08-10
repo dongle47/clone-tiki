@@ -39,11 +39,6 @@ const apiMain = {
         return myReview.data;
     },
 
-    getMyFavorites: async (params) => {
-        const myFavorite = await axiosProducts.get('', {params})
-        return myFavorite.data;
-    },
-
     getMyRevPurchaseds: async (params) =>{
         const myRevPurchaseds = await axiosProducts.get('', {params})
         return myRevPurchaseds.data;
