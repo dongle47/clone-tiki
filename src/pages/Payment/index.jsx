@@ -15,6 +15,7 @@ import apiCart from '../../apis/apiCart';
 import { toast } from 'react-toastify';
 import { deleteItemsPayment } from '../../slices/cartSlice';
 import { orderTabs } from '../../constraints/OrderItem';
+import apiAddress from '../../apis/apiAddress'
 
 
 function Payment() {
@@ -44,6 +45,15 @@ function Payment() {
   }, [CartItems])
 
   useEffect(() => {
+    const getAddresses = () => {
+      apiAddress.getUserAddress()
+          .catch(()=>{
+            navigate('/customer/address/create')
+            toast.warning("Vui lòng thêm địa chỉ mới")
+          })
+  }
+  getAddresses()
+
     const calcPrice = () => {
       if (CartItems.filter(item => item.choose).length === 0) {
         toast.warning("Vui lòng chọn ít nhất một món hàng")
@@ -52,6 +62,7 @@ function Payment() {
       }
     }
     calcPrice()
+
   }, [])
 
   useEffect(() => {
@@ -61,12 +72,7 @@ function Payment() {
     loadTitle()
   }, [])
 
-  useEffect(() => {
-    const checkValid = () => {
-
-    }
-    checkValid()
-  }, [coupon, addressShip])
+  
 
 
   const handleChangeTypeShip = (event) => {

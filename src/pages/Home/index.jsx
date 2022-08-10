@@ -268,14 +268,14 @@ function Home() {
 }
 
 function SlideKhuyenMai() {
-  const [SlideKhuyenMai1, setSlideKhuyenMai1] = useState([]);
+  const [SlideKhuyenMai, setSlideKhuyenMai] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
       let param = {};
       const response = await apiHome.getSlideKhuyenMai(param);
       if (response) {
-        setSlideKhuyenMai1(response);
+        setSlideKhuyenMai(response);
       }
     };
     getData();
@@ -299,7 +299,7 @@ function SlideKhuyenMai() {
           className="mySwiper"
           id="slider-khuyenmai"
         >
-          {SlideKhuyenMai1.map((item) => (
+          {SlideKhuyenMai.map((item) => (
             <SwiperSlide key={item.id}>
               <Link to={item.link}>
                 <Box width="100%">
@@ -329,10 +329,33 @@ function SlideThuongHieu() {
         slidesPerView={2}
         spaceBetween={30}
         slidesPerGroup={2}
+        
         navigation={true}
         loop={true}
         pagination={{
           clickable: true,
+        }}
+        breakpoints={{
+          "@0.00": {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            slidesPerGroup:1
+          },
+          "@0.75": {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            slidesPerGroup:1
+          },
+          "@1.00": {
+            slidesPerView: 2,
+            spaceBetween: 30,
+            slidesPerGroup:2
+          },
+          "@1.50": {
+            slidesPerView: 2,
+            spaceBetween: 40,
+            slidesPerGroup:2
+          },
         }}
         autoplay={{
           delay: 8000,
@@ -457,7 +480,7 @@ function SectionFlashsale() {
           slidesPerGroup={5}
           navigation={true}
           modules={[Navigation]}
-          className="mySwiper slider-thuonghieu2"
+          className="mySwiper slider-sale"
         >
           {sales.map((item) => (
             <SwiperSlide key={`sale-${item.id}`} style={{ minWidth: "148px" }}>
@@ -528,36 +551,6 @@ function Category() {
   };
 
   return (
-    // <Swiper
-    //    slidesPerView={8}
-    //   slidesPerGroup={8}
-    //   spaceBetween={10}
-    //   navigation={true}
-    //   modules={[Navigation]}
-    //   className="mySwiper"
-    //   ref={categoryRef}
-    //   onReachEnd={handleReachEnd}
-    //   onReachBeginning={handleReachBeginning}
-    //   onInit={handleReachBeginning}
-    // >
-    //   <Stack direction="row" justifyContent="center">
-    //     {categories.map((item) => (
-    //       <SwiperSlide key={item.id}>
-    //         <Link to={`filter/${item.slug}`}>
-    //           <Box
-    //             style={{
-    //               fontSize: "14px",
-    //               textAlign: "center",
-    //               whiteSpace: "nowrap",
-    //             }}
-    //           >
-    //             {item.name}
-    //           </Box>
-    //         </Link>
-    //       </SwiperSlide>
-    //     ))}
-    //   </Stack>
-    // </Swiper>
     <Stack className='catogory'
       ref={categoryRef}
       direction='row'
