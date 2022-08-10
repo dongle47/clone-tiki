@@ -6,7 +6,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import OrderItem from "../../../components/OrderItem/index.jsx";
 import { orderTabs} from "../../../constraints/OrderItem";
 import { useEffect } from "react";
-import apiMain from "../../../apis/apiMain";
+import apiCart from "../../../apis/apiCart";
 
 function Orders() {
   const [orders, setOrders] = useState([]);
@@ -23,7 +23,7 @@ function Orders() {
         _page: page,
         _limit: size,
       };
-      const response = await apiMain.getOrders(param);
+      const response = await apiCart.getOrders(param);
       if (response) {
         setOrders(response.data.sort((a,b)=>a.createdAt - b.createdAt));
         setTotalPage(Math.ceil(response.pagination._totalRows / size))

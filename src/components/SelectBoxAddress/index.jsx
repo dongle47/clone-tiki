@@ -59,10 +59,13 @@ function SelectBoxAddress(props) {
 
     useEffect(()=>{
       const handle = ()=>{
+        if(!props.setAddressDetails)
+          return
         let province = listprovince?.find(item=>item.id === props.province)
         let district = listdistrict?.find(item=>item.id === props.district)
         let commune = listcommune?.find(item=>item.id === props.commune)
-        if(province && district && commune && props.setAddressDetails)
+        
+        if(province && district && commune)
             props.setAddressDetails(`${province.name}, ${district.name}, ${commune.name}`)
         else
             props.setAddressDetails('')

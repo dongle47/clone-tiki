@@ -29,9 +29,10 @@ function Payment() {
   const CartItems = useSelector(state => state.cart.items)
   const coupon = useSelector(state => state.payment.coupon)
   const addressShip = useSelector(state => state.payment.address)
+  const user = useSelector(state => state.auth.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const feeShip = ship==='shipping1'?40000:23000
+  const feeShip = ship === 'shipping1' ? 40000 : 23000
   const discountFeeShip = 10000
 
   useEffect(() => {
@@ -44,7 +45,7 @@ function Payment() {
 
   useEffect(() => {
     const calcPrice = () => {
-      if(CartItems.filter(item=>item.choose).length===0){
+      if (CartItems.filter(item => item.choose).length === 0) {
         toast.warning("Vui lòng chọn ít nhất một món hàng")
         navigate('/cart')
         return
@@ -53,12 +54,12 @@ function Payment() {
     calcPrice()
   }, [])
 
-  useEffect(()=>{
-    const loadTitle = ()=>{
-      document.title =  "Đơn hàng của tôi | Tiki.vn"
+  useEffect(() => {
+    const loadTitle = () => {
+      document.title = "Đơn hàng của tôi | Tiki.vn"
     }
     loadTitle()
-  },[])
+  }, [])
 
   useEffect(() => {
     const checkValid = () => {
@@ -82,7 +83,7 @@ function Payment() {
 
   const handleOpenAddress = useCallback(() => setOpenAddress(true), []);
   const handleCloseAddress = useCallback(() => setOpenAddress(false), []);
- 
+
   const unchooseCoupon = () => {
     dispatch(clearCoupon())
   }
@@ -94,37 +95,26 @@ function Payment() {
 
   const handleSubmitOrder = () => {
     const payload = {
-      idAddress:addressShip.id,
+      idAddress: addressShip.id,
       idPayment: payment,
-      idShip:ship,
+      idShip: ship,
     }
   }
   const handleSubmitOrderFake = () => {
-    // let listProduct = CartItems.filter(item=>item.choose).map(item=>
-    //     apiProduct.getProductsById(item.id).
-    //     then(res=>{
-    //       if (response.length !== 0)
-    //         return {...res.data,item.quantity}
-    //       return {}
-    //     })
-    //   )
-
-    // Promise.all(listProduct)
-    // .then(res=>{
-    //   if(res.some(item=>item === {}))
-    //   {
-    //     console.log("fail")
-    //     return
-    //   }       
-    // })
-    const state = orderTabs[Math.floor(Math.random() * (orderTabs.length - 1)) + 1]
+    //const state = orderTabs[Math.floor(Math.random() * (orderTabs.length - 1)) + 1]
+    const state = orderTabs[4]
     const payload = {
+      "idUser": user?.id,
       "type": {
         "id": state.id,
         "name": state.type
       },
+      address: addressShip,
+      shipping: shippingMethods.find(item=>item.id === ship),
+      payment:paymentMethods.find(item=>item.id === payment),
       feeShip,
       totalPrice: finalPrice(),
+      discount: discountFeeShip + coupon?.value || 0,
       products: CartItems.filter(item => item.choose).map(item => {
         return { ...item, discount: 0 }
       })
@@ -182,14 +172,13 @@ function Payment() {
                 value={ship}
                 onChange={handleChangeTypeShip}
               >
-                <Stack direction="row" height="48px" >
-                  <Radio name='shipping' value="shipping1" id='0' sx={{ padding: 0, marginRight: "8px" }} />
-                  <Typography sx={{ margin: "auto 0" }} component='label' htmlFor='0'>Giao hàng nhanh</Typography>
-                </Stack>
-                <Stack direction="row" height="48px">
-                  <Radio name='shipping' value="shipping2" id='1' sx={{ padding: 0, marginRight: "8px" }} />
-                  <Typography sx={{ margin: "auto 0" }} component='label' htmlFor='1'>Giao hàng tiêu chuẩn</Typography>
-                </Stack>
+                {
+                  shippingMethods.map(item =>
+                    <Stack key={item.id} direction="row" height="48px" >
+                      <Radio name='shipping' value={item.id} id={item.id} sx={{ padding: 0, marginRight: "8px" }} />
+                      <Typography sx={{ margin: "auto 0" }} component='label' htmlFor={item.id}>{item.display}</Typography>
+                    </Stack>)
+                }
               </RadioGroup>
             </Box>
             <Box>
@@ -257,7 +246,7 @@ function Payment() {
               <Box mb={2}>
                 <Stack direction="row" justifyContent="space-between">
                   <Typography style={{ fontWeight: 500, color: "#333" }}>Đơn hàng</Typography>
-                  <Typography sx={{ color: "#1890ff", fontSize: "14px",cursor:'pointer' }}>Thay đổi</Typography>
+                  <Typography sx={{ color: "#1890ff", fontSize: "14px", cursor: 'pointer' }}>Thay đổi</Typography>
                 </Stack>
                 <Stack direction="row" alignItems={"baseline"} spacing={1} >
                   <Typography sx={{ fontSize: "14px", color: "#888" }}>1 sản phẩm</Typography>
@@ -324,6 +313,17 @@ function Payment() {
   </>
   )
 }
+
+const shippingMethods = [
+  {
+    id: 'shipping1',
+    display: 'Giao hàng nhanh'
+  },
+  {
+    id: 'shipping2',
+    display: 'Giao hàng tiêu chuẩn'
+  },
+]
 
 const paymentMethods = [
   {

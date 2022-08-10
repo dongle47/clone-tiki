@@ -17,7 +17,7 @@ function CardProduct({ data }) {
     const [loading, setLoading] = React.useState(true)
 
     return (
-        <Link className="card__wrap" to={`/product/${data.id}`}>
+        <Link className="card__wrap" to={`/product/${data.slug}`}>
             <Card className="card">
                 <Box className="card__img">
                     {loading&&<Skeleton variant="rectangular" width='100%' height='100%' />}

@@ -95,7 +95,7 @@ function CartItem(props) {
           </Stack>
         </Stack>
         <Box className="cart-item__cell cart-item__price">
-          {numWithCommas(data?.price)} ₫
+          {numWithCommas(data?.price || 0)} ₫
         </Box>
         <Box className="cart-item__cell">
           <Box className="cart-item__quantity">

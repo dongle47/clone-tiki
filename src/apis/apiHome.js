@@ -40,12 +40,10 @@ const apiHome = {
     getProducts: async (params) => {
         const res = await axiosClient.get('/products', {params})
         return res.data;
-    },
-
-
-   
-
-    
-    
+    }, 
+    getCategories: async (params) => {
+        const res = await axiosClient.get('/categories', {params})
+        return res.data;
+    }, 
 }
 export default apiHome;

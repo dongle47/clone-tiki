@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useLocation } from "react-router-dom";
 
 import "./CustomerAccount.scss";
 
@@ -16,9 +16,11 @@ import {
   Avatar,
   Badge,
   Box,
+  Typography,
+  Breadcrumbs 
 } from "@mui/material";
 
-
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Info from "./Info/index";
 import PhoneNumber from "./Info/PhoneNumber/index";
 import Email from "./Info/Email/index";
@@ -36,10 +38,30 @@ import DetailOrder from "./Orders/DetailOrder";
 import { useSelector } from "react-redux";
 
 function CustomerAccount() {
-  const [selectedTabId, setSelectedTabId] = React.useState(0);
+  const location  = useLocation()
+  
+  const tabId = sidebarTab.find(item=>location.pathname.includes(item.link))
+  console.log(tabId)
+  const [selectedTabId, setSelectedTabId] = React.useState(tabId?.id || 0);
   const user = useSelector(state => state.auth.user)//lấy user từ store
+  const breadcrumbs = [
+    <Link underline="hover" key="1" color="inherit" to="/" style={{fontSize:"14px"}}>
+      Trang chủ
+    </Link>,
+    <Typography key="2" color="text.primary" fontSize="14px">
+      {sidebarTab.find(item=>item.id===selectedTabId)?.text || ""}
+    </Typography>,
+  ];//
   return (
     <Box className="container">
+       <Breadcrumbs
+        separator={<NavigateNextIcon fontSize="small" />}
+        aria-label="breadcrumb"
+        p="16px 16px 8px"
+        fontSize="14px"
+      >
+        {breadcrumbs}
+      </Breadcrumbs>
       <Box className="customer-account">
         <Box width="16rem">
           <List sx={{maxWidth:"300px"}}>
@@ -93,7 +115,7 @@ function CustomerAccount() {
             <Route path="order/*" element={
               <Routes>
                 <Route path="history" element={<Orders />} />
-                <Route path="detail" element={<DetailOrder />} />
+                <Route path="detail/:id" element={<DetailOrder />} />
               </Routes>} />
 
             <Route path="address/*" element={
