@@ -33,7 +33,9 @@ function ReviewProduct() {
     }, [page])
 
     return (
-        <Box className="container" sx={{ backgroundColor: "#fff" }}>
+        <Box className="container">
+            <Box bgcolor={'#fff'} >
+
             <Typography sx={{ fontSize: "20px" }} py={1} px={2}>Đánh Giá - Nhận Xét Từ Khách Hàng</Typography>
             <Stack direction="row" sx={{ padding: "0px 48px 24px", borderBottom: "1px solid #BFBFBf" }} >
                 <Box sx={{ width: "335px" }}>
@@ -180,9 +182,10 @@ function ReviewProduct() {
                 [1,2,3,4].map((item, i) => <Feedback key={i} />)
             }
 
-            <Stack justifyContent={"flex-end"} direction="row" sx={{ padding: "0 48px" }}>
+            <Stack justifyContent={"flex-end"} direction="row" sx={{ padding: "0 48px"}}>
                 <Pagination count={5} color="primary" />
             </Stack>
+            </Box>
         </Box>
     )
 }

@@ -414,7 +414,7 @@ function DetailProduct() {
 
         <Box className="productSimilar">
           <Box className="productSimilar__title">Sản Phẩm Tương Tự</Box>
-          <Grid container>
+          <Grid mb={1} container>
             {productSimilars.slice(0, 6).map((item) => (
               <Grid item key={item.id} xs={2}>
                 <CardProduct data={item} />
@@ -427,6 +427,7 @@ function DetailProduct() {
           bgcolor="white"
           p={2}
           borderRadius="4px"
+          mb={1} 
         >
           <Box className="productSpecification__title">Thông Tin Chi Tiết</Box>
           <Box className="productSpecification__table">
@@ -456,7 +457,6 @@ function DetailProduct() {
             <Box p={2} ref={descriptionRef} width="100%"></Box>
             {expandContent ? "" : <Box className="bg-gradient"></Box>}
           </Box>
-
           <Box className="descriptionProduct__showmore">
             <Button onClick={handleExpandContent} variant="outlined">
               {expandContent ? "Thu gọn nội dung" : "Xem thêm"}
@@ -521,6 +521,7 @@ function DetailProduct() {
           ></SliderImage>
         </Box>
       </Modal>
+      
       <ReviewProduct />
     </>
   );

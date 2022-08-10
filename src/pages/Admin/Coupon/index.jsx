@@ -39,8 +39,6 @@ function Coupon() {
             </Box>
             <Box mt={2} mx={3} px={3} py={2}>
                 <Stack direction="row" spacing={1} mb={2} justifyContent="space-between" alignItems="center" height={4}>
-                    <Typography fontSize="16px" fontWeight={500} >Các chỉ số hiệu quả chính</Typography>
-                    <Typography flex = {1}>7 ngày qua: 03/07/2022 - 09/07/2022•So sánh với: 26/06/2022 - 02/07/2022</Typography>
                     <Stack direction="row" alignItems="center" spacing={0.5} className="color-primary" sx={{ cursor: "pointer" }}>
                         <TrendingUpIcon />
                         Báo cáo chi tiết
@@ -138,10 +136,10 @@ function Coupon() {
                                 <TableCell sx={{ width: "calc(13*100%/101)" }}>
                                     <Stack spacing={1}>
                                         <Button variant="outlined" sx={{p:"4px"}}>Chỉnh sửa</Button>
-                                        <Stack className="couponTable__buttonEnd" direction="row" justifyContent="space-between" alignItems="center"  >
-                                            <Box>Kết thúc</Box>
-                                            <span><MoreVertIcon /></span>
-                                        </Stack>
+                                        
+                                         <Button variant="outlined" color="error">Kết thúc</Button>
+                        
+
                                     </Stack>
                                 </TableCell>
                             </TableRow>
