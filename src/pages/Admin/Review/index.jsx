@@ -80,7 +80,7 @@ function Review() {
                             }
                         </Select>
                         <Box className="reviewAdmin__groupinput">
-                            <input type="text" placeholder="Nhập mã giảm giá" />
+                            <input type="text" placeholder="Điền tên sản phẩm" />
                             <SearchIcon sx={{ color: "#888" }} />
                         </Box>
 
@@ -255,6 +255,6 @@ const listRate = [
         count: 0
     },
 ]
-const listStatus = ["Tất cả", "Đang diễn ra", "Sắp diễn ra", "Đã kết thúc"]
+const listStatus = ["Tên sản phẩm", "SKU", "Mã đơn hàng", "Mã đánh giá"]
 
 export default Review
