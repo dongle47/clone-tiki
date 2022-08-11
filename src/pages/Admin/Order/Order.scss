@@ -15,7 +15,22 @@
         }
     }
 }
-
+.reviewTab {
+    &__item {
+        padding: 0 12px;
+        height: 30px;
+        font-size: 16px;
+        font-weight: 500;
+        border: 1px solid #bfbfbf;
+        border-radius: 4px 4px 0 0;
+        cursor: pointer;
+        &.selected {
+            border-top: 2px solid $main-admin-color;
+            border-bottom: none;
+            color: $main-admin-color;
+        }
+    }
+}
 .order {
     &__iconSearch {
         position: absolute;
