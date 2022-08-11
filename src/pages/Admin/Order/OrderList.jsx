@@ -33,7 +33,7 @@ const items = [
     // { id: 4, label: 'Đang vận chuyển', value: "-" },
     // { id: 5, label: 'Đã giao hàng', value: "-" },
     // { id: 6, label: 'Đã hủy', value: "-" },
-    { id: 1, label: 'Tất cả'},
+    { id: 0, label: 'Tất cả'},
     { id: 2, label: 'Đang xử lý'},
     { id: 3, label: 'Đang vận chuyển'},
     { id: 4, label: 'Đã giao hàng'},
@@ -41,20 +41,23 @@ const items = [
 ]
 
 function OrderList() {
-    const [selected, setSelected] = React.useState(null)
+    const [selected, setSelected] = React.useState(0)
     const [orders, setOrders] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
     
-    const size = 5;
+    const size =6;
 
     useEffect(() => {
         const getData = async () => {
           let param = {
             _page: page,
             _limit: size,
-            "type.id":2,
-          };
+            //"type.id":2,
+            };
+            if (selected != 0) {
+                param["type.id"]=selected;
+            }
           apiCart.getOrders(param)
             .then(response=>{
             setOrders(response.data.sort((a,b)=>a.createdAt - b.createdAt));
@@ -63,7 +66,7 @@ function OrderList() {
             .catch(setOrders([]))
         };
         getData();
-      }, [page]);
+      }, [page, selected]);
 
     const handleDate = (timestamp) => {
         let date = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(timestamp)
@@ -99,9 +102,9 @@ function OrderList() {
             <Stack direction="row" spacing={0.5} p={2}>
                 {
                     items?.map((item, i) =>
-                        <Stack onClick={() => { handleClickTab(i)}} key={item.id || i}
+                        <Stack onClick={() => { handleClickTab(item.id)}} key={item.id || i}
                         alignItems="center" justifyContent="center"
-                        className={`orderTab__item ${i === selected ? "selected" : ""}`}>
+                        className={`orderTab__item ${item.id === selected ? "selected" : ""}`}>
                             <Typography fontWeight="500 !important">{item.label}</Typography>
                             {/* <Typography>{item.value}</Typography> */}
                         </Stack>)
@@ -183,8 +186,8 @@ function OrderList() {
                             <TableCell align="left">{row.type.name}</TableCell>
                             <TableCell align="center">
                                 <Stack spacing={1} justifyContent="center" py={1}>
-                                    <Link to="detail">
-                                        <Button sx={{ width: "100px" }} variant="outlined">Xem chi tiết</Button>
+                                    <Link to={`detail/${row.id}`}>
+                                        <Button sx={{ width: "100px" }} variant="outlined" >Xem chi tiết</Button>
                                     </Link>
                                 </Stack>
                             </TableCell>

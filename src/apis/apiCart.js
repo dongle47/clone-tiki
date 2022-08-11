@@ -21,6 +21,11 @@ const apiCart = {
         const res = await axiosClient.post('/myorders',params)
         return res.data;
     },
+    changeTypeOrder: async (params, id) => {
+        const res = await axiosClient.patch(`/myorders/${id}`,params)
+        return res.data;
+    }
+    
     
 }
 export default apiCart;
