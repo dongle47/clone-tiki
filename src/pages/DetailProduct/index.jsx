@@ -15,7 +15,7 @@ import {
   FormControlLabel,
   IconButton,
   Tooltip,
-  Skeleton
+  Skeleton,
 } from "@mui/material";
 
 import "./DetailProduct.scss";
@@ -42,29 +42,45 @@ import { toast } from "react-toastify";
 import SliderImage from "./SliderImage";
 
 import apiAccount from "../../apis/apiAccount";
+import { checkPropTypes } from "prop-types";
 
 function DetailProduct() {
   const user = useSelector((state) => state.auth.user);
-
   const { id } = useParams();
 
+  const [product, setProduct] = useState(null);
+  const { slug } = useParams();
+
+  useEffect(() => {
+    const getProduct = async () => {
+      const response = await apiProduct.getProductsBySlug(slug);
+      if (response) {
+        if (response.length !== 0) setProduct(prev => prev=response[0]);
+      }
+    };
+    getProduct();
+  }, [slug]);
+
   const [isFavorite, setIsFavorite] = useState(false);
+
+  console.log(slug)
 
   useEffect(() => {
     const checkFavorite = async () => {
       let param = {
         userId: user.id,
-        productId: id,
+        productSlug: slug,
       };
       await apiAccount.checkWishItem(param).then((res) => {
+        console.log(res);
         if (res.length > 0) {
           setIsFavorite(true);
         }
-      });
+      }).catch(err => console.log(err));
     };
 
     checkFavorite();
-  }, [id]);
+  }, []);
 
   const handleClickFavorite = async () => {
     if (user === null) {
@@ -72,13 +88,14 @@ function DetailProduct() {
     } else {
       let param = {
         userId: user.id,
-        productId: id,
+        productId: product.id,
         productImg: product.image,
         productName: product.name,
         productPrice: product.price,
         productDiscount: product.discount,
         productRate: product.rate,
         productSold: product.sold,
+        productSlug: product.slug,
       };
       setIsFavorite((prev) => !prev);
 
@@ -102,8 +119,6 @@ function DetailProduct() {
     }
   };
 
-  const [product, setProduct] = useState(null);
-
   const [expandContent, setExpandContent] = useState(false);
   const [productSimilars, setProductSimilars] = useState([]);
 
@@ -122,21 +137,10 @@ function DetailProduct() {
 
   const [value, setValue] = React.useState("0");
   const [modalSlider, setModelSlider] = useState(false);
-  const [loading, setLoading] = React.useState(true)
+  const [loading, setLoading] = React.useState(true);
   const [choose, setChoose] = useState({});
   const [indexImg, setIndexImg] = useState(0);
   const dispatch = useDispatch();
-  const { slug } = useParams();
-
-  useEffect(() => {
-    const getProduct = async () => {
-      const response = await apiProduct.getProductsBySlug(slug);
-      if (response) {
-        if (response.length !== 0) setProduct(response[0]);
-      }
-    };
-    getProduct();
-  }, [slug]);
 
   const openModalSlider = () => setModelSlider(true);
 
@@ -217,8 +221,6 @@ function DetailProduct() {
     getData();
   }, []);
 
-  
-
   const handleClickBuy = () => {
     dispatch(
       addItem({
@@ -277,17 +279,25 @@ function DetailProduct() {
     { name: "xanh dương", value: "#00FFFF" },
     { name: "trắng", value: "#FFFFFF" },
     { name: "đen", value: "#000000" },
-  ]
+  ];
 
   return (
     <>
       <Box className="container">
         <Box className="detailProduct">
           <Box className="detailProduct__img">
-            <Box className="detailProduct__primary-img" onClick={openModalSlider}>
-                {loading && <Skeleton  variant="rectangular" width='100%' height='100%' />}
-                <img onLoad={() => setLoading(false)}
-                  src={product?.details.images[indexImg]} alt="" />
+            <Box
+              className="detailProduct__primary-img"
+              onClick={openModalSlider}
+            >
+              {loading && (
+                <Skeleton variant="rectangular" width="100%" height="100%" />
+              )}
+              <img
+                onLoad={() => setLoading(false)}
+                src={product?.details.images[indexImg]}
+                alt=""
+              />
             </Box>{" "}
             <Stack
               direction="row"
@@ -295,68 +305,94 @@ function DetailProduct() {
               mt={3}
               spacing={1}
             >
-              {product?.details?.images ? <>
-                {product.details.images.slice(0, 6).map((imgs, index) => (
-                  <>
-                    {index < 5 ? (
-                      <Box
-                        onClick={() => onChangeimg(index)}
-                        className={`detailProduct__item-img ${indexImg === index ? "selected" : ""
+              {product?.details?.images ? (
+                <>
+                  {product.details.images.slice(0, 6).map((imgs, index) => (
+                    <>
+                      {index < 5 ? (
+                        <Box
+                          onClick={() => onChangeimg(index)}
+                          className={`detailProduct__item-img ${
+                            indexImg === index ? "selected" : ""
                           }`}
-                      >
-                        <img src={imgs} alt="" />
-                      </Box>
-                    ) : (
-                      <Box
-                        className={`detailProduct__item-img ${indexImg === index ? "selected" : ""
+                        >
+                          <img src={imgs} alt="" />
+                        </Box>
+                      ) : (
+                        <Box
+                          className={`detailProduct__item-img ${
+                            indexImg === index ? "selected" : ""
                           }`}
-                      >
-                        {product.details.images.length > 6 && (
-                          <Box onClick={openModalSlider} className="lastimage">
-                            +{product.details.images.length - 6}
-                          </Box>
-                        )}
+                        >
+                          {product.details.images.length > 6 && (
+                            <Box
+                              onClick={openModalSlider}
+                              className="lastimage"
+                            >
+                              +{product.details.images.length - 6}
+                            </Box>
+                          )}
 
-                        <img src={imgs} alt="" />
-                      </Box>
-                    )}
-                  </>
-                ))}</> : <><Skeleton animation="wave" width='100%' />
-              </>}
-              {" "}
+                          <img src={imgs} alt="" />
+                        </Box>
+                      )}
+                    </>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <Skeleton animation="wave" width="100%" />
+                </>
+              )}{" "}
             </Stack>
           </Box>
 
           <Box flex={1}>
             <Box className="detailProduct__title">
-              {product?.name ? <h2>{product.name}</h2> : <><Skeleton animation="wave" height={40} /><Skeleton animation="wave" height={40} />
-              </>}
+              {product?.name ? (
+                <h2>{product.name}</h2>
+              ) : (
+                <>
+                  <Skeleton animation="wave" height={40} />
+                  <Skeleton animation="wave" height={40} />
+                </>
+              )}
             </Box>
             <Box className="detailProduct__rating">
-              {product?.sold ? <>
-                <Rating
-                name="simple-controlled"
-                value={product.rate || 0}
-                readOnly
-                sx={{ fontSize: "18px" }}
-              />
-              <span>Xem 19 đánh giá | Đã bán {product?.sold} </span></> : <Skeleton animation="wave" height={40} width='100%' />}
+              {product?.sold ? (
+                <>
+                  <Rating
+                    name="simple-controlled"
+                    value={product.rate || 0}
+                    readOnly
+                    sx={{ fontSize: "18px" }}
+                  />
+                  <span>Xem 19 đánh giá | Đã bán {product?.sold} </span>
+                </>
+              ) : (
+                <Skeleton animation="wave" height={40} width="100%" />
+              )}
             </Box>
 
             <Box className="detailProduct__price">
-              {product?.price ? <>
-                <span>
-                  {numWithCommas(
-                    roundPrice(
-                      product?.price * (1 - product?.discount / 100) || 0
-                    )
-                  )}
-                  ₫
-                </span>
-                <span>{numWithCommas(product?.price || 0)} ₫</span>
-                <span className="detailProduct__discount">{product?.discount}%</span></> : <Skeleton animation="wave" height={40} width='100%'/>
-              }
-
+              {product?.price ? (
+                <>
+                  <span>
+                    {numWithCommas(
+                      roundPrice(
+                        product?.price * (1 - product?.discount / 100) || 0
+                      )
+                    )}
+                    ₫
+                  </span>
+                  <span>{numWithCommas(product?.price || 0)} ₫</span>
+                  <span className="detailProduct__discount">
+                    {product?.discount}%
+                  </span>
+                </>
+              ) : (
+                <Skeleton animation="wave" height={40} width="100%" />
+              )}
             </Box>
             {product?.details.options.map((itemOpt) => {
               let select = itemOpt.values.find(
@@ -375,10 +411,11 @@ function DetailProduct() {
                           key={item.id}
                           onClick={() => onChangeOption(itemOpt.id, item.id)}
                           className={`product-option__item
-                                            ${itemOpt.name === "Màu sắc"
-                              ? "product-option__item--color"
-                              : "product-option__item--size"
-                            }
+                                            ${
+                                              itemOpt.name === "Màu sắc"
+                                                ? "product-option__item--color"
+                                                : "product-option__item--size"
+                                            }
                                              ${selected ? "selected" : ""}`}
                         >
                           {/* {itemOpt.name === "colors" && (
@@ -493,7 +530,7 @@ function DetailProduct() {
           bgcolor="white"
           p={2}
           borderRadius="4px"
-          mb={1} 
+          mb={1}
         >
           <Box className="productSpecification__title">Thông Tin Chi Tiết</Box>
           <Box className="productSpecification__table">
@@ -518,8 +555,9 @@ function DetailProduct() {
         >
           <Box className="productSpecification__title">Mô Tả Sản phẩm</Box>
           <Box
-            className={`descriptionProduct__content ${expandContent ? "" : "collapse"
-              }`}
+            className={`descriptionProduct__content ${
+              expandContent ? "" : "collapse"
+            }`}
           >
             <Box p={2} ref={descriptionRef} width="100%"></Box>
             {expandContent ? "" : <Box className="bg-gradient"></Box>}
