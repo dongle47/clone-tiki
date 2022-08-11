@@ -203,13 +203,6 @@ function DetailProduct() {
     setCommune(value);
   }, []);
 
-
-  const [choose, setChoose] = useState({});
-
-  const [indexImg, setIndexImg] = useState(0);
-
-  const dispatch = useDispatch();
-
   useEffect(() => {
     const getData = async () => {
       let param = {
