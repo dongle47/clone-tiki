@@ -33,10 +33,11 @@ function FilterProduct(props) {
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState({})
     const [filterPrice, setFilterPrice] = useState({
-        minPrice: 0,
-        maxPrice: 100000000,
+        minPrice: '',
+        maxPrice: '',
         option: -1,
-        apply: false
+        apply: false,
+        value: ''
     })
 
 
@@ -62,14 +63,17 @@ function FilterProduct(props) {
 
     useEffect(() => {
         const getData = async () => {
-            let params = {
-                _page:1,
-                _limit:50,
-                "details.category.id": category.id
-            }
-            const response = await apiProduct.getProducts(params);
-            if (response) {
-                setProducts(response.data);
+            if(category){
+                
+                let params = {
+                    _page: 1,
+                    _limit: 50,
+                    "details.category.id": category.id
+                }
+                const response = await apiProduct.getProducts(params);
+                if (response) {
+                    setProducts(response.data);
+                }
             }
         };
         getData();
@@ -81,7 +85,7 @@ function FilterProduct(props) {
                 return
             let data = [...products]
             if (filter.rate)
-                data = data.filter(item => item.rate >= filter.rate)
+                data = data.filter(item => Math.round(item.rate) >= filter.rate)
 
             let data1 = [...data]
             let data2 = [...data]
@@ -107,12 +111,23 @@ function FilterProduct(props) {
                 })
             })
 
-            data = [...data1,...data2]
-            data = data.filter((item,index)=>data.indexOf(item)===index)
+            data = [...data1, ...data2]
+            data = data.filter((item, index) => data.indexOf(item) === index)
 
             if (filterPrice.apply) {
-                data = data.filter(item => item.price * (1 - item.discount / 100) > filterPrice.minPrice
-                    && item.price * (1 - item.discount / 100) < filterPrice.maxPrice)
+                if (filterPrice.option > -1) {
+                    const range = filterPrice.value.split(',')
+                    if (range.length == 2) {
+                        const minPrice = Number(range[0]) || 0
+                        const maxPrice = Number(range[1]) || 1000000000
+                        data = data.filter(item => item.price * (1 - item.discount / 100) > minPrice
+                            && item.price * (1 - item.discount / 100) < maxPrice)
+                    }
+
+                }
+                else
+                    data = data.filter(item => item.price * (1 - item.discount / 100) > filterPrice.minPrice
+                        && item.price * (1 - item.discount / 100) < filterPrice.maxPrice)
 
             }
             switch (value) {
@@ -160,13 +175,11 @@ function FilterProduct(props) {
     }
 
     const onSetFilterPrice = (value, index) => {
-        const range = value.split(',')
         setFilterPrice(pre => {
             return {
                 ...pre,
-                minPrice: Number(range[0]) || 0,
-                maxPrice: Number(range[1]) || 1000000000,
-                option: index
+                option: index,
+                value: value
             }
         })
     }
@@ -196,7 +209,14 @@ function FilterProduct(props) {
         })
     }, [filter])
     const onChangeRating = (rate) => {
-        setFilter({ ...filter, rate })
+        if (filter.rate === rate) {
+            const newFilter = delete filter.rate
+            setFilter(newFilter)
+        }
+        else {
+            setFilter({ ...filter, rate })
+        }
+
     }
     const onChangeShipping = (e) => {
         setFilter({ ...filter, shipping: e.target.value })
@@ -217,7 +237,7 @@ function FilterProduct(props) {
                         {
                             [5, 4, 3].map(item =>
                                 <Box key={item} onClick={() => onChangeRating(item)}
-                                    className='filterProduct__rating'>
+                                    className={`filterProduct__rating ${item === filter.rate ? 'selected' : ''}`}>
                                     <Rating
                                         name="hover-feedback"
                                         value={item}

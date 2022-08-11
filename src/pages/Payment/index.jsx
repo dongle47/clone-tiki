@@ -108,7 +108,7 @@ function Payment() {
   }
   const handleSubmitOrderFake = () => {
     //const state = orderTabs[Math.floor(Math.random() * (orderTabs.length - 1)) + 1]
-    const state = orderTabs[4]
+    const state = orderTabs[2]
     const payload = {
       "idUser": user?.id,
       "type": {

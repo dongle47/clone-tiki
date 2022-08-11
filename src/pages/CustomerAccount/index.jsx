@@ -39,9 +39,8 @@ import { useSelector } from "react-redux";
 
 function CustomerAccount() {
   const location  = useLocation()
-  
   const tabId = sidebarTab.find(item=>location.pathname.includes(item.link))
-  console.log(tabId)
+  
   const [selectedTabId, setSelectedTabId] = React.useState(tabId?.id || 0);
   const user = useSelector(state => state.auth.user)//lấy user từ store
   const breadcrumbs = [
@@ -52,6 +51,20 @@ function CustomerAccount() {
       {sidebarTab.find(item=>item.id===selectedTabId)?.text || ""}
     </Typography>,
   ];//
+
+  React.useEffect(()=>{
+    const handleChangePath = ()=>{
+      const tabId = sidebarTab.find(item=>location.pathname.includes(item.link))
+      if(tabId)
+        setSelectedTabId(tabId?.id || 0)
+    }
+    handleChangePath()
+  },[location.pathname])
+  React.useEffect(() => {
+    document.title =
+      sidebarTab.find(item=>item.id===selectedTabId)?.text || 
+      "Tiki - Mua hàng online, giá tốt, hàng chuẩn, ship nhanh";
+  }, [selectedTabId]);
   return (
     <Box className="container">
        <Breadcrumbs

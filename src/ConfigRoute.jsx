@@ -9,6 +9,7 @@ import Error from "./pages/Error/index";
 import {  Route, Routes } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import ChangePassword from "./components/ChangePassword";
+import OAuth2RedirectHandler from "./pages/OAuth2RedirectHandler";
 
 function ConfigRoute() {
   return (
@@ -27,6 +28,7 @@ function ConfigRoute() {
         </Route>
         <Route path="filter/:slug" element={<FilterProduct />} />
         <Route path="product/:slug" element={<DetailProduct />} />
+        <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
         <Route path="*" element={<Error />} />
         <Route path = "changepwd" element={<ChangePassword />}/>
     </Routes>

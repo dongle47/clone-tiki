@@ -33,12 +33,18 @@
         }
     }
     &__rating {
-        width: 100%;
+        width: fit-content;
+        padding: 0 10px;
         display: flex;
         align-items: center;
         gap: 10px;
         height: 24px;
-        margin-bottom: 4px
+        margin-bottom: 4px;
+        cursor: pointer;
+        &.selected {
+            background-color: #1890ff;
+            border-radius: 12px;
+        }
     }
 }
 
@@ -51,6 +57,7 @@
     font-size: 13px;
     line-height: 24px;
     margin-bottom: 4px;
+    cursor: pointer;
     &__groupInput {
         margin: 6px 0;
         width: 100%;

@@ -185,8 +185,8 @@ function Header() {
   }, []);
 
   return (
-    <header style={{ backgroundColor: "#2196f3" }}>
-      <Stack
+    <header className="header">
+      <Stack 
         justifyContent="space-between"
         direction="row"
         alignItems="center"
@@ -198,8 +198,8 @@ function Header() {
           margin: "0 auto",
         }}
       >
-        <Link to={"/"}>
-          <Stack sx={{ width: "190px" }} spacing={1.5} pt={2}>
+        <Link className="header__logo" to={"/"}>
+          <Stack  spacing={1.5} pt={2}>
             <img
               alt=""
               style={{ width: "60px", height: "40px" }}
@@ -213,7 +213,7 @@ function Header() {
           </Stack>
         </Link>
 
-        <Box sx={{ flex: 1 }}>
+        <Box sx={{ flex: 1 }} className="header__search">
           <Stack
             direction="row"
             alignItems="center"
@@ -261,9 +261,10 @@ function Header() {
           justifyContent="space-between"
           spacing={3}
           py={2}
+          className="header__account"
         >
           <Stack
-            className="header__account"
+            
             direction="row"
             alignItems="center"
             spacing="10px"
@@ -357,10 +358,10 @@ function Header() {
           </Stack>
         </Stack>
 
-        <Stack spacing={1}>
+        <Stack spacing={1} className="header__cart">
           <Link to="/cart">
             <Stack
-              justifyContent="flex-end"
+              justifyContent="flex-start"
               alignItems="flex-end"
               direction="row"
               spacing={1}
