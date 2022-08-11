@@ -14,7 +14,7 @@ export const axiosClient = axios.create({
 const apiAccount = {
 
     checkWishItem: async (params) => {
-        const res = await axiosClient.get(`/wishlist?userId=${params.userId}&productId=${params.productId}`)
+        const res = await axiosClient.get(`/wishlist?userId=${params.userId}&productSlug=${params.productSlug}`)
         return res.data
     },
 
