@@ -44,8 +44,14 @@ function Header() {
 
   const [categorySpecify, setCategorySpecify] = useState([]);
 
-  const handleSubmitSearch = (data) => {
+  const handleSubmitSearch = () => {
     // dispatch(removeAll());
+    let obj = {
+      text: searchText,
+      slug: searchText.replace(/\s/g, "-"),
+    };
+    handleSaveSearch(obj);
+    navigate(`search/${obj.slug}`);
   };
 
   useEffect(() => {
@@ -97,12 +103,31 @@ function Header() {
     getDataCategorySpecify();
   }, []);
 
+  var englishText = /^[A-Za-z0-9]*$/;
+
   useEffect(() => {
+    const checkIsVNese = () => {
+      for (const item of searchText.replace(/\s/g, "")) {
+        if (englishText.test(item) === false) {
+          return true;
+        }
+        return false;
+      }
+    };
+
     const filter = suggestions.filter((item) =>
+      item.slug.includes(searchText.replace(/\s/g, "-"))
+    );
+
+    const filterVN = suggestions.filter((item) =>
       item.lowerCaseName.includes(searchText)
     );
 
-    setFilteredSuggestions(filter);
+    if (checkIsVNese() === true) {
+      setFilteredSuggestions(filterVN);
+    } else {
+      setFilteredSuggestions(filter);
+    }
   }, [searchText]);
 
   const [modalLogin, setModalLogin] = useState(false);

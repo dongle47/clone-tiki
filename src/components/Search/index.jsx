@@ -23,7 +23,6 @@ import { addItem, removeItem, removeAll } from "../../slices/searchSlice";
 
 function Search(props) {
   const dispatch = useDispatch();
-  let navigate = useNavigate();
 
   const [expandSearch, setExpandSearch] = useState(false);
 
@@ -57,6 +56,7 @@ function Search(props) {
       <SearchedItem
         setSearchText={props.setSearchText}
         text={item.text}
+        slug={item.slug}
         handleRemoveSearch={handleRemoveSearch}
       />
     ));
@@ -163,13 +163,15 @@ function SearchedItem(props) {
     >
       <HistoryIcon fontSize="medium" sx={{ color: "silver" }} />
 
-      <Typography
-        onClick={() => props.setSearchText(props.text)}
-        variant="subtitle2"
-        sx={{ fontSize: "0.8rem", fontWeight: 500, flex: 1 }}
-      >
-        {props.text}
-      </Typography>
+      <Link style={{ flex: 1 }} to={`product/${props.slug}`}>
+        <Typography
+          onClick={() => props.setSearchText(props.text)}
+          variant="subtitle2"
+          sx={{ fontSize: "0.8rem", fontWeight: 500 }}
+        >
+          {props.text}
+        </Typography>
+      </Link>
 
       <IconButton onClick={() => props.handleRemoveSearch(props.slug)}>
         <ClearIcon sx={{ color: "silver" }}></ClearIcon>
