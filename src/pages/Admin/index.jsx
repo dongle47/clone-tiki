@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles";
 
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
-
+import "./Admin.scss"
 import {
   Box,
   Toolbar,
@@ -30,6 +30,7 @@ import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
+import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
 import CreateCoupon from "./Coupon/CreateCoupon";
 import AdminLogin from "./Login";
@@ -131,21 +132,20 @@ function Admin() {
   const formNotify = () => {
     return (
       <Box sx={{ zIndex: "10" }}>
-        <Typography>dadsadadsa</Typography>
+        <Typography></Typography>
       </Box>
     );
   };
 
   const stylesAccount = {
     position: "absolute",
-    top: 60,
-    right: "0",
-    left: "-5rem",
+    top: 48,
+    right: 0,
     zIndex: 1,
-    border: "1px solid",
-    p: 1,
+    border: "1px solid #333",
     bgcolor: "background.paper",
     width: "16rem",
+    paddingTop: "4px"
   };
 
 
@@ -212,15 +212,20 @@ function Admin() {
               <ClickAwayListener onClickAway={handleClickAwayAccount}>
                 <Stack
                   sx={{
-                    border: "1px solid silver",
-                    borderRadius: "3px",
+                    border: "1px solid #d9d9d9",
+                    borderRadius: "16px",
                     padding: "0.3rem",
                     position: "relative",
+                    height: "32px",
+                    padding: "4px",
+                    cursor: "pointer"
                   }}
+                  className="admin__dropdown"
                   direction="row"
                   alignItems="center"
                   spacing={1}
                   onClick={handleClickAccount}
+
                 >
                   <Box
                     borderRadius="50%"
@@ -228,25 +233,37 @@ function Admin() {
                     component="img"
                     src="https://salt.tikicdn.com/cache/w32/ts/sellercenterFE/93/76/03/2a08fa4ae6a024a752fbba87d145bce8.png"
                     onClick={handleClickAccount}
+                    sx={{ width: "24px", height: "24px" }}
                   />
-                  <Typography variant="caption">dong.le47@yahoo.com</Typography>
+                  <Typography variant="caption" sx={{ fontSize: "14px", paddingLeft: "6px", fontWeight: "Light" }} >dong.le47@yahoo.com</Typography>
+                  <ExpandMoreOutlinedIcon />
                   {openAccount ? (
                     <Stack sx={stylesAccount}>
-                      <Typography>Lê Văn Đồng</Typography>
+                      <Stack px={2} py={1} direction="row">
+                        <Box
+                          borderRadius="50%"
+                          component="img"
+                          src="https://salt.tikicdn.com/cache/w32/ts/sellercenterFE/93/76/03/2a08fa4ae6a024a752fbba87d145bce8.png"
+                          sx={{ width: "40px", height: "40px" }}
+                        />
+                        <Stack sx={{paddingLeft: "10px"}}>
+                          <Typography sx={{ fontWeight: "bold" }}>Lê Văn Đồng</Typography>
+                          <Typography>dong.le47@yahoo.com</Typography>
+                        </Stack>
+                      </Stack>
 
-                      <Typography>dong.le47@yahoo.com</Typography>
-
-                      <ListItem disablePadding sx={{ display: "block" }}>
+                      <ListItem disablePadding sx={{ display: "block", paddingX: "16px", alignItems:"left"}}>
                         <Button
                           variant="text"
                           startIcon={<PersonOutlineIcon />}
+                          sx={{color: "#333"}}
                         >
                           Hồ sơ nhà bán
                         </Button>
-
                         <Button
                           variant="text"
                           startIcon={<DriveFileRenameOutlineOutlinedIcon />}
+                          sx={{color: "#333"}}
                         >
                           Thay đổi mật khẩu
                         </Button>
@@ -326,22 +343,22 @@ function Admin() {
               <Route path="create" element={<CreateProduct />} />
             </Routes>
           } />
-          
+
           <Route path="category/*" element={
             <Routes>
               <Route index element={<Category />} />
               <Route path="create" element={<CreateCategory />} />
-              <Route path="edit/:id" element={<CreateCategory edit={true}/>} />
+              <Route path="edit/:id" element={<CreateCategory edit={true} />} />
             </Routes>
           } />
-          
+
           <Route path="brand/*" element={
             <Routes>
               <Route path="create" element={<CreateBrand />} />
-              <Route path="edit/:id" element={<CreateBrand edit={true}/>} />
+              <Route path="edit/:id" element={<CreateBrand edit={true} />} />
               <Route index element={<Brand />} />
             </Routes>
-          }/>
+          } />
 
           <Route path="develop" element={<GrowthCenter />} />
           <Route path="coupon/*" element={
@@ -352,10 +369,10 @@ function Admin() {
           } />
 
           <Route path="user/*" element={
-          <Routes>
-            <Route index element={<User />} />
-            <Route path="detail/:id"  element={<DetailUser />} />
-          </Routes>}/>
+            <Routes>
+              <Route index element={<User />} />
+              <Route path="detail/:id" element={<DetailUser />} />
+            </Routes>} />
 
           <Route path="review" element={<Review />} />
         </Routes>

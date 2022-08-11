@@ -18,11 +18,18 @@ const apiProduct = {
         const res = await axiosClient.get('/products', {params:{id}})
         return res.data;
     },
+    getProductsBySlug: async (slug) => {
+        const res = await axiosClient.get('/products', {params:{slug}})
+        return res.data;
+    },
     getProducts: async (params) => {
         const res = await axiosClient.get('/products', {params})
         return res.data;
     },
-    
+    getCategoryFilterById: async (params)=>{
+        const res = await axiosClient.get('/categories', {params})
+        return res.data;
+    }
     
 }
 export default apiProduct;

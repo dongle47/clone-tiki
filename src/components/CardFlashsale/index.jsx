@@ -14,7 +14,7 @@ import { numWithCommas } from '../../constraints/Util';
 
 function CardFlashsale({ data }) {
     return (
-        <Link className="card__wrap" to={`/product/${data.id}`}>
+        <Link className="card__wrap" to={`/product/${data.slug}`}>
             <Card className='card'>
                 <CardMedia
                     component="img"

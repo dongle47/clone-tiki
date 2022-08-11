@@ -38,6 +38,14 @@ const apiMain = {
         const myReview = await axiosProducts.get('/myreview', {params})
         return myReview.data;
     },
+    postMyReviews: async (params) =>{
+        const res = await axiosProducts.post('/myreview', params)
+        return res.data;
+    },
+    getMyFavorites: async (params) => {
+        const myFavorite = await axiosProducts.get('', {params})
+        return myFavorite.data;
+    },
 
     getMyRevPurchaseds: async (params) =>{
         const myRevPurchaseds = await axiosProducts.get('', {params})

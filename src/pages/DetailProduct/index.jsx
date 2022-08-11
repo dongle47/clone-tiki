@@ -15,6 +15,7 @@ import {
   FormControlLabel,
   IconButton,
   Tooltip,
+  Skeleton
 } from "@mui/material";
 
 import "./DetailProduct.scss";
@@ -121,6 +122,22 @@ function DetailProduct() {
 
   const [value, setValue] = React.useState("0");
   const [modalSlider, setModelSlider] = useState(false);
+  const [loading, setLoading] = React.useState(true)
+  const [choose, setChoose] = useState({});
+  const [indexImg, setIndexImg] = useState(0);
+  const dispatch = useDispatch();
+  const { slug } = useParams();
+
+  useEffect(() => {
+    const getProduct = async () => {
+      const response = await apiProduct.getProductsBySlug(slug);
+      if (response) {
+        if (response.length !== 0) setProduct(response[0]);
+      }
+    };
+    getProduct();
+  }, [slug]);
+
   const openModalSlider = () => setModelSlider(true);
 
   const closeModalSlider = () => {
@@ -186,6 +203,7 @@ function DetailProduct() {
     setCommune(value);
   }, []);
 
+
   const [choose, setChoose] = useState({});
 
   const [indexImg, setIndexImg] = useState(0);
@@ -206,15 +224,7 @@ function DetailProduct() {
     getData();
   }, []);
 
-  useEffect(() => {
-    const getProduct = async () => {
-      const response = await apiProduct.getProductsById(id);
-      if (response) {
-        if (response.length !== 0) setProduct(response[0]);
-      }
-    };
-    getProduct();
-  }, [id]);
+  
 
   const handleClickBuy = () => {
     dispatch(
@@ -266,15 +276,25 @@ function DetailProduct() {
       "Tiki - Mua hàng online, giá tốt, hàng chuẩn, ship nhanh";
   }, [product]);
 
+  const color = [
+    { name: "đỏ", value: "#FF0000" },
+    { name: "cam", value: "#FFA500" },
+    { name: "vàng", value: "#FFFF00" },
+    { name: "xanh lá", value: "#00FF00" },
+    { name: "xanh dương", value: "#00FFFF" },
+    { name: "trắng", value: "#FFFFFF" },
+    { name: "đen", value: "#000000" },
+  ]
+
   return (
     <>
       <Box className="container">
         <Box className="detailProduct">
           <Box className="detailProduct__img">
-            <Box className="detailProduct__primary-img">
-              <Button onClick={openModalSlider}>
-                <img src={product?.details.images[indexImg]} alt="" />
-              </Button>
+            <Box className="detailProduct__primary-img" onClick={openModalSlider}>
+                {loading && <Skeleton  variant="rectangular" width='100%' height='100%' />}
+                <img onLoad={() => setLoading(false)}
+                  src={product?.details.images[indexImg]} alt="" />
             </Box>{" "}
             <Stack
               direction="row"
@@ -282,91 +302,96 @@ function DetailProduct() {
               mt={3}
               spacing={1}
             >
-              {product?.details?.images?.slice(0, 6).map((imgs, index) => (
-                <>
-                  {index < 5 ? (
-                    <Box
-                      onClick={() => onChangeimg(index)}
-                      className={`detailProduct__item-img ${
-                        indexImg === index ? "selected" : ""
-                      }`}
-                    >
-                      <img src={imgs} alt="" />
-                    </Box>
-                  ) : (
-                    <Box
-                      className={`detailProduct__item-img ${
-                        indexImg === index ? "selected" : ""
-                      }`}
-                    >
-                      {product.details.images.length > 6 && (
-                        <Box onClick={openModalSlider} className="lastimage">
-                          +{product.details.images.length - 6}
-                        </Box>
-                      )}
+              {product?.details?.images ? <>
+                {product.details.images.slice(0, 6).map((imgs, index) => (
+                  <>
+                    {index < 5 ? (
+                      <Box
+                        onClick={() => onChangeimg(index)}
+                        className={`detailProduct__item-img ${indexImg === index ? "selected" : ""
+                          }`}
+                      >
+                        <img src={imgs} alt="" />
+                      </Box>
+                    ) : (
+                      <Box
+                        className={`detailProduct__item-img ${indexImg === index ? "selected" : ""
+                          }`}
+                      >
+                        {product.details.images.length > 6 && (
+                          <Box onClick={openModalSlider} className="lastimage">
+                            +{product.details.images.length - 6}
+                          </Box>
+                        )}
 
-                      <img src={imgs} alt="" />
-                    </Box>
-                  )}
-                </>
-              ))}{" "}
+                        <img src={imgs} alt="" />
+                      </Box>
+                    )}
+                  </>
+                ))}</> : <><Skeleton animation="wave" width='100%' />
+              </>}
+              {" "}
             </Stack>
           </Box>
 
           <Box flex={1}>
             <Box className="detailProduct__title">
-              <h2>{product?.name}</h2>
+              {product?.name ? <h2>{product.name}</h2> : <><Skeleton animation="wave" height={40} /><Skeleton animation="wave" height={40} />
+              </>}
             </Box>
             <Box className="detailProduct__rating">
-              <Rating
+              {product?.sold ? <>
+                <Rating
                 name="simple-controlled"
-                value={4}
+                value={product.rate || 0}
                 readOnly
                 sx={{ fontSize: "18px" }}
               />
-              <span>Xem 19 đánh giá | Đã bán {product?.sold} </span>
+              <span>Xem 19 đánh giá | Đã bán {product?.sold} </span></> : <Skeleton animation="wave" height={40} width='100%' />}
             </Box>
 
             <Box className="detailProduct__price">
-              <span>
-                {numWithCommas(
-                  roundPrice(
-                    product?.price * (1 - product?.discount / 100) || 0
-                  )
-                )}
-                ₫
-              </span>
-              <span>{numWithCommas(product?.price || 0)} ₫</span>
-              <span>{product?.discount}%</span>
+              {product?.price ? <>
+                <span>
+                  {numWithCommas(
+                    roundPrice(
+                      product?.price * (1 - product?.discount / 100) || 0
+                    )
+                  )}
+                  ₫
+                </span>
+                <span>{numWithCommas(product?.price || 0)} ₫</span>
+                <span className="detailProduct__discount">{product?.discount}%</span></> : <Skeleton animation="wave" height={40} width='100%'/>
+              }
+
             </Box>
             {product?.details.options.map((itemOpt) => {
-              let select = itemOpt.list.find(
+              let select = itemOpt.values.find(
                 (item) => choose[itemOpt.name] === item.id
               );
               return (
                 <Box className="product-option">
                   <Box className="product-option__title">
-                    {itemOpt.display} : <span>{select && select.name}</span>
+                    {itemOpt.name} : <span>{select && select.name}</span>
                   </Box>
                   <Box className="product-option__list">
-                    {itemOpt.list.map((item) => {
+                    {itemOpt.values.map((item) => {
                       let selected = choose[itemOpt.name] === item.id;
                       return (
                         <Box
                           key={item.id}
                           onClick={() => onChangeOption(itemOpt.id, item.id)}
                           className={`product-option__item
-                                            ${
-                                              itemOpt.name === "colors"
-                                                ? "product-option__item--color"
-                                                : "product-option__item--size"
-                                            }
+                                            ${itemOpt.name === "Màu sắc"
+                              ? "product-option__item--color"
+                              : "product-option__item--size"
+                            }
                                              ${selected ? "selected" : ""}`}
                         >
-                          {itemOpt.name === "colors" && (
+                          {/* {itemOpt.name === "colors" && (
                             <img src={item.imgUrl} alt="" />
-                          )}
-                          {item.name}
+                          )} */}
+                          {item.value}
                           <span>
                             <CheckIcon
                               sx={{ fontSize: "12px", color: "#fff" }}
@@ -461,7 +486,7 @@ function DetailProduct() {
 
         <Box className="productSimilar">
           <Box className="productSimilar__title">Sản Phẩm Tương Tự</Box>
-          <Grid container>
+          <Grid mb={1} container>
             {productSimilars.slice(0, 6).map((item) => (
               <Grid item key={item.id} xs={2}>
                 <CardProduct data={item} />
@@ -475,6 +500,7 @@ function DetailProduct() {
           bgcolor="white"
           p={2}
           borderRadius="4px"
+          mb={1} 
         >
           <Box className="productSpecification__title">Thông Tin Chi Tiết</Box>
           <Box className="productSpecification__table">
@@ -482,7 +508,7 @@ function DetailProduct() {
               <tbody>
                 {product?.details.specifications.map((spec) => (
                   <tr>
-                    <td>{spec.display}</td>
+                    <td>{spec.name}</td>
                     <td>{spec.value}</td>
                   </tr>
                 ))}
@@ -499,14 +525,12 @@ function DetailProduct() {
         >
           <Box className="productSpecification__title">Mô Tả Sản phẩm</Box>
           <Box
-            className={`descriptionProduct__content ${
-              expandContent ? "" : "collapse"
-            }`}
+            className={`descriptionProduct__content ${expandContent ? "" : "collapse"
+              }`}
           >
             <Box p={2} ref={descriptionRef} width="100%"></Box>
             {expandContent ? "" : <Box className="bg-gradient"></Box>}
           </Box>
-
           <Box className="descriptionProduct__showmore">
             <Button onClick={handleExpandContent} variant="outlined">
               {expandContent ? "Thu gọn nội dung" : "Xem thêm"}
