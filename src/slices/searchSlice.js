@@ -15,8 +15,12 @@ export const searchSlice = createSlice({
 
         },
         removeItem: (state, action) => {
-            const itemDel = action.payload
-            state.items = state.items.filter(item => item !== itemDel)
+            const slugDel = action.payload
+            state.items = state.items.filter(item => item.slug !== slugDel)
+        },
+
+        removeAll: (state, action) => {
+            state.items = []
         }
     }
 })
@@ -24,6 +28,7 @@ export const searchSlice = createSlice({
 export const {
     addItem,
     removeItem,
+    removeAll,
 } = searchSlice.actions
 
 export default searchSlice.reducer
