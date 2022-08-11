@@ -8,20 +8,22 @@ import Rating from "@mui/material/Rating";
 import StoreIcon from "@mui/icons-material/Store";
 import apiMain from "../../../apis/apiMain";
 import Pagination from '@mui/material/Pagination';
-
+import { useSelector } from "react-redux";
 function MyRates() {
   const [myReviews, setMyReviews] = useState([])
   const [totalPage, setTotalPage] = useState(10)
   const [page, setPage] = useState(1)
   const size = 5
-
+  const user = useSelector((state) => state.auth.user);
   useEffect(() => {
     const getMyReviews = async () => {
       let param = {
         _page: page,
         _limit: size ,
         _sort :'createdAt',
-        _order :'desc'
+        _order :'desc',
+        idUser: user.id,
+        nameUser : user.name,
       }
       const response = await apiMain.getMyReviews(param)
       if (response) {
