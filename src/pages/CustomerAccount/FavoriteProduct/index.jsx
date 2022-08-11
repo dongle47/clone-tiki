@@ -8,58 +8,78 @@ import {
   CardContent,
   CardActions,
   Pagination,
+  Grid,
 } from "@mui/material";
 
+import CardProduct from "../../../components/CardProduct";
 import productImage from "../../../assets/img/avatar1.jpg";
-import apiMain from "../../../apis/apiMain";
+import apiProduct from "../../../apis/apiProduct";
+import apiAccount from "../../../apis/apiAccount";
+import { useSelector } from "react-redux";
 
 function FavoriteProduct() {
+  const user = useSelector((state) => state.auth.user);
 
-  const [myFavorites, setMyFavorites] = useState([])
-  const [totalPage, setTotalPage] = useState(10)
-  const [page, setPage] = useState(1)
-  const size = 10
+  const [myFavorites, setMyFavorites] = useState([]);
+  const [totalPage, setTotalPage] = useState(10);
+  const [page, setPage] = useState(1);
+  const size = 10;
 
   useEffect(() => {
     const getMyFavorites = async () => {
       let param = {
         _page: page,
         _limit: size,
-      }
-      const response = await apiMain.getMyFavorites(param)
-      if (response) {
-        setMyFavorites(response.data)
-        setTotalPage(Math.ceil(response.pagination._totalRows / size))
-      }
-    }
-    getMyFavorites()
-  }, [page])
+      };
+      await apiAccount.getWishListByUser(user.id).then((res) => {
+        if (res.length < 2) {
+          setMyFavorites([res[0]]);
+        } else {
+          setMyFavorites(res);
+        }
+      });
+    };
+
+    getMyFavorites();
+  }, [page]);
 
   const handleChange = (event, value) => {
     setPage(value);
-  }
+  };
+
+  console.log(myFavorites);
 
   return (
     <Box>
       <Typography variant="h6">Danh sách yêu thích</Typography>
-      <Stack sx={{ backgroundColor: "white", padding: "1rem" }}>
-        {myFavorites.map((item) =>
-          <Card sx={{ border: "0px solid black", maxWidth: "13rem" }}>
-            <CardMedia component="img" image={productImage} height="200" />
-            <CardContent sx={{ padding: "5px 0 0 0" }}>
-              <Typography variant="caption" color="text.secondary">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit...
-              </Typography>
-            </CardContent>
-            <CardActions></CardActions>
-          </Card>
-        )
-        }
-      </Stack>
-      {myFavorites.length !== 0 ? <Stack spacing={2}>
-        <Typography>Page: {page}</Typography>
-        <Pagination count={totalPage} page={page} onChange={handleChange} />
-      </Stack>:<></>}
+
+      <Grid container sx={{ backgroundColor: "white", padding: "1rem" }}>
+        {myFavorites.map((item) => {
+          let data = {
+            id: item.productId,
+            image: item.productImg,
+            name: item.productName,
+            rate: item.productRate,
+            sold: item.productSold,
+            discount: item.productDiscount,
+            price: item.productPrice,
+          };
+          return (
+            <Grid key={item.id} item lg={2} md={4} sm={4} xs={4}>
+              <CardProduct data={data} />
+            </Grid>
+          );
+        })}
+      </Grid>
+
+      {myFavorites.length !== 0 ? (
+        <Stack spacing={2}>
+          <Typography>Page: {page}</Typography>
+          <Pagination count={totalPage} page={page} onChange={handleChange} />
+        </Stack>
+      ) : (
+        <></>
+      )}
     </Box>
   );
 }

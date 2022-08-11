@@ -14,8 +14,10 @@ import {
   Modal,
   FormControlLabel,
   IconButton,
+  Tooltip,
   Skeleton
 } from "@mui/material";
+
 import "./DetailProduct.scss";
 import CheckIcon from "@mui/icons-material/Check";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -39,22 +41,86 @@ import { toast } from "react-toastify";
 
 import SliderImage from "./SliderImage";
 
+import apiAccount from "../../apis/apiAccount";
+
 function DetailProduct() {
-  const [isFavorite, setIsFavorite] = useState(true);
-  const [expandContent, setExpandContent] = useState(false);
+  const user = useSelector((state) => state.auth.user);
+
+  const { id } = useParams();
+
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    const checkFavorite = async () => {
+      let param = {
+        userId: user.id,
+        productId: id,
+      };
+      await apiAccount.checkWishItem(param).then((res) => {
+        if (res.length > 0) {
+          setIsFavorite(true);
+        }
+      });
+    };
+
+    checkFavorite();
+  }, [id]);
+
+  const handleClickFavorite = async () => {
+    if (user === null) {
+      toast.warning("Vui lòng đăng nhập để thực hiện chức năng này");
+    } else {
+      let param = {
+        userId: user.id,
+        productId: id,
+        productImg: product.image,
+        productName: product.name,
+        productPrice: product.price,
+        productDiscount: product.discount,
+        productRate: product.rate,
+        productSold: product.sold,
+      };
+      setIsFavorite((prev) => !prev);
+
+      if (isFavorite === false) {
+        await apiAccount
+          .postWishItem(param)
+          .then(toast.success("Đã thêm vào danh sách yêu thích"))
+          .catch((err) => toast.error(err));
+      } else {
+        var itemId;
+
+        await apiAccount.checkWishItem(param).then((res) => {
+          itemId = res[0].id;
+        });
+
+        await apiAccount
+          .deleteWishItem(itemId)
+          .then(toast.info("Đã xóa khỏi danh sách yêu thích"))
+          .catch((err) => toast.error(err));
+      }
+    }
+  };
+
   const [product, setProduct] = useState(null);
+
+  const [expandContent, setExpandContent] = useState(false);
   const [productSimilars, setProductSimilars] = useState([]);
+
   const [quantity, setQuantity] = useState(1);
+  const [address, setAddress] = useState("");
   const [listAddress, setListAddress] = useState([
     { id: 0, text: "Chọn địa chỉ khác" },
   ]);
+  const [addressCustom, setAddressCustom] = useState("");
+
   const descriptionRef = useRef(null);
+
   const [province, setProvince] = useState("");
   const [district, setDistrict] = useState("");
   const [commune, setCommune] = useState("");
+
   const [value, setValue] = React.useState("0");
-  const [address, setAddress] = useState("");
-  const [addressCustom, setAddressCustom] = useState("");
   const [modalSlider, setModelSlider] = useState(false);
   const [loading, setLoading] = React.useState(true)
   const [choose, setChoose] = useState({});
@@ -74,15 +140,9 @@ function DetailProduct() {
 
   const openModalSlider = () => setModelSlider(true);
 
-  const handleClickFavorite = () => {
-    setIsFavorite((prev) => !prev);
-  };
-
   const closeModalSlider = () => {
     setModelSlider(false);
   };
-
-  const user = useSelector((state) => state.auth.user);
 
   const handleChangeAddress = (event) => {
     setValue(event.target.value);
@@ -129,7 +189,6 @@ function DetailProduct() {
 
   const setAddressDetails = useCallback((newAddress) => {
     setAddressCustom(newAddress);
-    console.log(newAddress);
   }, []);
 
   const handleChangeProvince = useCallback((value) => {
@@ -143,8 +202,6 @@ function DetailProduct() {
   const handleChangeCommune = useCallback((value) => {
     setCommune(value);
   }, []);
-
-  
 
   useEffect(() => {
     const getData = async () => {
@@ -180,7 +237,6 @@ function DetailProduct() {
     setQuantity(e.target.value);
     if (e.target.value === "") return;
     let quantity = Number(e.target.value);
-    console.log(quantity);
     if (Number.isInteger(quantity)) {
       setQuantity(quantity);
     } else {
@@ -270,6 +326,7 @@ function DetailProduct() {
               {" "}
             </Stack>
           </Box>
+
           <Box flex={1}>
             <Box className="detailProduct__title">
               {product?.name ? <h2>{product.name}</h2> : <><Skeleton animation="wave" height={40} /><Skeleton animation="wave" height={40} />
@@ -406,7 +463,15 @@ function DetailProduct() {
                 size="large"
                 onClick={handleClickFavorite}
               >
-                {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                {isFavorite ? (
+                  <Tooltip title="Xóa khỏi danh sách yêu thích">
+                    <FavoriteIcon />
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Thêm vào danh sách yêu thích">
+                    <FavoriteBorderIcon />
+                  </Tooltip>
+                )}
               </IconButton>
             </Stack>
           </Box>
@@ -422,6 +487,7 @@ function DetailProduct() {
             ))}
           </Grid>
         </Box>
+
         <Box
           className="productSpecification"
           bgcolor="white"
@@ -443,6 +509,7 @@ function DetailProduct() {
             </table>
           </Box>
         </Box>
+
         <Box
           className="descriptionProduct"
           bgcolor="white"
@@ -513,6 +580,7 @@ function DetailProduct() {
           </Stack>
         </Box>
       </Modal>
+
       <Modal open={modalSlider} onClose={closeModalSlider}>
         <Box className="modal-images" sx={{ width: "100%" }}>
           <SliderImage
@@ -521,7 +589,7 @@ function DetailProduct() {
           ></SliderImage>
         </Box>
       </Modal>
-      
+
       <ReviewProduct />
     </>
   );
