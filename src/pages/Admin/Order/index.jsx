@@ -7,7 +7,7 @@ function Order() {
     return (<>
         <Routes>
             <Route path='/' element={<OrderList />} />
-            <Route path='detail' element={<DetailOrder />} />
+            <Route path='detail/:id' element={<DetailOrder />} />
         </Routes>
     </>
     )
