@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "./DetailOrder.scss"
 import {
     Box,
@@ -6,21 +6,46 @@ import {
     Typography,
     Button
 } from "@mui/material"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
+import apiCart from '../../../../apis/apiCart'
+import { toast } from 'react-toastify'
+import { numWithCommas } from '../../../../constraints/Util'
 
 function DetailOrder() {
+    const id = useParams().id
+    const [order, setOrder] = useState(null)
+    useEffect(() => {
+        const getData = () => {
+            let params = {
+                id
+            }
+            apiCart.getOrders(params)
+                .then(res => {
+                    setOrder(res[0])
+                })
+                .catch(error => {
+                    setOrder(null)
+                    toast.warning("Không tìm thấy đơn hàng")
+                })
+        }
+        getData()
+    }, [id])
     return (
         <>
             <Box>
                 <Typography mt={2.5} fontSize="19px" fontWeight={300}>Chi tiết đơn hàng #825345038 - <span style={{ fontWeight: 500 }}>Huỷ</span></Typography>
-                <Typography fontSize="13px" textAlign= "end">Ngày đặt hàng: 10:17 15/07/2022</Typography>
+                <Typography fontSize="13px" textAlign="end">Ngày đặt hàng: {order?.createdAt}</Typography>
                 <Stack direction="row" mt={1.25} mb={2.5} className="detailOrder" justifyContent="space-between">
                     <Box className="detailOrder__boxInfo">
                         <Typography>ĐỊA CHỈ NHẬN HÀNG</Typography>
                         <Box p={1.25} className="detailOrder__content">
-                            <Typography style={{ color: "#000", fontWeight: 500 }}>LÊ VĂN ĐỒNG</Typography>
-                            <Typography>Địa chỉ: Ktx khu B đhqg, Phường Đông Hòa, Thị xã Dĩ An, Bình Dương, Việt Nam</Typography>
-                            <Typography>Điện thoại: 0332298170</Typography>
+                            <Typography style={{ color: "#000", fontWeight: 500 }}>{order?.address?.fullName}</Typography>
+                            <Typography>
+                                Địa chỉ: {`${order?.address?.addressDetail}, ${order?.address?.commune?.name},
+                                  ${order?.address?.district?.name},
+                                  ${order?.address?.province?.name}`}
+                            </Typography>
+                            <Typography>Điện thoại: {order?.address?.phoneNumber}</Typography>
                         </Box>
                     </Box>
 
@@ -29,16 +54,14 @@ function DetailOrder() {
                         <Box p={1.25} className="detailOrder__content">
                             <Typography>
                                 <img width="56px" height="16px" src="https://salt.tikicdn.com/ts/upload/2a/47/46/0e038f5927f3af308b4500e5b243bcf6.png" alt="" />
-                                Giao Tiết Kiệm</Typography>
-                            <Typography>Giao vào Thứ hai, 18/07</Typography>
-                            <Typography>Được giao bởi GiaPhucStore</Typography>
-                            <Typography>Phí vận chuyển: 17.000đ</Typography>
+                                {order?.shipping?.display}</Typography>
+                            <Typography>Phí vận chuyển: {order?.feeShip}đ</Typography>
                         </Box>
                     </Box>
                     <Box className="detailOrder__boxInfo">
                         <Typography >HÌNH THỨC THANH TOÁN</Typography>
                         <Box p={1.25} className="detailOrder__content">
-                            <Typography>Thanh toán bằng ví ZaloPay</Typography>
+                            <Typography>{order?.payment?.display}</Typography>
                             <Typography style={{ color: "#fda223" }}>Thanh toán thất bại. Vui lòng thanh toán lại hoặc chọn phương thức thanh toán khác</Typography>
                         </Box>
                     </Box>
@@ -53,15 +76,17 @@ function DetailOrder() {
                         <Box>Tạm tính</Box>
                     </Stack>
                     {
-                        [1, 2, 3, 4].map(item =>
+                        order?.products?.map(item =>
                             <Stack key={item} direction="row" className="detailOrder-Table__row">
                                 <Stack direction="row" className="orderDetail__item">
                                     <Box mr={1.875}>
-                                        <img height="60px" width="60px" src="https://salt.tikicdn.com/cache/200x200/ts/product/03/c5/fa/de1f68f3247b1a407d725800925f341a.jpg" alt="" />
+                                        <img height="60px" width="60px" src={item.image} alt="" />
                                     </Box>
                                     <Stack spacing={1.5}>
-                                        <Link to={"/"}><Typography sx={{ fontSize: "14px" }}>Sạc Dự Phòng Xiaomi 10000mAh Gen 3 PLM13ZM - Hàng Nhập Khẩu - Đen</Typography></Link>
-                                        <Typography sx={{ fontSize: "13px" }}>Sku: 4816587252819</Typography>
+                                        <Link to={"/"}>
+                                            <Typography fontSize="14px" >{item.name}</Typography>
+                                        </Link>
+                                        <Typography fontSize="13px">Sku: 4816587252819</Typography>
                                         <Stack direction="row" spacing={1}>
                                             <Button variant="outlined" sx={{ fontSize: "12px", width: "102px", height: "30px", padding: 0 }}>Viết nhận xét</Button>
                                             <Button variant="outlined" sx={{ fontSize: "12px", width: "71px", height: "30px", padding: 0 }}>Mua lại</Button>
@@ -69,39 +94,42 @@ function DetailOrder() {
                                         </Stack>
                                     </Stack>
                                 </Stack>
-                                <Box>359.000 ₫</Box>
-                                <Box>1</Box>
-                                <Box>10.000 ₫</Box>
-                                <Box>349.000 ₫</Box>
+                                <Box>{numWithCommas(item.price || 0)}₫</Box>
+                                <Box>{numWithCommas(item.quantity || 0)}</Box>
+                                <Box>{numWithCommas(item.discount || 0)} ₫</Box>
+                                <Box>{numWithCommas(item.price * item.quantity - item.discount || 0)} ₫</Box>
                             </Stack>
                         )
                     }
 
 
                 </Stack>
+                {
+                    order && <Stack direction="column"
+                        justifyContent="center"
+                        alignItems="flex-end"
+                        mt={3.5}>
 
-                <Stack direction="column"
-                    justifyContent="center"
-                    alignItems="flex-end"
-                    mt={3.5}>
+                        <Stack py={0.625} direction="row">
+                            <Typography className="detailOrder__summary-label">Tạm tính</Typography>
+                            <Typography className="detailOrder__summary-value">{numWithCommas(order?.totalPrice || 0)} ₫</Typography>
+                        </Stack>
+                        <Stack py={0.625} direction="row">
+                            <Typography className="detailOrder__summary-label">Giảm giá</Typography>
+                            <Typography className="detailOrder__summary-value">{numWithCommas(order?.discount || 0)} ₫</Typography>
+                        </Stack>
+                        <Stack py={0.625} direction="row">
+                            <Typography className="detailOrder__summary-label">Phí vận chuyển</Typography>
+                            <Typography className="detailOrder__summary-value">{numWithCommas(order?.feeShip || 0)} ₫</Typography>
+                        </Stack>
+                        <Stack py={0.625} direction="row">
+                            <Typography className="detailOrder__summary-label">Phí vận chuyển</Typography>
+                            <Typography className="detailOrder__summary-value detailOrder__summary-value--final">
+                                {numWithCommas(order.totalPrice + order.feeShip - order.discount || 0)} ₫</Typography>
+                        </Stack>
+                    </Stack>
+                }
 
-                    <Stack py={0.625} direction="row">
-                        <Typography className="detailOrder__summary-label">Tạm tính</Typography>
-                        <Typography className="detailOrder__summary-value">359.000 ₫</Typography>
-                    </Stack>
-                    <Stack py={0.625} direction="row">
-                        <Typography className="detailOrder__summary-label">Giảm giá</Typography>
-                        <Typography className="detailOrder__summary-value">10.000 ₫</Typography>
-                    </Stack>
-                    <Stack py={0.625} direction="row">
-                        <Typography className="detailOrder__summary-label">Phí vận chuyển</Typography>
-                        <Typography className="detailOrder__summary-value">17.000 ₫</Typography>
-                    </Stack>
-                    <Stack py={0.625} direction="row">
-                        <Typography className="detailOrder__summary-label">Phí vận chuyển</Typography>
-                        <Typography className="detailOrder__summary-value detailOrder__summary-value--final">366.000 ₫</Typography>
-                    </Stack>
-                </Stack>
             </Box>
         </>
     )

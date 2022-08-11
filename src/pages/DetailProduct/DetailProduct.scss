@@ -9,8 +9,14 @@
         }
         &__primary-img {
             width: 100%;
-            & img {
+            padding-top: 100%;
+            position: relative;
+            &>* {
+                position: absolute;
+                top: 0;
+                left: 0;
                 width: 100%;
+                border-radius: 4px;
             }
         }
         &__item-img {
@@ -53,6 +59,7 @@
             display: flex;
             align-items: center;
             gap: 16px;
+            width: 100%;
             &>span:last-child {
                 font-size: 15px;
                 color: #888;
@@ -71,12 +78,12 @@
                 text-decoration: line-through;
                 margin-right: 8px;
             }
-            & span:last-child {
-                padding: 0 4px;
-                border: 1px solid #ff424e;
-                color: #ff424e;
-                font-size: 14px;
-            }
+        }
+        &__discount {
+            padding: 0 4px;
+            border: 1px solid #ff424e;
+            color: #ff424e;
+            font-size: 14px;
         }
         &__buy {
             margin-top: 12px;
@@ -104,14 +111,14 @@
         &__title {
             font-size: 20px;
             height: 48px;
-            margin-top: 16px;
+            margin-top: 30px;
             padding: 8px 12px;
         }
     }
     
     .productSpecification {
         padding: 0 12px;
-        width: 80%;
+        width: 100%;
         &__title {
             font-size: 20px;
             height: 48px;
@@ -134,7 +141,7 @@
     
     .descriptionProduct {
         padding: 0 12px;
-        width: 80%;
+        width: 100%;
         margin-bottom: 24px;
         &__content {
             width: 100%;
@@ -300,13 +307,13 @@
                     border: 1px solid #1890ff;
                 }
             }
-
         }
     }
-    .modal-images{
+    
+    .modal-images {
         position: absolute;
         left: 0;
-        background-color: rgba(0, 0, 0,0.6);
+        background-color: rgba(0, 0, 0, 0.6);
         padding: 32px;
         height: 100%;
     }

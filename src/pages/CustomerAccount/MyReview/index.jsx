@@ -19,7 +19,9 @@ function MyRates() {
     const getMyReviews = async () => {
       let param = {
         _page: page,
-        _limit: size
+        _limit: size ,
+        _sort :'createdAt',
+        _order :'desc'
       }
       const response = await apiMain.getMyReviews(param)
       if (response) {
@@ -40,7 +42,7 @@ function MyRates() {
       </Typography>
       <Stack flex='1' >
         {myReviews.map((item) => (
-          <Stack direction="row" spacing={10} bgcolor="#ffff" p={2}
+          <Stack direction="row" spacing={2} bgcolor="#ffff" p={2}
           >
             <Stack
               spacing={1} minWidth="240px" minHeight="256px"
@@ -65,7 +67,7 @@ function MyRates() {
             <Stack spacing={1}>
               <Stack direction="row" spacing={1} jutifyContent="center">
                 <Stack direction="row" spacing={1}>
-                  <Rating name="disabled" value={item.rating} disabled />
+                  <Rating readOnly value={item.rating} />
                   <Stack jutifyContent="center">
                     <Typography
                       sx={{ fontSize: "13px", fontWeight: "400", lineHeight: "20px" }}
@@ -86,7 +88,7 @@ function MyRates() {
                 {item.content}
               </Typography>
               <Stack direction="row" flexWrap="wrap" justifyContent="flex-start" gap={'10px'}>
-                {item.imgRate.map((item) => (
+                {item.imgRate?.map((item) => (
                   <Stack className="myreview__picture"
                     sx={{
                       backgroundImage: `url(${item})`,
@@ -105,7 +107,7 @@ function MyRates() {
       {myReviews.length !== 0 ? <Stack spacing={2}>
         <Typography>Page: {page}</Typography>
         <Pagination count={totalPage} page={page} onChange={handleChange} />
-      </Stack>:<></>}
+      </Stack> : <></>}
     </Box>
   );
 }

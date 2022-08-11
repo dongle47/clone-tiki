@@ -23,6 +23,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import SearchIcon from "@mui/icons-material/Search";
 
 function Product() {
     const [modalDelete, setModalDelete] = React.useState(false);
@@ -56,7 +57,7 @@ function Product() {
                         <Button variant="outlined" pr={2}>Tạo sản phẩm</Button>
                     </Link>
                 </Stack>
-                <Stack mb={2} className="productAdmin__filter">
+                {/* <Stack mb={2} className="productAdmin__filter">
                     <Box pt={1} pb={1.5}>
                         <Grid container direction="row" justifyContent="space-between" alignItems="center" px={2}>
                             <Grid xs={3}>
@@ -129,7 +130,7 @@ function Product() {
                             <Button variant='outlined'><RefreshIcon sx={{ height: "20px" }}></RefreshIcon>Làm mới</Button>
                         </Stack>
                     </Box>
-                </Stack>
+                </Stack> */}
 
                 <Box sx={{ backgroundColor: "#fff" }} p={2}>
                     <Stack direction="row">
@@ -190,7 +191,7 @@ function Product() {
                     <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} py={2}>
                         <Typography sx={{ fontSize: "16px", fontWeight: "bold" }}>Tổng cộng có: 7 bản ghi</Typography>
                         <Pagination count={7} color="primary" variant="outlined" shape="rounded" />
-                        <TextField id="outlined-basic" label="Nhập số trang" variant="outlined" size='small' />
+                        {/* <TextField id="outlined-basic" label="Nhập số trang" variant="outlined" size='small' />
                         <Typography sx={{ fontSize: "16px", fontWeight: "bold" }}>Hiển thị: </Typography>
                         <FormControl sx={{ flex: 1 }} >
                             <Select
@@ -204,7 +205,19 @@ function Product() {
                                 <MenuItem value={20}>20/Trang</MenuItem>
                                 <MenuItem value={30}>30/Trang</MenuItem>
                             </Select>
-                        </FormControl>
+                        </FormControl> */}
+                        <Stack direction="row" sx={{ width: "500px", position: "relative" }}>
+                            <TextField
+                                id="outlined-basic"
+                                label="Search"
+                                variant="outlined"
+                                sx={{ width: "100%" }}
+                                size="small"
+                            />
+                            <span className="order__iconSearch">
+                                <SearchIcon sx={{ fontSize: "28px" }} />
+                            </span>
+                        </Stack>
                     </Stack>
                     <Table className="productTable" sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                         <TableHead>

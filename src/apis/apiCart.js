@@ -13,9 +13,12 @@ export const axiosClient = axios.create({
 
 
 const apiCart = {
-
+    getOrders: async (params) => {
+        const res = await axiosClient.get('/myorders', {params})
+        return res.data;
+    },
     saveOrder: async (params) => {
-        const res = await axiosClient.post('/myorder',params)
+        const res = await axiosClient.post('/myorders',params)
         return res.data;
     },
     

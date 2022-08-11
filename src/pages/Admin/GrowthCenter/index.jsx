@@ -114,7 +114,7 @@ function GrowthCenter() {
             <Typography >
               Thời gian báo cáo:
             </Typography>
-            <Stack direction="row" alignItems="center">
+            <Stack direction="row" alignItems="center" spacing ={1}>
               <Button className="growthCenter__buttonTime growthCenter__buttonTime--selected" variant="outlined">Hôm nay</Button>
               <Button className="growthCenter__buttonTime" variant="outlined">7 ngày qua</Button>
               <Button className="growthCenter__buttonTime" variant="outlined"> 30 ngày qua</Button>
@@ -156,7 +156,7 @@ function GrowthCenter() {
               7 ngày qua: 14/07/2022 - 20/07/2022 (So sánh với: 05/07/2022 -
               11/07/2022)
             </Typography>
-            <Button variant="outlined" endIcon={<DownloadIcon />}>
+            <Button  variant="outlined" endIcon={<DownloadIcon />}>
               Tải dữ liệu
             </Button>
           </Stack>
@@ -208,12 +208,12 @@ const items = [
     value: "1",
     percent: "100"
   },
-  {
-    id: 3,
-    title: "Doanh thu thuần",
-    value: "--",
-    percent: "Không có dữ liệu"
-  },
+  // {
+  //   id: 3,
+  //   title: "Doanh thu thuần",
+  //   value: "--",
+  //   percent: "Không có dữ liệu"
+  // },
   {
     id: 4,
     title: "Lượt xem",
@@ -232,12 +232,12 @@ const items = [
     value: "1",
     percent: "100"
   },
-  {
-    id: 7,
-    title: "SKU bán ra",
-    value: "1",
-    percent: "100"
-  },
+  // {
+  //   id: 7,
+  //   title: "SKU bán ra",
+  //   value: "1",
+  //   percent: "100"
+  // },
 ]
 
 export default GrowthCenter;

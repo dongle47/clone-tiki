@@ -17,16 +17,16 @@ export const couponAnalytics = [
         value: 0,
         percent: 0
     },
-    {
-        id: 4,
-        name: "Tỉ lệ lợi nhuận trên chi phí",
-        value: 0,
-        percent: 0
-    },
-    {
-        id: 5,
-        name: "Người mua",
-        value: 0,
-        percent: 0
-    },
+    // {
+    //     id: 4,
+    //     name: "Tỉ lệ lợi nhuận trên chi phí",
+    //     value: 0,
+    //     percent: 0
+    // },
+    // {
+    //     id: 5,
+    //     name: "Người mua",
+    //     value: 0,
+    //     percent: 0
+    // },
 ]

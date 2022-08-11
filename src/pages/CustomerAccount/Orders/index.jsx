@@ -6,7 +6,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import OrderItem from "../../../components/OrderItem/index.jsx";
 import { orderTabs} from "../../../constraints/OrderItem";
 import { useEffect } from "react";
-import apiMain from "../../../apis/apiMain";
+import apiCart from "../../../apis/apiCart";
+import { useSelector } from "react-redux";
 
 function Orders() {
   const [orders, setOrders] = useState([]);
@@ -14,6 +15,7 @@ function Orders() {
   const [value, setValue] = useState(0);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const user = useSelector(state => state.auth.user)
   
   const size = 10;
 
@@ -22,15 +24,17 @@ function Orders() {
       let param = {
         _page: page,
         _limit: size,
+        idUser:user.id
       };
-      const response = await apiMain.getOrders(param);
-      if (response) {
-        setOrders(response.data.sort((a,b)=>a.createdAt - b.createdAt));
-        setTotalPage(Math.ceil(response.pagination._totalRows / size))
-      }
+      apiCart.getOrders(param)
+        .then(response=>{
+           setOrders(response.data.sort((a,b)=>a.createdAt - b.createdAt));
+          setTotalPage(Math.ceil(response.pagination._totalRows / size))
+        })
+        .catch(setOrders([]))
     };
     getData();
-  }, [page]);
+  }, [page,user]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
