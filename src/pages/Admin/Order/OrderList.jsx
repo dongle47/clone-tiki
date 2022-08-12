@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { Link,Routes,Route } from "react-router-dom";
 import "./Order.scss";
 import {
@@ -12,30 +13,19 @@ import {
     TableRow,
     TableCell,
     InputBase,
+    Pagination,
 } from "@mui/material";
+import apiCart from "../../../apis/apiCart";
 import SearchIcon from "@mui/icons-material/Search";
 import Checkbox from '@mui/material/Checkbox';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { styled } from '@mui/material/styles';
 import DetailOrder from "./DetailOrder";
+import { endOfWeek } from "date-fns/esm";
 
 const listStatus = ["Mã đơn hàng", "SKU", "Thông tin khách hàng"]
 const listOrderDate = ["Hôm nay", "7 ngày qua", "30 ngày qua", "Toàn thời gian"]
-
-function createData(idOrder, status, date, amount, label) {
-    return { idOrder, status, date, amount, label };
-}
-
-const rows = [
-    createData(
-        "123\n15/07/2022",
-        "Đã duyệt",
-        "10/7/2022",
-        "4",
-        "Hàng dễ vỡ",
-    ),
-]
 const items = [
     // { id: 1, label: 'Tất cả', value: "-" },
     // { id: 2, label: 'Chờ xác nhận', value: "đơn quá hạn XN" },
@@ -43,7 +33,7 @@ const items = [
     // { id: 4, label: 'Đang vận chuyển', value: "-" },
     // { id: 5, label: 'Đã giao hàng', value: "-" },
     // { id: 6, label: 'Đã hủy', value: "-" },
-    { id: 1, label: 'Tất cả'},
+    { id: 0, label: 'Tất cả'},
     { id: 2, label: 'Đang xử lý'},
     { id: 3, label: 'Đang vận chuyển'},
     { id: 4, label: 'Đã giao hàng'},
@@ -51,23 +41,53 @@ const items = [
 ]
 
 function OrderList() {
-    const [selected, setSelected] = React.useState(null)
+    const [selected, setSelected] = React.useState(0)
+    const [orders, setOrders] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(1);
+    
+    const size =6;
+
+    useEffect(() => {
+        const getData = async () => {
+          let param = {
+            _page: page,
+            _limit: size,
+            //"type.id":2,
+            };
+            if (selected != 0) {
+                param["type.id"]=selected;
+            }
+          apiCart.getOrders(param)
+            .then(response=>{
+            setOrders(response.data.sort((a,b)=>a.createdAt - b.createdAt));
+            setTotalPage(Math.ceil(response.pagination._totalRows / size))        
+            })
+            .catch(setOrders([]))
+        };
+        getData();
+      }, [page, selected]);
+
+    const handleDate = (timestamp) => {
+        let date = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(timestamp)
+        return date ;
+    }
 
     const handleClickTab = (i) => {
         if (i !== selected)
             setSelected(i)
-
     }
     const [status, setStatus] = useState(0);
     const onChangeStatus = (e) => {
         setStatus(e.target.value)
     }
-
     const [orderDate, setOrderDate] = useState(0);
     const onChangeOrderDate = (e) => {
         setOrderDate(e.target.value)
     }
-
+    const handleChangePage = (event, newValue) => {
+        setPage(newValue);
+      };
     return (<>
     
         <Stack p={3} bgcolor="#fff">
@@ -82,9 +102,9 @@ function OrderList() {
             <Stack direction="row" spacing={0.5} p={2}>
                 {
                     items?.map((item, i) =>
-                        <Stack onClick={() => { handleClickTab(i)}} key={item.id || i}
+                        <Stack onClick={() => { handleClickTab(item.id)}} key={item.id || i}
                         alignItems="center" justifyContent="center"
-                        className={`orderTab__item ${i === selected ? "selected" : ""}`}>
+                        className={`orderTab__item ${item.id === selected ? "selected" : ""}`}>
                             <Typography fontWeight="500 !important">{item.label}</Typography>
                             {/* <Typography>{item.value}</Typography> */}
                         </Stack>)
@@ -147,27 +167,27 @@ function OrderList() {
                         <TableCell sx={{ width: "20%", top: "64px" }}>Mã đơn hàng/Ngày đặt hàng</TableCell>
                         <TableCell sx={{ width: "15%", top: "64px" }}>Trạng thái&nbsp;</TableCell>
                         <TableCell align="center" sx={{ width: "20%", top: "64px" }}>Ngày xác nhận/hạn xác nhận&nbsp;</TableCell>
-                        <TableCell align="center" sx={{ width: "20%", top: "64px" }}>Số lượng/DT/GTĐH&nbsp;</TableCell>
+                        <TableCell align="center" sx={{ width: "20%", top: "64px" }}>Giá trị đơn hàng&nbsp;</TableCell>
                         <TableCell sx={{ width: "15%", top: "64px" }}>Nhãn đơn hàng&nbsp;</TableCell>
                         <TableCell sx={{ width: "10%", top: "64px" }}>Thao tác&nbsp;</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
+                    {orders.map((row) => (
                         <TableRow
-                            key={row.name}
+                            key={row.id}
                             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                         >
                             <TableCell><Checkbox /></TableCell>
-                            <TableCell component="th" scope="row">{row.idOrder}</TableCell>
-                            <TableCell align="left">{row.status}</TableCell>
-                            <TableCell align="center">{row.date}</TableCell>
-                            <TableCell align="center">{row.amount}</TableCell>
-                            <TableCell align="left">{row.label}</TableCell>
+                            <TableCell component="th" scope="row">{row.id} <br/>/ {handleDate(row.createdAt)}</TableCell>
+                            <TableCell align="left">{row.type.name}</TableCell>
+                            <TableCell align="center">{handleDate(row.updatedAt)}</TableCell>
+                            <TableCell align="center">{row.totalPrice}</TableCell>
+                            <TableCell align="left">{row.type.name}</TableCell>
                             <TableCell align="center">
                                 <Stack spacing={1} justifyContent="center" py={1}>
-                                    <Link to="detail">
-                                        <Button sx={{ width: "100px" }} variant="outlined">Xem chi tiết</Button>
+                                    <Link to={`detail/${row.id}`}>
+                                        <Button sx={{ width: "100px" }} variant="outlined" >Xem chi tiết</Button>
                                     </Link>
                                 </Stack>
                             </TableCell>
@@ -175,8 +195,9 @@ function OrderList() {
                     ))}
                 </TableBody>
             </Table>
-
-          
+            {totalPage > 1 ? <Stack spacing={2} mt="10px">
+                <Pagination count={totalPage} page={page} onChange={handleChangePage} color="primary"/>
+            </Stack > : <></>}
         </Stack>
         <Routes>
             <Route path='detail' element={<DetailOrder />} />

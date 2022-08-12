@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./Search.scss";
 
@@ -18,7 +19,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import HistoryIcon from "@mui/icons-material/History";
 
-import { addItem, removeItem } from "../../slices/searchSlice";
+import { addItem, removeItem, removeAll } from "../../slices/searchSlice";
 
 function Search(props) {
   const dispatch = useDispatch();
@@ -29,9 +30,13 @@ function Search(props) {
     dispatch(removeItem(data));
   };
 
-  const handleClickSubmit = (data) => {
-    props.setSearchText(data);
-    props.handleSubmitSearch(data);
+  const handleClickSuggestItem = (data) => {
+    props.setSearchText(data.text);
+
+    props.handleSaveSearch(data);
+
+    // navigate(`/product/${data.slug}`);
+    // props.handleSubmitSearch(data);
   };
 
   const SearchedItemsHalf = props.searchedItems
@@ -39,7 +44,8 @@ function Search(props) {
     .map((item) => (
       <SearchedItem
         setSearchText={props.setSearchText}
-        text={item}
+        text={item.text}
+        slug={item.slug}
         handleRemoveSearch={handleRemoveSearch}
       />
     ));
@@ -49,7 +55,8 @@ function Search(props) {
     .map((item) => (
       <SearchedItem
         setSearchText={props.setSearchText}
-        text={item}
+        text={item.text}
+        slug={item.slug}
         handleRemoveSearch={handleRemoveSearch}
       />
     ));
@@ -58,19 +65,17 @@ function Search(props) {
     .slice(0, 5)
     .map((item) => (
       <SuggestItem
-        handleClickSubmit={handleClickSubmit}
+        handleClickSuggestItem={handleClickSuggestItem}
         setSearchText={props.setSearchText}
-        text={item.lowerCaseName}
+        text={item.text}
+        slug={item.slug}
       />
     ));
 
   const SuggestItemsFull = props.suggestions
     .slice(0, 10)
     .map((item) => (
-      <SuggestItem
-        setSearchText={props.setSearchText}
-        text={item.lowerCaseName}
-      />
+      <SuggestItem setSearchText={props.setSearchText} text={item.text} />
     ));
 
   return (
@@ -158,15 +163,17 @@ function SearchedItem(props) {
     >
       <HistoryIcon fontSize="medium" sx={{ color: "silver" }} />
 
-      <Typography
-        onClick={() => props.setSearchText(props.text)}
-        variant="subtitle2"
-        sx={{ fontSize: "0.8rem", fontWeight: 500, flex: 1 }}
-      >
-        {props.text}
-      </Typography>
+      <Link style={{ flex: 1 }} to={`product/${props.slug}`}>
+        <Typography
+          onClick={() => props.setSearchText(props.text)}
+          variant="subtitle2"
+          sx={{ fontSize: "0.8rem", fontWeight: 500 }}
+        >
+          {props.text}
+        </Typography>
+      </Link>
 
-      <IconButton onClick={() => props.handleRemoveSearch(props.text)}>
+      <IconButton onClick={() => props.handleRemoveSearch(props.slug)}>
         <ClearIcon sx={{ color: "silver" }}></ClearIcon>
       </IconButton>
     </Stack>
@@ -174,24 +181,30 @@ function SearchedItem(props) {
 }
 
 function SuggestItem(props) {
+  let obj = {
+    text: props.text,
+    slug: props.slug,
+  };
   return (
-    <Stack
-      className="item-search"
-      sx={{ height: "2.5rem" }}
-      direction="row"
-      spacing={2}
-      alignItems="center"
-      onClick={() => props.handleClickSubmit(props.text)}
-    >
-      <SearchIcon fontSize="medium" sx={{ color: "silver" }} />
-
-      <Typography
-        variant="subtitle2"
-        sx={{ fontSize: "0.8rem", fontWeight: 500, flex: 1 }}
+    <Link to={`/product/${props.slug}`}>
+      <Stack
+        className="item-search"
+        sx={{ height: "2.5rem" }}
+        direction="row"
+        spacing={2}
+        alignItems="center"
+        onClick={() => props.handleClickSuggestItem(obj)}
       >
-        {props.text}
-      </Typography>
-    </Stack>
+        <SearchIcon fontSize="medium" sx={{ color: "silver" }} />
+
+        <Typography
+          variant="subtitle2"
+          sx={{ fontSize: "0.8rem", fontWeight: 500, flex: 1 }}
+        >
+          {props.text}
+        </Typography>
+      </Stack>
+    </Link>
   );
 }
 
