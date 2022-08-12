@@ -20,6 +20,8 @@ import { useSelector } from "react-redux";
 function FavoriteProduct() {
   const user = useSelector((state) => state.auth.user);
 
+  console.log(user);
+
   const [myFavorites, setMyFavorites] = useState([]);
   const [totalPage, setTotalPage] = useState(10);
   const [page, setPage] = useState(1);
@@ -32,9 +34,8 @@ function FavoriteProduct() {
         _limit: size,
       };
       await apiAccount.getWishListByUser(user.id).then((res) => {
-        if (res.length < 2) {
-          setMyFavorites([res[0]]);
-        } else {
+    
+        if (res.length !== 0) {
           setMyFavorites(res);
         }
       });
@@ -46,8 +47,6 @@ function FavoriteProduct() {
   const handleChange = (event, value) => {
     setPage(value);
   };
-
-  console.log(myFavorites);
 
   return (
     <Box>
@@ -63,6 +62,7 @@ function FavoriteProduct() {
             sold: item.productSold,
             discount: item.productDiscount,
             price: item.productPrice,
+            slug: item.productSlug,
           };
           return (
             <Grid key={item.id} item lg={2} md={4} sm={4} xs={4}>
