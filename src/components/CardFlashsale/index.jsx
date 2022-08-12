@@ -20,6 +20,7 @@ function CardFlashsale({ data }) {
                     component="img"
                     alt="green iguana"
                     width="124px"
+                    height="124px"
                     image={data?.image}
                 />
                 <CardContent className="card__content">

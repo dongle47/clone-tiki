@@ -13,7 +13,7 @@ import SignUp from "../SignUp";
 import Search from "../Search";
 import ForgetPassword from "../ForgetPassword";
 
-import { addItem } from "../../slices/searchSlice";
+import { addItem, removeAll } from "../../slices/searchSlice";
 import { logoutSuccess } from "../../slices/authSlice";
 
 import apiProduct from "../../apis/apiProduct";
@@ -44,16 +44,27 @@ function Header() {
 
   const [categorySpecify, setCategorySpecify] = useState([]);
 
+  const handleSubmitSearch = () => {
+    // dispatch(removeAll());
+    let obj = {
+      text: searchText,
+      slug: searchText.replace(/\s/g, "-"),
+    };
+    handleSaveSearch(obj);
+    navigate(`search/${obj.slug}`);
+  };
+
   useEffect(() => {
     const getSuggestions = async () => {
       apiProduct.getProducts().then((res) => {
-        const names = res.map((item) => ({
+        const sugg = res.map((item) => ({
           id: item.id,
-          name: item.name,
+          text: item.name,
+          slug: item.slug,
           lowerCaseName: item.name.toLowerCase(),
         }));
 
-        setSuggestions(names);
+        setSuggestions(sugg);
       });
     };
 
@@ -92,12 +103,31 @@ function Header() {
     getDataCategorySpecify();
   }, []);
 
+  var englishText = /^[A-Za-z0-9]*$/;
+
   useEffect(() => {
+    const checkIsVNese = () => {
+      for (const item of searchText.replace(/\s/g, "")) {
+        if (englishText.test(item) === false) {
+          return true;
+        }
+        return false;
+      }
+    };
+
     const filter = suggestions.filter((item) =>
+      item.slug.includes(searchText.replace(/\s/g, "-"))
+    );
+
+    const filterVN = suggestions.filter((item) =>
       item.lowerCaseName.includes(searchText)
     );
 
-    setFilteredSuggestions(filter);
+    if (checkIsVNese() === true) {
+      setFilteredSuggestions(filterVN);
+    } else {
+      setFilteredSuggestions(filter);
+    }
   }, [searchText]);
 
   const [modalLogin, setModalLogin] = useState(false);
@@ -113,7 +143,7 @@ function Header() {
 
   const user = useSelector((state) => state.auth.user); //lấy user từ store
 
-  const handleSubmitSearch = (data) => {
+  const handleSaveSearch = (data) => {
     dispatch(addItem(data));
   };
 
@@ -156,7 +186,6 @@ function Header() {
     setIsLoginForm(false);
   }, []);
 
-
   const handleOpenLogin = useCallback(() => {
     setIsLoginForm(true);
     setIsRegister(false);
@@ -185,8 +214,8 @@ function Header() {
   }, []);
 
   return (
-    <header style={{ backgroundColor: "#2196f3" }}>
-      <Stack
+    <header className="header">
+      <Stack 
         justifyContent="space-between"
         direction="row"
         alignItems="center"
@@ -198,8 +227,8 @@ function Header() {
           margin: "0 auto",
         }}
       >
-        <Link to={"/"}>
-          <Stack sx={{ width: "190px" }} spacing={1.5} pt={2}>
+        <Link className="header__logo" to={"/"}>
+          <Stack  spacing={1.5} pt={2}>
             <img
               alt=""
               style={{ width: "60px", height: "40px" }}
@@ -213,7 +242,7 @@ function Header() {
           </Stack>
         </Link>
 
-        <Box sx={{ flex: 1 }}>
+        <Box sx={{ flex: 1 }} className="header__search">
           <Stack
             direction="row"
             alignItems="center"
@@ -231,7 +260,7 @@ function Header() {
               <Search
                 trendingCategory={categorySpecify}
                 trendingSearch={trendingSearch}
-                handleSubmitSearch={handleSubmitSearch}
+                handleSaveSearch={handleSaveSearch}
                 setSearchText={setSearchText}
                 suggestions={filteredSuggestions}
                 searchedItems={searchedItems}
@@ -261,9 +290,10 @@ function Header() {
           justifyContent="space-between"
           spacing={3}
           py={2}
+          className="header__account"
         >
           <Stack
-            className="header__account"
+            
             direction="row"
             alignItems="center"
             spacing="10px"
@@ -357,10 +387,10 @@ function Header() {
           </Stack>
         </Stack>
 
-        <Stack spacing={1}>
+        <Stack spacing={1} className="header__cart">
           <Link to="/cart">
             <Stack
-              justifyContent="flex-end"
+              justifyContent="flex-start"
               alignItems="flex-end"
               direction="row"
               spacing={1}
@@ -411,10 +441,12 @@ function Header() {
             />
           )}
 
-          {isForgetPwd && <ForgetPassword
-            closeModalForgetPWD={closeModalForgetPWD}
-            handleReturnLogin={handleReturnLogin}
-          />}
+          {isForgetPwd && (
+            <ForgetPassword
+              closeModalForgetPWD={closeModalForgetPWD}
+              handleReturnLogin={handleReturnLogin}
+            />
+          )}
         </Box>
       </Modal>
     </header>

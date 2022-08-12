@@ -8,10 +8,10 @@ import { FbLogin } from "../FacebookLogin";
 import { loginSuccess, logoutSuccess } from "../../slices/authSlice";
 import { useDispatch } from "react-redux";
 import apiAuth from "../../apis/apiAuth";
+import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
 
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-import { axiosInstance } from "./../../apis/axiosClient";
 import InputAdornment from "@mui/material/InputAdornment";
 
 import {
@@ -32,6 +32,7 @@ import { toast } from "react-toastify";
 
 function Login(props) {
   const dispatch = useDispatch();
+  const client_url = "http://localhost:3000/"
 
   const {
     register,
@@ -82,6 +83,8 @@ function Login(props) {
         setLoading(false);
       });
   };
+
+ 
 
   return (
     <Stack direction="row">
@@ -185,7 +188,15 @@ function Login(props) {
           alignItems="center"
           spacing={2}
         >
-          <FbLogin />
+          {/* <FbLogin /> */}
+          <a href={`https://nhom3-tiki.herokuapp.com/oauth2/authorization/google?redirect_uri=${client_url}oauth2/redirect`} className="hre">
+            <FacebookRoundedIcon 
+          sx={{
+            cursor:'pointer',
+             color: "#4267b2", 
+             fontSize: "3rem" }} />
+          </a>
+          
 
           <GgLogin />
         </Stack>

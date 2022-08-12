@@ -103,7 +103,7 @@ function Orders() {
             const tmp = getOrderByType(orders, item.id);
             if (tmp.length === 0)
               return (
-                <TabPanel value={value} index={item.id} dir={theme.direction}>
+                <TabPanel key={item.id} value={value} index={item.id} dir={theme.direction}>
                   <Box className="myorder__none">
                     <img
                       height="200px"
@@ -117,7 +117,7 @@ function Orders() {
               );
             else
               return (
-                <TabPanel value={value} index={item.id} dir={theme.direction}>
+                <TabPanel key={item.id} value={value} index={item.id} dir={theme.direction}>
                   {tmp.map((item) => (
                     <OrderItem key={item.id} order={item} />
                   ))}

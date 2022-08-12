@@ -154,7 +154,7 @@ function ReviewPurchased() {
         Nhận xét sản phẩm đã mua
       </Typography>
 
-      <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing ={2}>
+      <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing ={2} justifyContent="space-between">
         {myRevPurchaseds.map((item) =>
           <Card key={item.id} sx={{ border: "0px solid black", maxWidth: "13rem" }}>
             <CardMedia component="img" image={item.image} height="200" />
