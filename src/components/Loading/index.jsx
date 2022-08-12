@@ -9,7 +9,7 @@ function Loading(props) {
             color:props.color||"#1890ff",
             mr:"4px"
         }}
-        size={20}
+        size={props.size || 20}
         thickness={3}
         />
 
