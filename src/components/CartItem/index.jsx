@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./CartItem.scss";
-import { Checkbox, Typography, Dialog, Button,Box,Stack } from "@mui/material";
+import { Checkbox, Typography, Dialog, Button, Box, Stack } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { numWithCommas } from "../../constraints/Util";
-import {  useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { removeItem, updateItem } from "../../slices/cartSlice";
+import {Link} from "react-router-dom";
 
 function CartItem(props) {
   const [data, setData] = useState(props.data);
   const [quantity, setQuantity] = useState(props.data.quantity);
-  
+
   const dispatch = useDispatch();
 
   const [open, setOpen] = React.useState(false);
@@ -86,12 +87,14 @@ function CartItem(props) {
     <>
       <Box className="cart-item cart">
         <Stack direction="row" alignItems="center" className="cart-item__cell cart-item__description">
-          <Checkbox checked={data?.choose} onChange={handleChangeChoose} className="cart__checkbox"/>
+          <Checkbox checked={data?.choose} onChange={handleChangeChoose} className="cart__checkbox" />
           <img src={data?.image} alt="" />
           <Stack className="cart-item__content">
-            <Typography fontSize="13px" className="text-overflow-2-lines" variant="h5">
-              {data?.name}
-            </Typography>
+            <Link to={data?.slug?`product/${data.slug}`:''}>
+              <Typography fontSize="13px" className="text-overflow-2-lines" variant="h5">
+                {data?.name}
+              </Typography>
+            </Link>
           </Stack>
         </Stack>
         <Box className="cart-item__cell cart-item__price">
