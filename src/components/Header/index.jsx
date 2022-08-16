@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
-import debounce from "lodash/debounce";
+import { DebounceInput } from "react-debounce-input";
 
 import { Stack, Button, Typography, Badge, Box, Modal } from "@mui/material";
 
@@ -105,14 +105,15 @@ function Header() {
     getDataCategorySpecify();
   }, []);
 
+  console.log("suggest: ", suggestions);
+
   var englishText = /^[A-Za-z0-9]*$/;
 
-  const debounceSearch = useCallback(
-    debounce((nextValue) => fetchSearch(nextValue), 1000),
-    []
-  );
+  const onChangeSearch = (event) => {
+    setSearchText(event.target.value);
+  };
 
-  const fetchSearch = (searchText) => {
+  useEffect(() => {
     const checkIsVNese = () => {
       for (const item of searchText.replace(/\s/g, "")) {
         if (englishText.test(item) === false) {
@@ -121,47 +122,17 @@ function Header() {
         return false;
       }
     };
-
     const filter = suggestions.filter((item) =>
       item.slug.includes(searchText.replace(/\s/g, "-"))
     );
-
     const filterVN = suggestions.filter((item) =>
       item.lowerCaseName.includes(searchText)
     );
-
     if (checkIsVNese() === true) {
       setFilteredSuggestions(filterVN);
     } else {
       setFilteredSuggestions(filter);
     }
-  };
-
-  const onChangeSearch = (event) => {
-    setSearchText(event.target.value);
-    debounceSearch(event.target.value);
-  };
-
-  useEffect(() => {
-    // const checkIsVNese = () => {
-    //   for (const item of searchText.replace(/\s/g, "")) {
-    //     if (englishText.test(item) === false) {
-    //       return true;
-    //     }
-    //     return false;
-    //   }
-    // };
-    // const filter = suggestions.filter((item) =>
-    //   item.slug.includes(searchText.replace(/\s/g, "-"))
-    // );
-    // const filterVN = suggestions.filter((item) =>
-    //   item.lowerCaseName.includes(searchText)
-    // );
-    // if (checkIsVNese() === true) {
-    //   setFilteredSuggestions(filterVN);
-    // } else {
-    //   setFilteredSuggestions(filter);
-    // }
   }, [searchText]);
 
   const [modalLogin, setModalLogin] = useState(false);
@@ -278,14 +249,16 @@ function Header() {
             alignItems="center"
             sx={{ padding: "0", height: "40px", flex: 1, position: "relative" }}
           >
-            <input
+            <DebounceInput
               style={{ height: "100%", flex: 1 }}
               id="input-search"
               placeholder="Tìm sản phẩm, danh mục hay thương hiệu mong muốn ..."
               onFocus={() => setFocusSearch(true)}
-              onChange={onChangeSearch}
               value={searchText}
+              onChange={onChangeSearch}
+              debounceTimeout={500}
             />
+
             {focusSearch && (
               <Search
                 trendingCategory={categorySpecify}
