@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
+import debounce from "lodash/debounce";
+
 import { Stack, Button, Typography, Badge, Box, Modal } from "@mui/material";
 
 import "./Header.scss";
@@ -105,7 +107,12 @@ function Header() {
 
   var englishText = /^[A-Za-z0-9]*$/;
 
-  useEffect(() => {
+  const debounceSearch = useCallback(
+    debounce((nextValue) => fetchSearch(nextValue), 1000),
+    []
+  );
+
+  const fetchSearch = (searchText) => {
     const checkIsVNese = () => {
       for (const item of searchText.replace(/\s/g, "")) {
         if (englishText.test(item) === false) {
@@ -128,6 +135,33 @@ function Header() {
     } else {
       setFilteredSuggestions(filter);
     }
+  };
+
+  const onChangeSearch = (event) => {
+    setSearchText(event.target.value);
+    debounceSearch(event.target.value);
+  };
+
+  useEffect(() => {
+    // const checkIsVNese = () => {
+    //   for (const item of searchText.replace(/\s/g, "")) {
+    //     if (englishText.test(item) === false) {
+    //       return true;
+    //     }
+    //     return false;
+    //   }
+    // };
+    // const filter = suggestions.filter((item) =>
+    //   item.slug.includes(searchText.replace(/\s/g, "-"))
+    // );
+    // const filterVN = suggestions.filter((item) =>
+    //   item.lowerCaseName.includes(searchText)
+    // );
+    // if (checkIsVNese() === true) {
+    //   setFilteredSuggestions(filterVN);
+    // } else {
+    //   setFilteredSuggestions(filter);
+    // }
   }, [searchText]);
 
   const [modalLogin, setModalLogin] = useState(false);
@@ -145,10 +179,6 @@ function Header() {
 
   const handleSaveSearch = (data) => {
     dispatch(addItem(data));
-  };
-
-  const onChangeSearch = (event) => {
-    setSearchText(event.target.value);
   };
 
   const handleLogout = () => {
@@ -215,7 +245,7 @@ function Header() {
 
   return (
     <header className="header">
-      <Stack 
+      <Stack
         justifyContent="space-between"
         direction="row"
         alignItems="center"
@@ -228,7 +258,7 @@ function Header() {
         }}
       >
         <Link className="header__logo" to={"/"}>
-          <Stack  spacing={1.5} pt={2}>
+          <Stack spacing={1.5} pt={2}>
             <img
               alt=""
               style={{ width: "60px", height: "40px" }}
@@ -293,7 +323,6 @@ function Header() {
           className="header__account"
         >
           <Stack
-            
             direction="row"
             alignItems="center"
             spacing="10px"
