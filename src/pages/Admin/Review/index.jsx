@@ -159,7 +159,7 @@ function Review() {
                 </Stack>
             </Box>
             <Box mt={2} mx={3} py={2} px={3} bgcolor="#FFF">
-                <Typography fontSize={"14px"}>Số đánh giá: 3</Typography>
+                <Typography fontSize={"14px"}>Số đánh giá: {myReviews.length}</Typography>
                 <Table className="reviewTable">
                     <TableHead>
                         <TableRow>
@@ -203,8 +203,8 @@ function Review() {
                                 </TableCell>
                                 <TableCell align='center'>
                                     <Stack direction='row' spacing={1.25}>
-                                        <Typography color="#1890ff">Báo cáo</Typography>
-                                        <Typography color="#1890ff">Trả lời</Typography>
+                                        <Button><Typography color="#1890ff">Báo cáo</Typography></Button>
+                                        <Button><Typography color="#1890ff">Trả lời</Typography></Button>
                                     </Stack>
                                 </TableCell>
                             </TableRow>

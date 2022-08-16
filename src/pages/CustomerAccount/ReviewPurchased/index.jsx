@@ -19,6 +19,8 @@ import {
   DialogContent,
   Rating,
   Pagination,
+  Portal,
+  Grid
 } from "@mui/material";
 import { orderTabs } from "../../../constraints/OrderItem";
 
@@ -97,25 +99,60 @@ function ReviewPurchased() {
         idUser: user.id,
         "type.id": orderTabs[4].id
       }
-      const response = await apiCart.getOrders(param);
-      if (response) {
+      const responseOrder = await apiCart.getOrders(param);
+
+      if (responseOrder) {
         let listProduct = []
-        response.data.forEach(item => listProduct.push(...item.products))
-        setMyRevPurchaseds(listProduct)
-        console.log(listProduct)
-        setTotalPage(Math.ceil(response.pagination._totalRows / size))
+        responseOrder.data.forEach(item => listProduct.push(...item.products))
+
+        listProduct.forEach(async (item, i) => {
+          let params = {
+            productId: item.id
+          }
+          try {
+            const responseReview = await apiMain.getMyReviews(params);
+            if (responseReview) {
+              let review = responseReview.length > 0 ? responseReview[0] : null
+              if (review)
+                listProduct[i] = {
+                  ...item,
+                  isReviewed: true
+                }
+              else
+                listProduct[i] = {
+                  ...item,
+                  isReviewed: false
+                }
+
+            }
+          }
+          catch (error) {
+            listProduct[i] = {
+              ...item,
+              isReviewed: false
+            }
+          }
+          if (i === listProduct.length - 1) {
+            setMyRevPurchaseds(listProduct)
+          }
+        })
+        /// setMyRevPurchaseds(listProduct)
+        setTotalPage(Math.ceil(responseOrder.pagination._totalRows / size))
       }
     }
     getMyRevPurchaseds()
   }, [page])
+  console.log(myRevPurchaseds)
+
+
 
   const handleChange = (event, value) => {
     setPage(value);
   }
-  const handleChangeContent =(event) =>{
+  const handleChangeContent = (event) => {
     setContent(event.target.value)
   }
-  const handleChangeRating =(event, value) =>{
+  const handleChangeRating = (event, value) => {
     setRating(value);
   }
   const handleClickOpen = (product) => {
@@ -126,59 +163,71 @@ function ReviewPurchased() {
   const handleSaveCmt = () => {
     const params = {
       "imgRate": [],
-      "productName": chosenProduct?.name|| "",
+      "productName": chosenProduct?.name || "",
       "storeName": "Tiki",
       "rating": rating,
       "satisfy": satisfy,
       "content": content,
-      "productImg" :chosenProduct?.image||"",
+      "productImg": chosenProduct?.image || "",
+      "isreviewed": "True"
+    }
+    if(!(rating > 0)) {
+      toast.warning("Vui lòng đánh giá sản phẩm !!");
+      return
     }
     apiMain.postMyReviews(params)
-    .then(res =>{
-      toast.success("Đã đánh giá")
-      handleClose()
-    })
-    .catch(error =>{
-      toast.error("Đánh giá thất bại!")
-    })
+      .then(res => {
+        toast.success("Đã đánh giá")
+        handleClose()
+      })
+      .catch(error => {
+        toast.error("Đánh giá thất bại!")
+      })
   }
 
   return (
     <Box
       sx={{
         width: "100%",
-        height: "50rem",
+        minHeight: "50rem",
       }}
     >
       <Typography gutterBottom variant="h6">
         Nhận xét sản phẩm đã mua
       </Typography>
-
-      <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing ={2} justifyContent="space-between">
-        {myRevPurchaseds.map((item) =>
-          <Card key={item.id} sx={{ border: "0px solid black", maxWidth: "13rem" }}>
-            <CardMedia component="img" image={item.image} height="200" />
-            <CardContent sx={{ padding: "5px 0 0 0" }}>
-              <Typography className="reviewpurchased__name" variant="caption" color="text.secondary">
-                {item.name}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button
-                sx={{ width: "100%" }}
-                variant="contained"
-                size="small"
-                color="primary"
-                onClick={() => handleClickOpen(item)}
-              >
-                Viết nhận xét
-              </Button>
-            </CardActions>
-          </Card>
-        )}
+      <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing={2} >
+        <Grid container rowSpacing={1} columns={{ xs: 8, md: 12 }}>
+          {/* <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing={2} > */}
+          {myRevPurchaseds.map((item) =>
+            <Grid item xs={3}>
+              <Card key={item.id} sx={{ border: "0px solid black", maxWidth: "13rem" }}>
+                <CardMedia component="img" image={item.image} height="200" />
+                <CardContent sx={{ padding: "5px 0 0 0" }}>
+                  <Typography className="reviewpurchased__name" variant="caption" color="text.secondary">
+                    {item.name}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    sx={{ width: "100%" }}
+                    variant="contained"
+                    size="small"
+                    color={item.isReviewed ? "warning" : "primary"}
+                    onClick={item.isReviewed ? null :
+                      (() => handleClickOpen(item))}
+                  >
+                    {item.isReviewed ? "Đã nhận xét" : "Viết nhận xét"}
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          )}
+          {/* </Stack> */}
+        </Grid>
       </Stack>
 
-      <div>
+
+      <Box>
         <BootstrapDialog
           onClose={handleClose}
           aria-labelledby="customized-dialog-title"
@@ -216,19 +265,19 @@ function ReviewPurchased() {
                 alignItems="center"
                 spacing={3}
               >
-                <Rating onChange = {handleChangeRating}
+                <Rating onChange={handleChangeRating}
                   sx={{}}
                   name="size-large"
-                  defaultValue= {5}
-                  value = {rating}
+                  defaultValue={5}
+                  value={rating}
                   size="large"
                 />
 
-                <TextareaAutosize onChange ={handleChangeContent}
+                <TextareaAutosize onChange={handleChangeContent}
                   minRows={6}
                   maxRows={10}
                   aria-label="maximum height"
-                  placeholder="Nhập bình luận"
+                  placeholder="  Nhập bình luận"
                   style={{
                     width: "100%",
                     border: "1px solid #c2c2c2",
@@ -247,7 +296,7 @@ function ReviewPurchased() {
             <Button variant="contained" onClick={handleSaveCmt} >Hoàn thành</Button>
           </DialogActions>
         </BootstrapDialog>
-      </div>
+      </Box>
 
       {myRevPurchaseds.length !== 0 ? <Stack spacing={2}>
         <Typography>Page: {page}</Typography>
