@@ -46,6 +46,9 @@ function DetailOrder() {
           orderId: order.id,
           type: "order",
           text: "Đơn hàng của bạn đã được giao",
+          date: Date.now(),
+          seen: false,
+          link:"",
         };
         apiNotify.postNotify(notify);
       })
@@ -65,6 +68,16 @@ function DetailOrder() {
       .changeTypeOrder(params, id)
       .then((res) => {
         toast.success("Hủy thành công");
+        let notify = {
+          userId: id,
+          orderId: order.id,
+          type: "order",
+          text: "Đơn hàng của bạn đã bị hủy",
+          date: Date.now(),
+          seen: false,
+          link:"",
+        };
+        apiNotify.postNotify(notify);
       })
       .catch((error) => {
         toast.error("Hủy không thành công");

@@ -138,7 +138,10 @@ function Payment() {
           userId: user?.id,
           orderId: res?.id,
           type: "order",
-          text: "Đơn hàng của bạn đã được giao",
+          text: "Bạn đã đặt hàng thành công, đơn hàng của bạn đang được xử lý",
+          date: Date.now(),
+          seen: false,
+          link:"",
         };
         apiNotify.postNotify(notify);
         navigate('/customer/order/history')
