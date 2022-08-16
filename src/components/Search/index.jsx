@@ -75,7 +75,12 @@ function Search(props) {
   const SuggestItemsFull = props.suggestions
     .slice(0, 10)
     .map((item) => (
-      <SuggestItem setSearchText={props.setSearchText} text={item.text} />
+      <SuggestItem
+        handleClickSuggestItem={handleClickSuggestItem}
+        setSearchText={props.setSearchText}
+        text={item.text}
+        slug={item.slug}
+      />
     ));
 
   return (
@@ -165,6 +170,7 @@ function SearchedItem(props) {
 
       <Link style={{ flex: 1 }} to={`product/${props.slug}`}>
         <Typography
+          className="text-overflow-1-lines"
           onClick={() => props.setSearchText(props.text)}
           variant="subtitle2"
           sx={{ fontSize: "0.8rem", fontWeight: 500 }}
@@ -198,6 +204,7 @@ function SuggestItem(props) {
         <SearchIcon fontSize="medium" sx={{ color: "silver" }} />
 
         <Typography
+          className="text-overflow-1-lines"
           variant="subtitle2"
           sx={{ fontSize: "0.8rem", fontWeight: 500, flex: 1 }}
         >
