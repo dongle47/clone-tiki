@@ -19,17 +19,19 @@ import {
   DialogContent,
   Rating,
   Pagination,
+  Grid,
 } from "@mui/material";
 import { orderTabs } from "../../../constraints/OrderItem";
 
 import productImage from "../../../assets/img/avatar1.jpg";
 
 import CloseIcon from "@mui/icons-material/Close";
-import apiMain from "../../../apis/apiMain";
+
 import apiCart from "../../../apis/apiCart";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "./ReviewPurchased.scss";
+import apiReviews from "../../../apis/apiReviews";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -88,7 +90,7 @@ function ReviewPurchased() {
   const [myRevPurchaseds, setMyRevPurchaseds] = useState([]);
   const [totalPage, setTotalPage] = useState(10);
   const [page, setPage] = useState(1);
-  const size = 5;
+  const size = 2;
   const user = useSelector((state) => state.auth.user); //lấy user từ store
   useEffect(() => {
     const getMyRevPurchaseds = async () => {
@@ -130,17 +132,18 @@ function ReviewPurchased() {
     const params = {
       imgRate: [],
       productName: chosenProduct?.name || "",
-      storeName: "Tiki",
       rating: rating,
       satisfy: satisfy,
       content: content,
       productImg: chosenProduct?.image || "",
       userId: user.id,
+      productId : chosenProduct?.id,
       userName: user.fullName,
       userAvatar: user.img,
+      likedList : [],
     };
 
-    apiMain
+    apiReviews
       .postMyReviews(params)
       .then((res) => {
         toast.success("Đã đánh giá");
@@ -161,12 +164,12 @@ function ReviewPurchased() {
       <Typography gutterBottom variant="h6">
         Nhận xét sản phẩm đã mua
       </Typography>
-
+      <Grid container spacing={2}>
       <Stack
         sx={{ padding: "1rem", backgroundColor: "white" }}
         direction="row"
         spacing={2}
-        justifyContent="space-between"
+        width= "100%"
       >
         {myRevPurchaseds.map((item) => (
           <Card
@@ -175,13 +178,14 @@ function ReviewPurchased() {
           >
             <CardMedia component="img" image={item.image} height="200" />
             <CardContent sx={{ padding: "5px 0 0 0" }}>
+              <Link to={`/product/${item.slug}`}>
               <Typography
                 className="reviewpurchased__name"
                 variant="caption"
                 color="text.secondary"
               >
                 {item.name}
-              </Typography>
+              </Typography></Link>
             </CardContent>
             <CardActions>
               <Button
@@ -197,6 +201,7 @@ function ReviewPurchased() {
           </Card>
         ))}
       </Stack>
+      </Grid>
 
       <div>
         <BootstrapDialog
