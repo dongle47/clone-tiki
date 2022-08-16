@@ -34,28 +34,11 @@ const apiMain = {
         return res.data;
     },
     
-    getMyReviews: async (params) => {
-        const myReview = await axiosProducts.get('/myreviews', {params})
-        return myReview.data;
-    },
-    postMyReviews: async (params) =>{
-        const res = await axiosProducts.post('/myreviews', params)
-        return res.data;
-    },
     getMyFavorites: async (params) => {
         const myFavorite = await axiosProducts.get('', {params})
         return myFavorite.data;
     },
 
-    getMyRevPurchaseds: async (params) =>{
-        const myRevPurchaseds = await axiosProducts.get('', {params})
-        return myRevPurchaseds.data;
-    },
-
-    getRevProduct: async (params) => {
-        const revProduct = await axiosProducts.get('', {params})
-        return revProduct.data;
-    },
 
     getCoupons: async (params) => {
         const res = await axiosProducts.get('/coupons', {params})
