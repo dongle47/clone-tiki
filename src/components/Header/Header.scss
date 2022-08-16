@@ -46,6 +46,17 @@
             height: 24px;
             width: 24px;
         }
+        &>div {
+            cursor: pointer;
+            font-size: 12px;
+            color: #333;
+            display: block;
+            padding: 8px 20px;
+            &:hover {
+                color: #1890ff;
+                background-color: #f1f1f1;
+            }
+        }
         & a {
             cursor: pointer;
             font-size: 12px;

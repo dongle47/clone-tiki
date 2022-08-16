@@ -27,7 +27,6 @@ import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 
-const publicPath = ["/product/", "/filter/", "/payment/"];
 
 function Header() {
   const navigate = useNavigate();
@@ -154,11 +153,6 @@ function Header() {
 
   const handleLogout = () => {
     dispatch(logoutSuccess());
-    const isPublic =
-      publicPath.findIndex((e) => location.pathname.includes(e)) >= 0
-        ? true
-        : false;
-    if (!isPublic) navigate("/");
   };
 
   const closeModalLogin = () => {
@@ -362,9 +356,9 @@ function Header() {
                     </Stack>
                   </Link>
 
-                  <a href="/" onClick={handleLogout}>
+                  <Box onClick={handleLogout}>
                     Thoát tài khoản
-                  </a>
+                  </Box>
                 </Box>
               </>
             ) : (

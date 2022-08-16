@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { styled } from "@mui/material/styles";
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from "react-router-dom";
 import {
   Box,
   Stack,
@@ -19,17 +19,17 @@ import {
   DialogContent,
   Rating,
   Pagination,
+  Grid
 } from "@mui/material";
 import { orderTabs } from "../../../constraints/OrderItem";
 
-import productImage from "../../../assets/img/avatar1.jpg";
-
 import CloseIcon from "@mui/icons-material/Close";
-import apiMain from "../../../apis/apiMain";
+
 import apiCart from "../../../apis/apiCart";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import "./ReviewPurchased.scss"
+import "./ReviewPurchased.scss";
+import apiReviews from "../../../apis/apiReviews";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -71,114 +71,177 @@ BootstrapDialogTitle.propTypes = {
 
 function ReviewPurchased() {
   const [open, setOpen] = useState(false);
-  const [productName, setProductName] = useState("")
-  const [productImg, setProductImg] = useState("")
-  const [imgRate, setImgRate] = useState()
-  const [storeName, setStoreName] = useState("")
-  const [content, setContent] = useState("")
-  const [satisfy, setSatisfy] = useState("")
-  const [rating, setRating] = useState(0)
-  const navigate = useNavigate()
+  // const [productName, setProductName] = useState("");
+  // const [productImg, setProductImg] = useState("");
+  // const [imgRate, setImgRate] = useState();
+  // const [storeName, setStoreName] = useState("");
+  const [content, setContent] = useState("");
+  const [satisfy, setSatisfy] = useState("");
+  const [rating, setRating] = useState(0);
+
+  const navigate = useNavigate();
   const handleClose = () => {
     setOpen(false);
   };
-  const [chosenProduct, setChosenProduct] = useState()
+  const [chosenProduct, setChosenProduct] = useState();
 
-  const [myRevPurchaseds, setMyRevPurchaseds] = useState([])
-  const [totalPage, setTotalPage] = useState(10)
-  const [page, setPage] = useState(1)
-  const size = 5
+  const [myRevPurchaseds, setMyRevPurchaseds] = useState([]);
+  const [totalPage, setTotalPage] = useState(10);
+  const [page, setPage] = useState(1);
+  const size = 8;
   const user = useSelector((state) => state.auth.user); //lấy user từ store
   useEffect(() => {
     const getMyRevPurchaseds = async () => {
       let param = {
-        _page: page,
-        _limit: size,
         idUser: user.id,
         "type.id": orderTabs[4].id
       }
-      const response = await apiCart.getOrders(param);
-      if (response) {
+      const responseOrder = await apiCart.getOrders(param);
+
+      if (responseOrder) {
         let listProduct = []
-        response.data.forEach(item => listProduct.push(...item.products))
-        setMyRevPurchaseds(listProduct)
-        console.log(listProduct)
-        setTotalPage(Math.ceil(response.pagination._totalRows / size))
+        responseOrder.forEach(item => 
+            listProduct.push(...item.products.map(product=>{
+              return {
+                ...product,
+                orderId:item.id,
+                updatedAt: item.updatedAt
+              }
+            }))
+          )
+
+        listProduct.forEach(async (item, i) => {
+          let params = {
+            productId: item.id
+          }
+          try {
+            const responseReview = await apiReviews.getMyReviews(params);
+            if (responseReview) {
+              let review = responseReview.length > 0 ? responseReview[0] : null
+              if (review)
+                listProduct[i] = {
+                  ...item,
+                  isReviewed: true
+                }
+              else
+                listProduct[i] = {
+                  ...item,
+                  isReviewed: false
+                }
+
+            }
+          }
+          catch (error) {
+            listProduct[i] = {
+              ...item,
+              isReviewed: false
+            }
+          }
+          if (i === listProduct.length - 1) {
+            listProduct.sort((a,b) =>b.updatedAt - a.updatedAt)
+            setMyRevPurchaseds(listProduct)
+            console.log(listProduct)
+            setTotalPage(Math.ceil(listProduct.length / size))
+          }
+        })
+        
       }
     }
     getMyRevPurchaseds()
   }, [page])
 
+
+
   const handleChange = (event, value) => {
     setPage(value);
   }
-  const handleChangeContent =(event) =>{
+  const handleChangeContent = (event) => {
     setContent(event.target.value)
   }
-  const handleChangeRating =(event, value) =>{
+  const handleChangeRating = (event, value) => {
     setRating(value);
-  }
-  const handleClickOpen = (product) => {
-    setChosenProduct(product)
-    setOpen(true);
-
   };
+  const handleClickOpen = (product) => {
+    setChosenProduct(product);
+    setOpen(true);
+  };
+
+
   const handleSaveCmt = () => {
-    const params = {
-      "imgRate": [],
-      "productName": chosenProduct?.name|| "",
-      "storeName": "Tiki",
-      "rating": rating,
-      "satisfy": satisfy,
-      "content": content,
-      "productImg" :chosenProduct?.image||"",
+    if(!(rating > 0)) {
+      toast.warning("Vui lòng đánh giá sản phẩm !!");
+      return
     }
-    apiMain.postMyReviews(params)
-    .then(res =>{
-      toast.success("Đã đánh giá")
-      handleClose()
-    })
-    .catch(error =>{
-      toast.error("Đánh giá thất bại!")
-    })
-  }
+    const params = {
+      orderId:chosenProduct?.orderId,
+      imgRate: [],
+      productName: chosenProduct?.name || "",
+      rating: rating,
+      satisfy: satisfy,
+      content: content,
+      productImg: chosenProduct?.image || "",
+      userId: user.id,
+      productId : chosenProduct?.id,
+      userName: user.fullName,
+      userAvatar: user.img,
+      likedList : [],
+    };
+
+    apiReviews
+      .postMyReviews(params)
+      .then((res) => {
+        toast.success("Đã đánh giá");
+        handleClose();
+      })
+      .catch((error) => {
+        toast.error("Đánh giá thất bại!");
+      });
+  };
 
   return (
     <Box
       sx={{
         width: "100%",
-        height: "50rem",
+        minHeight: "50rem",
       }}
     >
       <Typography gutterBottom variant="h6">
         Nhận xét sản phẩm đã mua
       </Typography>
+      <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing={2} >
+        <Grid container rowSpacing={1} columns={{ xs: 8, md: 12 }}>
+          {/* <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing={2} > */}
+          {myRevPurchaseds.slice((page-1)*size,page*size).map((item,i) =>
+            <Grid key={i} item xs={3}>
+              <Card  sx={{ border: "0px solid black", maxWidth: "13rem" }}>
+                <CardMedia component="img" image={item.image} height="200" />
+                <CardContent sx={{ padding: "5px 0 0 0" }}>
+                <Link to={`/product/${item.slug}`}>
+                  <Typography className="reviewpurchased__name" variant="caption" color="text.secondary">
+                    {item.name}
+                  </Typography>
+                  </Link>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    sx={{ width: "100%" }}
+                    variant="contained"
+                    size="small"
+                    color={item.isReviewed ? "warning" : "primary"}
+                    onClick={item.isReviewed ? null :
+                      (() => handleClickOpen(item))}
+                  >
+                    {item.isReviewed ? "Đã nhận xét" : "Viết nhận xét"}
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          )}
+          {/* </Stack> */}
+        </Grid>
+        </Stack>
 
-      <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing ={2} justifyContent="space-between">
-        {myRevPurchaseds.map((item) =>
-          <Card key={item.id} sx={{ border: "0px solid black", maxWidth: "13rem" }}>
-            <CardMedia component="img" image={item.image} height="200" />
-            <CardContent sx={{ padding: "5px 0 0 0" }}>
-              <Typography className="reviewpurchased__name" variant="caption" color="text.secondary">
-                {item.name}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button
-                sx={{ width: "100%" }}
-                variant="contained"
-                size="small"
-                color="primary"
-                onClick={() => handleClickOpen(item)}
-              >
-                Viết nhận xét
-              </Button>
-            </CardActions>
-          </Card>
-        )}
-      </Stack>
-
-      <div>
+      <Box>
         <BootstrapDialog
           onClose={handleClose}
           aria-labelledby="customized-dialog-title"
@@ -216,19 +279,21 @@ function ReviewPurchased() {
                 alignItems="center"
                 spacing={3}
               >
-                <Rating onChange = {handleChangeRating}
+                <Rating onChange={handleChangeRating}
                   sx={{}}
                   name="size-large"
-                  defaultValue= {5}
-                  value = {rating}
+                  defaultValue={5}
+                  value={rating}
                   size="large"
                 />
 
-                <TextareaAutosize onChange ={handleChangeContent}
+                <TextareaAutosize
+                  onChange={handleChangeContent}
                   minRows={6}
                   maxRows={10}
                   aria-label="maximum height"
-                  placeholder="Nhập bình luận"
+                  placeholder="  Nhập bình luận"
+                  p={'12px'}
                   style={{
                     width: "100%",
                     border: "1px solid #c2c2c2",
@@ -244,15 +309,21 @@ function ReviewPurchased() {
               Trở lại
             </Button>
 
-            <Button variant="contained" onClick={handleSaveCmt} >Hoàn thành</Button>
+            <Button variant="contained" onClick={handleSaveCmt}>
+              Hoàn thành
+            </Button>
           </DialogActions>
         </BootstrapDialog>
-      </div>
+      </Box>
 
-      {myRevPurchaseds.length !== 0 ? <Stack spacing={2}>
-        <Typography>Page: {page}</Typography>
-        <Pagination count={totalPage} page={page} onChange={handleChange} />
-      </Stack> : <></>}
+      {myRevPurchaseds.length !== 0 ? (
+        <Stack spacing={2}>
+          <Typography>Page: {page}</Typography>
+          <Pagination count={totalPage} page={page} onChange={handleChange} />
+        </Stack>
+      ) : (
+        <></>
+      )}
     </Box>
   );
 }

@@ -227,6 +227,7 @@ function DetailProduct() {
         choose: false,
         id: product.id,
         name: product.name,
+        slug: product.slug,
         image: product.image,
         price: product.price,
         quantity,
@@ -628,7 +629,7 @@ function DetailProduct() {
         </Box>
       </Modal>
 
-      <ReviewProduct />
+      <ReviewProduct product={product}/>
     </>
   );
 }

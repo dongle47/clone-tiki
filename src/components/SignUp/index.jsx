@@ -190,7 +190,7 @@ function SignUp(props) {
               Hoàn Tất
             </Button>
 
-            {isSuccess && <SuccessRegister handleSignUp={props.handleSignUp} />}
+            {isSuccess && <SuccessRegister handleOpenLogin={props.handleOpenLogin} />}
           </Stack>
         </form>
 
@@ -271,7 +271,7 @@ function SuccessRegister(props) {
       <CheckCircleOutlineIcon color="success" />
       <Typography sx={{ textAlign: "center" }}>Đăng ký thành công</Typography>
 
-      <Button variant="text" onClick={props.handleSignUp}>
+      <Button variant="text" onClick={props.handleOpenLogin}>
         Đăng nhập
       </Button>
     </Stack>

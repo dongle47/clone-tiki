@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import apiMain from "../../../apis/apiMain"
+import apiNotify from "../../../apis/apiNotify"
+import { Link, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "./Notify.scss";
 import PropTypes from "prop-types";
 import {
@@ -59,31 +62,33 @@ const options = ["Đánh dấu đọc tất cả", "Xóa tất cả thông báo"
 const ITEM_HEIGHT = 48;
 
 function Notify() {
+  const userId= useSelector(state => state.auth.user).id
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const [notification, setNotification] = useState([[], [], [], []])
   const [page, setPage] = useState(1);
-  const size = 30;
+  const size = 50;
 
   useEffect(() => {
     const getData = async () => {
       let param = {
         _page: page,
-        _limit: size
+        _limit: size,
+        userId: userId,
       }
-      const response = await apiMain.getNotification(param)
+      const response = await apiNotify.getNotification(param)
+      console.log(param)
       if (response) {
         let data = response.data.map(item=>{return {...item,icon:getIconByType(item.type)}})
-        console.log(data)
         const ty = [
           data,
           data.filter(item => item.type === "discount"),
           data.filter(item => item.type === "order"),
           data.filter(item => item.type === "system"),
         ]
-        setNotification(ty)
+        setNotification(ty) 
       }
     }
     getData()
@@ -97,8 +102,12 @@ function Notify() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleDate = (timestamp) => {
+    let date = new Intl.DateTimeFormat('en-GB').format(timestamp);
+    return date ;
+}
 
-  return (
+  return (  
     <Box sx={{ width: "100%", top: "0" }}>
       <Typography variant="h6">Thông báo của tôi</Typography>
 
@@ -194,7 +203,7 @@ function Notify() {
                 spacing={2}
                 padding={3}
               >
-                <Typography variant="body2">{item.date}</Typography>
+                <Typography variant="body2">{handleDate(item.date)}</Typography>
 
                 <Box className="icon">
                   <Box className={`icon__img icon__img--${item.type}`}>

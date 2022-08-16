@@ -86,11 +86,12 @@ function Password() {
   const passwordInput = (placeHolder, value, onChange) => {
     return (
       <TextField
+     
         value={value}
         onChange = {onChange}
         size="small"
         label={placeHolder }
-        type={showPass ? "text" : "password"}
+        type={showPass ? "text" : "password"} autoComplete="new-password"
         name="pass"
         InputProps={{
           endAdornment: (
@@ -117,7 +118,10 @@ function Password() {
         className="input-container__size"
         alignItems="center"
         justifyContent="center"
+         sx={{position: 'relative'}}
       >
+                <input name="phone" id='phone' type="text" style={{ position:'absolute', top:0, left:0,width:'0',height:'0',opacity:'0'}}/>
+
         <Stack className="customer-info__input-container" spacing={3}>
           {passwordInput("Nhập mật khẩu hiện tại", oldPassword, onChangeoldPassword)}
 
@@ -137,6 +141,7 @@ function Password() {
           </Box>
           
           <Button onClick={handleChangePassword} variant="contained">Lưu thay đổi</Button>
+          
         </Stack>
       </Stack>
     </Stack>
