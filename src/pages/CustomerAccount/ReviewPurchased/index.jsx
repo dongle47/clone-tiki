@@ -19,11 +19,9 @@ import {
   DialogContent,
   Rating,
   Pagination,
-  Grid,
+  Grid
 } from "@mui/material";
 import { orderTabs } from "../../../constraints/OrderItem";
-
-import productImage from "../../../assets/img/avatar1.jpg";
 
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -73,10 +71,10 @@ BootstrapDialogTitle.propTypes = {
 
 function ReviewPurchased() {
   const [open, setOpen] = useState(false);
-  const [productName, setProductName] = useState("");
-  const [productImg, setProductImg] = useState("");
-  const [imgRate, setImgRate] = useState();
-  const [storeName, setStoreName] = useState("");
+  // const [productName, setProductName] = useState("");
+  // const [productImg, setProductImg] = useState("");
+  // const [imgRate, setImgRate] = useState();
+  // const [storeName, setStoreName] = useState("");
   const [content, setContent] = useState("");
   const [satisfy, setSatisfy] = useState("");
   const [rating, setRating] = useState(0);
@@ -90,34 +88,76 @@ function ReviewPurchased() {
   const [myRevPurchaseds, setMyRevPurchaseds] = useState([]);
   const [totalPage, setTotalPage] = useState(10);
   const [page, setPage] = useState(1);
-  const size = 2;
+  const size = 8;
   const user = useSelector((state) => state.auth.user); //lấy user từ store
   useEffect(() => {
     const getMyRevPurchaseds = async () => {
       let param = {
-        _page: page,
-        _limit: size,
         idUser: user.id,
-        "type.id": orderTabs[4].id,
-      };
-      const response = await apiCart.getOrders(param);
-      if (response) {
-        let listProduct = [];
-        response.data.forEach((item) => listProduct.push(...item.products));
-        setMyRevPurchaseds(listProduct);
-        console.log(listProduct);
-        setTotalPage(Math.ceil(response.pagination._totalRows / size));
+        "type.id": orderTabs[4].id
       }
-    };
-    getMyRevPurchaseds();
-  }, [page]);
+      const responseOrder = await apiCart.getOrders(param);
+
+      if (responseOrder) {
+        let listProduct = []
+        responseOrder.forEach(item => 
+            listProduct.push(...item.products.map(product=>{
+              return {
+                ...product,
+                orderId:item.id,
+                updatedAt: item.updatedAt
+              }
+            }))
+          )
+
+        listProduct.forEach(async (item, i) => {
+          let params = {
+            productId: item.id
+          }
+          try {
+            const responseReview = await apiReviews.getMyReviews(params);
+            if (responseReview) {
+              let review = responseReview.length > 0 ? responseReview[0] : null
+              if (review)
+                listProduct[i] = {
+                  ...item,
+                  isReviewed: true
+                }
+              else
+                listProduct[i] = {
+                  ...item,
+                  isReviewed: false
+                }
+
+            }
+          }
+          catch (error) {
+            listProduct[i] = {
+              ...item,
+              isReviewed: false
+            }
+          }
+          if (i === listProduct.length - 1) {
+            listProduct.sort((a,b) =>b.updatedAt - a.updatedAt)
+            setMyRevPurchaseds(listProduct)
+            console.log(listProduct)
+            setTotalPage(Math.ceil(listProduct.length / size))
+          }
+        })
+        
+      }
+    }
+    getMyRevPurchaseds()
+  }, [page])
+
+
 
   const handleChange = (event, value) => {
     setPage(value);
-  };
+  }
   const handleChangeContent = (event) => {
-    setContent(event.target.value);
-  };
+    setContent(event.target.value)
+  }
   const handleChangeRating = (event, value) => {
     setRating(value);
   };
@@ -126,10 +166,14 @@ function ReviewPurchased() {
     setOpen(true);
   };
 
-  console.log(user);
 
   const handleSaveCmt = () => {
+    if(!(rating > 0)) {
+      toast.warning("Vui lòng đánh giá sản phẩm !!");
+      return
+    }
     const params = {
+      orderId:chosenProduct?.orderId,
       imgRate: [],
       productName: chosenProduct?.name || "",
       rating: rating,
@@ -158,52 +202,46 @@ function ReviewPurchased() {
     <Box
       sx={{
         width: "100%",
-        height: "50rem",
+        minHeight: "50rem",
       }}
     >
       <Typography gutterBottom variant="h6">
         Nhận xét sản phẩm đã mua
       </Typography>
-      <Grid container spacing={2}>
-      <Stack
-        sx={{ padding: "1rem", backgroundColor: "white" }}
-        direction="row"
-        spacing={2}
-        width= "100%"
-      >
-        {myRevPurchaseds.map((item) => (
-          <Card
-            key={item.id}
-            sx={{ border: "0px solid black", maxWidth: "13rem" }}
-          >
-            <CardMedia component="img" image={item.image} height="200" />
-            <CardContent sx={{ padding: "5px 0 0 0" }}>
-              <Link to={`/product/${item.slug}`}>
-              <Typography
-                className="reviewpurchased__name"
-                variant="caption"
-                color="text.secondary"
-              >
-                {item.name}
-              </Typography></Link>
-            </CardContent>
-            <CardActions>
-              <Button
-                sx={{ width: "100%" }}
-                variant="contained"
-                size="small"
-                color="primary"
-                onClick={() => handleClickOpen(item)}
-              >
-                Viết nhận xét
-              </Button>
-            </CardActions>
-          </Card>
-        ))}
-      </Stack>
-      </Grid>
+      <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing={2} >
+        <Grid container rowSpacing={1} columns={{ xs: 8, md: 12 }}>
+          {/* <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing={2} > */}
+          {myRevPurchaseds.slice((page-1)*size,page*size).map((item,i) =>
+            <Grid key={i} item xs={3}>
+              <Card  sx={{ border: "0px solid black", maxWidth: "13rem" }}>
+                <CardMedia component="img" image={item.image} height="200" />
+                <CardContent sx={{ padding: "5px 0 0 0" }}>
+                <Link to={`/product/${item.slug}`}>
+                  <Typography className="reviewpurchased__name" variant="caption" color="text.secondary">
+                    {item.name}
+                  </Typography>
+                  </Link>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    sx={{ width: "100%" }}
+                    variant="contained"
+                    size="small"
+                    color={item.isReviewed ? "warning" : "primary"}
+                    onClick={item.isReviewed ? null :
+                      (() => handleClickOpen(item))}
+                  >
+                    {item.isReviewed ? "Đã nhận xét" : "Viết nhận xét"}
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          )}
+          {/* </Stack> */}
+        </Grid>
+        </Stack>
 
-      <div>
+      <Box>
         <BootstrapDialog
           onClose={handleClose}
           aria-labelledby="customized-dialog-title"
@@ -241,8 +279,7 @@ function ReviewPurchased() {
                 alignItems="center"
                 spacing={3}
               >
-                <Rating
-                  onChange={handleChangeRating}
+                <Rating onChange={handleChangeRating}
                   sx={{}}
                   name="size-large"
                   defaultValue={5}
@@ -255,7 +292,8 @@ function ReviewPurchased() {
                   minRows={6}
                   maxRows={10}
                   aria-label="maximum height"
-                  placeholder="Nhập bình luận"
+                  placeholder="  Nhập bình luận"
+                  p={'12px'}
                   style={{
                     width: "100%",
                     border: "1px solid #c2c2c2",
@@ -276,7 +314,7 @@ function ReviewPurchased() {
             </Button>
           </DialogActions>
         </BootstrapDialog>
-      </div>
+      </Box>
 
       {myRevPurchaseds.length !== 0 ? (
         <Stack spacing={2}>
