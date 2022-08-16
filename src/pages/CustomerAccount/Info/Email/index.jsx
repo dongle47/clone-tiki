@@ -2,11 +2,15 @@ import * as React from "react";
 import { Box, Stack, InputBase, Typography, Button } from "@mui/material";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import apiProfile from "../../../../apis/apiProfile";
+import { useDispatch, useSelector } from "react-redux";
+import {loginSuccess} from '../../../../slices/authSlice'
 
 function Email() {
   const [email, setEmail] = React.useState("");
   const [message, setMessage] = React.useState("");
   const [fcolor, setColor] = React.useState("#ee0033");
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.auth.user)
 
   const onChangeEmail = (event) => {
     setEmail(event.target.value);
@@ -35,6 +39,13 @@ function Email() {
       });
   };
 
+  const getUserProfile = () => {
+    apiProfile.getUserProfile()
+      .then((res) => {
+        let newUser = res.data.user
+        dispatch(loginSuccess({ ...user, ...newUser }))
+      })
+  }
   return (
     <Box sx={{ mt: "1rem" }}>
       <Typography variant="h6">Cập nhật email</Typography>

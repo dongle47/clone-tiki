@@ -41,9 +41,10 @@ function DetailOrder() {
                         <Box p={1.25} className="detailOrder__content">
                             <Typography style={{ color: "#000", fontWeight: 500 }}>{order?.address?.fullName}</Typography>
                             <Typography>
-                                Địa chỉ: {`${order?.address?.addressDetail}, ${order?.address?.commune?.name},
+                                Địa chỉ: {order?.address?`${order?.address?.addressDetail}, ${order?.address?.commune?.name},
                                   ${order?.address?.district?.name},
-                                  ${order?.address?.province?.name}`}
+                                  ${order?.address?.province?.name}`:'Trống'
+                                }
                             </Typography>
                             <Typography>Điện thoại: {order?.address?.phoneNumber}</Typography>
                         </Box>
@@ -83,7 +84,7 @@ function DetailOrder() {
                                         <img height="60px" width="60px" src={item.image} alt="" />
                                     </Box>
                                     <Stack spacing={1.5}>
-                                        <Link to={"/"}>
+                                        <Link to={item.slug?`product/${item.slug}`:''}>
                                             <Typography fontSize="14px" >{item.name}</Typography>
                                         </Link>
                                         <Typography fontSize="13px">Sku: 4816587252819</Typography>

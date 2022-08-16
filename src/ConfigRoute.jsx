@@ -24,16 +24,16 @@ function ConfigRoute() {
       {/* Routing customer account */}
       <Route element={<PrivateRoute roles={["USER"]} />}>
         <Route path="customer/*" element={<CustomerAccount />} />
-        </Route>
-        <Route element={<PrivateRoute roles={['USER']} />}>
-           <Route path="admin/*" element={<Admin />}/>
-        </Route>
-        <Route path="filter/:slug" element={<FilterProduct />} />
-        <Route path="product/:slug" element={<DetailProduct />} />
-        <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
-        <Route path="*" element={<Error />} />
-        <Route path="search/:slug" element={<FilterProductSearch />} />
-        <Route path = "changepwd" element={<ChangePassword />}/>
+      </Route>
+      <Route element={<PrivateRoute roles={['USER']} />}>
+        <Route path="admin/*" element={<Admin />} />
+      </Route>
+      <Route path="filter/:slug" element={<FilterProduct />} />
+      <Route path="product/:slug" element={<DetailProduct />} />
+      <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
+      <Route path="*" element={<Error />} />
+      <Route path="search/:slug" element={<FilterProductSearch />} />
+      <Route path="changepwd" element={<ChangePassword />} />
 
     </Routes>
   );
