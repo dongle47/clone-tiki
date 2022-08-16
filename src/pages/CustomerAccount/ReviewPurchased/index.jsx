@@ -19,12 +19,9 @@ import {
   DialogContent,
   Rating,
   Pagination,
-  Portal,
   Grid
 } from "@mui/material";
 import { orderTabs } from "../../../constraints/OrderItem";
-
-import productImage from "../../../assets/img/avatar1.jpg";
 
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -74,10 +71,10 @@ BootstrapDialogTitle.propTypes = {
 
 function ReviewPurchased() {
   const [open, setOpen] = useState(false);
-  const [productName, setProductName] = useState("");
-  const [productImg, setProductImg] = useState("");
-  const [imgRate, setImgRate] = useState();
-  const [storeName, setStoreName] = useState("");
+  // const [productName, setProductName] = useState("");
+  // const [productImg, setProductImg] = useState("");
+  // const [imgRate, setImgRate] = useState();
+  // const [storeName, setStoreName] = useState("");
   const [content, setContent] = useState("");
   const [satisfy, setSatisfy] = useState("");
   const [rating, setRating] = useState(0);
@@ -91,13 +88,11 @@ function ReviewPurchased() {
   const [myRevPurchaseds, setMyRevPurchaseds] = useState([]);
   const [totalPage, setTotalPage] = useState(10);
   const [page, setPage] = useState(1);
-  const size = 2;
+  const size = 8;
   const user = useSelector((state) => state.auth.user); //lấy user từ store
   useEffect(() => {
     const getMyRevPurchaseds = async () => {
       let param = {
-        _page: page,
-        _limit: size,
         idUser: user.id,
         "type.id": orderTabs[4].id
       }
@@ -105,11 +100,12 @@ function ReviewPurchased() {
 
       if (responseOrder) {
         let listProduct = []
-        responseOrder.data.forEach(item => 
+        responseOrder.forEach(item => 
             listProduct.push(...item.products.map(product=>{
               return {
                 ...product,
-                orderId:item.id
+                orderId:item.id,
+                updatedAt: item.updatedAt
               }
             }))
           )
@@ -119,7 +115,7 @@ function ReviewPurchased() {
             productId: item.id
           }
           try {
-            const responseReview = await apiMain.getMyReviews(params);
+            const responseReview = await apiReviews.getMyReviews(params);
             if (responseReview) {
               let review = responseReview.length > 0 ? responseReview[0] : null
               if (review)
@@ -142,16 +138,17 @@ function ReviewPurchased() {
             }
           }
           if (i === listProduct.length - 1) {
+            listProduct.sort((a,b) =>b.updatedAt - a.updatedAt)
             setMyRevPurchaseds(listProduct)
+            console.log(listProduct)
+            setTotalPage(Math.ceil(listProduct.length / size))
           }
         })
-        /// setMyRevPurchaseds(listProduct)
-        setTotalPage(Math.ceil(responseOrder.pagination._totalRows / size))
+        
       }
     }
     getMyRevPurchaseds()
   }, [page])
-  console.log(myRevPurchaseds)
 
 
 
@@ -169,7 +166,6 @@ function ReviewPurchased() {
     setOpen(true);
   };
 
-  console.log(user);
 
   const handleSaveCmt = () => {
     if(!(rating > 0)) {
@@ -215,9 +211,9 @@ function ReviewPurchased() {
       <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing={2} >
         <Grid container rowSpacing={1} columns={{ xs: 8, md: 12 }}>
           {/* <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing={2} > */}
-          {myRevPurchaseds.map((item) =>
-            <Grid item xs={3}>
-              <Card key={item.id} sx={{ border: "0px solid black", maxWidth: "13rem" }}>
+          {myRevPurchaseds.slice((page-1)*size,page*size).map((item,i) =>
+            <Grid key={i} item xs={3}>
+              <Card  sx={{ border: "0px solid black", maxWidth: "13rem" }}>
                 <CardMedia component="img" image={item.image} height="200" />
                 <CardContent sx={{ padding: "5px 0 0 0" }}>
                 <Link to={`/product/${item.slug}`}>
@@ -297,6 +293,7 @@ function ReviewPurchased() {
                   maxRows={10}
                   aria-label="maximum height"
                   placeholder="  Nhập bình luận"
+                  p={'12px'}
                   style={{
                     width: "100%",
                     border: "1px solid #c2c2c2",
