@@ -7,7 +7,7 @@ const apiAuth = {
         return myLogin.data;
     },
     getUserBySocialToken: async (params) => {
-        const myLogin = await axiosClient.post('/auth/social', {params})
+        const myLogin = await axiosClient.get('/auth/social', {params})
         return myLogin.data;
     },
 

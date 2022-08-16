@@ -1,13 +1,19 @@
 import { Stack, Typography,Box } from '@mui/material';
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import apiAuth from '../../apis/apiAuth';
 import Loading from '../../components/Loading';
+import { loginSuccess } from '../../slices/authSlice';
 
 function OAuth2RedirectHandler() {
     const location = useLocation()
-    const [token, setToken] = useState(null)
-    console.log(location)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const [count,setCount ] = useState(6) //xử lý đếm ngược
+    const [loading, setLoading]  =useState(true)
+
     const getUrlParameter = (name)=> {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -20,30 +26,56 @@ function OAuth2RedirectHandler() {
         const getToken = ()=>{
             let token = getUrlParameter('token')
             if(token){
-                setToken(token)
+                let params = {
+                    token:token
+                }
+                
+                apiAuth.getUserBySocialToken(params)
+                .then(res=>{
+                    let {accessToken, refreshToken, user} = res.data
+                    dispatch(loginSuccess({
+                        accessToken,
+                        refreshToken,
+                        ...user
+                    }))
+                    toast.success("Đăng nhập thành công")
+                    navigate('/')
+                })
+                .finally(()=>setLoading(false))
             }
         }
         getToken()
     },[location])
 
-    useEffect(()=>{
-        const getUser = ()=>{
-            let params = {
-                auth_result:true,
-                token:token
+    useEffect(() => {
+        const countDown = () => {//hàm xử lý đếm ngược 5s sau khi kích hoạt xong
+            if(count === 0){
+                toast.error("Đăng nhập thất bại")
+                navigate("/")
+                return
             }
-            apiAuth.getUserBySocialToken(params)
-            .then(res=>{
-                console.log(res)
-            })
+            if (!loading)
+                return
+            
+            setTimeout(() => {
+                if (count > 0) {
+                    setCount(pre => pre - 1)
+                }
+                else {
+                    navigate("/")
+                }
+            }, 1000)
         }
-    },[token])
+        countDown();
+    }, [count])
+
+   
   return (
-    <Stack>
-        <Box>
-            <Loading/>
-            <Typography>Đang xử lý. Vui lòng chờ trong giây lát</Typography>
-        </Box>
+    <Stack height="400px" justifyContent={'center'} alignItems='center'>
+        <Stack  alignItems='center' spacing={2}>
+            <Loading size={40}/>
+            <Typography>Đang xử lý. Vui lòng chờ trong {count} giây</Typography>
+        </Stack>
     </Stack>
   )
 }
