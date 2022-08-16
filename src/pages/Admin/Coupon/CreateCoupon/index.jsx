@@ -1,5 +1,7 @@
 import "./CreateCoupon.scss"
-import { useState } from "react"
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom"
 import {
     Stack,
     Box,
@@ -18,6 +20,8 @@ import DiscountIcon from '@mui/icons-material/Discount';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { styled } from '@mui/material/styles';
+import { toast } from "react-toastify";
+import apiCoupon from "../../../../apis/apiCoupon";
 
 const style = {
     position: 'absolute',
@@ -36,7 +40,7 @@ const style = {
         fontSize: "14px"
     }
 };
-function CreateCoupon() {
+function CreateCoupon(props) {
     const [publicCoupon, setPublicCoupon] = useState(true)
     const [open, setOpen] = useState(false)
     const [status, setStatus] = useState(0)
@@ -44,13 +48,20 @@ function CreateCoupon() {
     const [nameCoupon, setNameCoupon] = useState({ error: false, value: "" })
     const [codeCoupon, setCodeCoupon] = useState({ error: false, value: "" })
     const [product, setProduct] = useState("0")
+    const [typeCoupon, setTypeCoupon] = useState("0")
     const [typeCouponValue, setTypeCouponValue] = useState({ error: false, value: "" })
     const [valueMin, setValueMin] = useState({ error: false, value: "" })
-    const [quanlityCoupon, setQuanlityCoupon] = useState({ error: false, value: "" })
+    const [quantityCoupon, setQuantityCoupon] = useState({ error: false, value: "" })
     const [couponPerCustomer, setCouponPerCustomer] = useState({ error: false, value: "" })
-    const [valueMinSelected,setValueMinSelected] = useState("0")
-    const [limitUseCoupon,setLimitUseCoupon] = useState("0")
-    
+    const [valueMinSelected, setValueMinSelected] = useState("0")
+    const [limitUseCoupon, setLimitUseCoupon] = useState("0")
+    const [dateStart, setDateStart] = useState(new Date())
+    const [dateExpired, setDateExpired] = useState(new Date())
+    const [edit, setEdit] = useState(props.edit)
+
+    const idCoupon = useParams().id
+    const navigate = useNavigate()
+
     const onChangeNameCoupon = (e) => {
         let error = false
         if (e.target.value === "")
@@ -75,11 +86,11 @@ function CreateCoupon() {
             error = true
         setValueMin({ error, value: e.target.value })
     }
-    const onChangeQuanlityCoupon = (e) => {
+    const onChangeQuantityCoupon = (e) => {
         let error = false
         if (e.target.value === "")
             error = true
-        setQuanlityCoupon({ error, value: e.target.value })
+        setQuantityCoupon({ error, value: e.target.value })
     }
     const onChangeCouponPerCustomer = (e) => {
         let error = false
@@ -99,6 +110,100 @@ function CreateCoupon() {
     };
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const onChangeDateStart = (e) => {
+        // setDateStart();
+        let start = new Date(e.target.value)
+        setDateStart(start)
+        // console.log(e.target.value)
+    };
+
+    const onChangeDateExpired = (e) => {
+        let expired = new Date(e.target.value)
+        setDateExpired(expired)
+    }
+
+    const handleCreate = () => {
+        const params = {
+            "name": nameCoupon.value,
+            "slug": codeCoupon.value,
+            "public": publicCoupon,
+            "product": [],
+            "unit": typeCoupon === "0" ? 'đ' : "%",
+            "value": Number(typeCouponValue.value),
+            "limit": valueMinSelected.value === "0" ? 0 : Number(valueMin.value),
+            "quantity": Number(quantityCoupon.value),
+            "used": 0,
+            "start": dateStart.getTime(),
+            "expired": dateExpired.getTime(),
+            "img": "https://salt.tikicdn.com/cache/128x128/ts/upload/92/ad/57/0d9a096885400b7b4752b67afdc72898.png"
+        }
+        apiCoupon.postCoupon(params)
+            .then(res => {
+                toast.success("Đã thêm thành công")
+            })
+            .catch(error => {
+                toast.error("Thêm không thành công")
+            })
+    };
+
+    useEffect(() => {
+        const loadData = () => {
+            if (edit === true) {
+                apiCoupon.findCouponById({ id: idCoupon })
+                    .then(res => {
+                        const coupon = res[0]
+                        console.log(res)
+                        if (coupon) {
+                            setNameCoupon({error:false, value:coupon.name})
+                            setCodeCoupon({error:false, value:coupon.slug})
+                            setPublicCoupon(coupon.public)
+                            // setTypeCoupon({value:coupon.unit})
+                            if (coupon.unit === '%')
+                            setTypeCoupon('1')
+                            setTypeCouponValue({error:false, value:coupon.value})
+                            setQuantityCoupon({error:false, value:coupon.quantity})
+                            // setValueMinSelected({value:coupon.})
+                            setValueMin({value:coupon.limit})
+                            if(coupon.limit>0)
+                            setValueMinSelected('1')
+                            setDateStart(new Date(coupon.start))
+                            setDateExpired(new Date(coupon.expired))
+                        }
+                        else {
+                            navigate("/admin/coupon")
+                            toast.error("Sản phẩm này không tồn tại!")
+                        }
+                    }
+                    )
+            }
+        }
+        loadData()
+    }, [edit])
+
+    const handleUpdate = () => {
+        const params = {
+            "name": nameCoupon.value,
+            "slug": codeCoupon.value,
+            "public": publicCoupon,
+            "product": [],
+            "unit": typeCoupon === "0" ? 'đ' : "%",
+            "value": Number(typeCouponValue.value),
+            "limit": valueMinSelected.value === "0" ? 0 : Number(valueMin.value),
+            "quantity": Number(quantityCoupon.value),
+            "used": 0,
+            "start": dateStart.getTime(),
+            "expired": dateExpired.getTime(),
+            "img": "https://salt.tikicdn.com/cache/128x128/ts/upload/92/ad/57/0d9a096885400b7b4752b67afdc72898.png"
+        }
+        apiCoupon.updateCoupon(params,idCoupon)
+            .then(res => {
+                toast.success("Cập nhật thành công")
+            })
+            .catch(error => {
+                toast.error("Cập nhật thất bại!")
+            })
     };
 
     return (
@@ -173,7 +278,9 @@ function CreateCoupon() {
                                 <Box sx={{ flex: 1 }}>
                                     <RadioGroupCustom
                                         defaultValue={0}
-                                        name="product"
+                                        value={typeCoupon}
+                                        onChange={(e) => setTypeCoupon(e.target.value)}
+                                        name="coupon"
                                     >
                                         <FormControlLabelCustom value={0} control={<RadioCustom />}
                                             label={<>Theo số tiền<InfoOutlinedIcon sx={{ fontSize: "16px", verticalAlign: "text-top", marginLeft: "4px" }} /> </>}
@@ -183,7 +290,7 @@ function CreateCoupon() {
                                         />
                                     </RadioGroupCustom>
                                     <Box mt={1.5} sx={{ width: "100%" }}>
-                                        <InputCustom placeholder="Nhập số tiền" value={typeCouponValue.value} onChange={onChangeTypeCouponValue} className={`${typeCouponValue.error && "errorInput"}`} />
+                                        <InputCustom placeholder="Nhập" value={typeCouponValue.value} onChange={onChangeTypeCouponValue} className={`${typeCouponValue.error && "errorInput"}`} />
                                         {codeCoupon.error && <Typography sx={{ fontSize: "14px", color: "#ff4d4f" }}>Vui lòng nhập thông tin này</Typography>}
                                     </Box>
                                 </Box>
@@ -193,9 +300,10 @@ function CreateCoupon() {
                                 <LabelCustom>Giá trị đơn hàng tối thiểu</LabelCustom>
                                 <Box sx={{ flex: 1 }}>
                                     <RadioGroupCustom
+                                        value={valueMinSelected}
                                         defaultValue={0}
                                         name="valueMin"
-                                        onChange={(e)=>setValueMinSelected(e.target.value)}
+                                        onChange={(e) => setValueMinSelected(e.target.value)}
                                     >
                                         <FormControlLabelCustom value={0} control={<RadioCustom />}
                                             label="Không ràng buộc" />
@@ -203,11 +311,11 @@ function CreateCoupon() {
                                             label="Giá trị đơn hàng tối thiểu" />
                                     </RadioGroupCustom>
                                     {
-                                        valueMinSelected==="1"&&
-                                    <Box mt={1.5} sx={{ width: "100%" }}>
-                                        <InputCustom placeholder="Nhập số tiền"  value={valueMin.value} onChange={onChangeValueMin} className={`${valueMin.error&&"errorInput"}`} />
-                                        {valueMin.error&&<Typography sx={{ fontSize: "14px", color: "#ff4d4f" }}>Vui lòng nhập thông tin này</Typography>}
-                                    </Box>
+                                        valueMinSelected === "1" &&
+                                        <Box mt={1.5} sx={{ width: "100%" }}>
+                                            <InputCustom placeholder="Nhập số tiền" value={valueMin.value} onChange={onChangeValueMin} className={`${valueMin.error && "errorInput"}`} />
+                                            {valueMin.error && <Typography sx={{ fontSize: "14px", color: "#ff4d4f" }}>Vui lòng nhập thông tin này</Typography>}
+                                        </Box>
                                     }
                                 </Box>
                             </Stack>
@@ -216,35 +324,39 @@ function CreateCoupon() {
                                 <LabelCustom>Số lượng mã giảm giá</LabelCustom>
                                 <Box sx={{ flex: 1 }}>
                                     <Box sx={{ width: "100%" }}>
-                                        <InputCustom placeholder="Số lượng mã giảm giá"  value={quanlityCoupon.value} onChange={onChangeQuanlityCoupon} className={`${quanlityCoupon.error&&"errorInput"}`} />
-                                        {quanlityCoupon.error&&<Typography sx={{ fontSize: "14px", color: "#ff4d4f" }}>Vui lòng nhập thông tin này</Typography>}
+                                        <InputCustom placeholder="Số lượng mã giảm giá" value={quantityCoupon.value} onChange={onChangeQuantityCoupon} className={`${quantityCoupon.error && "errorInput"}`} />
+                                        {quantityCoupon.error && <Typography sx={{ fontSize: "14px", color: "#ff4d4f" }}>Vui lòng nhập thông tin này</Typography>}
                                     </Box>
                                 </Box>
                             </Stack>
 
-                            <Stack direction="row" className="createCoupon__form__item">
+                            {/* <Stack direction="row" className="createCoupon__form__item">
                                 <LabelCustom>Lượt sử dụng mỗi khách hàng</LabelCustom>
                                 <Box sx={{ flex: 1 }}>
-                                    <FormControlLabelCustom control={<Checkbox onChange={e=>setLimitUseCoupon(e.target.checked?"1":"0")} sx={{ padding: 0 }} />}
+                                    <FormControlLabelCustom control={<Checkbox onChange={e => setLimitUseCoupon(e.target.checked ? "1" : "0")} sx={{ padding: 0 }} />}
                                         label="Giới hạn số lượng sử dụng" />
-                                    {limitUseCoupon==="1"&&<Box mt={1.5} sx={{ width: "100%" }}>
-                                        <InputCustom placeholder="Lượt sử dụng mỗi khách hàng" value={couponPerCustomer.value} onChange={onChangeCouponPerCustomer} className={`${couponPerCustomer.error&&"errorInput"}`}  />
-                                        {couponPerCustomer.error&&<Typography sx={{ fontSize: "14px", color: "#ff4d4f" }}>Vui lòng nhập thông tin này</Typography>}
+                                    {limitUseCoupon === "1" && <Box mt={1.5} sx={{ width: "100%" }}>
+                                        <InputCustom placeholder="Lượt sử dụng mỗi khách hàng" value={couponPerCustomer.value} onChange={onChangeCouponPerCustomer} className={`${couponPerCustomer.error && "errorInput"}`} />
+                                        {couponPerCustomer.error && <Typography sx={{ fontSize: "14px", color: "#ff4d4f" }}>Vui lòng nhập thông tin này</Typography>}
                                     </Box>
                                     }
                                 </Box>
-                            </Stack>
+                            </Stack> */}
 
                             <Stack direction="row" className="createCoupon__form__item">
                                 <LabelCustom>Thời gian hiệu lực</LabelCustom>
                                 <Stack sx={{ flex: 1 }} spacing={2} >
                                     <Stack direction="row" sx={{ flex: 1 }}>
                                         <label style={{ width: "90px" }} for="birthdaytime">Ngày bắt đầu:</label>
-                                        <input type="datetime-local" id="birthdaytime" name="birthdaytime" style={{}} />
+                                        <input type="datetime-local" id="birthdaytime" name="birthdaytime"
+                                            value={dateStart.toISOString().substring(0, 16)}
+                                            onChange={onChangeDateStart} style={{}} />
                                     </Stack>
                                     <Stack direction="row" sx={{ flex: 1 }}>
                                         <label style={{ width: "90px" }} for="birthdaytime">Ngày kết thúc:</label>
-                                        <input type="datetime-local" id="birthdaytime" name="birthdaytime" />
+                                        <input type="datetime-local" id="birthdaytime" name="birthdaytime"
+                                            value={dateExpired.toISOString().substring(0, 16)}
+                                            onChange={onChangeDateExpired} />
                                     </Stack>
                                 </Stack>
                             </Stack>
@@ -273,8 +385,10 @@ function CreateCoupon() {
             </Stack>
 
             <Stack direction="row" className="createCoupon__footer">
-                <Button variant="text" sx={{ border: "1px solid #bfbfbf", color: "#333", height: "32px" }}>Quay lại</Button>
-                <Button variant="contained" sx={{ height: "32px" }}>Tạo mới</Button>
+                <Link to="/admin/coupon">
+                    <Button variant="text" sx={{ border: "1px solid #bfbfbf", color: "#333", height: "32px" }}>Quay lại</Button>
+                </Link>
+                <Button variant="contained" sx={{ height: "32px" }} onClick={edit ? handleUpdate : handleCreate}>{edit ? "Cập nhật":"Thêm"}</Button>
             </Stack>
 
             {/* Modal chọn sản phẩm */}

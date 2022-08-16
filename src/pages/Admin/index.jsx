@@ -440,6 +440,7 @@ function Admin() {
               <Routes>
                 <Route index element={<CouponAdmin />} />
                 <Route path="create" element={<CreateCoupon />} />
+                <Route path="edit/:id" element={<CreateCoupon edit={true} />} />
               </Routes>
             }
           />
