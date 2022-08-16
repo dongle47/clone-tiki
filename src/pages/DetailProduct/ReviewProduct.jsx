@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import "./ReviewProduct.scss";
 import React from "react";
-import { Box, Typography, Stack, Rating, CardMedia, Card } from "@mui/material";
+import { Box, Typography, Stack, Rating, CardMedia, Card , Avatar} from "@mui/material";
 import apiMain from "../../apis/apiMain";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
@@ -12,13 +12,13 @@ import Pagination from "@mui/material/Pagination";
 import { useSelector } from "react-redux";
 import StoreIcon from "@mui/icons-material/Store";
 import StarBorder from "@mui/icons-material/StarBorder";
+import apiReviews from "../../apis/apiReviews";
 
 function ReviewProduct(props) {
   const [reviews, setReviews] = useState([]);
-  const [totalPage, setTotalPage] = useState(10);
+  const [totalPage, setTotalPage] = useState(0);
   const [page, setPage] = useState([1]);
   const [chosenProduct, setChosenProduct] = useState();
-  const [filter, setFilter] = useState({});
   const [selected, setSelected] = React.useState(0);
   const items = [
     { id: 1, label: "1" },
@@ -30,22 +30,8 @@ function ReviewProduct(props) {
   const handleClickTab = (i) => {
     if (i !== selected) setSelected(i);
   };
-  const size = 10;
+  const size = 5;
   const user = useSelector((state) => state.auth.user);
-  useEffect(() => {
-    const getMyReviews = async () => {
-      let param = {
-        _page: page,
-        _limit: size,
-        rating_gte: selected,
-      };
-      const response = await apiMain.getMyReviews(param);
-      if (response) {
-        setReviews(response.data);
-      }
-    };
-    getMyReviews();
-  }, [page]);
 
   useEffect(() => {
     const getMyReviews = async () => {
@@ -53,14 +39,21 @@ function ReviewProduct(props) {
         _page: page,
         _limit: size,
         rating_gte: selected,
+        productId : props.product?.id
+        
       };
-      const response = await apiMain.getMyReviews(param);
+      const response = await apiReviews.getMyReviews(param);
       if (response) {
         setReviews(response.data);
       }
     };
     getMyReviews();
-  }, [page]);
+  }, [page,props.product,selected]);
+
+  const handleChangePage = (event, newValue) => {
+    setPage(newValue);
+  };
+
   return (
     <Box className="container">
       <Box bgcolor={"#fff"}>
@@ -195,31 +188,10 @@ function ReviewProduct(props) {
             </Stack>
           </Box>
           <Box sx={{ flex: 1 }}>
-            {/* <Typography sx={{ fontSize: "17px", fontWeight: "500 !important" }} mb={2}>Tất cả hình ảnh</Typography>
-                        <Stack direction="row" spacing={1}>
-                        {
-                            reviews.slice(0,6).map((item) =>
-                                
-                                    <Stack className="imgReview"  justifyContent="space-between"
-                                        sx={{
-                                            backgroundImage: `url(${item.productImg})`,
-                                        }}
-                                    ></Stack>
-                            )
-                        }
-                        </Stack> */}
+         
             <Stack direction="row" alignItems={"center"} spacing={2} mt={4}>
               <Typography sx={{ fontSize: "15px" }}>Lọc xem theo: </Typography>
-              {/* <div className='ReviewProduct__Filter Selected'>
-                                <CheckIcon sx={{ color: "rgb(26, 148, 255)", fontSize: "16px", marginRight: "6px" }} mr={1} />
-                                Mới nhất
-                            </div>
-                            <div className='ReviewProduct__Filter'>
-                                Có hình ảnh
-                            </div>
-                            <div className='ReviewProduct__Filter'>
-                                Đã mua hàng
-                            </div> */}
+             
               <Stack
                 direction="row"
                 alignItems="center"
@@ -229,13 +201,13 @@ function ReviewProduct(props) {
                 {items?.map((item, i) => (
                   <Stack
                     onClick={() => {
-                      handleClickTab(i);
+                      handleClickTab(item.id);
                     }}
                     key={item.id || i}
                     alignItems="center"
                     justifyContent="center"
                     className={` reviewTab__item ${
-                      i === selected ? "selected" : ""
+                      item.id === selected ? "selected" : ""
                     }`}
                   >
                     <Stack
@@ -250,23 +222,7 @@ function ReviewProduct(props) {
                   </Stack>
                 ))}
               </Stack>
-              {/* <div className='ReviewProduct__Filter'>
-                                5
-                                <StarBorderIcon />
-                            </div>
-                            <div className='ReviewProduct__Filter Selected'>
-                                <CheckIcon sx={{ color: "rgb(26, 148, 255)", fontSize: "16px", marginRight: "6px" }} />
-                                4<StarIcon sx={{ color: "yellow" }} />
-                            </div>
-                            <div className='ReviewProduct__Filter'>
-                                3<StarBorderIcon />
-                            </div>
-                            <div className='ReviewProduct__Filter'>
-                                2<StarBorderIcon />
-                            </div>
-                            <div className='ReviewProduct__Filter'>
-                                1<StarBorderIcon />
-                            </div> */}
+              
             </Stack>
           </Box>
         </Stack>
@@ -284,7 +240,7 @@ function ReviewProduct(props) {
                   sx={{ fontSize: "32px", fontWeight: 600 }}
                 >
                   <div className="BackgroundAvatar">
-                    <span>NA</span>
+                    <Avatar src={item.userAvatar} />
                   </div>
                 </Stack>
                 <Stack direction="column">
@@ -295,13 +251,9 @@ function ReviewProduct(props) {
                       fontWeight: "600",
                     }}
                   >
-                    Nguyễn Văn A
+                    {item.userName}
                   </Typography>
-                  <Typography
-                    sx={{ fontSize: "13px", color: "rgb(128, 128, 137)" }}
-                  >
-                    Đã tham gia 6 năm
-                  </Typography>
+
                 </Stack>
               </Stack>
               <Stack direction="column">
@@ -337,7 +289,7 @@ function ReviewProduct(props) {
             </Box>
             <Box sx={{ flex: 1 }}>
               <Stack direction="row" spacing={2} bgcolor="#ffff" p={2}>
-                <Stack spacing={1} minWidth="240px" minHeight="256px">
+                <Stack spacing={1} minWidth="240px" minHeight="16px">
                   <Stack
                     className="myreview__avt"
                     sx={{
@@ -427,9 +379,11 @@ function ReviewProduct(props) {
         <Stack
           justifyContent={"flex-end"}
           direction="row"
-          sx={{ padding: "0 48px" }}
+          sx={{ padding: "12px 48px" }}
         >
-          <Pagination count={5} color="primary" />
+          {totalPage > 1 ? <Stack spacing={2}>
+            <Pagination count={totalPage} page={page} color ="primary" onChange={handleChangePage} />
+          </Stack> : <></>}
         </Stack>
       </Box>
     </Box>

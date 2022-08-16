@@ -9,6 +9,7 @@ import StoreIcon from "@mui/icons-material/Store";
 import apiMain from "../../../apis/apiMain";
 import Pagination from '@mui/material/Pagination';
 import { useSelector } from "react-redux";
+import apiReviews from "../../../apis/apiReviews";
 function MyRates() {
   const [myReviews, setMyReviews] = useState([])
   const [totalPage, setTotalPage] = useState(10)
@@ -25,7 +26,7 @@ function MyRates() {
         idUser: user.id,
         nameUser : user.name,
       }
-      const response = await apiMain.getMyReviews(param)
+      const response = await apiReviews.getMyReviews(param)
       if (response) {
         setMyReviews(response.data)
         setTotalPage(Math.ceil(response.pagination._totalRows / size))

@@ -628,7 +628,7 @@ function DetailProduct() {
         </Box>
       </Modal>
 
-      <ReviewProduct />
+      <ReviewProduct product={product}/>
     </>
   );
 }
