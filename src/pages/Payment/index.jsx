@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import { deleteItemsPayment } from '../../slices/cartSlice';
 import { orderTabs } from '../../constraints/OrderItem';
 import apiAddress from '../../apis/apiAddress'
+import apiNotify from '../../apis/apiNotify'
 
 
 function Payment() {
@@ -133,6 +134,16 @@ function Payment() {
       .then(res => {
         dispatch(deleteItemsPayment())
         toast.success("Đặt hàng thành công!")
+        let notify = {
+          userId: user?.id,
+          orderId: res?.id,
+          type: "order",
+          text: "Bạn đã đặt hàng thành công, đơn hàng của bạn đang được xử lý",
+          date: Date.now(),
+          seen: false,
+          link:"",
+        };
+        apiNotify.postNotify(notify);
         navigate('/customer/order/history')
         return
       })
