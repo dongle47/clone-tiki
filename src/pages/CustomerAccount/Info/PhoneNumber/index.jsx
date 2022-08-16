@@ -2,12 +2,16 @@ import { Box, Stack, InputBase, Typography, Button } from "@mui/material";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import * as React from "react";
 import apiProfile from "../../../../apis/apiProfile";
+import { useDispatch, useSelector } from "react-redux";
+import {loginSuccess} from '../../../../slices/authSlice'
 
 
 function PhoneNumber() {
   const [phone, setPhone] = React.useState("");
   const [message, setMessage] = React.useState("");
   const [fcolor, setColor] = React.useState("#ee0033");
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.auth.user)
 
   const onChangePhone = (event) => {
     setPhone(event.target.value);
@@ -29,12 +33,21 @@ function PhoneNumber() {
       .then((response) => {
         setColor("#2196f3")
         setMessage("Thay đổi thành công");
+        getUserProfile();
       })
       .catch((error) => {
         setColor("#ee0033")
         setMessage("Thay đổi không thành công!");
       });
   };
+
+  const getUserProfile = () => {
+    apiProfile.getUserProfile()
+      .then((res) => {
+        let newUser = res.data.user
+        dispatch(loginSuccess({ ...user, ...newUser }))
+      })
+  }
   return (
     <Box sx={{ mt: "1rem" }}>
       <Typography variant="h6" >Cập nhật số điện thoại</Typography>

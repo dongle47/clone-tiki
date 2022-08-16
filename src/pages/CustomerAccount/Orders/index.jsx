@@ -24,7 +24,9 @@ function Orders() {
       let param = {
         _page: page,
         _limit: size,
-        idUser:user.id
+        idUser:user.id,
+        _sort:'updatedAt',
+        _order:'desc'
       };
       apiCart.getOrders(param)
         .then(response=>{

@@ -107,6 +107,10 @@ function Payment() {
     }
   }
   const handleSubmitOrderFake = () => {
+    if(!addressShip){
+      toast.warning("Vui lòng chọn địa chỉ giao hàng")
+      return;
+    }
     //const state = orderTabs[Math.floor(Math.random() * (orderTabs.length - 1)) + 1]
     const state = orderTabs[2]
     const payload = {

@@ -5,7 +5,7 @@ import { Routes, Route, Link, useLocation } from "react-router-dom";
 import "./CustomerAccount.scss";
 
 import { sidebarTab } from "../../constraints/Profile";
-
+import avatar from "../../assets/img/avatar.png"
 import {
   List,
   ListItem,
@@ -80,9 +80,9 @@ function CustomerAccount() {
           <List sx={{maxWidth:"300px"}}>
             <ListItem>
               <ListItemAvatar>
-                <Avatar alt="hình đại diện" src={user.img} />
+                <Avatar alt="hình đại diện" src={user?.img || avatar} />
               </ListItemAvatar>
-              <ListItemText primary="Tài khoản của" secondary={user.fullName} />
+              <ListItemText primary="Tài khoản của" secondary={user?.fullName} />
             </ListItem>
 
             {sidebarTab.map((item, index) => {

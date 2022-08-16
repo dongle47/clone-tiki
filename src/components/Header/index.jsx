@@ -25,7 +25,6 @@ import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 
-const publicPath = ["/product/", "/filter/", "/payment/"];
 
 function Header() {
   const navigate = useNavigate();
@@ -153,11 +152,6 @@ function Header() {
 
   const handleLogout = () => {
     dispatch(logoutSuccess());
-    const isPublic =
-      publicPath.findIndex((e) => location.pathname.includes(e)) >= 0
-        ? true
-        : false;
-    if (!isPublic) navigate("/");
   };
 
   const closeModalLogin = () => {
@@ -249,6 +243,9 @@ function Header() {
             sx={{ padding: "0", height: "40px", flex: 1, position: "relative" }}
           >
             <input
+            autoComplete="off"
+            type="text"
+            role="presentation"
               style={{ height: "100%", flex: 1 }}
               id="input-search"
               placeholder="Tìm sản phẩm, danh mục hay thương hiệu mong muốn ..."
@@ -360,9 +357,9 @@ function Header() {
                     </Stack>
                   </Link>
 
-                  <a href="/" onClick={handleLogout}>
+                  <Box onClick={handleLogout}>
                     Thoát tài khoản
-                  </a>
+                  </Box>
                 </Box>
               </>
             ) : (
