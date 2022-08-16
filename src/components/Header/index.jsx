@@ -357,9 +357,9 @@ function Header() {
                     </Stack>
                   </Link>
 
-                  <a href="/" onClick={handleLogout}>
+                  <Box onClick={handleLogout}>
                     Thoát tài khoản
-                  </a>
+                  </Box>
                 </Box>
               </>
             ) : (
