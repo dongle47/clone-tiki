@@ -16,6 +16,7 @@ import {
   MenuItem,
   Badge,
   Button,
+  Pagination,
 } from "@mui/material";
 
 import EmptyNotify from "../../../components/EmptyNotify";
@@ -67,19 +68,23 @@ function Notify() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const [disabled, setdisabled] = useState(true)
   const [notification, setNotification] = useState([[], [], [], []])
   const [page, setPage] = useState(1);
-  const size = 50;
+  const [totalPage, setTotalPage] = useState(1);
+  const size = 6;
 
   useEffect(() => {
     const getData = async () => {
       let param = {
         _page: page,
         _limit: size,
+        _sort: 'createdAt',
+        _order :'desc',
         userId: userId,
       }
       const response = await apiNotify.getNotification(param)
-      console.log(param)
+      setTotalPage(Math.ceil(response.pagination._totalRows / size))
       if (response) {
         let data = response.data.map(item=>{return {...item,icon:getIconByType(item.type)}})
         const ty = [
@@ -92,7 +97,7 @@ function Notify() {
       }
     }
     getData()
-  }, [])
+  }, [page])
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -105,7 +110,27 @@ function Notify() {
   const handleDate = (timestamp) => {
     let date = new Intl.DateTimeFormat('en-GB').format(timestamp);
     return date ;
-}
+  }
+  const handleChangePage = (event, newValue) => {
+    setPage(newValue);
+  };
+  const handleSeenProp = (e) => {
+    let params = {
+      seen: true,
+      id: e.target.id
+    }
+    apiNotify
+      .changeSeenProp(params)
+      .then((res) => {
+        setdisabled(false);
+      })
+      .catch((err) => {
+      console.log(err);
+    })     
+  }
+  const handleDeleteNotify = (e) => {
+    apiNotify.deleteNotify(e.target.id)
+  }
 
   return (  
     <Box sx={{ width: "100%", top: "0" }}>
@@ -222,13 +247,16 @@ function Notify() {
                     Chi tiết
                   </a>
                 </Box>
-
-                <Button>Đánh dấu đã đọc</Button>
-
-                <Button color="warning">Xóa</Button>
+                {disabled&&(<Button id={item.id} onClick={handleSeenProp} >Đánh dấu đã đọc</Button>)}
+                
+                <Button id={item.id} color="warning" onClick={handleDeleteNotify}>Xóa</Button>
               </Stack>
             ))}
+            {totalPage > 1 ? <Stack spacing={2} mt="10px">
+                <Pagination count={totalPage} page={page} onChange={handleChangePage} color="primary"/>
+            </Stack > : <></>}
           </Stack>
+          
         </TabPanel>
       </Box>
     </Box>

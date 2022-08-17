@@ -42,7 +42,7 @@ function DetailOrder() {
       .then((res) => {
         toast.success("Xác nhận thành công");
         let notify = {
-          userId: id,
+          userId: order.idUser,
           orderId: order.id,
           type: "order",
           text: "Đơn hàng của bạn đã được giao",
@@ -69,7 +69,7 @@ function DetailOrder() {
       .then((res) => {
         toast.success("Hủy thành công");
         let notify = {
-          userId: id,
+          userId: order.idUser,
           orderId: order.id,
           type: "order",
           text: "Đơn hàng của bạn đã bị hủy",
@@ -77,6 +77,7 @@ function DetailOrder() {
           seen: false,
           link:"",
         };
+       
         apiNotify.postNotify(notify);
       })
       .catch((error) => {
