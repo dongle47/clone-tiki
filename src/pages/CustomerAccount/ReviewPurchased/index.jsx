@@ -100,19 +100,19 @@ function ReviewPurchased() {
 
       if (responseOrder) {
         let listProduct = []
-        responseOrder.forEach(item => 
-            listProduct.push(...item.products.map(product=>{
-              return {
-                ...product,
-                orderId:item.id,
-                updatedAt: item.updatedAt
-              }
-            }))
-          )
-
+        responseOrder.forEach(item =>
+          listProduct.push(...item.products.map(product => {
+            return {
+              ...product,
+              orderId: item.id,
+              updatedAt: item.updatedAt
+            }
+          }))
+        )
         listProduct.forEach(async (item, i) => {
           let params = {
-            productId: item.id
+            productId: item.id,
+            orderId: item.orderId
           }
           try {
             const responseReview = await apiReviews.getMyReviews(params);
@@ -138,13 +138,12 @@ function ReviewPurchased() {
             }
           }
           if (i === listProduct.length - 1) {
-            listProduct.sort((a,b) =>b.updatedAt - a.updatedAt)
+            listProduct.sort((a, b) => b.updatedAt - a.updatedAt)
             setMyRevPurchaseds(listProduct)
-            console.log(listProduct)
             setTotalPage(Math.ceil(listProduct.length / size))
           }
         })
-        
+
       }
     }
     getMyRevPurchaseds()
@@ -168,12 +167,12 @@ function ReviewPurchased() {
 
 
   const handleSaveCmt = () => {
-    if(!(rating > 0)) {
+    if (!(rating > 0)) {
       toast.warning("Vui lòng đánh giá sản phẩm !!");
       return
     }
     const params = {
-      orderId:chosenProduct?.orderId,
+      orderId: chosenProduct?.orderId,
       imgRate: [],
       productName: chosenProduct?.name || "",
       rating: rating,
@@ -181,10 +180,11 @@ function ReviewPurchased() {
       content: content,
       productImg: chosenProduct?.image || "",
       userId: user.id,
-      productId : chosenProduct?.id,
+      productId: chosenProduct?.id,
       userName: user.fullName,
       userAvatar: user.img,
-      likedList : [],
+      likedList: [],
+      reply: []
     };
 
     apiReviews
@@ -211,15 +211,15 @@ function ReviewPurchased() {
       <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing={2} >
         <Grid container rowSpacing={1} columns={{ xs: 8, md: 12 }}>
           {/* <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing={2} > */}
-          {myRevPurchaseds.slice((page-1)*size,page*size).map((item,i) =>
+          {myRevPurchaseds.slice((page - 1) * size, page * size).map((item, i) =>
             <Grid key={i} item xs={3}>
-              <Card  sx={{ border: "0px solid black", maxWidth: "13rem" }}>
+              <Card sx={{ border: "0px solid black", maxWidth: "13rem" }}>
                 <CardMedia component="img" image={item.image} height="200" />
                 <CardContent sx={{ padding: "5px 0 0 0" }}>
-                <Link to={`/product/${item.slug}`}>
-                  <Typography className="reviewpurchased__name" variant="caption" color="text.secondary">
-                    {item.name}
-                  </Typography>
+                  <Link to={`/product/${item.slug}`}>
+                    <Typography className="reviewpurchased__name" variant="caption" color="text.secondary">
+                      {item.name}
+                    </Typography>
                   </Link>
                 </CardContent>
                 <CardActions>
@@ -239,7 +239,7 @@ function ReviewPurchased() {
           )}
           {/* </Stack> */}
         </Grid>
-        </Stack>
+      </Stack>
 
       <Box>
         <BootstrapDialog
