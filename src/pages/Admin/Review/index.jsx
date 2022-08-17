@@ -23,7 +23,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { styled } from '@mui/material/styles';
 import StarIcon from '@mui/icons-material/Star';
 import { useSelector } from "react-redux";
-import apiMain from "../../../apis/apiMain";
+import apiReviews from '../../../apis/apiReviews'
 
 
 function Review() {
@@ -32,10 +32,29 @@ function Review() {
     const [openBrand, setOpenBrand] = useState()
     const [totalPage, setTotalPage] = useState(10)
     const [page, setPage] = useState(1)
+    const [reviews, setReviews] = useState([])
+    const user = useSelector(state => state.auth.user)
+    const [content, setContent] = useState("")
+    const [chooseReview, setChooseReview] = useState(null)
     const size = 5
     const onChangeStatus = (e) => {
         setStatus(e.target.value)
     }
+
+    useEffect(() => {
+        const getData = () => {
+            let params = {
+                _page: page,
+                _limit: size
+            }
+            apiReviews.getMyReviews(params)
+                .then(res => {
+                    setReviews(res.data)
+                    console.log(res.data)
+                })
+        }
+        getData()
+    }, [page])
 
     useEffect(() => {
         const closePopper = (event) => {
@@ -53,26 +72,26 @@ function Review() {
         })
     }, [])
 
-    const [myReviews, setMyReviews] = useState([])
-    const user = useSelector((state) => state.auth.user);
-    useEffect(() => {
-        const getMyReviews = async () => {
-            let param = {
-                _page: page,
-                _limit: size,
-                _sort: 'createdAt',
-                _order: 'desc',
-                idUser: user.id,
-                nameUser: user.name,
+    const submitReply = () => {//hàm thực hiện tạo reply
+
+        const listReply = chooseReview?.reply || []
+        let params = {
+            reply: [...listReply,
+            {
+                image: user.image,
+                name: user.fullName,
+                content: content
             }
-            const response = await apiMain.getMyReviews(param)
-            if (response) {
-                setMyReviews(response.data)
-                setTotalPage(Math.ceil(response.pagination._totalRows / size))
-            }
+            ]
         }
-        getMyReviews()
-    }, [page])
+
+        apiReviews.updateMyReviews(params, chooseReview.id)
+            .then(res => {
+
+            })
+            .catch(err => {})
+    }
+
     return (
         <Box mt={2} className="reviewAdmin">
             <Box px={4} bgcolor="#fff">
@@ -159,7 +178,7 @@ function Review() {
                 </Stack>
             </Box>
             <Box mt={2} mx={3} py={2} px={3} bgcolor="#FFF">
-                <Typography fontSize={"14px"}>Số đánh giá: {myReviews.length}</Typography>
+                <Typography fontSize={"14px"}>Số đánh giá: {reviews.length}</Typography>
                 <Table className="reviewTable">
                     <TableHead>
                         <TableRow>
@@ -171,7 +190,7 @@ function Review() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {myReviews.map(item => (
+                        {reviews.map(item => (
                             <TableRow
                                 key={item.id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -197,9 +216,8 @@ function Review() {
                                     </Stack>
                                 </TableCell>
                                 <TableCell>
-                                    <Typography sx={{fontWeight:"bold"}}>{item.satisfy}</Typography>
+                                    <Typography sx={{ fontWeight: "bold" }}>{item.satisfy}</Typography>
                                     <Typography>{item.content}</Typography>
-                                    <img width={"40px"} height={"40px"} src={item.productImg} alt="" />
                                 </TableCell>
                                 <TableCell align='center'>
                                     <Stack direction='row' spacing={1.25}>

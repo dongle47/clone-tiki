@@ -22,6 +22,10 @@ const apiReviews = {
         const res = await axiosProducts.post('/myreviews', params)
         return res.data;
     },
+    updateMyReviews: async (params,id) =>{
+        const res = await axiosProducts.patch('/myreviews/'+id, params)
+        return res.data;
+    },
     getMyRevPurchaseds: async (params) =>{
         const myRevPurchaseds = await axiosProducts.get('', {params})
         return myRevPurchaseds.data;
