@@ -1,6 +1,5 @@
-import { useState,  useEffect } from "react";
+import { useState,  useEffect,useCallback } from "react";
 import "./ReviewProduct.scss";
-import React from "react";
 import { toast } from "react-toastify";
 import {
   Box,
@@ -11,24 +10,25 @@ import {
   Button,
   TextField,
 } from "@mui/material";
+import {useSelector} from 'react-redux'
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import Pagination from "@mui/material/Pagination";
 import StoreIcon from "@mui/icons-material/Store";
 import apiReviews from "../../apis/apiReviews";
+import Loading from "../../components/Loading"
 
 function ReviewProduct(props) {
   const [reviews, setReviews] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
   const [page, setPage] = useState([1]);
-  const [selected, setSelected] = React.useState(0);
+  const [selected, setSelected] = useState(0);
   const count = reviews.length;
   let avgRating = 0;
   if (count !== 0)
     avgRating = (reviews.reduce((total, currentValue) => total + currentValue.rating, 0) / count).toFixed(1)
 
- 
-  const [selected, setSelected] = React.useState(0);
+
   const user = useSelector((state) => state.auth.user);
 
   const items = [
@@ -60,6 +60,21 @@ function ReviewProduct(props) {
     };
     getMyReviews();
   }, [page, props.product, selected]);
+
+  const getMyReviews = useCallback(async () => {
+    if (!props.product)
+      return
+    let param = {
+      _page: page,
+      _limit: size,
+      rating_gte: selected,
+      productId: props.product?.id
+    };
+    const response = await apiReviews.getMyReviews(param);
+    if (response) {
+      setReviews(response.data);
+    }
+  },[]);
 
   const handleChangePage = (event, newValue) => {
     setPage(newValue);
@@ -171,7 +186,9 @@ function ReviewProduct(props) {
           <ReplyReviews 
           reviewId={item.id}
           user={user}
-          item={item} />
+          item={item}
+          getMyReviews = {getMyReviews}
+           />
         ))}
 
 
@@ -194,6 +211,7 @@ function ReplyReviews(props)
   const [content, setContent] = useState([]);
   const [openCmt, setOpenCmt] = useState(false);
   const [chooseReview, setChooseReview] = useState(null);
+  const [uploading, setUploading] = useState(false)
 
   const handleClickOpen = (rev) => {
     setChooseReview(rev);
@@ -206,23 +224,37 @@ function ReplyReviews(props)
 
   const submitReply = () => {//hàm thực hiện tạo reply
     const listReply = chooseReview?.reply || []
+    if(!content){
+      toast.warning("Vui lòng nhập nội dung")
+      return
+    }
+    if(uploading){
+      toast.warning("Thao tác đang thực hiện. Vui lòng không thao tác quá nhanh")
+      return
+    }
     let params = {
-      reply: [...listReply,
+      reply: [
       {
         image: props.user.img,
         name: props.user.fullName,
         content: content
-      }
+      },...listReply
       ]
     }
-
+    
+setUploading(true)
     apiReviews.updateMyReviews(params, props.reviewId)
       .then(res => {
         toast.success("Cập nhật thành công")
+        setContent("")
+        if(props.getMyReviews){
+          props.getMyReviews()
+        }
       })
       .catch(err => {
         toast.error("Cập nhật thất bại!")
       })
+      .finally(()=>setUploading(false))
   }
 
   return (
@@ -293,6 +325,7 @@ function ReplyReviews(props)
                   backgroundImage: `url(${props.item.productImg})`,
                 }}
               ></Stack>
+              
               <Stack>
                 <Typography sx={{ fontSize: "14px", marginBottom: "6px" }}>
                   {props.item.name}
@@ -381,7 +414,7 @@ function ReplyReviews(props)
                   value={content}
                   onChange={handleChange}
                 />
-                <Button onClick={submitReply}>Đăng</Button>
+                <Button onClick={submitReply}>{uploading&&<Loading/>}Đăng</Button>
               </Stack> : <></>
 
             }
@@ -389,7 +422,7 @@ function ReplyReviews(props)
           </Stack>
           {props.item?.reply?.map((itemReply, i) =>
             <Stack spacing={3} px={5} my={3} direction="row">
-              <img src={itemReply.image} height="40px" />
+              <img src={itemReply.image} height="48px" width='48px' style = {{borderRadius:"50%"}} />
               <Stack spacing={1}>
                 <Typography>{itemReply.name}</Typography>
                 <Typography marginLeft="16px" fontSize="14px">{itemReply.content}</Typography>
