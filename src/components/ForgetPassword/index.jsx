@@ -1,10 +1,11 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { ErrorInput, ErrorAfterSubmit } from "../ErrorHelper";
+import { ErrorInput } from "../ErrorHelper";
 
 import apiAuth from "../../apis/apiAuth";
-
+import {toast} from "react-toastify";
+import {useNavigate} from "react-router-dom";
 import {
   Stack,
   IconButton,
@@ -17,30 +18,23 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import CloseIcon from "@mui/icons-material/Close";
 
 function ForgetPassword(props) {
-  //const dispatch = useDispatch();
-  const [isNoAccount, setIsNoAccount] = React.useState(false);
-
+const navigate = useNavigate()
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
-
-  const handleCheckPhone = async () => {
-    let param = {
-      phone: watch("phoneNumber"),
-    };
-    await apiAuth
-      .postCheckPhone(param)
+  const onSubmit = (data) => {
+    apiAuth.forgetPassword(data)
       .then((res) => {
-        console.log(res)
-        setIsNoAccount(true);
+        toast.success("Vui lòng kiểm tra email để lấy đường dẫn reset mật khẩu");
+navigate('/')
       })
-      .catch((error) => {
-        setIsNoAccount(false);
+      .catch((err) => {
+        toast.error("Có lỗi xảy ra. Vui lòng kiểm tra lại email");
       });
-  };
+  }
 
 
   return (
@@ -60,33 +54,25 @@ function ForgetPassword(props) {
           <Stack spacing={2}>
             <Stack>
               <TextField
-                {...register("phoneNumber", {
-                  required: "Hãy nhập số điện thoại",
+                {...register("email", {
+                  required: "Hãy nhập địa chỉ email",
                   pattern: {
-                    value: /\d+/,
-                    message: "Số điện thoại không hợp lệ",
-                  },
-                  minLength: {
-                    value: 10,
-                    message: "Số điện thoại phải có ít nhất 10 chữ số",
-                  },
+                    value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                    message: "Địa chỉ email không hợp lệ",
+                  }
                 })}
-                label="Số Điện Thoại/ Email"
+                label="Email"
                 variant="standard"
               />
-              {errors.phoneNumber && (
-                <ErrorInput message={errors.phoneNumber.message} />
+              {errors.email && (
+                <ErrorInput message={errors.email.message} />
               )}
             </Stack>
-
-            {isNoAccount && (
-              <ErrorAfterSubmit message="Số điện thoại chưa được đăng ký" />
-            )}
 
             <Button
               variant="contained"
               color="error"
-              onClick={handleCheckPhone}
+              onClick={handleSubmit(onSubmit)}
             >
               Lấy lại mật khẩu
             </Button>
@@ -105,8 +91,8 @@ function ForgetPassword(props) {
           src="https://salt.tikicdn.com/ts/upload/eb/f3/a3/25b2ccba8f33a5157f161b6a50f64a60.png"
           width="203"
         />
-        <Typography sx={{color:"#0b74e5", fontSize:"17px", fontWeight:"500"}}>Mua sắm tại Tiki</Typography>
-        <Typography sx={{color:"#0b74e5", fontSize:"13px", fontWeight:"500"}}>Siêu ưu đãi mỗi ngày</Typography>
+        <Typography sx={{ color: "#0b74e5", fontSize: "17px", fontWeight: "500" }}>Mua sắm tại Tiki</Typography>
+        <Typography sx={{ color: "#0b74e5", fontSize: "13px", fontWeight: "500" }}>Siêu ưu đãi mỗi ngày</Typography>
       </Stack>
       <span style={{ position: "absolute", top: 0, right: 0 }}>
         <IconButton onClick={props.closeModalForgetPWD}>

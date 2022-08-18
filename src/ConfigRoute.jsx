@@ -33,7 +33,7 @@ function ConfigRoute() {
       <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
       <Route path="*" element={<Error />} />
       <Route path="search/:slug" element={<FilterProductSearch />} />
-      <Route path="changepwd" element={<ChangePassword />} />
+      <Route path="reset" element={<ChangePassword />} />
 
     </Routes>
   );
