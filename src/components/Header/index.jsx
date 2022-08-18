@@ -26,7 +26,9 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
-
+const publicPath = [
+  '/product/', '/filter/', '/cart'
+]
 
 function Header() {
   const navigate = useNavigate();
@@ -152,6 +154,10 @@ function Header() {
 
   const handleLogout = () => {
     dispatch(logoutSuccess());
+    const isPublic = publicPath.findIndex(e => location.pathname.includes(e)) >= 0 ? true : false
+    if(!isPublic){
+      navigate('/')
+    }
   };
 
   const closeModalLogin = () => {
