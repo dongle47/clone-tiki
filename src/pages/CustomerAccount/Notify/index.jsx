@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import apiMain from "../../../apis/apiMain"
 import apiNotify from "../../../apis/apiNotify"
-import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "./Notify.scss";
 import PropTypes from "prop-types";
@@ -62,18 +60,37 @@ function a11yProps(index) {
 const options = ["Đánh dấu đọc tất cả", "Xóa tất cả thông báo"];
 const ITEM_HEIGHT = 48;
 
-function Notify() {
+function Notify(props) {
   const userId= useSelector(state => state.auth.user).id
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const [disabled, setdisabled] = useState(true)
   const [notification, setNotification] = useState([[], [], [], []])
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const size = 6;
-
+  const getData = async () => {
+    let param = {
+      _page: page,
+      _limit: size,
+      _sort: 'createdAt',
+      _order :'desc',
+      userId: userId,
+    }
+    const response = await apiNotify.getNotification(param)
+    setTotalPage(Math.ceil(response.pagination._totalRows / size))
+    if (response) {
+      let data = response.data.map(item=>{return {...item,icon:getIconByType(item.type)}})
+      const ty = [
+        data,
+        data.filter(item => item.type === "discount"),
+        data.filter(item => item.type === "order"),
+        data.filter(item => item.type === "system"),
+      ]
+      setNotification(ty) 
+    }
+  }
   useEffect(() => {
     const getData = async () => {
       let param = {
@@ -97,7 +114,7 @@ function Notify() {
       }
     }
     getData()
-  }, [page])
+  }, [page,userId])
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -117,19 +134,27 @@ function Notify() {
   const handleSeenProp = (e) => {
     let params = {
       seen: true,
-      id: e.target.id
     }
     apiNotify
-      .changeSeenProp(params)
+      .changeSeenProp(params, e.target.id)
       .then((res) => {
-        setdisabled(false);
+        getData()
+        props.getData()
       })
       .catch((err) => {
       console.log(err);
-    })     
+      }) 
+    
   }
+
   const handleDeleteNotify = (e) => {
-    apiNotify.deleteNotify(e.target.id)
+    apiNotify.deleteNotifyById({ id: e.target.id })
+      .then((res) => {
+        getData()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   return (  
@@ -247,7 +272,7 @@ function Notify() {
                     Chi tiết
                   </a>
                 </Box>
-                {disabled&&(<Button id={item.id} onClick={handleSeenProp} >Đánh dấu đã đọc</Button>)}
+                {!item.seen&&(<Button id={item.id} onClick={handleSeenProp} >Đánh dấu đã đọc</Button>)}
                 
                 <Button id={item.id} color="warning" onClick={handleDeleteNotify}>Xóa</Button>
               </Stack>

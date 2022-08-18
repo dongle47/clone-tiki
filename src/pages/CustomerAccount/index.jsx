@@ -5,7 +5,7 @@ import { Routes, Route, Link, useLocation } from "react-router-dom";
 import "./CustomerAccount.scss";
 
 import { sidebarTab } from "../../constraints/Profile";
-import avatar from "../../assets/img/avatar.png"
+import avatar from "../../assets/img/avatar.png";
 import {
   List,
   ListItem,
@@ -17,10 +17,10 @@ import {
   Badge,
   Box,
   Typography,
-  Breadcrumbs 
+  Breadcrumbs,
 } from "@mui/material";
 
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Info from "./Info/index";
 import PhoneNumber from "./Info/PhoneNumber/index";
 import Email from "./Info/Email/index";
@@ -36,38 +36,67 @@ import MyReview from "./MyReview/index";
 import DiscountCode from "./Coupon/index";
 import DetailOrder from "./Orders/DetailOrder";
 import { useSelector } from "react-redux";
+import apiNotify from "../../apis/apiNotify";
 
 function CustomerAccount() {
-  const location  = useLocation()
-  const tabId = sidebarTab.find(item=>location.pathname.includes(item.link))
-  
+  const location = useLocation();
+  const tabId = sidebarTab.find((item) =>
+    location.pathname.includes(item.link)
+  );
+  const userId = useSelector((state) => state.auth.user).id;
   const [selectedTabId, setSelectedTabId] = React.useState(tabId?.id || 0);
-  const user = useSelector(state => state.auth.user)//lấy user từ store
+  const [badge, setBadge] = React.useState(0);
+  const user = useSelector((state) => state.auth.user); //lấy user từ store
   const breadcrumbs = [
-    <Link underline="hover" key="1" color="inherit" to="/" style={{fontSize:"14px"}}>
+    <Link
+      underline="hover"
+      key="1"
+      color="inherit"
+      to="/"
+      style={{ fontSize: "14px" }}
+    >
       Trang chủ
     </Link>,
     <Typography key="2" color="text.primary" fontSize="14px">
-      {sidebarTab.find(item=>item.id===selectedTabId)?.text || ""}
+      {sidebarTab.find((item) => item.id === selectedTabId)?.text || ""}
     </Typography>,
-  ];//
+  ];
 
-  React.useEffect(()=>{
-    const handleChangePath = ()=>{
-      const tabId = sidebarTab.find(item=>location.pathname.includes(item.link))
-      if(tabId)
-        setSelectedTabId(tabId?.id || 0)
+  const getData = React.useCallback(async () => {
+    let count = 0;
+    let param = {
+      userId: userId,
+    };
+    const response = await apiNotify.getNotification(param);
+    for (let i = 0; i < response.length; i++) {
+      if (response[i].seen === false) {
+        count++;
+      }
     }
-    handleChangePath()
-  },[location.pathname])
+    setBadge(count);
+  }, [userId]);
+
+  React.useEffect(() => {
+    const handleChangePath = () => {
+      const tabId = sidebarTab.find((item) =>
+        location.pathname.includes(item.link)
+      );
+      if (tabId) setSelectedTabId(tabId?.id || 0);
+    };
+    handleChangePath();
+
+    getData();
+  }, [location.pathname, getData]);
+
   React.useEffect(() => {
     document.title =
-      sidebarTab.find(item=>item.id===selectedTabId)?.text || 
+      sidebarTab.find((item) => item.id === selectedTabId)?.text ||
       "Tiki - Mua hàng online, giá tốt, hàng chuẩn, ship nhanh";
   }, [selectedTabId]);
+
   return (
     <Box className="container">
-       <Breadcrumbs
+      <Breadcrumbs
         separator={<NavigateNextIcon fontSize="small" />}
         aria-label="breadcrumb"
         p="16px 16px 8px"
@@ -77,19 +106,21 @@ function CustomerAccount() {
       </Breadcrumbs>
       <Box className="customer-account">
         <Box width="16rem">
-          <List sx={{maxWidth:"300px"}}>
+          <List sx={{ maxWidth: "300px" }}>
             <ListItem>
               <ListItemAvatar>
                 <Avatar alt="hình đại diện" src={user?.img || avatar} />
               </ListItemAvatar>
-              <ListItemText primary="Tài khoản của" secondary={user?.fullName} />
+              <ListItemText
+                primary="Tài khoản của"
+                secondary={user?.fullName}
+              />
             </ListItem>
 
             {sidebarTab.map((item, index) => {
               return (
                 <Link key={item.id} to={item.link}>
                   <ListItem
-                    
                     disablePadding
                     onClick={() => setSelectedTabId(item.id)}
                     selected={selectedTabId === item.id}
@@ -102,7 +133,9 @@ function CustomerAccount() {
                         sx={{ "&>span": { fontSize: "13px" } }}
                       />
                       {index === 1 ? (
-                        <Badge badgeContent="3" color="error"></Badge>
+                        badge > 0 ? (
+                          <Badge badgeContent={badge} color="error"></Badge>
+                        ) : null
                       ) : null}
                     </ListItemButton>
                   </ListItem>
@@ -114,34 +147,50 @@ function CustomerAccount() {
         <Box flex={1} mt="16px">
           {/* <Outlet /> */}
           <Routes>
-            <Route path="account/edit/*" element={
-              <Routes>
-                <Route index element={<Info />} />
-                <Route path="phone" element={<PhoneNumber />} />
-              <Route path="email" element={<Email />} />
-              <Route path="pass" element={<Password />} />
-              </Routes>
-            } />
+            <Route
+              path="account/edit/*"
+              element={
+                <Routes>
+                  <Route index element={<Info />} />
+                  <Route path="phone" element={<PhoneNumber />} />
+                  <Route path="email" element={<Email />} />
+                  <Route path="pass" element={<Password />} />
+                </Routes>
+              }
+            />
 
-            <Route path="notification" element={<Notify />} />
+            <Route path="notification" element={<Notify getData={getData} />} />
 
-            <Route path="order/*" element={
-              <Routes>
-                <Route path="history" element={<Orders />} />
-                <Route path="detail/:id" element={<DetailOrder />} />
-              </Routes>} />
+            <Route
+              path="order/*"
+              element={
+                <Routes>
+                  <Route path="history" element={<Orders />} />
+                  <Route path="detail/:id" element={<DetailOrder />} />
+                </Routes>
+              }
+            />
 
-            <Route path="address/*" element={
-              <Routes>
-                <Route index element={<Addresses />} />
-                <Route path="create" element={<CreateAddress />} />
-                <Route path="edit/:id" element={<CreateAddress edit= {true}/>}></Route>
-              </Routes>
-            }/>
+            <Route
+              path="address/*"
+              element={
+                <Routes>
+                  <Route index element={<Addresses />} />
+                  <Route path="create" element={<CreateAddress />} />
+                  <Route
+                    path="edit/:id"
+                    element={<CreateAddress edit={true} />}
+                  ></Route>
+                </Routes>
+              }
+            />
 
             <Route path="/paymentcard" element={<PayInfo />} />
 
-            <Route path="/nhan-xet-san-pham-ban-da-mua" element={<ReviewPurchased />} />
+            <Route
+              path="/nhan-xet-san-pham-ban-da-mua"
+              element={<ReviewPurchased />}
+            />
 
             <Route path="/wishlist" element={<FavoriteProduct />} />
 
