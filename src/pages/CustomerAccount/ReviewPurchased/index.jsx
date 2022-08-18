@@ -30,6 +30,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "./ReviewPurchased.scss";
 import apiReviews from "../../../apis/apiReviews";
+import EmptyNotify from "../../../components/EmptyNotify";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -208,35 +209,37 @@ function ReviewPurchased() {
       <Typography gutterBottom variant="h6">
         Nhận xét sản phẩm đã mua
       </Typography>
-      <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing={2} >
+      <Stack sx={{ padding: "1rem", backgroundColor: "#fff" }} direction="row" spacing={2} >
         <Grid container rowSpacing={1} columns={{ xs: 8, md: 12 }}>
           {/* <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing={2} > */}
-          {myRevPurchaseds.slice((page - 1) * size, page * size).map((item, i) =>
-            <Grid key={i} item xs={3}>
-              <Card sx={{ border: "0px solid black", maxWidth: "13rem" }}>
-                <CardMedia component="img" image={item.image} height="200" />
-                <CardContent sx={{ padding: "5px 0 0 0" }}>
-                  <Link to={`/product/${item.slug}`}>
-                    <Typography className="reviewpurchased__name" variant="caption" color="text.secondary">
-                      {item.name}
-                    </Typography>
-                  </Link>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    sx={{ width: "100%" }}
-                    variant="contained"
-                    size="small"
-                    color={item.isReviewed ? "warning" : "primary"}
-                    onClick={item.isReviewed ? null :
-                      (() => handleClickOpen(item))}
-                  >
-                    {item.isReviewed ? "Đã nhận xét" : "Viết nhận xét"}
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          )}
+          {myRevPurchaseds.length === 0 ?
+            <EmptyNotify title="Bạn chưa mua sản phẩm" /> :
+            myRevPurchaseds.slice((page - 1) * size, page * size).map((item, i) =>
+              <Grid key={i} item xs={3}>
+                <Card sx={{ border: "0px solid black", maxWidth: "13rem" }}>
+                  <CardMedia component="img" image={item.image} height="200" />
+                  <CardContent sx={{ padding: "5px 0 0 0" }}>
+                    <Link to={`/product/${item.slug}`}>
+                      <Typography className="reviewpurchased__name" variant="caption" color="text.secondary">
+                        {item.name}
+                      </Typography>
+                    </Link>
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      sx={{ width: "100%" }}
+                      variant="contained"
+                      size="small"
+                      color={item.isReviewed ? "warning" : "primary"}
+                      onClick={item.isReviewed ? null :
+                        (() => handleClickOpen(item))}
+                    >
+                      {item.isReviewed ? "Đã nhận xét" : "Viết nhận xét"}
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            )}
           {/* </Stack> */}
         </Grid>
       </Stack>
@@ -316,7 +319,7 @@ function ReviewPurchased() {
         </BootstrapDialog>
       </Box>
 
-      {myRevPurchaseds.length !== 0 ? (
+      {totalPage > 1 ? (
         <Stack spacing={2}>
           <Typography>Page: {page}</Typography>
           <Pagination count={totalPage} page={page} onChange={handleChange} />
