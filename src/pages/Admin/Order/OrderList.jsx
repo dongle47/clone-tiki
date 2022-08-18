@@ -53,6 +53,8 @@ function OrderList() {
           let param = {
             _page: page,
             _limit: size,
+            _sort: 'createdAt',
+            _order :'desc',
             //"type.id":2,
             };
             if (selected != 0) {
@@ -60,7 +62,7 @@ function OrderList() {
             }
           apiCart.getOrders(param)
             .then(response=>{
-            setOrders(response.data.sort((a,b)=>a.createdAt - b.createdAt));
+            setOrders(response.data);
             setTotalPage(Math.ceil(response.pagination._totalRows / size))        
             })
             .catch(setOrders([]))
