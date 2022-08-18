@@ -104,7 +104,6 @@ function Header() {
     getDataCategorySpecify();
   }, []);
 
-  console.log("suggest: ", suggestions);
 
   var englishText = /^[A-Za-z0-9]*$/;
 

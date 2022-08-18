@@ -30,6 +30,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "./ReviewPurchased.scss";
 import apiReviews from "../../../apis/apiReviews";
+import EmptyNotify from "../../../components/EmptyNotify";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -100,19 +101,19 @@ function ReviewPurchased() {
 
       if (responseOrder) {
         let listProduct = []
-        responseOrder.forEach(item => 
-            listProduct.push(...item.products.map(product=>{
-              return {
-                ...product,
-                orderId:item.id,
-                updatedAt: item.updatedAt
-              }
-            }))
-          )
-
+        responseOrder.forEach(item =>
+          listProduct.push(...item.products.map(product => {
+            return {
+              ...product,
+              orderId: item.id,
+              updatedAt: item.updatedAt
+            }
+          }))
+        )
         listProduct.forEach(async (item, i) => {
           let params = {
-            productId: item.id
+            productId: item.id,
+            orderId: item.orderId
           }
           try {
             const responseReview = await apiReviews.getMyReviews(params);
@@ -138,17 +139,16 @@ function ReviewPurchased() {
             }
           }
           if (i === listProduct.length - 1) {
-            listProduct.sort((a,b) =>b.updatedAt - a.updatedAt)
+            listProduct.sort((a, b) => b.updatedAt - a.updatedAt)
             setMyRevPurchaseds(listProduct)
-            console.log(listProduct)
             setTotalPage(Math.ceil(listProduct.length / size))
           }
         })
-        
+
       }
     }
     getMyRevPurchaseds()
-  }, [page])
+  }, [])
 
 
 
@@ -168,12 +168,12 @@ function ReviewPurchased() {
 
 
   const handleSaveCmt = () => {
-    if(!(rating > 0)) {
+    if (!(rating > 0 || content)) {
       toast.warning("Vui lòng đánh giá sản phẩm !!");
       return
     }
     const params = {
-      orderId:chosenProduct?.orderId,
+      orderId: chosenProduct?.orderId,
       imgRate: [],
       productName: chosenProduct?.name || "",
       rating: rating,
@@ -181,16 +181,24 @@ function ReviewPurchased() {
       content: content,
       productImg: chosenProduct?.image || "",
       userId: user.id,
-      productId : chosenProduct?.id,
+      productId: chosenProduct?.id,
       userName: user.fullName,
       userAvatar: user.img,
-      likedList : [],
+      likedList: [],
+      reply: []
     };
 
     apiReviews
       .postMyReviews(params)
       .then((res) => {
         toast.success("Đã đánh giá");
+        let index = myRevPurchaseds.findIndex(item=>item.id === chosenProduct.id && item.orderId === chosenProduct.orderId
+          )
+        if(index >=0){
+          let newMyRev = [...myRevPurchaseds]
+          newMyRev[index].isReviewed = true
+          setMyRevPurchaseds(newMyRev)
+        }
         handleClose();
       })
       .catch((error) => {
@@ -208,38 +216,40 @@ function ReviewPurchased() {
       <Typography gutterBottom variant="h6">
         Nhận xét sản phẩm đã mua
       </Typography>
-      <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing={2} >
+      <Stack sx={{ padding: "1rem", backgroundColor: "#fff" }} direction="row" spacing={2} >
         <Grid container rowSpacing={1} columns={{ xs: 8, md: 12 }}>
           {/* <Stack sx={{ padding: "1rem", backgroundColor: "white" }} direction="row" spacing={2} > */}
-          {myRevPurchaseds.slice((page-1)*size,page*size).map((item,i) =>
-            <Grid key={i} item xs={3}>
-              <Card  sx={{ border: "0px solid black", maxWidth: "13rem" }}>
-                <CardMedia component="img" image={item.image} height="200" />
-                <CardContent sx={{ padding: "5px 0 0 0" }}>
-                <Link to={`/product/${item.slug}`}>
-                  <Typography className="reviewpurchased__name" variant="caption" color="text.secondary">
-                    {item.name}
-                  </Typography>
-                  </Link>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    sx={{ width: "100%" }}
-                    variant="contained"
-                    size="small"
-                    color={item.isReviewed ? "warning" : "primary"}
-                    onClick={item.isReviewed ? null :
-                      (() => handleClickOpen(item))}
-                  >
-                    {item.isReviewed ? "Đã nhận xét" : "Viết nhận xét"}
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          )}
+          {myRevPurchaseds.length === 0 ?
+            <EmptyNotify title="Bạn chưa mua sản phẩm" /> :
+            myRevPurchaseds.slice((page - 1) * size, page * size).map((item, i) =>
+              <Grid key={i} item xs={3}>
+                <Card sx={{ border: "0px solid black", maxWidth: "13rem" }}>
+                  <CardMedia component="img" image={item.image} height="200" />
+                  <CardContent sx={{ padding: "5px 0 0 0" }}>
+                    <Link to={`/product/${item.slug}`}>
+                      <Typography className="reviewpurchased__name" variant="caption" color="text.secondary">
+                        {item.name}
+                      </Typography>
+                    </Link>
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      sx={{ width: "100%" }}
+                      variant="contained"
+                      size="small"
+                      color={item.isReviewed ? "warning" : "primary"}
+                      onClick={item.isReviewed ? null :
+                        (() => handleClickOpen(item))}
+                    >
+                      {item.isReviewed ? "Đã nhận xét" : "Viết nhận xét"}
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            )}
           {/* </Stack> */}
         </Grid>
-        </Stack>
+      </Stack>
 
       <Box>
         <BootstrapDialog
@@ -316,7 +326,7 @@ function ReviewPurchased() {
         </BootstrapDialog>
       </Box>
 
-      {myRevPurchaseds.length !== 0 ? (
+      {totalPage > 1 ? (
         <Stack spacing={2}>
           <Typography>Page: {page}</Typography>
           <Pagination count={totalPage} page={page} onChange={handleChange} />
