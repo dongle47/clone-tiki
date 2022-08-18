@@ -5,8 +5,8 @@ import { logoutSuccess } from '../../slices/authSlice'
 import { toast } from 'react-toastify'
 import jwt_decode from 'jwt-decode'
 
-const publicPath = [
-    '/product/', '/filter/', '/cart'
+const privatePath = [
+    '/customer/', '/admin/', '/payment',
 ]
 
 function CheckAuthentication() {
@@ -16,7 +16,7 @@ function CheckAuthentication() {
     const dispatch = useDispatch()
     useEffect(() => {
         const check = () => {
-            const isPublic = publicPath.findIndex(e => location.pathname.includes(e)) >= 0 ? true : false
+            const isPrivate = privatePath.findIndex(e => location.pathname.includes(e)) >= 0 ? true : false
 
             if (user) {
                 if (user.refreshToken) {
@@ -25,7 +25,7 @@ function CheckAuthentication() {
                     if (tokenDecode.exp < date.getTime() / 1000) {
                         toast.warning("Phiên làm việc của bạn đã hết. Vui lòng đăng nhập lại")
                         dispatch(logoutSuccess())
-                        if (!isPublic)
+                        if (isPrivate)
                             navigate('/')
 
                     }
@@ -33,12 +33,12 @@ function CheckAuthentication() {
                 else {
                     dispatch(logoutSuccess())
                     toast.warning("Phiên làm việc của bạn đã hết. Vui lòng đăng nhập lại")
-                    if (!isPublic)
+                    if (isPrivate)
                         navigate('/')
                 }
             }
             else {
-                if (!isPublic)
+                if (isPrivate)
                     navigate('/')
             }
         }

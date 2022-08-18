@@ -81,9 +81,10 @@
             height: 100%;
             position: absolute;
             top: 0;
-            &>img {
+            & img {
                 height: 100%;
-                padding: 10px;
+                border-radius: 4px;
+                transform: translateY(-1px);
             }
         }
         &__right {

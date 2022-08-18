@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './ChooseCoupon.scss'
-import { Button, Modal, Box, Stack } from '@mui/material'
+import { Button, Modal, Box, Stack, Typography } from '@mui/material'
 // import { CartItems } from "../../constraints/Cart"
 import InfoIcon from '@mui/icons-material/Info';
 import DiscountIcon from '@mui/icons-material/Discount'
@@ -14,22 +14,22 @@ import { setCoupon } from '../../slices/paymentSlice';
 function ChooseCoupon(props) {
     const [coupons, setCoupons] = useState([]);
     const dispatch = useDispatch()
-    useEffect(()=>{
-        const getCoupons = ()=>{
+    useEffect(() => {
+        const getCoupons = () => {
             let params = {
-                _page:1,
-                _limit:10
+                _page: 1,
+                _limit: 10
             }
             apiMain.getCoupons(params)
-                .then(res=>{
+                .then(res => {
                     setCoupons(res.data)
                 })
         }
         getCoupons()
-    },[])
+    }, [])
 
-    const handleChooseCoupon=(item)=>{
-        dispatch(setCoupon({...item,value:Math.ceil(Math.random() * 10)*10000}))
+    const handleChooseCoupon = (item) => {
+        dispatch(setCoupon(item))
         props.handleClose()
     }
     return (
@@ -63,28 +63,65 @@ function ChooseCoupon(props) {
                     </Stack>
                     <Stack className="choose-coupon__list">
                         {
-                            coupons.map(item=>
-                            <Box key={item.id} className="coupon-item">
-                                <Box className="coupon-item__img">
-                                    <img src={item.image} alt="" />
+                            coupons.map(item =>
+                                <Box key={item.id} className="coupon-item">
+                                    <Box className="coupon-item__img">
+                                        <img src={item.img} alt="" />
+                                    </Box>
+                                    <Box className="coupon-item__content">
+                                        <Box className="coupon-item__title">
+                                            <Typography
+                                                style={{
+                                                    fontSize: "14px",
+                                                    margin: "0",
+                                                    color: '#1890ff'
+                                                }}
+                                            >
+                                                {item.name}
+                                            </Typography>
+                                            <InfoIcon color="#017fff" height="20px" />
+                                        </Box>
+                                        <Box className="coupon-item__description">
+                                            <Typography
+                                                sx={{
+                                                    fontSize: "17px",
+                                                    fontWeight: "500",
+                                                    lineHeight: "24px",
+                                                    color: "#242424",
+                                                }}
+                                                className="text-overflow-2-lines"
+                                            >
+                                                {`Giảm ${item.value}${item.unit}`}
+                                            </Typography>
+                                            <Typography
+                                                sx={{
+                                                    color: "#787878",
+                                                    fontSize: "13px",
+                                                    fontWeight: "400",
+                                                }}
+                                                className="text-overflow-3-lines"
+                                            >
+                                                {item.limit > 0 ? `Cho đơn hàng từ ${item.limit / 1000}K` : 'Dành cho tất cả giá trị đơn hàng'}
+                                            </Typography>
+                                        </Box>
+                                        <Box className="coupon-item__apply">
+                                            <Typography
+                                                sx={{
+                                                    color: "#787878",
+                                                    fontSize: "13px",
+                                                    fontWeight: "400",
+                                                    marginBottom: "0px",
+                                                    marginTop: "auto",
+                                                }}
+                                            >
+                                                {`HSD:${new Date(item.expired).toLocaleDateString()}`}
+                                            </Typography>
+                                            <Button onClick={() => handleChooseCoupon(item)}
+                                                variant="contained" className="coupon-item__btn-apply"
+                                            >Áp dụng</Button>
+                                        </Box>
+                                    </Box>
                                 </Box>
-                                <Box className="coupon-item__content">
-                                    <Box className="coupon-item__title">
-                                        <span>{item.publisher}</span>
-                                        <InfoIcon color="#017fff" height="20px" />
-                                    </Box>
-                                    <Box className="coupon-item__description">
-                                        <h4>{item.title}</h4>
-                                        <p>{item.subtitle}</p>
-                                    </Box>
-                                    <Box className="coupon-item__apply">
-                                        <span>{item.expired}</span>
-                                        <Button onClick={()=>handleChooseCoupon(item)}
-                                         variant="contained" className="coupon-item__btn-apply"
-                                        >Áp dụng</Button>
-                                    </Box>
-                                </Box>
-                            </Box>
                             )
                         }
                     </Stack>

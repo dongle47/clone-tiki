@@ -124,15 +124,22 @@ function Coupon() {
           </Stack>
         </Box>
 
-        <TabPanel value={value} index={0}>
+        <TabPanel value={value} index={value}>
           <Grid container spacing={1.5}>
-            {myCoupons.map((item) => (
+            {
+              (value === 1 ? myCoupons.filter(item=>
+                item.expired - new Date().getTime() > 0) :
+                value === 2 ? myCoupons.filter(item=>
+                  item.expired - new Date().getTime() < 0)
+                  : myCoupons)
+            .map((item) => (
               <Grid item xs={6} key={item.id}>
                 <Stack
                   sx={{
                     width: "100%",
                     borderRadius: "5px",
-                    padding: "0.6rem",
+                    padding: "0.5rem",
+                    height: "132px" 
                   }}
                   className="coupon-container"
                   direction="row"
@@ -140,38 +147,41 @@ function Coupon() {
                   backgroundColor="#fff"
                 >
                   <Stack
-                    sx={{ flex: "1", height: "132px" }}
+                    sx={{ flex: "1"}}
                     direction="row"
-                    spacing={3}
+                    spacing={1}
+
                   >
                     <Stack
-                      sx={{ marginLeft: "1rem", width: "6rem" }}
+                      sx={{  width: "116px", height:'116px' }}
                       alignItems="center"
                       justifyContent="center"
-                      gap="0.3rem"
+                      p = {0.5}
                     >
                       <img
                         alt=""
-                        src={item.image}
+                        src={item.img}
                         style={{
-                          width: "5rem",
-                          height: "5rem",
+                          width: "100%",
+                          height: "100%",
                           justifyContent: "center",
+                          borderRadius: "8px"
                         }}
                       />
-                      <Typography
+                      
+                    </Stack>
+                    {/* <Divider orientation="vertical" flexItem /> */}
+                    <Stack flex="1" p ={1}>
+                    <Typography
                         style={{
-                          fontSize: "11px",
+                          fontSize: "14px",
                           fontWeight: "400",
                           margin: "0px 0px 0px 0px",
+                          color:'#1890ff'
                         }}
-                        align="center"
                       >
-                        {item.publisher}
+                        {item.name}
                       </Typography>
-                    </Stack>
-                    <Divider orientation="vertical" flexItem />
-                    <Stack flex="1">
                       <Typography
                         sx={{
                           fontSize: "17px",
@@ -181,7 +191,7 @@ function Coupon() {
                         }}
                         className="text-overflow-2-lines"
                       >
-                        {item.title}
+                        {`Giảm ${item.value}${item.unit}`}
                       </Typography>
                       <Typography
                         sx={{
@@ -191,7 +201,7 @@ function Coupon() {
                         }}
                         className="text-overflow-3-lines"
                       >
-                        {item.subtitle}
+                        {item.limit > 0?`Cho đơn hàng từ ${item.limit/1000}K`:'Dành cho tất cả giá trị đơn hàng'}
                       </Typography>
                       <Typography
                         sx={{
@@ -202,7 +212,7 @@ function Coupon() {
                           marginTop: "auto",
                         }}
                       >
-                        {item.expired}
+                        {`HSD:${new Date(item.expired).toLocaleDateString()}`}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -225,208 +235,7 @@ function Coupon() {
             </ThemeProvider>
           </Stack>
         </TabPanel>
-        <TabPanel value={value} index={1}>
-          <Grid container spacing={1.5}>
-            {myCoupons.map((item) => (
-              <Grid item xs={6} key={item.id}>
-                <Stack
-                  sx={{
-                    width: "100%",
-                    borderRadius: "5px",
-                    padding: "0.6rem",
-                  }}
-                  className="coupon-container"
-                  direction="row"
-                  justifyContent="space-between"
-                  backgroundColor="#fff"
-                >
-                  <Stack
-                    sx={{ flex: "1", height: "132px" }}
-                    direction="row"
-                    spacing={3}
-                  >
-                    <Stack
-                      sx={{ marginLeft: "1rem", width: "6rem" }}
-                      alignItems="center"
-                      justifyContent="center"
-                      gap="0.3rem"
-                    >
-                      <img
-                        alt=""
-                        src={item.image}
-                        sx={{
-                          width: "5rem",
-                          height: "5rem",
-                          justifyContent: "center",
-                        }}
-                      />
-                      <Typography
-                        style={{
-                          fontSize: "11px",
-                          fontWeight: "400",
-                          margin: "0px 0px 0px 0px",
-                        }}
-                        align="center"
-                      >
-                        {item.publisher}
-                      </Typography>
-                    </Stack>
-                    <Divider orientation="vertical" flexItem />
-                    <Stack flex="1">
-                      <Typography
-                        sx={{
-                          fontSize: "17px",
-                          fontWeight: "500",
-                          lineHeight: "24px",
-                          color: "#242424",
-                        }}
-                        className="text-overflow-2-lines"
-                      >
-                        {item.title}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "#787878",
-                          fontSize: "13px",
-                          fontWeight: "400",
-                        }}
-                        className="text-overflow-3-lines"
-                      >
-                        {item.subtitle}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "#787878",
-                          fontSize: "13px",
-                          fontWeight: "400",
-                          marginBottom: "0px",
-                          marginTop: "auto",
-                        }}
-                      >
-                        {item.expired}
-                      </Typography>
-                    </Stack>
-                  </Stack>
-                  <InfoOutlinedIcon
-                    sx={{ width: "20px", height: "20px" }}
-                    color="info"
-                  />
-                </Stack>
-              </Grid>
-            ))}
-          </Grid>
-          <Stack spacing={2} mt="10px">
-            <ThemeProvider theme={theme}>
-              <Pagination
-                count={totalPage}
-                page={page}
-                onChange={handleChangePage}
-                color="primary"
-              />
-            </ThemeProvider>
-          </Stack>
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <Grid container spacing={1.5}>
-            {myCoupons.map((item) => (
-              <Grid item xs={6} key={item.id}>
-                <Stack
-                  sx={{
-                    width: "100%",
-                    borderRadius: "5px",
-                    padding: "0.6rem",
-                  }}
-                  className="coupon-container"
-                  direction="row"
-                  justifyContent="space-between"
-                  backgroundColor="#fff"
-                >
-                  <Stack
-                    sx={{ flex: "1", height: "132px" }}
-                    direction="row"
-                    spacing={3}
-                  >
-                    <Stack
-                      sx={{ marginLeft: "1rem", width: "6rem" }}
-                      alignItems="center"
-                      justifyContent="center"
-                      gap="0.3rem"
-                    >
-                      <img
-                        alt=""
-                        src={item.image}
-                        style={{
-                          width: "5rem",
-                          height: "5rem",
-                          justifyContent: "center",
-                        }}
-                      />
-                      <Typography
-                        style={{
-                          fontSize: "11px",
-                          fontWeight: "400",
-                          margin: "0px 0px 0px 0px",
-                        }}
-                        align="center"
-                      >
-                        {item.publisher}
-                      </Typography>
-                    </Stack>
-                    <Divider orientation="vertical" flexItem />
-                    <Stack flex="1">
-                      <Typography
-                        sx={{
-                          fontSize: "17px",
-                          fontWeight: "500",
-                          lineHeight: "24px",
-                          color: "#242424",
-                        }}
-                        className="text-overflow-2-lines"
-                      >
-                        {item.title}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "#787878",
-                          fontSize: "13px",
-                          fontWeight: "400",
-                        }}
-                        className="text-overflow-3-lines"
-                      >
-                        {item.subtitle}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "#787878",
-                          fontSize: "13px",
-                          fontWeight: "400",
-                          marginBottom: "0px",
-                          marginTop: "auto",
-                        }}
-                      >
-                        {item.expired}
-                      </Typography>
-                    </Stack>
-                  </Stack>
-                  <InfoOutlinedIcon
-                    sx={{ width: "20px", height: "20px" }}
-                    color="info"
-                  />
-                </Stack>
-              </Grid>
-            ))}
-          </Grid>
-          <Stack spacing={2} mt="10px">
-            <ThemeProvider theme={theme}>
-              <Pagination
-                count={totalPage}
-                page={page}
-                onChange={handleChangePage}
-                color="primary"
-              />
-            </ThemeProvider>
-          </Stack>
-        </TabPanel>
+        
       </Box>
       <Stack alignItems="center">
         <Stack
