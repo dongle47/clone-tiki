@@ -1,43 +1,34 @@
-import { useState, useRef, useEffect } from "react";
+import { useState,  useEffect,useCallback } from "react";
 import "./ReviewProduct.scss";
-import React from "react";
 import { toast } from "react-toastify";
 import {
   Box,
   Typography,
   Stack,
   Rating,
-  IconButton,
-  CardMedia,
-  Card,
   Avatar,
-  Dialog,
-  DialogTitle,
   Button,
   TextField,
 } from "@mui/material";
-import apiMain from "../../apis/apiMain";
+import {useSelector} from 'react-redux'
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import StarIcon from "@mui/icons-material/Star";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CheckIcon from "@mui/icons-material/Check";
 import Pagination from "@mui/material/Pagination";
-import { useSelector } from "react-redux";
 import StoreIcon from "@mui/icons-material/Store";
 import apiReviews from "../../apis/apiReviews";
-import { styled } from "@mui/material/styles";
-import PropTypes from "prop-types";
-import CloseIcon from "@mui/icons-material/Close";
+import Loading from "../../components/Loading"
 
 function ReviewProduct(props) {
   const [reviews, setReviews] = useState([]);
-  const [content, setContent] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
   const [page, setPage] = useState([1]);
-  const [selected, setSelected] = React.useState(0);
-  const [chooseReview, setChooseReview] = useState(null);
-  const [openCmt, setOpenCmt] = useState(false)
+  const [selected, setSelected] = useState(0);
+  const count = reviews.length;
+  let avgRating = 0;
+  if (count !== 0)
+    avgRating = (reviews.reduce((total, currentValue) => total + currentValue.rating, 0) / count).toFixed(1)
+
+
   const user = useSelector((state) => state.auth.user);
 
   const items = [
@@ -51,61 +42,43 @@ function ReviewProduct(props) {
     if (i !== selected) setSelected(i);
   };
   const size = 5;
-
-
   useEffect(() => {
     const getMyReviews = async () => {
+      if (!props.product)
+        return
       let param = {
         _page: page,
         _limit: size,
         rating_gte: selected,
-        productId: props.product?.id
-
+        productId: props.product.id
       };
       const response = await apiReviews.getMyReviews(param);
       if (response) {
         setReviews(response.data);
+        
       }
     };
     getMyReviews();
   }, [page, props.product, selected]);
 
+  const getMyReviews = useCallback(async () => {
+    if (!props.product)
+      return
+    let param = {
+      _page: page,
+      _limit: size,
+      rating_gte: selected,
+      productId: props.product?.id
+    };
+    const response = await apiReviews.getMyReviews(param);
+    if (response) {
+      setReviews(response.data);
+    }
+  },[]);
+
   const handleChangePage = (event, newValue) => {
     setPage(newValue);
   };
-
-  const handleClickOpen = (rev) => {
-    setChooseReview(rev);
-    setOpenCmt(prev => !prev)
-  };
-
-  const [value, setValue] = React.useState('');
-
-  const handleChange = (event) => {
-    setContent(event.target.value);
-  }
-
-  const submitReply = () => {//hàm thực hiện tạo reply
-    const listReply = chooseReview?.reply || []
-    console.log(user)
-    let params = {
-      reply: [...listReply,
-      {
-        image: user.img,
-        name: user.fullName,
-        content: content
-      }
-      ]
-    }
-
-    apiReviews.updateMyReviews(params, chooseReview.id)
-      .then(res => {
-        toast.success("Cập nhật thành công")
-      })
-      .catch(err => {
-        toast.error("Cập nhật thất bại!")
-      })
-  }
 
   return (
     <Box className="container">
@@ -126,118 +99,48 @@ function ReviewProduct(props) {
                 spacing={2}
                 sx={{ fontSize: "32px", fontWeight: 600 }}
               >
-                4.9
+                {avgRating}
               </Stack>
               <Stack direction="column">
-                <Rating name="simple-controlled" value={5} readOnly />
+                <Rating name="simple-controlled" precision={0.5} value={avgRating} readOnly />
                 <Typography
                   sx={{ fontSize: "13px", color: "rgb(128, 128, 137)" }}
                 >
-                  247 Nhận xét
+                  {count} Nhận xét
                 </Typography>
               </Stack>
             </Stack>
             <Stack direction="column">
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Rating
-                  name="simple-controlled"
-                  value={5}
-                  readOnly
-                  sx={{ fontSize: "16px" }}
-                />
-                <div className="SliderReview">
-                  <div style={{ width: "90%" }}></div>
-                </div>
-                <Typography
-                  sx={{
-                    width: "30px",
-                    fontSize: "11px",
-                    color: "rgb(128, 128, 137)",
-                  }}
-                >
-                  37
-                </Typography>
-              </Stack>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Rating
-                  name="simple-controlled"
-                  value={4}
-                  readOnly
-                  sx={{ fontSize: "16px" }}
-                />
-                <div className="SliderReview">
-                  <div style={{ width: "10%" }}></div>
-                </div>
-                <Typography
-                  sx={{
-                    width: "30px",
-                    fontSize: "11px",
-                    color: "rgb(128, 128, 137)",
-                  }}
-                >
-                  5
-                </Typography>
-              </Stack>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Rating
-                  name="simple-controlled"
-                  value={3}
-                  readOnly
-                  sx={{ fontSize: "16px" }}
-                />
-                <div className="SliderReview">
-                  <div style={{ width: "0%" }}></div>
-                </div>
-                <Typography
-                  sx={{
-                    width: "30px",
-                    fontSize: "11px",
-                    color: "rgb(128, 128, 137)",
-                  }}
-                >
-                  0
-                </Typography>
-              </Stack>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Rating
-                  name="simple-controlled"
-                  value={2}
-                  readOnly
-                  sx={{ fontSize: "16px" }}
-                />
-                <div className="SliderReview">
-                  <div style={{ width: "0%" }}></div>
-                </div>
-                <Typography
-                  sx={{
-                    width: "30px",
-                    fontSize: "11px",
-                    color: "rgb(128, 128, 137)",
-                  }}
-                >
-                  0
-                </Typography>
-              </Stack>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Rating
-                  name="simple-controlled"
-                  value={1}
-                  readOnly
-                  sx={{ fontSize: "16px" }}
-                />
-                <div className="SliderReview">
-                  <div style={{ width: "0%" }}></div>
-                </div>
-                <Typography
-                  sx={{
-                    width: "30px",
-                    fontSize: "11px",
-                    color: "rgb(128, 128, 137)",
-                  }}
-                >
-                  0
-                </Typography>
-              </Stack>
+              {
+                [5, 4, 3, 2, 1].map(item => {
+                  let countRate = reviews.filter(rev => rev.rating === item).length
+                  return (
+                    <Stack key={item} direction="row" alignItems="center" spacing={1}>
+                      <Rating
+                        name="simple-controlled"
+                        value={item}
+                        readOnly
+                        sx={{ fontSize: "16px" }}
+                      />
+                      <div className="SliderReview">
+                        <div style={{ width: `${countRate * 100 / count}%` }}></div>
+                      </div>
+                      <Typography
+                        sx={{
+                          width: "30px",
+                          fontSize: "11px",
+                          color: "rgb(128, 128, 137)",
+                        }}
+                      >
+                        {countRate}
+                      </Typography>
+                    </Stack>
+                  )
+                }
+
+                )
+              }
+
             </Stack>
           </Box>
           <Box sx={{ flex: 1 }}>
@@ -283,9 +186,9 @@ function ReviewProduct(props) {
           <ReplyReviews 
           reviewId={item.id}
           user={user}
-          // submitReply={submitReply} 
-          handleChang={handleChange}
-          item={item} />
+          item={item}
+          getMyReviews = {getMyReviews}
+           />
         ))}
 
 
@@ -308,6 +211,7 @@ function ReplyReviews(props)
   const [content, setContent] = useState([]);
   const [openCmt, setOpenCmt] = useState(false);
   const [chooseReview, setChooseReview] = useState(null);
+  const [uploading, setUploading] = useState(false)
 
   const handleClickOpen = (rev) => {
     setChooseReview(rev);
@@ -320,23 +224,37 @@ function ReplyReviews(props)
 
   const submitReply = () => {//hàm thực hiện tạo reply
     const listReply = chooseReview?.reply || []
+    if(!content){
+      toast.warning("Vui lòng nhập nội dung")
+      return
+    }
+    if(uploading){
+      toast.warning("Thao tác đang thực hiện. Vui lòng không thao tác quá nhanh")
+      return
+    }
     let params = {
-      reply: [...listReply,
+      reply: [
       {
         image: props.user.img,
         name: props.user.fullName,
         content: content
-      }
+      },...listReply
       ]
     }
-
+    
+setUploading(true)
     apiReviews.updateMyReviews(params, props.reviewId)
       .then(res => {
         toast.success("Cập nhật thành công")
+        setContent("")
+        if(props.getMyReviews){
+          props.getMyReviews()
+        }
       })
       .catch(err => {
         toast.error("Cập nhật thất bại!")
       })
+      .finally(()=>setUploading(false))
   }
 
   return (
@@ -407,6 +325,7 @@ function ReplyReviews(props)
                   backgroundImage: `url(${props.item.productImg})`,
                 }}
               ></Stack>
+              
               <Stack>
                 <Typography sx={{ fontSize: "14px", marginBottom: "6px" }}>
                   {props.item.name}
@@ -495,7 +414,7 @@ function ReplyReviews(props)
                   value={content}
                   onChange={handleChange}
                 />
-                <Button onClick={submitReply}>Đăng</Button>
+                <Button onClick={submitReply}>{uploading&&<Loading/>}Đăng</Button>
               </Stack> : <></>
 
             }
@@ -503,7 +422,7 @@ function ReplyReviews(props)
           </Stack>
           {props.item?.reply?.map((itemReply, i) =>
             <Stack spacing={3} px={5} my={3} direction="row">
-              <img src={itemReply.image} height="40px" />
+              <img src={itemReply.image} height="48px" width='48px' style = {{borderRadius:"50%"}} />
               <Stack spacing={1}>
                 <Typography>{itemReply.name}</Typography>
                 <Typography marginLeft="16px" fontSize="14px">{itemReply.content}</Typography>
