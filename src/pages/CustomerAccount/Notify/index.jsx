@@ -141,6 +141,7 @@ function Notify(props) {
 
   useEffect(() => {
     getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notification]);
 
   const [anchorEl, setAnchorEl] = useState(null);
