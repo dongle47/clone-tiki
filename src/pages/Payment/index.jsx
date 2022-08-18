@@ -28,6 +28,7 @@ function Payment() {
   const [ship, setShip] = useState('shipping1');
   const [payment, setPayment] = useState(1);
   const [expandDetail, setExpandDetail] = useState(false)
+  const [couponValue,setCouponValue] = useState(0)
   const CartItems = useSelector(state => state.cart.items)
   const coupon = useSelector(state => state.payment.coupon)
   const addressShip = useSelector(state => state.payment.address)
@@ -40,7 +41,7 @@ function Payment() {
   useEffect(() => {
     const calcPrice = () => {
       const total = CartItems.reduce((t, num) => num.choose ? t + num.price * num.quantity : t, 0)
-      setTotalPrice(total)
+      setTotalPrice(Math.round(total))
     }
     calcPrice()
   }, [CartItems])
@@ -48,12 +49,12 @@ function Payment() {
   useEffect(() => {
     const getAddresses = () => {
       apiAddress.getUserAddress()
-          .catch(()=>{
-            navigate('/customer/address/create')
-            toast.warning("Vui lòng thêm địa chỉ mới")
-          })
-  }
-  getAddresses()
+        .catch(() => {
+          navigate('/customer/address/create')
+          toast.warning("Vui lòng thêm địa chỉ mới")
+        })
+    }
+    getAddresses()
 
     const calcPrice = () => {
       if (CartItems.filter(item => item.choose).length === 0) {
@@ -67,13 +68,30 @@ function Payment() {
   }, [])
 
   useEffect(() => {
+    const handle = () => {
+      if (coupon) {
+        let value = 0
+        if (coupon.unit === 'đ') {
+          value = coupon.value / 1000
+        }
+        else {
+          if (totalPrice > 0)
+            value = (coupon.value * totalPrice / 100) / 1000
+        }
+        setCouponValue(value)
+      }
+    }
+    handle()
+  }, [coupon, totalPrice])
+
+  useEffect(() => {
     const loadTitle = () => {
       document.title = "Đơn hàng của tôi | Tiki.vn"
     }
     loadTitle()
   }, [])
 
-  
+
 
 
   const handleChangeTypeShip = (event) => {
@@ -96,8 +114,8 @@ function Payment() {
   }
 
   const finalPrice = () => {
-    return totalPrice + feeShip - (coupon?.value || 0) - discountFeeShip > 0 ?
-      totalPrice + feeShip - (coupon?.value || 0) - discountFeeShip : 0
+    return totalPrice + feeShip - (couponValue || 0) - discountFeeShip > 0 ?
+      Math.round(totalPrice + feeShip - (couponValue || 0) - discountFeeShip ): 0
   }
 
   const handleSubmitOrder = () => {
@@ -108,7 +126,7 @@ function Payment() {
     }
   }
   const handleSubmitOrderFake = () => {
-    if(!addressShip){
+    if (!addressShip) {
       toast.warning("Vui lòng chọn địa chỉ giao hàng")
       return;
     }
@@ -121,8 +139,8 @@ function Payment() {
         "name": state.type
       },
       address: addressShip,
-      shipping: shippingMethods.find(item=>item.id === ship),
-      payment:paymentMethods.find(item=>item.id === payment),
+      shipping: shippingMethods.find(item => item.id === ship),
+      payment: paymentMethods.find(item => item.id === payment),
       feeShip,
       totalPrice: finalPrice(),
       discount: discountFeeShip + coupon?.value || 0,
@@ -141,7 +159,7 @@ function Payment() {
           text: "Bạn đã đặt hàng thành công, đơn hàng của bạn đang được xử lý",
           date: Date.now(),
           seen: false,
-          link:"",
+          link: "",
         };
         apiNotify.postNotify(notify);
         navigate('/customer/order/history')
@@ -246,9 +264,11 @@ function Payment() {
               <Box className="cart-coupon__item">
                 <svg className="cart-coupon__bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 286 60"><g fill="none" fillRule="evenodd"><g stroke="#017FFF"><g><g><g><g><g><path fill="#E5F2FF" d="M 278 0.5 c 2.071 0 3.946 0.84 5.303 2.197 c 1.358 1.357 2.197 3.232 2.197 5.303 h 0 v 44 c 0 2.071 -0.84 3.946 -2.197 5.303 c -1.357 1.358 -3.232 2.197 -5.303 2.197 h 0 H 64.973 c -0.116 -1.043 -0.587 -1.978 -1.291 -2.682 c -0.814 -0.814 -1.94 -1.318 -3.182 -1.318 c -1.243 0 -2.368 0.504 -3.182 1.318 c -0.704 0.704 -1.175 1.64 -1.29 2.682 h 0 h -48.028 c -2.071 0 -3.946 -0.84 -5.303 -2.197 c -1.358 -1.357 -2.197 -3.232 -2.197 -5.303 h 0 V 8 c 0 -2.071 0.84 -3.946 2.197 -5.303 c 1.357 -1.358 3.232 -2.197 5.303 -2.197 h 48.027 c 0.116 1.043 0.587 1.978 1.291 2.682 c 0.814 0.814 1.94 1.318 3.182 1.318 c 1.243 0 2.368 -0.504 3.182 -1.318 c 0.704 -0.704 1.175 -1.64 1.29 -2.682 H 64.972 z" transform="translate(-1024 -2912) translate(80 2252) translate(0 460) translate(464) translate(480) translate(0 200)"></path><g strokeDasharray="2 4" strokeLinecap="square"><path d="M0.5 0L0.5 48" transform="translate(-1024 -2912) translate(80 2252) translate(0 460) translate(464) translate(480) translate(0 200) translate(60 8)"></path></g></g></g></g></g></g></g></g></svg>
                 <Box className="cart-coupon__content">
-                  <img src={coupon.image} alt="" />
+                <Box p={1}>
+                    <img src={coupon.img} alt="" />
+                  </Box>
                   <Box className="cart-coupon__right">
-                    <Typography fontSize="13px" fontWeight="500">{`Giảm ${(coupon.value || 0) / 1000}K`}</Typography>
+                    <Typography fontSize="13px" fontWeight="500">{`Giảm ${(couponValue || 0) / 1000}K`}</Typography>
                     <Box>
                       <InfoIcon sx={{ color: "#1890ff" }} />
                       <Button onClick={unchooseCoupon} className="cart-coupon__unchoose" variant="contained">Bỏ chọn</Button>
@@ -307,7 +327,7 @@ function Payment() {
                 </Box>
                 <Box className="cart-summary__price">
                   <span> Giảm giá</span>
-                  <span style={{ color: "#00AB56" }}>{numWithCommas(-(coupon?.value || 0))} ₫</span>
+                  <span style={{ color: "#00AB56" }}>{numWithCommas(-(couponValue || 0))} ₫</span>
                 </Box>
                 <Box className="cart-summary__divider"></Box>
                 <Box className="cart-summary__price">

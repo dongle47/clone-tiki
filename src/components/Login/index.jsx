@@ -63,6 +63,7 @@ function Login(props) {
       .then((res) => {
         let { accessToken, refreshToken, user } = res.data;
         dispatch(loginSuccess({ accessToken, refreshToken, ...user }));
+        toast.success(`Xin chào ${user.fullName || ""}, mời bạn tiếp tục mua sắm`)
         props.closeModalLogin();
       })
       .catch((error) => {

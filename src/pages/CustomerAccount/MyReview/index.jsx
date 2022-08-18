@@ -10,9 +10,10 @@ import apiMain from "../../../apis/apiMain";
 import Pagination from '@mui/material/Pagination';
 import { useSelector } from "react-redux";
 import apiReviews from "../../../apis/apiReviews";
+import EmptyNotify from "../../../components/EmptyNotify";
 function MyRates() {
   const [myReviews, setMyReviews] = useState([])
-  const [totalPage, setTotalPage] = useState(10)
+  const [totalPage, setTotalPage] = useState(1)
   const [page, setPage] = useState(1)
   const size = 5
   const user = useSelector((state) => state.auth.user);
@@ -20,11 +21,11 @@ function MyRates() {
     const getMyReviews = async () => {
       let param = {
         _page: page,
-        _limit: size ,
-        _sort :'createdAt',
-        _order :'desc',
-        idUser: user.id,
-        nameUser : user.name,
+        _limit: size,
+        _sort: 'createdAt',
+        _order: 'desc',
+        userId: user.id,
+        nameUser: user.name,
       }
       const response = await apiReviews.getMyReviews(param)
       if (response) {
@@ -41,76 +42,79 @@ function MyRates() {
   return (
     <Box>
       <Typography variant="h6" sx={{ margin: "20px 0px 15px" }}>
-        Nhận xét sản phẩm đã mua
+        Nhận xét của tôi
       </Typography>
-      <Stack flex='1' >
-        {myReviews.map((item) => (
-          <Stack direction="row" spacing={2} bgcolor="#ffff" p={2}
-          >
-            <Stack
-              spacing={1} minWidth="240px" minHeight="256px"
+      <Stack flex='1' sx={{ backgroundColor: "#fff", borderRadius: "10px" }} >
+        {myReviews.length === 0 ?
+          <EmptyNotify title="Viết nhận xét với sản phẩm bạn đã sử dụng để cung cấp thông tin hữu ích cho mọi người" /> :
+          myReviews.map((item) => (
+            <Stack direction="row" spacing={2} bgcolor="#ffff" p={2}
             >
-              <Stack className="myreview__avt"
-                sx={{
-                  backgroundImage: `url(${item.productImg})`,
-                }}
-              ></Stack>
-              <Stack>
-                <Typography sx={{ fontSize: "14px", marginBottom: "6px" }}>
-                  {item.name}
-                </Typography>
-                <Stack direction="row" spacing={1}>
-                  <StoreIcon sx={{ fontSize: "17px", color: "#808089" }} />
-                  <Typography sx={{ fontSize: "13px", color: "#808089" }}>
-                    {item.storeName}
+              <Stack
+                spacing={2} mb={1} direction="row"
+              >
+                <Stack className="myreview__avt"
+                  sx={{
+                    backgroundImage: `url(${item.productImg})`,
+                  }}
+                ></Stack>
+                <Stack>
+                  <Typography sx={{ fontSize: "14px", marginBottom: "6px" }} width="240px">
+                    {item.productName}
+                  </Typography>
+                  {/* <Stack direction="row" spacing={1}>
+                    <StoreIcon sx={{ fontSize: "17px", color: "#808089" }} />
+                    <Typography sx={{ fontSize: "13px", color: "#808089" }}>
+                      {item.storeName}
+                    </Typography>
+                  </Stack> */}
+                </Stack>
+              </Stack>
+              <Stack spacing={1}>
+                <Stack direction="row" spacing={1} jutifyContent="center">
+                  <Stack direction="row" spacing={1}>
+                    <Rating readOnly value={item.rating} />
+                    <Stack jutifyContent="center">
+                      <Typography
+                        sx={{ fontSize: "13px", fontWeight: "400", lineHeight: "20px" }}
+                      >
+                        {item.satisfy}
+                      </Typography>
+                    </Stack>
+                  </Stack>
+                  <Typography
+                    fontSize="15px" color="#242424" fontWeight="500"
+                  >
+                    {item.subject}
                   </Typography>
                 </Stack>
-              </Stack>
-            </Stack>
-            <Stack spacing={1}>
-              <Stack direction="row" spacing={1} jutifyContent="center">
-                <Stack direction="row" spacing={1}>
-                  <Rating readOnly value={item.rating} />
-                  <Stack jutifyContent="center">
-                    <Typography
-                      sx={{ fontSize: "13px", fontWeight: "400", lineHeight: "20px" }}
-                    >
-                      {item.satisfy}
-                    </Typography>
-                  </Stack>
-                </Stack>
                 <Typography
-                  fontSize="15px" color="#242424" fontWeight="500"
+                  sx={{ fontSize: "13px", fontWeight: "400", lineHeight: "20px" }}
                 >
-                  {item.subject}
+                  {item.content}
+                </Typography>
+                <Stack direction="row" flexWrap="wrap" justifyContent="flex-start" gap={'10px'}>
+                  {item.imgRate?.map((item) => (
+                    <Stack className="myreview__picture"
+                      sx={{
+                        backgroundImage: `url(${item})`,
+                      }}
+                    ></Stack>
+                  ))}
+                </Stack>
+                <Typography sx={{ fontSize: "13px", color: "#808089" }}>
+                  {item.option}
                 </Typography>
               </Stack>
-              <Typography
-                sx={{ fontSize: "13px", fontWeight: "400", lineHeight: "20px" }}
-              >
-                {item.content}
-              </Typography>
-              <Stack direction="row" flexWrap="wrap" justifyContent="flex-start" gap={'10px'}>
-                {item.imgRate?.map((item) => (
-                  <Stack className="myreview__picture"
-                    sx={{
-                      backgroundImage: `url(${item})`,
-                    }}
-                  ></Stack>
-                ))}
-              </Stack>
-              <Typography sx={{ fontSize: "13px", color: "#808089" }}>
-                {item.option}
-              </Typography>
             </Stack>
-          </Stack>
-        ))}
+          ))}
       </Stack>
 
-      {myReviews.length !== 0 ? <Stack spacing={2}>
-        <Typography>Page: {page}</Typography>
-        <Pagination count={totalPage} page={page} onChange={handleChange} />
-      </Stack> : <></>}
+      {totalPage > 1 ?
+        <Stack spacing={2}>
+          <Typography>Page: {page}</Typography>
+          <Pagination count={totalPage} page={page} onChange={handleChange} />
+        </Stack> : <></>}
     </Box>
   );
 }

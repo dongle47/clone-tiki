@@ -29,8 +29,11 @@ export const axiosClientWithToken = axios.create({
     withCredentials: true,
     paramsSerializer: (params) => queryString.stringify(params)
 });
+
+var myInterceptor = null;
 export const axiosInstance = (user, dispatch, stateSuccess,stateFail) => {
-    axiosClientWithToken.interceptors.request.use(
+    axiosClientWithToken.interceptors.request.eject(myInterceptor)
+    myInterceptor = axiosClientWithToken.interceptors.request.use(
         async (config) => {
             let date = new Date();
             if(!(user && user.accessToken)){
@@ -41,6 +44,7 @@ export const axiosInstance = (user, dispatch, stateSuccess,stateFail) => {
             if (decodeToken.exp < date.getTime() / 1000) {
                 try{
                     const newAccessToken = await refreshToken(user);
+
                     const newUser = {
                         ...user,
                         accessToken: newAccessToken.data.accessToken,
