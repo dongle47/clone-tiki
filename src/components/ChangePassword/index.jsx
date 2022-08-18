@@ -10,15 +10,28 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputAdornment from "@mui/material/InputAdornment";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import { useLocation } from "react-router-dom";
+import apiAuth from "../../apis/apiAuth";
 
 function ChangePassword(props) {
   const [showPass, setShowPass] = React.useState(false);
   const [showPassConf, setShowPassConf] = React.useState(false);
 
   const [isDiffPass, setIsDiffPass] = React.useState(false);
-  const [isSuccess, setIsSuccess] = React.useState(false);
+  const [password,setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
   const [code, setCode] = React.useState("");
-  const [isNotValidCode, setIsNotValidCode] = React.useState(false);
+  const location = useLocation()
+  
+  const getUrlParameter = (name)=> {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+};
+
+const token = getUrlParameter('token')
 
 
   const {
@@ -28,23 +41,12 @@ function ChangePassword(props) {
     formState: { errors },
   } = useForm();
 
-  const onChangeCode = (event) => {
-    setCode(event.target.value);
-  }
-
-  const handleCheckCode = () => {
-    if (code == 123456) {
-      setIsNotValidCode(false)
-      return true;
-    }
-    else {
-      setIsNotValidCode(true)
-    }
-  }
+  
 
   const handleCheckPass = () => {
     if (watch("pass") !== watch("passConf")) {
       setIsDiffPass(true);
+      return false
     } else {
       setIsDiffPass(false);
       return true;
@@ -52,11 +54,23 @@ function ChangePassword(props) {
   };
 
   const onSubmit = async () => {
-    if ((handleCheckPass()===true) && (handleCheckCode()===true)) {
-      setIsSuccess(true);
-      toast.success("Test: Thành công")
-    } else {
+    if(!handleCheckPass())
+      return
+    if(token === ''){
+      toast.warning("Không có token đặt lại mật khẩu")
+      return
     }
+    const params = {
+      confirmPassword,
+      newPassword:password
+    }
+    apiAuth.resetPassword(params,token)
+    .then(res=>{
+      toast.success("Đổi mật khẩu thành công")
+    })
+    .catch(err=>{
+      toast.success("Đổi mật khẩu thất bại. Vui lòng kiểm tra lại")
+    })
   };
 
   return (
@@ -81,6 +95,8 @@ function ChangePassword(props) {
                   },
                 })}
                 variant="standard"
+                value={password}
+                onChange = {e=>setPassword(e.target.value)}
                 type={showPass ? "text" : "password"}
                 endAdornment={
                   <InputAdornment position="end">
@@ -111,6 +127,8 @@ function ChangePassword(props) {
                 })}
                 id="password-config"
                 type={showPassConf ? "text" : "password"}
+                value={confirmPassword}
+                onChange = {e=>setConfirmPassword(e.target.value)}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -127,16 +145,7 @@ function ChangePassword(props) {
                 <ErrorInput message={errors.passConf.message} />
               )}
             </FormControl>
-            <Stack sx={{ width: "100%" }}>
-              <TextField label="Nhập mã xác nhận" variant="standard" value={code} onChange={onChangeCode}/>
-              <Stack>
-              {isNotValidCode ? (
-                <ErrorAfterSubmit message="Nhập sai mã xác nhận" />
-              ) : null}
-
-              </Stack>
-              
-            </Stack>
+            
 
             <Stack sx={{ marginTop: "5rem" }}>
               {isDiffPass ? (
