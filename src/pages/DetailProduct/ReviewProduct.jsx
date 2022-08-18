@@ -1,25 +1,31 @@
 import { useState, useRef, useEffect } from "react";
 import "./ReviewProduct.scss";
 import React from "react";
-import { Box, Typography, Stack, Rating, CardMedia, Card , Avatar} from "@mui/material";
+import { Box, Typography, Stack, Rating, CardMedia, Card, Avatar, IconButton, Tooltip } from "@mui/material";
 import apiMain from "../../apis/apiMain";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import StarIcon from "@mui/icons-material/Star";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CheckIcon from "@mui/icons-material/Check";
 import Pagination from "@mui/material/Pagination";
-import { useSelector } from "react-redux";
 import StoreIcon from "@mui/icons-material/Store";
-import StarBorder from "@mui/icons-material/StarBorder";
 import apiReviews from "../../apis/apiReviews";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
+
 
 function ReviewProduct(props) {
   const [reviews, setReviews] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
   const [page, setPage] = useState([1]);
   const [chosenProduct, setChosenProduct] = useState();
+  const [cmt, setCmt] = useState(0)
+  const [isLike, setLike] = useState(false);
   const [selected, setSelected] = React.useState(0);
+  const count = reviews.length;
+  let avgRating = 0;
+  if (count !== 0)
+    avgRating = (reviews.reduce((total, currentValue) => total + currentValue.rating, 0) / count).toFixed(1)
+
+  console.log(avgRating)
   const items = [
     { id: 1, label: "1" },
     { id: 2, label: "2" },
@@ -31,28 +37,35 @@ function ReviewProduct(props) {
     if (i !== selected) setSelected(i);
   };
   const size = 5;
-  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     const getMyReviews = async () => {
+      if (!props.product)
+        return
       let param = {
         _page: page,
         _limit: size,
         rating_gte: selected,
-        productId : props.product?.id
-        
+        productId: props.product.id
+
       };
       const response = await apiReviews.getMyReviews(param);
       if (response) {
         setReviews(response.data);
+        let data = response.data
       }
     };
     getMyReviews();
-  }, [page,props.product,selected]);
+  }, [page, props.product, selected]);
+
 
   const handleChangePage = (event, newValue) => {
     setPage(newValue);
   };
+  const handleClickLike = (event, value) => {
+    setLike(prev => !prev)
+  };
+
 
   return (
     <Box className="container">
@@ -73,125 +86,55 @@ function ReviewProduct(props) {
                 spacing={2}
                 sx={{ fontSize: "32px", fontWeight: 600 }}
               >
-                4.9
+                {avgRating}
               </Stack>
               <Stack direction="column">
-                <Rating name="simple-controlled" value={5} readOnly />
+                <Rating name="simple-controlled" precision={0.5} value={avgRating} readOnly />
                 <Typography
                   sx={{ fontSize: "13px", color: "rgb(128, 128, 137)" }}
                 >
-                  247 Nhận xét
+                  {count} Nhận xét
                 </Typography>
               </Stack>
             </Stack>
             <Stack direction="column">
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Rating
-                  name="simple-controlled"
-                  value={5}
-                  readOnly
-                  sx={{ fontSize: "16px" }}
-                />
-                <div className="SliderReview">
-                  <div style={{ width: "90%" }}></div>
-                </div>
-                <Typography
-                  sx={{
-                    width: "30px",
-                    fontSize: "11px",
-                    color: "rgb(128, 128, 137)",
-                  }}
-                >
-                  37
-                </Typography>
-              </Stack>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Rating
-                  name="simple-controlled"
-                  value={4}
-                  readOnly
-                  sx={{ fontSize: "16px" }}
-                />
-                <div className="SliderReview">
-                  <div style={{ width: "10%" }}></div>
-                </div>
-                <Typography
-                  sx={{
-                    width: "30px",
-                    fontSize: "11px",
-                    color: "rgb(128, 128, 137)",
-                  }}
-                >
-                  5
-                </Typography>
-              </Stack>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Rating
-                  name="simple-controlled"
-                  value={3}
-                  readOnly
-                  sx={{ fontSize: "16px" }}
-                />
-                <div className="SliderReview">
-                  <div style={{ width: "0%" }}></div>
-                </div>
-                <Typography
-                  sx={{
-                    width: "30px",
-                    fontSize: "11px",
-                    color: "rgb(128, 128, 137)",
-                  }}
-                >
-                  0
-                </Typography>
-              </Stack>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Rating
-                  name="simple-controlled"
-                  value={2}
-                  readOnly
-                  sx={{ fontSize: "16px" }}
-                />
-                <div className="SliderReview">
-                  <div style={{ width: "0%" }}></div>
-                </div>
-                <Typography
-                  sx={{
-                    width: "30px",
-                    fontSize: "11px",
-                    color: "rgb(128, 128, 137)",
-                  }}
-                >
-                  0
-                </Typography>
-              </Stack>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Rating
-                  name="simple-controlled"
-                  value={1}
-                  readOnly
-                  sx={{ fontSize: "16px" }}
-                />
-                <div className="SliderReview">
-                  <div style={{ width: "0%" }}></div>
-                </div>
-                <Typography
-                  sx={{
-                    width: "30px",
-                    fontSize: "11px",
-                    color: "rgb(128, 128, 137)",
-                  }}
-                >
-                  0
-                </Typography>
-              </Stack>
+              {
+                [5, 4, 3, 2, 1].map(item => {
+                  let countRate = reviews.filter(rev => rev.rating === item).length
+                  return (
+                    <Stack key={item} direction="row" alignItems="center" spacing={1}>
+                      <Rating
+                        name="simple-controlled"
+                        value={item}
+                        readOnly
+                        sx={{ fontSize: "16px" }}
+                      />
+                      <div className="SliderReview">
+                        <div style={{ width: `${countRate * 100 / count}%` }}></div>
+                      </div>
+                      <Typography
+                        sx={{
+                          width: "30px",
+                          fontSize: "11px",
+                          color: "rgb(128, 128, 137)",
+                        }}
+                      >
+                        {countRate}
+                      </Typography>
+                    </Stack>
+                  )
+                }
+
+                )
+              }
+
             </Stack>
           </Box>
           <Box sx={{ flex: 1 }}>
-         
+
             <Stack direction="row" alignItems={"center"} spacing={2} mt={4}>
               <Typography sx={{ fontSize: "15px" }}>Lọc xem theo: </Typography>
-             
+
               <Stack
                 direction="row"
                 alignItems="center"
@@ -206,9 +149,8 @@ function ReviewProduct(props) {
                     key={item.id || i}
                     alignItems="center"
                     justifyContent="center"
-                    className={` reviewTab__item ${
-                      item.id === selected ? "selected" : ""
-                    }`}
+                    className={` reviewTab__item ${item.id === selected ? "selected" : ""
+                      }`}
                   >
                     <Stack
                       direction="row"
@@ -222,7 +164,7 @@ function ReviewProduct(props) {
                   </Stack>
                 ))}
               </Stack>
-              
+
             </Stack>
           </Box>
         </Stack>
@@ -362,15 +304,25 @@ function ReviewProduct(props) {
                 </Stack>
               </Stack>
               <Stack direction="row" spacing={3}>
-                <div className="Feedback Selected">
-                  <ThumbUpOffAltIcon
-                    sx={{ color: "rgb(26, 148, 255)", fontSize: "16px" }}
-                    mr={3}
-                  />
-                  Hữu ích
+                <IconButton
+                  className="Feedback Selected"
+                  onClick={handleClickLike}
+                  sx={{ fontSize: "14px" }}
+                >
+                  {isLike ? (
+                    <Tooltip >
+                      <ThumbUpIcon />
+                    </Tooltip>
+                  ) : (
+                    <Tooltip>
+                      <ThumbUpOffAltIcon />
+                    </Tooltip>
+                  )}
+                  <Typography sx={{ fontSize: "14px" }} >Hữu ích</Typography>
+                </IconButton>
+                <div className="Feedback">
+                  <ModeCommentOutlinedIcon />  Bình luận
                 </div>
-                <div className="Feedback">Bình luận</div>
-                <div className="Feedback">Chia sẻ</div>
               </Stack>
             </Box>
           </Stack>
@@ -382,12 +334,13 @@ function ReviewProduct(props) {
           sx={{ padding: "12px 48px" }}
         >
           {totalPage > 1 ? <Stack spacing={2}>
-            <Pagination count={totalPage} page={page} color ="primary" onChange={handleChangePage} />
+            <Pagination count={totalPage} page={page} color="primary" onChange={handleChangePage} />
           </Stack> : <></>}
         </Stack>
       </Box>
     </Box>
   );
 }
+
 
 export default ReviewProduct;
