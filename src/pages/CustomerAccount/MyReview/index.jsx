@@ -13,7 +13,7 @@ import apiReviews from "../../../apis/apiReviews";
 import EmptyNotify from "../../../components/EmptyNotify";
 function MyRates() {
   const [myReviews, setMyReviews] = useState([])
-  const [totalPage, setTotalPage] = useState(10)
+  const [totalPage, setTotalPage] = useState(1)
   const [page, setPage] = useState(1)
   const size = 5
   const user = useSelector((state) => state.auth.user);

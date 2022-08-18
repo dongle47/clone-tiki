@@ -148,7 +148,7 @@ function ReviewPurchased() {
       }
     }
     getMyRevPurchaseds()
-  }, [page])
+  }, [])
 
 
 
@@ -168,7 +168,7 @@ function ReviewPurchased() {
 
 
   const handleSaveCmt = () => {
-    if (!(rating > 0)) {
+    if (!(rating > 0 || content)) {
       toast.warning("Vui lòng đánh giá sản phẩm !!");
       return
     }
@@ -192,6 +192,13 @@ function ReviewPurchased() {
       .postMyReviews(params)
       .then((res) => {
         toast.success("Đã đánh giá");
+        let index = myRevPurchaseds.findIndex(item=>item.id === chosenProduct.id && item.orderId === chosenProduct.orderId
+          )
+        if(index >=0){
+          let newMyRev = [...myRevPurchaseds]
+          newMyRev[index].isReviewed = true
+          setMyRevPurchaseds(newMyRev)
+        }
         handleClose();
       })
       .catch((error) => {
