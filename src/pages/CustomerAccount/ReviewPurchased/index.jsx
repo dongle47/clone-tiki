@@ -110,6 +110,7 @@ function ReviewPurchased() {
             }
           }))
         )
+
         listProduct.forEach(async (item, i) => {
           let params = {
             productId: item.id,
@@ -187,7 +188,6 @@ function ReviewPurchased() {
       likedList: [],
       reply: []
     };
-
     apiReviews
       .postMyReviews(params)
       .then((res) => {

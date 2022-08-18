@@ -15,7 +15,12 @@ import {
     MenuItem,
     InputBase,
     Rating,
-    Select
+    Select,
+    Dialog,
+    IconButton,
+    DialogTitle,
+    DialogActions,
+    DialogContent,
 } from "@mui/material"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SearchIcon from '@mui/icons-material/Search';
@@ -23,7 +28,50 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { styled } from '@mui/material/styles';
 import StarIcon from '@mui/icons-material/Star';
 import { useSelector } from "react-redux";
-import apiReviews from '../../../apis/apiReviews'
+import apiReviews from '../../../apis/apiReviews';
+import PropTypes from "prop-types";
+import CloseIcon from "@mui/icons-material/Close";
+import TextareaAutosize from "@mui/base/TextareaAutosize";
+import { toast } from "react-toastify";
+import Pagination from "@mui/material/Pagination";
+
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    "& .MuiDialogContent-root": {
+        padding: theme.spacing(2),
+    },
+    "& .MuiDialogActions-root": {
+        padding: theme.spacing(1),
+    },
+}));
+
+const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props;
+
+    return (
+        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+            {children}
+            {onClose ? (
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={{
+                        position: "absolute",
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            ) : null}
+        </DialogTitle>
+    );
+};
+
+BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
+};
 
 
 function Review() {
@@ -36,10 +84,29 @@ function Review() {
     const user = useSelector(state => state.auth.user)
     const [content, setContent] = useState("")
     const [chooseReview, setChooseReview] = useState(null)
-    const size = 5
+    const size = 10
+    const [open, setOpen] = useState(false);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleChangePage = (event, newValue) => {
+        setPage(newValue);
+    };
+
+    const handleChangeContent = (event) => {
+        setContent(event.target.value)
+    };
+
     const onChangeStatus = (e) => {
         setStatus(e.target.value)
     }
+
+    const handleClickOpen = (rev) => {
+        setChooseReview(rev);
+        setOpen(true);
+    };
 
     useEffect(() => {
         const getData = () => {
@@ -78,8 +145,8 @@ function Review() {
         let params = {
             reply: [...listReply,
             {
-                image: user.image,
-                name: user.fullName,
+                image: "https://granolaguy.biz/wp-content/uploads/2020/04/3695d553.png",
+                name: "TIKI shop",
                 content: content
             }
             ]
@@ -87,9 +154,11 @@ function Review() {
 
         apiReviews.updateMyReviews(params, chooseReview.id)
             .then(res => {
-
+                toast.success("Cập nhật thành công")
             })
-            .catch(err => {})
+            .catch(err => {
+                toast.error("Cập nhật thất bại!")
+            })
     }
 
     return (
@@ -221,14 +290,93 @@ function Review() {
                                 </TableCell>
                                 <TableCell align='center'>
                                     <Stack direction='row' spacing={1.25}>
-                                        <Button><Typography color="#1890ff">Báo cáo</Typography></Button>
-                                        <Button><Typography color="#1890ff">Trả lời</Typography></Button>
+                                        {/* <Button><Typography color="#1890ff">Báo cáo</Typography></Button> */}
+                                        <Button onClick={() => handleClickOpen(item)}><Typography color="#1890ff">Trả lời</Typography></Button>
                                     </Stack>
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
+            </Box>
+            <Stack
+                justifyContent={"flex-end"}
+                direction="row"
+                sx={{ padding: "12px 48px" }}
+            >
+                {totalPage > 1 ? <Stack spacing={2}>
+                    <Pagination count={totalPage} page={page} color="primary" onChange={handleChangePage} />
+                </Stack> : <></>}
+            </Stack>
+            <Box>
+                <BootstrapDialog
+                    onClose={handleClose}
+                    aria-labelledby="customized-dialog-title"
+                    open={open}
+                >
+                    <BootstrapDialogTitle
+                        id="customized-dialog-title"
+                        onClose={handleClose}
+                    >
+                        Phản hồi nhận xét
+                    </BootstrapDialogTitle>
+                    <DialogContent sx={{ width: "100%" }} dividers>
+                        <Stack sx={{}} spacing={3}>
+                            <Stack
+                                sx={{ width: "35rem", border: "1px solid #c2c2c2" }}
+                                direction="row"
+                                spacing={3}
+                            >
+                                <Box
+                                    sx={{ height: 100, width: 100 }}
+                                    component="img"
+                                    alt=""
+                                    src={chooseReview?.productImg}
+                                />
+                                <Stack>
+                                    <Stack>
+                                        <Typography sx={{ fontWeight: 600 }} variant="subtitle1">
+                                            {chooseReview?.userName}
+                                        </Typography>
+                                    </Stack>
+                                    <Stack>
+                                        <Typography sx={{ fontWeight: 600 }} variant="subtitle1">
+                                            {chooseReview?.content}
+                                        </Typography>
+                                    </Stack>
+                                </Stack>
+                            </Stack>
+                            <Stack
+                                sx={{ height: "9rem", width: "100%" }}
+                                alignItems="center"
+                                spacing={3}
+                            >
+                                <TextareaAutosize
+                                    onChange={handleChangeContent}
+                                    minRows={6}
+                                    maxRows={10}
+                                    aria-label="maximum height"
+                                    placeholder="Nhập phản hồi"
+                                    p={'12px'}
+                                    style={{
+                                        width: "100%",
+                                        border: "1px solid #c2c2c2",
+                                        fontSize: "20px",
+                                    }}
+                                />
+                            </Stack>
+                        </Stack>
+                    </DialogContent>
+
+                    <DialogActions>
+                        <Button variant="outlined" color="error" onClick={handleClose}>
+                            Trở lại
+                        </Button>
+                        <Button variant="contained" onClick={submitReply}>
+                            Phản hồi    
+                        </Button>
+                    </DialogActions>
+                </BootstrapDialog>
             </Box>
         </Box>
 
