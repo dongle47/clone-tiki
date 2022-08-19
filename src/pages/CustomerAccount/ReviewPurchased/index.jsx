@@ -300,12 +300,13 @@ function ReviewPurchased() {
                   minRows={6}
                   maxRows={10}
                   aria-label="maximum height"
-                  placeholder="  Nhập bình luận"
-                  p={'12px'}
+                  placeholder="Nhập bình luận"
+                 
                   style={{
                     width: "100%",
                     border: "1px solid #c2c2c2",
                     fontSize: "20px",
+                    padding:'12px'
                   }}
                 />
               </Stack>
