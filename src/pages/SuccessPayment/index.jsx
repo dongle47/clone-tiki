@@ -34,7 +34,7 @@ function SuccessPayment() {
                     setCount(pre => pre - 1)
                 }
                 else {
-                    navigate(`customer/order/detail/${orderId}`)
+                    navigate(`/customer/order/detail/${orderId}`)
                 }
             }, 1000)
         }
