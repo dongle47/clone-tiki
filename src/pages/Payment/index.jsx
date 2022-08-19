@@ -17,6 +17,7 @@ import { deleteItemsPayment } from '../../slices/cartSlice';
 import { orderTabs } from '../../constraints/OrderItem';
 import apiAddress from '../../apis/apiAddress'
 import apiNotify from '../../apis/apiNotify'
+import Loading from '../../components/Loading';
 
 
 function Payment() {
@@ -26,9 +27,10 @@ function Payment() {
   const handleClose = useCallback(() => setOpen(false), [])
   const [openAddress, setOpenAddress] = useState(false);
   const [ship, setShip] = useState('shipping1');
-  const [payment, setPayment] = useState(1);
+  const [payment, setPayment] = useState('1');
   const [expandDetail, setExpandDetail] = useState(false)
-  const [couponValue,setCouponValue] = useState(0)
+  const [couponValue, setCouponValue] = useState(0)
+  const [loading, setLoading] = useState(false)
   const CartItems = useSelector(state => state.cart.items)
   const coupon = useSelector(state => state.payment.coupon)
   const addressShip = useSelector(state => state.payment.address)
@@ -54,7 +56,7 @@ function Payment() {
           toast.warning("Vui lòng thêm địa chỉ mới")
         })
     }
-    getAddresses()
+    getAddresses();// eslint-disable-next-line react-hooks/exhaustive-deps
 
     const calcPrice = () => {
       if (CartItems.filter(item => item.choose).length === 0) {
@@ -63,8 +65,8 @@ function Payment() {
         return
       }
     }
-    calcPrice()
-
+    calcPrice();
+   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -72,11 +74,11 @@ function Payment() {
       if (coupon) {
         let value = 0
         if (coupon.unit === 'đ') {
-          value = coupon.value / 1000
+          value = coupon.value
         }
         else {
           if (totalPrice > 0)
-            value = (coupon.value * totalPrice / 100) / 1000
+            value = (coupon.value * totalPrice / 100)
         }
         setCouponValue(value)
       }
@@ -115,23 +117,23 @@ function Payment() {
 
   const finalPrice = () => {
     return totalPrice + feeShip - (couponValue || 0) - discountFeeShip > 0 ?
-      Math.round(totalPrice + feeShip - (couponValue || 0) - discountFeeShip ): 0
+      Math.round(totalPrice + feeShip - (couponValue || 0) - discountFeeShip) : 0
   }
 
-  const handleSubmitOrder = () => {
-    const payload = {
-      idAddress: addressShip.id,
-      idPayment: payment,
-      idShip: ship,
-    }
-  }
+  
   const handleSubmitOrderFake = () => {
+    if(loading){
+      toast.info("Thanh toán đang được thực hiện. Vui lòng không thao tác quá nhanh")
+      return
+    }
     if (!addressShip) {
       toast.warning("Vui lòng chọn địa chỉ giao hàng")
       return;
     }
     //const state = orderTabs[Math.floor(Math.random() * (orderTabs.length - 1)) + 1]
-    const state = orderTabs[2]
+    let state = orderTabs[2]
+    if (payment === '3')//thanh toán momo
+      state = orderTabs[1]
     const payload = {
       "idUser": user?.id,
       "type": {
@@ -142,31 +144,57 @@ function Payment() {
       shipping: shippingMethods.find(item => item.id === ship),
       payment: paymentMethods.find(item => item.id === payment),
       feeShip,
-      totalPrice: finalPrice(),
-      discount: discountFeeShip + coupon?.value || 0,
+      totalPrice,
+      discount: discountFeeShip + couponValue || 0,
       products: CartItems.filter(item => item.choose).map(item => {
         return { ...item, discount: 0 }
       })
     }
+    setLoading(true)
     apiCart.saveOrder(payload)
       .then(res => {
-        dispatch(deleteItemsPayment())
-        toast.success("Đặt hàng thành công!")
-        let notify = {
-          userId: user?.id,
-          orderId: res?.id,
-          type: "order",
-          text: "Bạn đã đặt hàng thành công, đơn hàng của bạn đang được xử lý",
-          date: Date.now(),
-          seen: false,
-          link: "",
-        };
-        apiNotify.postNotify(notify);
-        navigate('/customer/order/history')
-        return
+        
+        if (payment === '3') {
+          const amount = Math.round(res.totalPrice + res.feeShip - res.discount);
+          apiCart.makePaymentMomo(
+            {
+              orderId: res.id,
+              amount,
+            }
+          ).then(res => {
+            setLoading(false)
+            window.location.replace(res.payUrl)
+          })
+            .catch(err => {
+              toast.error(err.response.data.error)
+              navigate('/customer/order/history')
+            })
+            .finally(dispatch(deleteItemsPayment()))
+
+        }
+        else {
+          toast.success("Đặt hàng thành công!")
+          let notify = {
+            userId: user?.id,
+            orderId: res?.id,
+            type: "order",
+            text: "Bạn đã đặt hàng thành công, đơn hàng của bạn đang được xử lý",
+            date: Date.now(),
+            seen: false,
+            link: "",
+          };
+          apiNotify.postNotify(notify);
+          dispatch(deleteItemsPayment())
+          navigate('/customer/order/history')
+          return
+        }
       })
       .catch(error => {
         toast.error("Đặt hàng không thành công. Vui lòng thử lại")
+      })
+      .finally(()=>{
+        setLoading(false)
+        
       })
 
   }
@@ -264,7 +292,7 @@ function Payment() {
               <Box className="cart-coupon__item">
                 <svg className="cart-coupon__bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 286 60"><g fill="none" fillRule="evenodd"><g stroke="#017FFF"><g><g><g><g><g><path fill="#E5F2FF" d="M 278 0.5 c 2.071 0 3.946 0.84 5.303 2.197 c 1.358 1.357 2.197 3.232 2.197 5.303 h 0 v 44 c 0 2.071 -0.84 3.946 -2.197 5.303 c -1.357 1.358 -3.232 2.197 -5.303 2.197 h 0 H 64.973 c -0.116 -1.043 -0.587 -1.978 -1.291 -2.682 c -0.814 -0.814 -1.94 -1.318 -3.182 -1.318 c -1.243 0 -2.368 0.504 -3.182 1.318 c -0.704 0.704 -1.175 1.64 -1.29 2.682 h 0 h -48.028 c -2.071 0 -3.946 -0.84 -5.303 -2.197 c -1.358 -1.357 -2.197 -3.232 -2.197 -5.303 h 0 V 8 c 0 -2.071 0.84 -3.946 2.197 -5.303 c 1.357 -1.358 3.232 -2.197 5.303 -2.197 h 48.027 c 0.116 1.043 0.587 1.978 1.291 2.682 c 0.814 0.814 1.94 1.318 3.182 1.318 c 1.243 0 2.368 -0.504 3.182 -1.318 c 0.704 -0.704 1.175 -1.64 1.29 -2.682 H 64.972 z" transform="translate(-1024 -2912) translate(80 2252) translate(0 460) translate(464) translate(480) translate(0 200)"></path><g strokeDasharray="2 4" strokeLinecap="square"><path d="M0.5 0L0.5 48" transform="translate(-1024 -2912) translate(80 2252) translate(0 460) translate(464) translate(480) translate(0 200) translate(60 8)"></path></g></g></g></g></g></g></g></g></svg>
                 <Box className="cart-coupon__content">
-                <Box p={1}>
+                  <Box p={1}>
                     <img src={coupon.img} alt="" />
                   </Box>
                   <Box className="cart-coupon__right">
@@ -341,7 +369,7 @@ function Payment() {
             </Box>
             <Button variant="contained" onClick={handleSubmitOrderFake}
               sx={{ width: "100%", height: "42px", backgroundColor: "#ff424e", "&:hover": { opacity: 0.8, backgroundColor: "#ff424e" } }}>
-              Mua hàng</Button>
+              {loading&&<Loading/>} Mua hàng</Button>
 
           </Box>
         </Grid>
@@ -368,33 +396,33 @@ const shippingMethods = [
 
 const paymentMethods = [
   {
-    id: 1,
+    id: '1',
     display: "Thanh toán tiền mặt khi nhận hàng",
-    value: 1,
+    value: '1',
     image: "https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-cod.svg"
   },
   {
-    id: 2,
+    id: '2',
     display: "Thanh toán bằng Viettel Money",
-    value: 2,
+    value: '2',
     image: "https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-viettelmoney.png"
   },
   {
-    id: 3,
+    id: '3',
     display: "Thanh toán bằng Momo",
-    value: 3,
+    value: '3',
     image: "https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-momo.svg"
   },
   {
-    id: 4,
+    id: '4',
     display: "Thanh toán bằng ZaloPay",
-    value: 4,
+    value: '4',
     image: "https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-zalo-pay.svg"
   },
   {
-    id: 5,
+    id: '5',
     display: "Thanh toán bằng VNPay",
-    value: 5,
+    value: '5',
     image: "https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-vnpay.png"
   },
 ]

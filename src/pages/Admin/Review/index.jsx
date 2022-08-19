@@ -24,10 +24,8 @@ import {
 } from "@mui/material"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SearchIcon from '@mui/icons-material/Search';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { styled } from '@mui/material/styles';
 import StarIcon from '@mui/icons-material/Star';
-import { useSelector } from "react-redux";
 import apiReviews from '../../../apis/apiReviews';
 import PropTypes from "prop-types";
 import CloseIcon from "@mui/icons-material/Close";
@@ -81,7 +79,6 @@ function Review() {
     const [totalPage, setTotalPage] = useState(10)
     const [page, setPage] = useState(1)
     const [reviews, setReviews] = useState([])
-    const user = useSelector(state => state.auth.user)
     const [content, setContent] = useState("")
     const [chooseReview, setChooseReview] = useState(null)
     const size = 10

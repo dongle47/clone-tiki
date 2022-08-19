@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { styled } from "@mui/material/styles";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Box,
   Stack,
@@ -77,10 +77,8 @@ function ReviewPurchased() {
   // const [imgRate, setImgRate] = useState();
   // const [storeName, setStoreName] = useState("");
   const [content, setContent] = useState("");
-  const [satisfy, setSatisfy] = useState("");
   const [rating, setRating] = useState(0);
 
-  const navigate = useNavigate();
   const handleClose = () => {
     setOpen(false);
   };
@@ -149,6 +147,7 @@ function ReviewPurchased() {
       }
     }
     getMyRevPurchaseds()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 
@@ -178,7 +177,6 @@ function ReviewPurchased() {
       imgRate: [],
       productName: chosenProduct?.name || "",
       rating: rating,
-      satisfy: satisfy,
       content: content,
       productImg: chosenProduct?.image || "",
       userId: user.id,

@@ -12,18 +12,12 @@ import {
     TableCell,
     TableRow,
     Typography,
-    MenuItem,
     InputBase,
-    Select,
     Modal,
 } from "@mui/material"
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { couponAnalytics } from "../../../constraints/CouponAnalytic"
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import apiCoupon from "../../../apis/apiCoupon";
 import Pagination from '@mui/material/Pagination';
 import { styled } from '@mui/material/styles';
