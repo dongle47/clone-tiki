@@ -11,6 +11,7 @@ import { axiosInstance } from "./apis/axiosClient";
 import { loginSuccess, logoutSuccess } from "./slices/authSlice";
 import ScrollToTop from "./components/ScrollToTop";
 import CheckAuthentication from "./components/CheckAuthentication";
+import { MessengerChat } from "react-messenger-chat-plugin";
 
 function App() {
   const isAdmin = window.location.href.includes("admin");
@@ -21,7 +22,7 @@ function App() {
   }
 
   return (
-  
+  <>
       <BrowserRouter>
       <CheckAuthentication/>
       <ScrollToTop>
@@ -38,8 +39,36 @@ function App() {
           pauseOnHover={false}
         />
       </ScrollToTop>
-        
       </BrowserRouter>
+      <MessengerChat
+    pageId="127440555556390"
+    language="sv_SE"
+    themeColor={"#000000"}
+    bottomSpacing={300}
+    loggedInGreeting="loggedInGreeting"
+    loggedOutGreeting="loggedOutGreeting"
+    greetingDialogDisplay={"show"}
+    debugMode={true}
+    onMessengerShow={() => {
+      console.log("onMessengerShow");
+    }}
+    onMessengerHide={() => {
+      console.log("onMessengerHide");
+    }}
+    onMessengerDialogShow={() => {
+      console.log("onMessengerDialogShow");
+    }}
+    onMessengerDialogHide={() => {
+      console.log("onMessengerDialogHide");
+    }}
+    onMessengerMounted={() => {
+      console.log("onMessengerMounted");
+    }}
+    onMessengerLoad={() => {
+      console.log("onMessengerLoad");
+    }}
+  />
+  </>
   );
 }
 
