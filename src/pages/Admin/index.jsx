@@ -269,7 +269,6 @@ function Admin() {
                   sx={{
                     border: "1px solid #d9d9d9",
                     borderRadius: "16px",
-                    padding: "0.3rem",
                     position: "relative",
                     height: "32px",
                     padding: "4px",

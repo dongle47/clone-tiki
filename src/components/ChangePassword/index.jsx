@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 
 import { ErrorInput, ErrorAfterSubmit } from "../ErrorHelper";
 import { toast } from 'react-toastify';
-import { Stack, IconButton, Button, Input, Typography, TextField} from "@mui/material";
+import { Stack, IconButton, Button, Input, Typography} from "@mui/material";
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -20,7 +20,6 @@ function ChangePassword(props) {
   const [isDiffPass, setIsDiffPass] = React.useState(false);
   const [password,setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [code, setCode] = React.useState("");
   const location = useLocation()
   
   const getUrlParameter = (name)=> {

@@ -59,6 +59,7 @@ function ReviewProduct(props) {
       }
     };
     getMyReviews();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, props.product, selected]);
 
   const getMyReviews = useCallback(async () => {
@@ -422,7 +423,7 @@ setUploading(true)
           </Stack>
           {props.item?.reply?.map((itemReply, i) =>
             <Stack spacing={3} px={5} my={3} direction="row">
-              <img src={itemReply.image} height="48px" width='48px' style = {{borderRadius:"50%"}} />
+              <img alt="" src={itemReply.image} height="48px" width='48px' style = {{borderRadius:"50%"}} />
               <Stack spacing={1}>
                 <Typography>{itemReply.name}</Typography>
                 <Typography marginLeft="16px" fontSize="14px">{itemReply.content}</Typography>

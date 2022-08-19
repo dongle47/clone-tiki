@@ -63,7 +63,7 @@ function DetailOrder() {
                         <Typography >HÌNH THỨC THANH TOÁN</Typography>
                         <Box p={1.25} className="detailOrder__content">
                             <Typography>{order?.payment?.display}</Typography>
-                            <Typography style={{ color: "#fda223" }}>Thanh toán thất bại. Vui lòng thanh toán lại hoặc chọn phương thức thanh toán khác</Typography>
+                            <Typography style={{ color: "#fda223" }}>{order?.statusPayment && `Thanh toán ${order?.statusPayment || ""}`}</Typography>
                         </Box>
                     </Box>
                 </Stack>
@@ -124,7 +124,7 @@ function DetailOrder() {
                             <Typography className="detailOrder__summary-value">{numWithCommas(order?.feeShip || 0)} ₫</Typography>
                         </Stack>
                         <Stack py={0.625} direction="row">
-                            <Typography className="detailOrder__summary-label">Phí vận chuyển</Typography>
+                            <Typography className="detailOrder__summary-label">Tổng cộng</Typography>
                             <Typography className="detailOrder__summary-value detailOrder__summary-value--final">
                                 {numWithCommas(order.totalPrice + order.feeShip - order.discount || 0)} ₫</Typography>
                         </Stack>
