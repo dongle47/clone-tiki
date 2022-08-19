@@ -42,9 +42,9 @@ function App() {
       </BrowserRouter>
       <MessengerChat
     pageId="127440555556390"
-    language="sv_SE"
+    language="vi_VN"
     themeColor={"#000000"}
-    bottomSpacing={300}
+    bottomSpacing={25}
     loggedInGreeting="loggedInGreeting"
     loggedOutGreeting="loggedOutGreeting"
     greetingDialogDisplay={"show"}
