@@ -84,7 +84,7 @@ function DetailOrder() {
                                         <img height="60px" width="60px" src={item.image} alt="" />
                                     </Box>
                                     <Stack spacing={1.5}>
-                                        <Link to={item.slug?`product/${item.slug}`:''}>
+                                        <Link to={item.slug?`/product/${item.slug}`:''}>
                                             <Typography fontSize="14px" >{item.name}</Typography>
                                         </Link>
                                         <Typography fontSize="13px">Sku: 4816587252819</Typography>
