@@ -10,10 +10,12 @@ import { Link, useParams } from "react-router-dom"
 import apiCart from '../../../../apis/apiCart'
 import { toast } from 'react-toastify'
 import { numWithCommas } from '../../../../constraints/Util'
+import { unstable_renderSubtreeIntoContainer } from 'react-dom'
 
 function DetailOrder() {
     const id = useParams().id
     const [order, setOrder] = useState(null)
+    const [loading, setLoading] = useState(false)
     useEffect(() => {
         const getData = () => {
             let params = {
@@ -30,6 +32,26 @@ function DetailOrder() {
         }
         getData()
     }, [id])
+
+    const handlePayment = ()=>{
+        if(!order)
+            return
+        const amount = Math.round(order.totalPrice + order.feeShip - order.discount);
+        setLoading(true)
+          apiCart.makePaymentMomo(
+            {
+              orderId: order.id,
+              amount,
+            }
+          ).then(res => {
+            setLoading(false)
+            alert(res.payUrl)
+            window.location.replace(res.payUrl)
+          })
+            .catch(err => {
+              toast.error(err.response.data.error)
+            })
+    }
     return (
         <>
             <Box>
@@ -130,7 +152,8 @@ function DetailOrder() {
                         </Stack>
                     </Stack>
                 }
-
+                {order?.statusPayment === 'Thất bại' && 
+                <Stack direction='row' justifyContent='end'><Button onClick={handlePayment}>Thanh toán</Button></Stack>}
             </Box>
         </>
     )
