@@ -43,7 +43,7 @@ function App() {
       <MessengerChat
     pageId="127440555556390"
     language="vi_VN"
-    themeColor={"#000000"}
+    //themeColor={"#2374E1"}
     bottomSpacing={25}
     loggedInGreeting="loggedInGreeting"
     loggedOutGreeting="loggedOutGreeting"
