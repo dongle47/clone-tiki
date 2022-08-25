@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import "./ReviewProduct.scss";
+import React from "react";
+
 import { toast } from "react-toastify";
 import {
   Box,
@@ -20,6 +22,7 @@ import Loading from "../../components/Loading";
 
 function ReviewProduct(props) {
   const [reviews, setReviews] = useState([]);
+  const [content, setContent] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
   const [page, setPage] = useState([1]);
 
@@ -273,7 +276,6 @@ function ReplyReviews(props) {
   const [openCmt, setOpenCmt] = useState(false);
   const [chooseReview, setChooseReview] = useState(null);
 
-  const [updateCmt, setUpdateCmt] = useState(1);
   const user = useSelector(state => state.auth.user)
   const [uploading, setUploading] = useState(false);
 
@@ -295,16 +297,19 @@ function ReplyReviews(props) {
   const submitReply = () => {
     //hàm thực hiện tạo reply
     const listReply = chooseReview?.reply || [];
+
     if (!content) {
       toast.warning("Vui lòng nhập nội dung");
       return;
     }
+
     if (uploading) {
       toast.warning(
         "Thao tác đang thực hiện. Vui lòng không thao tác quá nhanh"
       );
       return;
     }
+
     let params = {
       reply: [
         {
@@ -317,6 +322,7 @@ function ReplyReviews(props) {
     };
 
     setUploading(true);
+    
     apiReviews
       .updateMyReviews(params, props.reviewId)
       .then((res) => {
@@ -325,11 +331,6 @@ function ReplyReviews(props) {
 
         if (props.getMyReviews) {
           props.getMyReviews();
-
-<<<<<<< src/pages/DetailProduct/ReviewProduct.jsx
-    apiReviews.updateMyReviews(params, props.reviewId)
-      .then(res => {
-        toast.success("Cập nhật thành công")
 
           let newReviews = [...props.reviews];
 
@@ -342,8 +343,8 @@ function ReplyReviews(props) {
               });
             }
           }
-        }
-      })
+      }
+    })
       .catch((err) => {
         toast.error("Cập nhật thất bại!");
       })
@@ -408,6 +409,7 @@ function ReplyReviews(props) {
           </Stack>
         </Stack>
       </Box>
+
       <Box sx={{ flex: 1 }}>
         <Stack direction="row" spacing={2} bgcolor="#ffff" p={2}>
           <Stack spacing={1} minWidth="240px" minHeight="16px">
@@ -463,6 +465,7 @@ function ReplyReviews(props) {
             </Typography>
           </Stack>
         </Stack>
+
         <Stack>
           <Stack direction="row" spacing={3}>
             <div className="Feedback Selected">
@@ -499,62 +502,30 @@ function ReplyReviews(props) {
             <></>
           )}
         </Stack>
-        {props.item?.reply?.map((itemReply, i) => (
-          <Stack spacing={3} px={5} my={3} direction="row">
-            <img
-              alt=""
-              src={itemReply.image}
-              height="48px"
-              width="48px"
-              style={{ borderRadius: "50%" }}
-            />
-            <Stack spacing={1}>
-              <Typography>{itemReply.name}</Typography>
-              <Typography marginLeft="16px" fontSize="14px">
-                {itemReply.content}
-              </Typography>
-            </Stack>
-          </Stack>
+
+      
           
-          <Stack>
-            <Stack direction="row" spacing={3}>
-              <div className="Feedback Selected">
-                <ThumbUpOffAltIcon
-                  sx={{ color: "rgb(26, 148, 255)", fontSize: "16px" }}
-                  mr={3}
-                />
-                Hữu ích
-              </div>
-              <Typography className="Feedback" onClick={() => handleClickOpen(props.item)}>Bình luận</Typography>
-              <Typography className="Feedback">Chia sẻ</Typography>
-            </Stack>
-            {
-              openCmt ? <Stack p={2} spacing={2}>
-                <TextField
-                  id="outlined-multiline-flexible"
-                  label="Nhập phản hồi"
-                  multiline
-                  maxRows={4}
-                  value={content}
-                  onChange={handleChange}
-                />
-                <Button onClick={submitReply}>Đăng</Button>
-              </Stack> : <></>
-            }
-          </Stack>
-          {props.item?.reply?.map((itemReply, i) =>
-            <Stack spacing={3} px={5} my={3} direction="row" borderBottom ="1px solid #dfdfdf" pb={1}>
+          {props.item?.reply?.map((itemReply, i) => (
+            <Stack
+              spacing={3}
+              px={5}
+              my={3}
+              direction="row"
+              borderBottom="1px solid #dfdfdf"
+              pb={1}
+            >
               <img src={itemReply.image} height="40px" />
               <Stack spacing={1}>
                 <Typography>{itemReply.name}</Typography>
-                <Typography marginLeft="16px" fontSize="14px">{itemReply.content}</Typography>
+                <Typography marginLeft="16px" fontSize="14px">
+                  {itemReply.content}
+                </Typography>
               </Stack>
             </Stack>
-          )}
-        </Box>
-      </Stack>
-  )
-
+          ))}
+      </Box>
+    </Stack>
+  );
 }
 
 export default ReviewProduct;

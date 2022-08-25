@@ -51,7 +51,7 @@ function App() {
           pageId="127440555556390"
           language="vi_VN"
           //themeColor={"#2374E1"}
-          bottomSpacing={25}
+          bottomSpacing={50}
           loggedInGreeting="loggedInGreeting"
           loggedOutGreeting="loggedOutGreeting"
           greetingDialogDisplay={"show"}
