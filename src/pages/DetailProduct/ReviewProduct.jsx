@@ -16,19 +16,12 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import apiMain from "../../apis/apiMain";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import StarIcon from "@mui/icons-material/Star";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CheckIcon from "@mui/icons-material/Check";
 import Pagination from "@mui/material/Pagination";
 import { useSelector } from "react-redux";
 import StoreIcon from "@mui/icons-material/Store";
 import apiReviews from "../../apis/apiReviews";
-import { styled } from "@mui/material/styles";
-import PropTypes from "prop-types";
-import CloseIcon from "@mui/icons-material/Close";
 
 function ReviewProduct(props) {
   const [reviews, setReviews] = useState([]);
@@ -38,6 +31,7 @@ function ReviewProduct(props) {
   const [selected, setSelected] = React.useState(0);
   const [chooseReview, setChooseReview] = useState(null);
   const [openCmt, setOpenCmt] = useState(false)
+  const [updateCmt, setUpdateCmt] = useState(1);
   const user = useSelector((state) => state.auth.user);
 
   const items = [
@@ -60,7 +54,6 @@ function ReviewProduct(props) {
         _limit: size,
         rating_gte: selected,
         productId: props.product?.id
-
       };
       const response = await apiReviews.getMyReviews(param);
       if (response) {
@@ -68,7 +61,8 @@ function ReviewProduct(props) {
       }
     };
     getMyReviews();
-  }, [page, props.product, selected]);
+
+  }, [page, props.product, selected, updateCmt]);
 
   const handleChangePage = (event, newValue) => {
     setPage(newValue);
@@ -97,7 +91,6 @@ function ReviewProduct(props) {
       }
       ]
     }
-
     apiReviews.updateMyReviews(params, chooseReview.id)
       .then(res => {
         toast.success("Cập nhật thành công")
@@ -283,9 +276,10 @@ function ReviewProduct(props) {
           <ReplyReviews 
           reviewId={item.id}
           user={user}
-          // submitReply={submitReply} 
           handleChang={handleChange}
-          item={item} />
+          item={item}
+
+          />
         ))}
 
 
@@ -308,10 +302,17 @@ function ReplyReviews(props)
   const [content, setContent] = useState([]);
   const [openCmt, setOpenCmt] = useState(false);
   const [chooseReview, setChooseReview] = useState(null);
+  const [updateCmt, setUpdateCmt] = useState(1);
+  const user = useSelector(state => state.auth.user)
 
   const handleClickOpen = (rev) => {
-    setChooseReview(rev);
-    setOpenCmt(prev => !prev)
+    if(user){
+      setChooseReview(rev);
+      setOpenCmt(prev => !prev)
+    }
+    else{
+      toast.warning("Vui lòng đăng nhập để bình luận")
+    }  
   };
 
   const handleChange = (event) => {
@@ -333,6 +334,7 @@ function ReplyReviews(props)
     apiReviews.updateMyReviews(params, props.reviewId)
       .then(res => {
         toast.success("Cập nhật thành công")
+        setUpdateCmt(item => item++)
       })
       .catch(err => {
         toast.error("Cập nhật thất bại!")
@@ -484,7 +486,6 @@ function ReplyReviews(props)
               <Typography className="Feedback" onClick={() => handleClickOpen(props.item)}>Bình luận</Typography>
               <Typography className="Feedback">Chia sẻ</Typography>
             </Stack>
-
             {
               openCmt ? <Stack p={2} spacing={2}>
                 <TextField
@@ -497,12 +498,10 @@ function ReplyReviews(props)
                 />
                 <Button onClick={submitReply}>Đăng</Button>
               </Stack> : <></>
-
             }
-
           </Stack>
           {props.item?.reply?.map((itemReply, i) =>
-            <Stack spacing={3} px={5} my={3} direction="row">
+            <Stack spacing={3} px={5} my={3} direction="row" borderBottom ="1px solid #dfdfdf" pb={1}>
               <img src={itemReply.image} height="40px" />
               <Stack spacing={1}>
                 <Typography>{itemReply.name}</Typography>
