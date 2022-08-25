@@ -19,26 +19,26 @@ import { toast } from "react-toastify";
 import SearchIcon from "@mui/icons-material/Search";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
-const data = [
-  {
-    id: "1",
-    fullName: "Emma Stone",
-    registerDate: "01/01/2022",
-    phone: "0123456789",
-  },
-  {
-    id: "2",
-    fullName: "Margot Robbie",
-    registerDate: "01/01/2022",
-    phone: "0123456789",
-  },
-  {
-    id: "3",
-    fullName: "Scarlett Johansson",
-    registerDate: "01/01/2022",
-    phone: "0123456789",
-  },
-];
+// const data = [
+//   {
+//     id: "1",
+//     fullName: "Emma Stone",
+//     registerDate: "01/01/2022",
+//     phone: "0123456789",
+//   },
+//   {
+//     id: "2",
+//     fullName: "Margot Robbie",
+//     registerDate: "01/01/2022",
+//     phone: "0123456789",
+//   },
+//   {
+//     id: "3",
+//     fullName: "Scarlett Johansson",
+//     registerDate: "01/01/2022",
+//     phone: "0123456789",
+//   },
+// ];
 
 function User() {
   const [modalDelete, setModalDelete] = React.useState(false);
@@ -55,11 +55,11 @@ function User() {
       };
       apiProfile.getAllUser()
         .then(res => {
-          setUsers(res.data.user)
+          setUsers(res.data.listUser)
         })
         .catch(error=>{
           toast.error("không có user")
-          setUsers(data)
+          // setUsers(data)
         })
     };
     getData();
@@ -130,7 +130,7 @@ function User() {
 
                 <TableCell align="center" >
                   <Stack spacing={1} justifyContent="center" py={1}>
-                    <Link to={`/admin/user/detail/ ${item.id}`}>
+                    <Link to={`/admin/user/detail/${item.id}`}>
                       <Button variant="contained">Xem</Button>
                     </Link>
                   </Stack>

@@ -87,29 +87,6 @@ function Coupon() {
                 <Typography mt={0.625} pb={2} lineHeight="32px"
                 >Vui lòng xem hướng dẫn chi tiết: <span>Cách cài đặt “Mã giảm giá”</span></Typography>
             </Box>
-            {/* <Box mt={2} mx={3} px={3} py={2}>
-                <Stack direction="row" spacing={1} mb={2} justifyContent="space-between" alignItems="center" height={4}>
-                    <Stack direction="row" alignItems="center" spacing={0.5} className="color-primary" sx={{ cursor: "pointer" }}>
-                        <TrendingUpIcon />
-                        Báo cáo chi tiết
-                        <ArrowForwardIosIcon sx={{ fontSize: "12px" }} />
-                    </Stack>
-                </Stack>
-                <Stack direction="row" justifyContent="space-between">
-                    {
-                        couponAnalytics.map((item, i) =>
-                            <Stack className='couponAdmin__analytic__item' key={item.id} justifyContent="space-between" sx={{ height: "94px" }}>
-                                <Stack direction="row" spacing={1}>{item.name} <InfoOutlinedIcon sx={{ fontSize: "18px", color: "#888" }} /></Stack>
-                                <Box>
-                                    <Typography className="couponAdmin__title" sx={{ lineHeight: "28px" }}>
-                                        {item.value}{i === 4 ? "" : "₫"}</Typography>
-                                    <Typography sx={{ lineHeight: "22px", fontWeight: 500 }}>{item.percent} %</Typography>
-                                </Box>
-                            </Stack>
-                        )
-                    }
-                </Stack>
-            </Box> */}
             <Box mt={2} mx={3} py={2} px={3}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                     <Typography fontSize="16px" fontWeight={500}>Danh sách mã giảm giá</Typography>
@@ -126,22 +103,7 @@ function Coupon() {
                         </Box>
 
                     </Stack>
-                    {/* <Stack width="256px" spacing={0.25}>
-                        <label>Trạng thái</label>
-                        <Select
-                            value={status}
-                            onChange={onChangeStatus}
-                            input={<BootstrapInput />}
-                        >{
-                                [0, 1, 2, 3].map(item =>
-                                    <MenuItem value={item}>{listStatus[item]}</MenuItem>)
-                            }
-                        </Select>
-                    </Stack> */}
                 </Stack>
-
-
-
                 <Table mx={3} className="couponTable" sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                     <TableHead>
                         <TableRow>
@@ -151,7 +113,6 @@ function Coupon() {
                             <TableCell sx={{ width: "calc(13*100%/101)" }}>Loại giảm giá</TableCell>
                             <TableCell sx={{ width: "calc(18*100%/101)" }}>Giá trị đơn tối thiểu</TableCell>
                             <TableCell sx={{ width: "calc(18*100%/101)" }}>Thời gian áp dụng</TableCell>
-                            {/* <TableCell sx={{ width: "calc(13*100%/101)" }}>Trạng thái</TableCell> */}
                             <TableCell sx={{ width: "calc(13*100%/101)" }}>Thao tác</TableCell>
                         </TableRow>
                     </TableHead>
@@ -168,7 +129,6 @@ function Coupon() {
                                 </TableCell>
                                 <TableCell sx={{ width: "calc(13*100%/101)" }}>
                                     <Stack>
-                                        {/* <Typography>Mã giảm giá 1</Typography> */}
                                         <Typography sx={{ color: "#1890ff" }}> {item.slug} </Typography>
                                     </Stack>
                                 </TableCell>
@@ -185,11 +145,6 @@ function Coupon() {
                                     <Typography>Từ: {new Date(item.start).toLocaleString()} </Typography>
                                     <Typography>Đến: {new Date(item.expired).toLocaleString()} </Typography>
                                 </TableCell>
-                                {/* <TableCell align='center' sx={{ width: "calc(13*100%/101)", padding: "4px" }}>
-                                    <Button variant="outlined"
-                                        sx={{ borderColor: "#00FD47", color: "#00FD47", padding: "4px", "&:hover": { borderColor: "#00FD47" } }}
-                                    >Đang hoạt động</Button>
-                                </TableCell> */}
                                 <TableCell sx={{ width: "calc(13*100%/101)" }}>
                                     <Stack spacing={1}>
                                         <Link to={`edit/${item.id}`} >
