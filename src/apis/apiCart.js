@@ -11,6 +11,14 @@ export const axiosClient = axios.create({
     paramsSerializer: (params) => queryString.stringify(params)
 });
 
+export const axiosClientWithPayment = axios.create({
+    baseURL: 'https://mypayment-momo.herokuapp.com/api',
+    headers: {
+        "Content-Type": "application/json"
+    },
+    withCredentials: true,
+    paramsSerializer: (params) => queryString.stringify(params)
+});
 
 const apiCart = {
     getOrders: async (params) => {
@@ -24,8 +32,11 @@ const apiCart = {
     changeTypeOrder: async (params, id) => {
         const res = await axiosClient.patch(`/myorders/${id}`,params)
         return res.data;
-    }
-    
+    },
+    makePaymentMomo: async (params) => {
+        const res = await axiosClientWithPayment.post('/create-payment',params)
+        return res.data;
+    },
     
 }
 export default apiCart;

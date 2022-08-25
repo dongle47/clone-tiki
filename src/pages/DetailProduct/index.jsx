@@ -42,11 +42,9 @@ import { toast } from "react-toastify";
 import SliderImage from "./SliderImage";
 
 import apiAccount from "../../apis/apiAccount";
-import { checkPropTypes } from "prop-types";
 
 function DetailProduct() {
   const user = useSelector((state) => state.auth.user);
-  const { id } = useParams();
 
   const [product, setProduct] = useState(null);
   const { slug } = useParams();
@@ -80,6 +78,7 @@ function DetailProduct() {
     };
 
     checkFavorite();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClickFavorite = async () => {
@@ -272,15 +271,15 @@ function DetailProduct() {
       "Tiki - Mua hàng online, giá tốt, hàng chuẩn, ship nhanh";
   }, [product]);
 
-  const color = [
-    { name: "đỏ", value: "#FF0000" },
-    { name: "cam", value: "#FFA500" },
-    { name: "vàng", value: "#FFFF00" },
-    { name: "xanh lá", value: "#00FF00" },
-    { name: "xanh dương", value: "#00FFFF" },
-    { name: "trắng", value: "#FFFFFF" },
-    { name: "đen", value: "#000000" },
-  ];
+  // const color = [
+  //   { name: "đỏ", value: "#FF0000" },
+  //   { name: "cam", value: "#FFA500" },
+  //   { name: "vàng", value: "#FFFF00" },
+  //   { name: "xanh lá", value: "#00FF00" },
+  //   { name: "xanh dương", value: "#00FFFF" },
+  //   { name: "trắng", value: "#FFFFFF" },
+  //   { name: "đen", value: "#000000" },
+  // ];
 
   return (
     <>
@@ -411,13 +410,11 @@ function DetailProduct() {
                         <Box
                           key={item.id}
                           onClick={() => onChangeOption(itemOpt.id, item.id)}
-                          className={`product-option__item
-                                            ${
+                          className={`product-option__item ${
                                               itemOpt.name === "Màu sắc"
                                                 ? "product-option__item--color"
                                                 : "product-option__item--size"
-                                            }
-                                             ${selected ? "selected" : ""}`}
+                                            } ${selected ? "selected" : ""}`}
                         >
                           {/* {itemOpt.name === "colors" && (
                             <img src={item.imgUrl} alt="" />

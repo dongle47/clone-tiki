@@ -15,7 +15,7 @@ import SignUp from "../SignUp";
 import Search from "../Search";
 import ForgetPassword from "../ForgetPassword";
 
-import { addItem, removeAll } from "../../slices/searchSlice";
+import { addItem } from "../../slices/searchSlice";
 import { logoutSuccess } from "../../slices/authSlice";
 
 import apiProduct from "../../apis/apiProduct";

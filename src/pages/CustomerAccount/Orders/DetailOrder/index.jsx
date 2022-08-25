@@ -10,10 +10,12 @@ import { Link, useParams } from "react-router-dom"
 import apiCart from '../../../../apis/apiCart'
 import { toast } from 'react-toastify'
 import { numWithCommas } from '../../../../constraints/Util'
+import { unstable_renderSubtreeIntoContainer } from 'react-dom'
 
 function DetailOrder() {
     const id = useParams().id
     const [order, setOrder] = useState(null)
+    const [loading, setLoading] = useState(false)
     useEffect(() => {
         const getData = () => {
             let params = {
@@ -30,6 +32,26 @@ function DetailOrder() {
         }
         getData()
     }, [id])
+
+    const handlePayment = ()=>{
+        if(!order)
+            return
+        const amount = Math.round(order.totalPrice + order.feeShip - order.discount);
+        setLoading(true)
+          apiCart.makePaymentMomo(
+            {
+              orderId: order.id,
+              amount,
+            }
+          ).then(res => {
+            setLoading(false)
+            alert(res.payUrl)
+            window.location.replace(res.payUrl)
+          })
+            .catch(err => {
+              toast.error(err.response.data.error)
+            })
+    }
     return (
         <>
             <Box>
@@ -63,7 +85,7 @@ function DetailOrder() {
                         <Typography >HÌNH THỨC THANH TOÁN</Typography>
                         <Box p={1.25} className="detailOrder__content">
                             <Typography>{order?.payment?.display}</Typography>
-                            <Typography style={{ color: "#fda223" }}>Thanh toán thất bại. Vui lòng thanh toán lại hoặc chọn phương thức thanh toán khác</Typography>
+                            <Typography style={{ color: "#fda223" }}>{order?.statusPayment && `Thanh toán ${order?.statusPayment || ""}`}</Typography>
                         </Box>
                     </Box>
                 </Stack>
@@ -84,7 +106,7 @@ function DetailOrder() {
                                         <img height="60px" width="60px" src={item.image} alt="" />
                                     </Box>
                                     <Stack spacing={1.5}>
-                                        <Link to={item.slug?`product/${item.slug}`:''}>
+                                        <Link to={item.slug?`/product/${item.slug}`:''}>
                                             <Typography fontSize="14px" >{item.name}</Typography>
                                         </Link>
                                         <Typography fontSize="13px">Sku: 4816587252819</Typography>
@@ -124,13 +146,14 @@ function DetailOrder() {
                             <Typography className="detailOrder__summary-value">{numWithCommas(order?.feeShip || 0)} ₫</Typography>
                         </Stack>
                         <Stack py={0.625} direction="row">
-                            <Typography className="detailOrder__summary-label">Phí vận chuyển</Typography>
+                            <Typography className="detailOrder__summary-label">Tổng cộng</Typography>
                             <Typography className="detailOrder__summary-value detailOrder__summary-value--final">
                                 {numWithCommas(order.totalPrice + order.feeShip - order.discount || 0)} ₫</Typography>
                         </Stack>
                     </Stack>
                 }
-
+                {order?.statusPayment === 'Thất bại' && 
+                <Stack direction='row' justifyContent='end'><Button onClick={handlePayment}>Thanh toán</Button></Stack>}
             </Box>
         </>
     )

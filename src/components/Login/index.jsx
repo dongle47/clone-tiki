@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorInput, ErrorAfterSubmit } from "../ErrorHelper";
 import { loginSuccess} from "../../slices/authSlice";
@@ -16,7 +16,6 @@ import {
   Button,
   Box,
   TextField,
-  Typography,
   Input,
 } from "@mui/material";
 
@@ -33,7 +32,6 @@ function Login(props) {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 

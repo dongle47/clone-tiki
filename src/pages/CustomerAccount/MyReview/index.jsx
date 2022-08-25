@@ -1,12 +1,10 @@
 /* eslint-disable jsx-a11y/alt-text */
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./MyReview.scss";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Rating from "@mui/material/Rating";
-import StoreIcon from "@mui/icons-material/Store";
-import apiMain from "../../../apis/apiMain";
 import Pagination from '@mui/material/Pagination';
 import { useSelector } from "react-redux";
 import apiReviews from "../../../apis/apiReviews";
@@ -34,6 +32,7 @@ function MyRates() {
       }
     }
     getMyReviews()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
 
   const handleChange = (event, value) => {

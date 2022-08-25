@@ -11,6 +11,13 @@ import { axiosInstance } from "./apis/axiosClient";
 import { loginSuccess, logoutSuccess } from "./slices/authSlice";
 import ScrollToTop from "./components/ScrollToTop";
 import CheckAuthentication from "./components/CheckAuthentication";
+import { MessengerChat } from "react-messenger-chat-plugin";
+
+import Kommunicate from "@kommunicate/kommunicate-chatbot-plugin";
+
+import KommunicateChat from "../src/components/Chat";
+
+Kommunicate.init("3424f60c6a7f51d41bb0018a2a72ab0dc");
 
 function App() {
   const isAdmin = window.location.href.includes("admin");
@@ -21,25 +28,56 @@ function App() {
   }
 
   return (
-  
+    <>
       <BrowserRouter>
-      <CheckAuthentication/>
-      <ScrollToTop>
-        {isAdmin ? null : <Header />}
-        <ConfigRoute />
-        {isAdmin ? null : <Footer />}
+        <CheckAuthentication />
+        <ScrollToTop>
+          {isAdmin ? null : <Header />}
+          <ConfigRoute />
+          {isAdmin ? null : <Footer />}
 
-        <ToastContainer
-          autoClose={1200}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          pauseOnFocusLoss
-          pauseOnHover={false}
-        />
-      </ScrollToTop>
-        
+          <ToastContainer
+            autoClose={1200}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            pauseOnFocusLoss
+            pauseOnHover={false}
+          />
+        </ScrollToTop>
       </BrowserRouter>
+      <>
+        <MessengerChat
+          pageId="127440555556390"
+          language="vi_VN"
+          //themeColor={"#2374E1"}
+          bottomSpacing={25}
+          loggedInGreeting="loggedInGreeting"
+          loggedOutGreeting="loggedOutGreeting"
+          greetingDialogDisplay={"show"}
+          debugMode={true}
+          onMessengerShow={() => {
+            console.log("onMessengerShow");
+          }}
+          onMessengerHide={() => {
+            console.log("onMessengerHide");
+          }}
+          onMessengerDialogShow={() => {
+            console.log("onMessengerDialogShow");
+          }}
+          onMessengerDialogHide={() => {
+            console.log("onMessengerDialogHide");
+          }}
+          onMessengerMounted={() => {
+            console.log("onMessengerMounted");
+          }}
+          onMessengerLoad={() => {
+            console.log("onMessengerLoad");
+          }}
+        />
+        <KommunicateChat />
+      </>
+    </>
   );
 }
 

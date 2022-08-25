@@ -187,6 +187,7 @@
         &__list {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
         &__item {
             border-radius: 4px;
@@ -226,6 +227,7 @@
         &__item--color {
             min-width: 144px;
             display: flex;
+            min-height: 40px;
             gap: 10px;
             align-items: center;
             &>img {
@@ -239,8 +241,9 @@
             gap: 10px;
             align-items: center;
             justify-content: center;
-            width: 80px;
-            height: 32px;
+            padding: 4px 10px;
+            min-width: 80px;
+            min-height: 32px;
             &.selected {
                 &>span {
                     display: block;

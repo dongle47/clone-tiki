@@ -10,6 +10,7 @@ import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import ChangePassword from "./components/ChangePassword";
 import OAuth2RedirectHandler from "./pages/OAuth2RedirectHandler";
+import SuccessPayment from "./pages/SuccessPayment";
 
 import FilterProductSearch from "./pages/FilterProductSearch";
 
@@ -34,6 +35,7 @@ function ConfigRoute() {
       <Route path="*" element={<Error />} />
       <Route path="search/:slug" element={<FilterProductSearch />} />
       <Route path="reset" element={<ChangePassword />} />
+      <Route path="result-payment" element={<SuccessPayment/>} />
 
     </Routes>
   );
