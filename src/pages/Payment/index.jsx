@@ -66,7 +66,7 @@ function Payment() {
       }
     }
     calcPrice();
-   // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -120,9 +120,9 @@ function Payment() {
       Math.round(totalPrice + feeShip - (couponValue || 0) - discountFeeShip) : 0
   }
 
-  
+
   const handleSubmitOrderFake = () => {
-    if(loading){
+    if (loading) {
       toast.info("Thanh toán đang được thực hiện. Vui lòng không thao tác quá nhanh")
       return
     }
@@ -153,23 +153,30 @@ function Payment() {
     setLoading(true)
     apiCart.saveOrder(payload)
       .then(res => {
-        
+
         if (payment === '3') {
-          const amount = Math.round(res.totalPrice + res.feeShip - res.discount);
+          let amount = Math.round(res.totalPrice + res.feeShip - res.discount);
+          amount = amount >= 0 ? amount : 0
+          let orderId = res.id
           apiCart.makePaymentMomo(
             {
-              orderId: res.id,
+              orderId,
               amount,
             }
           ).then(res => {
             setLoading(false)
-            window.location.replace(res.payUrl)
+            if (res.payUrl) {
+              dispatch(deleteItemsPayment())
+              window.location.replace(res.payUrl)
+            }
+            else {
+              handleCancel(orderId)
+              toast.warning("Có lỗi trong quá trình giao dịch. Vui lòng thực hiện lại")
+            }
           })
             .catch(err => {
               toast.error(err.response.data.error)
-              navigate('/customer/order/history')
             })
-            .finally(dispatch(deleteItemsPayment()))
 
         }
         else {
@@ -192,10 +199,23 @@ function Payment() {
       .catch(error => {
         toast.error("Đặt hàng không thành công. Vui lòng thử lại")
       })
-      .finally(()=>{
+      .finally(() => {
         setLoading(false)
-        
+
       })
+
+  }
+
+  const handleCancel = (id) => {
+    let params = {
+      //...order,
+      type: {
+        id: orderTabs[5].id,
+        name: orderTabs[5].type,
+      },
+    };
+    apiCart
+      .changeTypeOrder(params, id)
 
   }
 
@@ -369,7 +389,7 @@ function Payment() {
             </Box>
             <Button variant="contained" onClick={handleSubmitOrderFake}
               sx={{ width: "100%", height: "42px", backgroundColor: "#ff424e", "&:hover": { opacity: 0.8, backgroundColor: "#ff424e" } }}>
-              {loading&&<Loading/>} Mua hàng</Button>
+              {loading && <Loading />} Mua hàng</Button>
 
           </Box>
         </Grid>
