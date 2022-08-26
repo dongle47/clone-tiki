@@ -9,7 +9,7 @@ import "./Admin.scss";
 
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
-import "./Admin.scss"
+import "./Admin.scss";
 import {
   Box,
   Toolbar,
@@ -53,6 +53,8 @@ import CreateProduct from "./Product/CreateProduct";
 import Review from "./Review";
 import User from "./User";
 import DetailUser from "./User/DetailUser";
+
+import { useSelector } from "react-redux";
 
 const drawerWidth = 240;
 
@@ -125,6 +127,8 @@ const Drawer = styled(MuiDrawer, {
 function Admin() {
   const [openAccount, setOpenAccount] = React.useState(false);
 
+  const user = useSelector((state) => state.auth.user);
+
   const handleClickAccount = () => {
     setOpenAccount((prev) => !prev);
   };
@@ -137,55 +141,83 @@ function Admin() {
 
   const CloseNotify = () => {
     setOpenNotify(false);
-  }
+  };
 
   const formNotify = () => {
     return (
       <Box sx={{ zIndex: "10", width: "400px", mt: "5rem" }}>
         <Stack>
           <Stack direction="row" justifyContent="space-between">
-            <Stack sx={{padding:"12px"}}>
-              <Typography sx={{fontSize:"16px", fontWeight:"600"}}>Cập nhật nhà bán</Typography>
+            <Stack sx={{ padding: "12px" }}>
+              <Typography sx={{ fontSize: "16px", fontWeight: "600" }}>
+                Cập nhật nhà bán
+              </Typography>
               <Stack
                 direction="row"
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Button size="medium" sx={{fontWeight:"400"}}  startIcon={<FormatListBulletedIcon fontSize="small"/>}>
+                <Button
+                  size="medium"
+                  sx={{ fontWeight: "400" }}
+                  startIcon={<FormatListBulletedIcon fontSize="small" />}
+                >
                   Xem tất cả
                 </Button>
-                <Divider orientation="vertical" sx={{ height: "0.9rem", marginRight:"6px", marginLeft:"6px" }} />
-                <Button size="medium" sx={{fontWeight:"400"}}  startIcon={<CheckCircleOutlineIcon fontSize="small"/>}>
+                <Divider
+                  orientation="vertical"
+                  sx={{
+                    height: "0.9rem",
+                    marginRight: "6px",
+                    marginLeft: "6px",
+                  }}
+                />
+                <Button
+                  size="medium"
+                  sx={{ fontWeight: "400" }}
+                  startIcon={<CheckCircleOutlineIcon fontSize="small" />}
+                >
                   Đã đọc tất cả
                 </Button>
               </Stack>
             </Stack>
             <IconButton onClick={CloseNotify}>
-              <CloseIcon fontSize="small"/>
+              <CloseIcon fontSize="small" />
             </IconButton>
           </Stack>
           <Divider light />
-          <Stack sx={{padding:"12px"}}>
+          <Stack sx={{ padding: "12px" }}>
             {Notifies.map((item) => (
               <Stack>
-                <Stack direction="row" spacing={2} sx={{padding:"12px"}}>
-                  <Stack width="56px" height="56px" >
-                    <img  style={{borderRadius:"8px"}} src="https://salt.tikicdn.com/ts/sellercenterFE/bb/d5/88/7898a8f9179435d5cf3f28bb3d99a82c.jpeg"/>
+                <Stack direction="row" spacing={2} sx={{ padding: "12px" }}>
+                  <Stack width="56px" height="56px">
+                    <img
+                      style={{ borderRadius: "8px" }}
+                      src="https://salt.tikicdn.com/ts/sellercenterFE/bb/d5/88/7898a8f9179435d5cf3f28bb3d99a82c.jpeg"
+                    />
                   </Stack>
                   <Stack sx={{ overflow: "auto" }}>
                     <Stack>
-                      <a  href={item.link}>
-                        <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>{item.title}</Typography>
+                      <a href={item.link}>
+                        <Typography
+                          sx={{ fontSize: "14px", fontWeight: "bold" }}
+                        >
+                          {item.title}
+                        </Typography>
                         {item.info.map((itemI) => (
-                          <Typography sx={{fontSize: "14px"}}>{itemI.text}</Typography>
+                          <Typography sx={{ fontSize: "14px" }}>
+                            {itemI.text}
+                          </Typography>
                         ))}
                       </a>
                     </Stack>
-                    <Typography sx={{fontSize: "12px"}}>{item.datetime}</Typography>
+                    <Typography sx={{ fontSize: "12px" }}>
+                      {item.datetime}
+                    </Typography>
                   </Stack>
-                </Stack>   
+                </Stack>
                 <Divider light />
-              </Stack>  
+              </Stack>
             ))}
           </Stack>
         </Stack>
@@ -201,7 +233,7 @@ function Admin() {
     border: "1px solid #333",
     bgcolor: "background.paper",
     width: "16rem",
-    paddingTop: "4px"
+    paddingTop: "4px",
   };
 
   const [selectedTabId, setSelectedTabId] = React.useState(0);
@@ -272,14 +304,13 @@ function Admin() {
                     position: "relative",
                     height: "32px",
                     padding: "4px",
-                    cursor: "pointer"
+                    cursor: "pointer",
                   }}
                   className="admin__dropdown"
                   direction="row"
                   alignItems="center"
                   spacing={1}
                   onClick={handleClickAccount}
-
                 >
                   <Box
                     borderRadius="50%"
@@ -289,7 +320,16 @@ function Admin() {
                     onClick={handleClickAccount}
                     sx={{ width: "24px", height: "24px" }}
                   />
-                  <Typography variant="caption" sx={{ fontSize: "14px", paddingLeft: "6px", fontWeight: "Light" }} >dong.le47@yahoo.com</Typography>
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      fontSize: "14px",
+                      paddingLeft: "6px",
+                      fontWeight: "Light",
+                    }}
+                  >
+                    {user.fullName}
+                  </Typography>
                   <ExpandMoreOutlinedIcon />
                   {openAccount ? (
                     <Stack sx={stylesAccount}>
@@ -300,24 +340,32 @@ function Admin() {
                           src="https://salt.tikicdn.com/cache/w32/ts/sellercenterFE/93/76/03/2a08fa4ae6a024a752fbba87d145bce8.png"
                           sx={{ width: "40px", height: "40px" }}
                         />
-                        <Stack sx={{paddingLeft: "10px"}}>
-                          <Typography sx={{ fontWeight: "bold" }}>Lê Văn Đồng</Typography>
-                          <Typography>dong.le47@yahoo.com</Typography>
+                        <Stack sx={{ paddingLeft: "10px" }}>
+                          <Typography sx={{ fontWeight: "bold" }}>
+                            {user.fullName}
+                          </Typography>
                         </Stack>
                       </Stack>
 
-                      <ListItem disablePadding sx={{ display: "block", paddingX: "16px", alignItems:"left"}}>
+                      <ListItem
+                        disablePadding
+                        sx={{
+                          display: "block",
+                          paddingX: "16px",
+                          alignItems: "left",
+                        }}
+                      >
                         <Button
                           variant="text"
                           startIcon={<PersonOutlineIcon />}
-                          sx={{color: "#333"}}
+                          sx={{ color: "#333" }}
                         >
                           Hồ sơ nhà bán
                         </Button>
                         <Button
                           variant="text"
                           startIcon={<DriveFileRenameOutlineOutlinedIcon />}
-                          sx={{color: "#333"}}
+                          sx={{ color: "#333" }}
                         >
                           Thay đổi mật khẩu
                         </Button>
