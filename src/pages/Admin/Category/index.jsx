@@ -92,7 +92,7 @@ function Category() {
               <TableCell sx={{ width: "15%", top: "64px" }}>
                 Tên danh mục
               </TableCell>
-              <TableCell sx={{ width: "15%", top: "64px" }}>Danh mục cha</TableCell>
+              {/* <TableCell sx={{ width: "15%", top: "64px" }}>Danh mục cha</TableCell> */}
               <TableCell align="center" sx={{ width: "10%", top: "64px" }}>
                 Thao tác&nbsp;
               </TableCell>
@@ -108,7 +108,7 @@ function Category() {
                   <TableCell component="th" scope="row">
                     {item.name}
                   </TableCell>
-                  <TableCell align="left">{item.parent}</TableCell>
+                  {/* <TableCell align="left">{item.parent}</TableCell> */}
                   <TableCell>
                     <Stack spacing={1} justifyContent="center" py={1}>
                       <Link to={`edit/${item.id}`} >

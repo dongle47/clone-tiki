@@ -13,12 +13,6 @@ import ScrollToTop from "./components/ScrollToTop";
 import CheckAuthentication from "./components/CheckAuthentication";
 import { MessengerChat } from "react-messenger-chat-plugin";
 
-import Kommunicate from "@kommunicate/kommunicate-chatbot-plugin";
-
-import KommunicateChat from "../src/components/Chat";
-
-Kommunicate.init("3424f60c6a7f51d41bb0018a2a72ab0dc");
-
 function App() {
   const isAdmin = window.location.href.includes("admin");
   const user = useSelector((state) => state.auth.user);
@@ -46,12 +40,13 @@ function App() {
           />
         </ScrollToTop>
       </BrowserRouter>
-      <>
+
+      {isAdmin ? null : (
         <MessengerChat
           pageId="127440555556390"
           language="vi_VN"
           //themeColor={"#2374E1"}
-          bottomSpacing={50}
+          bottomSpacing={30}
           loggedInGreeting="loggedInGreeting"
           loggedOutGreeting="loggedOutGreeting"
           greetingDialogDisplay={"show"}
@@ -75,8 +70,7 @@ function App() {
             console.log("onMessengerLoad");
           }}
         />
-        <KommunicateChat />
-      </>
+      )}
     </>
   );
 }
