@@ -1,60 +1,37 @@
-import { useState, useEffect, useCallback } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
 import {
   Stack,
   Box,
   Button,
   Typography,
-  FormControlLabel,
-  Checkbox,
   FormGroup,
   Grid,
   Rating,
   Tab,
-  RadioGroup,
   Tabs,
-  Radio,
 } from "@mui/material";
 import "./FilterProductSearch.scss";
 import StarIcon from "@mui/icons-material/Star";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { numWithCommas } from "../../constraints/Util";
 import CardProduct from "../../components/CardProduct";
 import apiProduct from "../../apis/apiProduct";
-import { toast } from "react-toastify";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function FilterProductSearch(props) {
-  const { register, watch } = useForm();
-  const navigate = useNavigate();
 
   const slug = useParams().slug;
 
   const [value, setValue] = useState(0);
 
-  const [products, setProducts] = useState([]);
-
-  const [page, setPage] = useState(1);
-
-  const [filter, setFilter] = useState({});
 
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
   const [isApplyPrice, setIsApplyPrice] = useState(false);
 
-  //   const [filterPrice, setFilterPrice] = useState({
-  //     minPrice: 0,
-  //     maxPrice: 100000000,
-  //     option: -1,
-  //     apply: false,
-  //   });
 
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   const [rating, setRating] = useState(0);
 
-  const size = 30;
 
   useEffect(() => {
     var querySearch = "";
@@ -87,6 +64,7 @@ function FilterProductSearch(props) {
         });
     };
     getData();
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, rating, isApplyPrice]);
 
   const handleApplyPrice = () => {
@@ -108,86 +86,6 @@ function FilterProductSearch(props) {
     }
   };
 
-  //   useEffect(() => {
-  //     const getData = async () => {
-  //       let params = {
-  //         page: 1,
-  //         limit: 20,
-  //         searchText: slug,
-  //       };
-  //       const res = await apiProduct.getProductsBySearch(params);
-  //       if (res) {
-  //         console.log(res);
-  //         setFilteredProducts(res.data);
-  //       }
-  //     };
-  //     getData();
-  //   }, [page, slug]);
-
-  // useEffect(() => {
-  //     const filterData = () => {
-  //         if (!category)
-  //             return
-  //         let data = [...products]
-  //         if (filter.rate)
-  //             data = data.filter(item => item.rate >= filter.rate)
-
-  //         let data1 = [...data]
-  //         let data2 = [...data]
-  //         category.properties.forEach(item => {
-  //             data1 = data1.filter(product => {
-  //                 if (!filter[item.name] || filter[item.name].length === 0)
-  //                     return true
-  //                 let option = product.details.options.find(option => option.name === item.name)
-  //                 if (option) {
-  //                     return option.values.some(item2 => filter[item.name].includes(item2.value))
-  //                 }
-  //                 return false
-  //             })
-
-  //             data2 = data2.filter(product => {
-  //                 if (!filter[item.name] || filter[item.name].length === 0)
-  //                     return true
-  //                 let specification = product.details.specifications.find(spec => spec.name === item.name)
-  //                 if (specification) {
-  //                     return filter[item.name].includes(specification.value)
-  //                 }
-  //                 return false
-  //             })
-  //         })
-
-  //         data = [...data1,...data2]
-  //         data = data.filter((item,index)=>data.indexOf(item)===index)
-
-  //         if (filterPrice.apply) {
-  //             data = data.filter(item => item.price * (1 - item.discount / 100) > filterPrice.minPrice
-  //                 && item.price * (1 - item.discount / 100) < filterPrice.maxPrice)
-
-  //         }
-  //         switch (value) {
-  //             case 1: {
-  //                 data.sort((a, b) => b.sold - a.sold)
-  //                 break
-  //             }
-  //             case 2: {
-  //                 break
-  //             }
-  //             case 3: {
-  //                 data.sort((a, b) => a.price * (1 - a.discount / 100) - b.price * (1 - b.discount / 100))
-  //                 break
-  //             }
-  //             case 4: {
-  //                 data.sort((a, b) => b.price * (1 - b.discount / 100) - a.price * (1 - a.discount / 100))
-  //                 break
-  //             }
-  //             default: {
-  //                 break
-  //             }
-  //         }
-  //         setProductFilter(data)
-  //     }
-  //     filterData()
-  // }, [products, filter, filterPrice, value])
 
   const onChangeMinPrice = (e) => {
     setMinPrice(e.target.value);
@@ -197,29 +95,11 @@ function FilterProductSearch(props) {
     setMaxPrice(e.target.value);
   };
 
-  //   const onChangeMaxPrice = (e) => {
-  //     let value = Number(e.target.value);
-
-  //     if (Number.isInteger(value) && value >= 0) {
-  //       setFilterPrice({ ...filterPrice, maxPrice: value, option: -1 });
-  //     } else {
-  //       setFilterPrice({ ...filterPrice, maxPrice: 1000000000, option: -1 });
-  //     }
-  //   };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const onChangeRating = (rate) => {
-    setFilter({ ...filter, rate });
-  };
-
-  //   const handleApplyFilterPrice = () => {
-  //     setFilterPrice((pre) => {
-  //       return { ...pre, apply: !pre.apply };
-  //     });
-  //   };
 
   return (
     <Stack className="filterProduct container" direction="row" spacing={1}>

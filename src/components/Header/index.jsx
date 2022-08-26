@@ -133,6 +133,7 @@ function Header() {
     } else {
       setFilteredSuggestions(filter);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchText]);
 
   const [modalLogin, setModalLogin] = useState(false);

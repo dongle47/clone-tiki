@@ -1,32 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
-
 import "./Slider.scss";
 
-
 import { FreeMode, Navigation, Thumbs } from "swiper";
-
-
-
-
-
-
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
 
 import {
     Stack,
     IconButton,
-    Button,
     Box,
-    TextField,
-    Typography,
-    Input,
 } from "@mui/material";
 
 
@@ -56,7 +42,7 @@ function SliderImage(props) {
                         images.map((item) =>
                             <SwiperSlide>
                                 <Stack height="100%" justifyContent="center" alignItems="center" >
-                                <img height="500px" src={item} />
+                                <img alt='' height="500px" src={item} />
                                 </Stack>
                             </SwiperSlide>
                         )
@@ -77,7 +63,7 @@ function SliderImage(props) {
                     {
                         images.map((item) =>
                             <SwiperSlide>
-                                <img width="100px" src={item} />
+                                <img alt='' width="100px" src={item} />
                             </SwiperSlide>
                         )
                     }

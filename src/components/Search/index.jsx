@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "./Search.scss";
 
@@ -19,7 +19,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import HistoryIcon from "@mui/icons-material/History";
 
-import { addItem, removeItem, removeAll } from "../../slices/searchSlice";
+import {  removeItem } from "../../slices/searchSlice";
 
 function Search(props) {
   const dispatch = useDispatch();

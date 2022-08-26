@@ -72,7 +72,6 @@ function Info() {
   const [modalUploadAvatar, setModalUploadAvatar] = useState(false);
   const [openAvatar, setOpenAvatar] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [deleting, setDeleting] = useState(false);
   const [updating, setUpdating] = useState(false);
 
   const openModalNational = () => setModalNational(true);

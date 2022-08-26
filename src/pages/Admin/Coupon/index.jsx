@@ -1,3 +1,4 @@
+ /* eslint-disable */
 import "./Coupon.scss"
 import React from "react";
 import { useState, useEffect } from "react"
@@ -207,26 +208,5 @@ function Coupon() {
     )
 }
 
-const BootstrapInput = styled(InputBase)(({ theme }) => ({
-    'label + &': {
-        marginTop: theme.spacing(3),
-    },
-    '& .MuiInputBase-input': {
-        boxSizing: "border-box",
-        borderRadius: 4,
-        position: 'relative',
-        border: '1px solid #888',
-        fontSize: 14,
-        height: '32px !important',
-        padding: '4px 10px',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-
-        '&:focus': {
-            borderRadius: 4,
-            borderColor: '#1890ff',
-            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-        },
-    },
-}));
 const listStatus = ["Tất cả", "Đang diễn ra", "Sắp diễn ra", "Đã kết thúc"]
 export default Coupon

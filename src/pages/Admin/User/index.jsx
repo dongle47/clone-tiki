@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import apiProfile from "../../../apis/apiProfile";
-import React, { useState, useRef, useCallback, useEffect } from 'react'
+import React, { useState,  useEffect } from 'react'
 import {
   Stack,
   Button,
@@ -19,40 +19,16 @@ import { toast } from "react-toastify";
 import SearchIcon from "@mui/icons-material/Search";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
-// const data = [
-//   {
-//     id: "1",
-//     fullName: "Emma Stone",
-//     registerDate: "01/01/2022",
-//     phone: "0123456789",
-//   },
-//   {
-//     id: "2",
-//     fullName: "Margot Robbie",
-//     registerDate: "01/01/2022",
-//     phone: "0123456789",
-//   },
-//   {
-//     id: "3",
-//     fullName: "Scarlett Johansson",
-//     registerDate: "01/01/2022",
-//     phone: "0123456789",
-//   },
-// ];
 
 function User() {
   const [modalDelete, setModalDelete] = React.useState(false);
-  const openModalDelete = () => setModalDelete(true);
   const closeModalDelete = () => setModalDelete(false);
 
   const [users, setUsers] = useState([])
 
   useEffect(() => {
     const getData = async () => {
-      let param = {
-        _page: 1,
-        _limit: 6,
-      };
+      
       apiProfile.getAllUser()
         .then(res => {
           setUsers(res.data.listUser)

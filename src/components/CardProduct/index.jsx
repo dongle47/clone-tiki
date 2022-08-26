@@ -12,6 +12,7 @@ import {
 }from '@mui/material';
 import {Link} from 'react-router-dom'
 import { numWithCommas } from "../../constraints/Util"
+import imgDefault from '../../assets/img/img_default.jpg'
 
 function CardProduct({ data }) {
     const [loading, setLoading] = React.useState(true)
@@ -26,6 +27,7 @@ function CardProduct({ data }) {
                         alt="green iguana"
                         onLoad={()=>setLoading(false)}
                     image={data?.image}
+                    onError={err=>err.target.src=imgDefault}
                 />
                 </Box>
                 <CardContent className="card__content">

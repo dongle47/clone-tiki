@@ -194,6 +194,7 @@
             border: 1px solid transparent;
             cursor: pointer;
             padding: 2px;
+            background-color: #eaeaea;
             &::after,
             &>span {
                 display: none;
@@ -228,6 +229,7 @@
             min-width: 144px;
             display: flex;
             min-height: 40px;
+            padding: 4px 10px;
             gap: 10px;
             align-items: center;
             &>img {

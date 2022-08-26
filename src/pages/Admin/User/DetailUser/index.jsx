@@ -1,9 +1,8 @@
+ /* eslint-disable */
 import { useEffect, useState } from "react";
-import imgProfile from "../../../../assets/img/profile.jpg";
 import { Link, useParams } from "react-router-dom";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { address } from "../../../../constraints/Profile";
 import "./DetailUser.scss"
 import apiProfile from "../../../../apis/apiProfile";
 import apiAddress from '../../../../apis/apiAddress';
@@ -73,7 +72,6 @@ const data = [
 
 function DetailUser() {
   const [user, setUser] = useState([])
-  const [userProfile, setUserProfile] = useState([])
   const [addresses, setAddresses] = useState([]);
   const idUser = useParams().id
 
@@ -98,15 +96,6 @@ function DetailUser() {
     getData();
   }, []);
 
-  // useEffect(() => {
-  //   const getProfile = async () => {
-  //     apiProfile.getUserProfile()
-  //       .then(res => {
-  //         setUserProfile(res.data.user);
-  //       })
-  //     getProfile();
-  //   };
-  // }, []);
 
   return (
     <Box p="2rem" bgcolor="#fff">

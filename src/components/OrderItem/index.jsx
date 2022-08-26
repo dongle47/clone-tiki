@@ -40,7 +40,7 @@ function OrderItem(props) {
             </span>
           </Stack>
           <Stack flex={1} mx="12px">
-          <Link to={item.slug?`product/${item.slug}`:''}>
+          <Link to={item.slug?`/product/${item.slug}`:''}>
             <Typography className="text-overflow-2-lines" fontSize="13px">
               {item.name}
             </Typography>

@@ -1,3 +1,4 @@
+ /* eslint-disable */
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Brand.scss";
@@ -12,56 +13,6 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { toast } from "react-toastify";
-import { useParams, useNavigate } from "react-router-dom";
-function createData(name, description, address, contact, image) {
-  return { name, description, address, contact, image };
-}
-
-// const rows = [
-//   createData(
-//     "Thế giới di động",
-//     "Bán lẻ, tmdt",
-//     "Tòa nhà MWG - Lô T2-1.2,Đường D1, Khu Công nghệ Cao, P. Tân Phú, Thành phố Thủ Đức, Thành phố Hồ Chí Minh",
-//     "Điện thoại: 028 38125960\nEmail: cskh@thegioididong.com",
-//     "https://salt.tikicdn.com/cache/w220/ts/seller/4f/bb/60/2797e4e553ea5b4e9b4f93ad63ccc110.jpg"
-//   ),
-//   createData(
-//     "Thế giới di động",
-//     "Bán lẻ, tmdt",
-//     "Tòa nhà MWG - Lô T2-1.2,Đường D1, Khu Công nghệ Cao, P. Tân Phú, Thành phố Thủ Đức, Thành phố Hồ Chí Minh",
-//     "Điện thoại: 028 38125960\nEmail: cskh@thegioididong.com",
-//     "https://salt.tikicdn.com/cache/w220/ts/seller/4f/bb/60/2797e4e553ea5b4e9b4f93ad63ccc110.jpg"
-//   ),
-//   createData(
-//     "Thế giới di động",
-//     "Bán lẻ, tmdt",
-//     "Tòa nhà MWG - Lô T2-1.2,Đường D1, Khu Công nghệ Cao, P. Tân Phú, Thành phố Thủ Đức, Thành phố Hồ Chí Minh",
-//     "Điện thoại: 028 38125960\nEmail: cskh@thegioididong.com",
-//     "https://salt.tikicdn.com/cache/w220/ts/seller/4f/bb/60/2797e4e553ea5b4e9b4f93ad63ccc110.jpg"
-//   ),
-//   createData(
-//     "Thế giới di động",
-//     "Bán lẻ, tmdt",
-//     "Tòa nhà MWG - Lô T2-1.2,Đường D1, Khu Công nghệ Cao, P. Tân Phú, Thành phố Thủ Đức, Thành phố Hồ Chí Minh",
-//     "Điện thoại: 028 38125960\nEmail: cskh@thegioididong.com",
-//     "https://salt.tikicdn.com/cache/w220/ts/seller/4f/bb/60/2797e4e553ea5b4e9b4f93ad63ccc110.jpg"
-//   ),
-//   createData(
-//     "Thế giới di động",
-//     "Bán lẻ, tmdt",
-//     "Tòa nhà MWG - Lô T2-1.2,Đường D1, Khu Công nghệ Cao, P. Tân Phú, Thành phố Thủ Đức, Thành phố Hồ Chí Minh",
-//     "Điện thoại: 028 38125960\nEmail: cskh@thegioididong.com",
-//     "https://salt.tikicdn.com/cache/w220/ts/seller/4f/bb/60/2797e4e553ea5b4e9b4f93ad63ccc110.jpg"
-//   ),
-//   createData(
-//     "Thế giới di động",
-//     "Bán lẻ, tmdt",
-//     "Tòa nhà MWG - Lô T2-1.2,Đường D1, Khu Công nghệ Cao, P. Tân Phú, Thành phố Thủ Đức, Thành phố Hồ Chí Minh",
-//     "Điện thoại: 028 38125960\nEmail: cskh@thegioididong.com",
-//     "https://salt.tikicdn.com/cache/w220/ts/seller/4f/bb/60/2797e4e553ea5b4e9b4f93ad63ccc110.jpg"
-//   ),
-
-// ];
 
 function Brand() {
   const [modalDelete, setModalDelete] = React.useState(false);

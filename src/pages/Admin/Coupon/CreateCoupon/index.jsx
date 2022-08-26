@@ -1,3 +1,4 @@
+ /* eslint-disable */
 import "./CreateCoupon.scss"
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -9,7 +10,6 @@ import {
     Typography,
     MenuItem,
     InputBase,
-    Checkbox,
     Radio,
     RadioGroup,
     FormControlLabel,
