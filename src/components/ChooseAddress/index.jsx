@@ -3,7 +3,6 @@ import './ChooseAddress.scss'
 import { Button, Modal, Box, Stack, Typography } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
 import apiAddress from '../../apis/apiAddress'
-import { address } from "../../constraints/Profile";
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { setAddress } from '../../slices/paymentSlice';

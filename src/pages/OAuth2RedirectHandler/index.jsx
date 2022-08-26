@@ -1,3 +1,4 @@
+// eslint-disable-next-line react-hooks/exhaustive-deps
 import { Stack, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
@@ -15,11 +16,11 @@ function OAuth2RedirectHandler() {
     const [loading, setLoading]  =useState(true)
 
     const getUrlParameter = (name)=> {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');//eslint-disable-line
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
     
         var results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));//eslint-disable-line
     };
 
     useEffect(()=>{
@@ -45,6 +46,7 @@ function OAuth2RedirectHandler() {
             }
         }
         getToken()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[location])
 
     useEffect(() => {
@@ -67,6 +69,7 @@ function OAuth2RedirectHandler() {
             }, 1000)
         }
         countDown();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count])
 
    

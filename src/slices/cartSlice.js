@@ -48,7 +48,6 @@ export const cartSlice = createSlice({
     }
 })
 
-const findItems = (arr,item)=>arr.filter(e=>e.id===item.id)
 const findIndexItem = (arr,item)=>arr.findIndex(e=>e.id===item.id) 
 const delItems = (arr,item)=>arr.filter(e=>e.id!==item.id)
 export const {

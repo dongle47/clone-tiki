@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
+ /* eslint-disable */
 import React from "react";
 import { useForm } from "react-hook-form";
 import { ErrorInput } from "../ErrorHelper";

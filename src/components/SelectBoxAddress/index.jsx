@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   Typography,
@@ -22,7 +23,6 @@ function SelectBoxAddress(props) {
     const {province,district,commune} = props
     useEffect(() => {
       const getData = async () => {
-        console.log("render")
         apiAddress.getAllProvince()
           .then(res => {
             setListProvince(res.data.list);
@@ -71,7 +71,7 @@ function SelectBoxAddress(props) {
             props.setAddressDetails('')
       }
       handle()
-      
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     },[props.district,props.commune,props.province])
   
    

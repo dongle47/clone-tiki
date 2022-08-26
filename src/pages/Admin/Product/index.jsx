@@ -5,7 +5,6 @@ import {
     Stack,
     Button,
     TextField,
-    Grid,
     Table,
     TableBody,
     TableCell,
@@ -19,7 +18,6 @@ import {
     Modal
 } from '@mui/material';
 import "./Product.scss"
-import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -29,10 +27,6 @@ function Product() {
     const [modalDelete, setModalDelete] = React.useState(false);
     const openModalDelete = () => setModalDelete(true);
     const closeModalDelete = () => setModalDelete(false);
-    const [page, setPage] = React.useState('');
-    const handleChange = (event) => {
-        setPage(event.target.value);
-    };
     const [print, setPrint] = React.useState('');
 
     const handleChangePrint = (event) => {
@@ -57,80 +51,7 @@ function Product() {
                         <Button variant="outlined" pr={2}>Tạo sản phẩm</Button>
                     </Link>
                 </Stack>
-                {/* <Stack mb={2} className="productAdmin__filter">
-                    <Box pt={1} pb={1.5}>
-                        <Grid container direction="row" justifyContent="space-between" alignItems="center" px={2}>
-                            <Grid xs={3}>
-                                <Typography>Tên sản phẩm</Typography>
-                                <TextField label="Nhập tên sản phẩm" id="outlined-size-small" defaultValue="" size="small" />
-                            </Grid>
-                            <Grid xs={3}>
-                                <Typography>ID sản phẩm</Typography>
-                                <TextField label="ID" id="outlined-size-small" defaultValue="" size="small" />
-                            </Grid>
-                            <Grid xs={3}>
-                                <Typography>SKU</Typography>
-                                <TextField label="" id="outlined-size-small" defaultValue="" size="small" />
-                            </Grid>
-                            <Grid xs={3}>
-                                <Typography>Thương hiệu</Typography>
-                                <TextField label="" id="outlined-size-small" defaultValue="" size="small" />
-                            </Grid>
-                        </Grid>
-                    </Box>
-                    <Box pb={1.5} spacing={1}>
-                        <Grid container direction="row" justifyContent="space-between" alignItems="center" px={2}>
-                            <Grid xs={2.4} >
-                                <Typography>Gian hàng</Typography>
-                                <TextField label="" id="outlined-size-small" defaultValue="" size="small" />
-                            </Grid>
-                            <Grid xs={2.4}>
-                                <Typography>Ngành hàng</Typography>
-                                <TextField label="" id="outlined-size-small" defaultValue="" size="small" />
-                            </Grid>
-                            <Grid xs={2.4}>
-                                <Typography>Trạng thái</Typography>
-                                <TextField label="" id="outlined-size-small" defaultValue="" size="small" />
-                            </Grid>
-                            <Grid xs={2.4}>
-                                <Typography>Kho hàng</Typography>
-                                <TextField label="" id="outlined-size-small" defaultValue="" size="small" />
-                            </Grid>
-                            <Grid xs={2.4}>
-                                <Typography>Tồn kho</Typography>
-                                <TextField label="" id="outlined-size-small" defaultValue="" size="small" />
-                            </Grid>
-                        </Grid>
-                    </Box>
-                    <Box pb={1.5} spacing={1}>
-                        <Grid container direction="row" justifyContent="space-between" alignItems="center" px={2}>
-                            <Grid xs={2.4} >
-                                <Typography>MDI</Typography>
-                                <TextField label="" id="outlined-size-small" defaultValue="" size="small" />
-                            </Grid>
-                            <Grid xs={2.4}>
-                                <Typography>MSKU</Typography>
-                                <TextField label="" id="outlined-size-small" defaultValue="" size="small" />
-                            </Grid>
-                            <Grid xs={2.4}>
-                                <Typography>Mã sản phẩm nhà bán</Typography>
-                                <TextField label="" id="outlined-size-small" defaultValue="" size="small" />
-                            </Grid>
-                            <Grid xs={2.4}>
-                                <Typography>Thuộc tính còn thiếu</Typography>
-                                <TextField label="" id="outlined-size-small" defaultValue="" size="small" />
-                            </Grid>
-                            <Grid xs={2.4}>
-                                <Typography>Khả năng hiển thị</Typography>
-                                <TextField label="" id="outlined-size-small" defaultValue="" size="small" />
-                            </Grid>
-                        </Grid>
-                        <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} mt={2} pr={2}>
-                            <Button variant="contained">Tìm kiếm</Button>
-                            <Button variant='outlined'><RefreshIcon sx={{ height: "20px" }}></RefreshIcon>Làm mới</Button>
-                        </Stack>
-                    </Box>
-                </Stack> */}
+                
 
                 <Box sx={{ backgroundColor: "#fff" }} p={2}>
                     <Stack direction="row">

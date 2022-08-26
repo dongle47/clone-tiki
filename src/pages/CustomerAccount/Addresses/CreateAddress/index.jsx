@@ -1,18 +1,14 @@
+ /* eslint-disable */
 import React from "react";
 import {
   Box,
   Typography,
   Stack,
-  TextField,
-  MenuItem,
-  Select,
   Checkbox,
   RadioGroup,
   FormControlLabel,
-  FormControl,
   Radio,
   Button,
-  InputLabel,
   InputBase
 } from "@mui/material";
 import SelectBoxAddress from "../../../../components/SelectBoxAddress";
@@ -73,6 +69,7 @@ function CreateAddress(props) {
       setAddressid(params.id)
     }
     loaddata()
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [edit])
 
 

@@ -1,19 +1,14 @@
-import { useState, useRef, useEffect } from "react";
+ /* eslint-disable */
+import { useState,  useEffect } from "react";
 import {
   Box,
   Stack,
   Typography,
-  Card,
-  CardMedia,
-  CardContent,
-  CardActions,
   Pagination,
   Grid,
 } from "@mui/material";
 
 import CardProduct from "../../../components/CardProduct";
-import productImage from "../../../assets/img/avatar1.jpg";
-import apiProduct from "../../../apis/apiProduct";
 import apiAccount from "../../../apis/apiAccount";
 import { useSelector } from "react-redux";
 
@@ -29,11 +24,11 @@ function FavoriteProduct() {
 
   useEffect(() => {
     const getMyFavorites = async () => {
-      let param = {
+      let params = {
         _page: page,
         _limit: size,
       };
-      await apiAccount.getWishListByUser(user.id).then((res) => {
+      await apiAccount.getWishListByUser(user.id,params).then((res) => {
     
         if (res.length !== 0) {
           setMyFavorites(res);

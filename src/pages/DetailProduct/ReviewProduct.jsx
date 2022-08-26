@@ -1,3 +1,5 @@
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ /* eslint-disable */
 import { useState, useEffect, useCallback } from "react";
 import "./ReviewProduct.scss";
 import React from "react";
@@ -26,8 +28,6 @@ function ReviewProduct(props) {
   const [totalPage, setTotalPage] = useState(0);
   const [page, setPage] = useState([1]);
 
-  const [chooseReview, setChooseReview] = useState(null);
-  const [openCmt, setOpenCmt] = useState(false)
   const [updateCmt, setUpdateCmt] = useState(1);
 
   const [selected, setSelected] = useState(0);
@@ -92,37 +92,12 @@ function ReviewProduct(props) {
     setPage(newValue);
   };
 
-  const handleClickOpen = (rev) => {
-    setChooseReview(rev);
-    setOpenCmt(prev => !prev)
-  };
-
-  const [value, setValue] = React.useState('');
+ 
 
   const handleChange = (event) => {
     setContent(event.target.value);
   }
 
-  const submitReply = () => {//hàm thực hiện tạo reply
-    const listReply = chooseReview?.reply || []
-    console.log(user)
-    let params = {
-      reply: [...listReply,
-      {
-        image: user.img,
-        name: user.fullName,
-        content: content
-      }
-      ]
-    }
-    apiReviews.updateMyReviews(params, chooseReview.id)
-      .then(res => {
-        toast.success("Cập nhật thành công")
-      })
-      .catch(err => {
-        toast.error("Cập nhật thất bại!")
-      })
-  }
 
   return (
     <Box className="container">

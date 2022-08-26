@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
+import imgDefault from '../../assets/img/img_default.jpg'
 import ReviewProduct from "./ReviewProduct";
 
 import {
@@ -269,6 +269,13 @@ function DetailProduct() {
     document.title =
       product?.name ||
       "Tiki - Mua hàng online, giá tốt, hàng chuẩn, ship nhanh";
+      if(product){
+        let newChoose = {}
+        product.details.options.forEach(item => {
+          newChoose[item.name] = item.values[0].id
+        })
+        setChoose(newChoose)
+      }
   }, [product]);
 
   // const color = [
@@ -297,6 +304,7 @@ function DetailProduct() {
                 onLoad={() => setLoading(false)}
                 src={product?.details.images[indexImg]}
                 alt=""
+                onError={err=>err.target.src=imgDefault}
               />
             </Box>{" "}
             <Stack
@@ -316,7 +324,7 @@ function DetailProduct() {
                             indexImg === index ? "selected" : ""
                           }`}
                         >
-                          <img src={imgs} alt="" />
+                          <img src={imgs} alt="" onError={err=>err.target.src= imgDefault} />
                         </Box>
                       ) : (
                         <Box

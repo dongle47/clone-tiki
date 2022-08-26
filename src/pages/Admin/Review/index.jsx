@@ -1,3 +1,4 @@
+ /* eslint-disable */
 import "./Review.scss"
 import { useState, useEffect } from "react"
 import {

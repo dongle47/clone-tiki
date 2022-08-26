@@ -1,3 +1,4 @@
+ /* eslint-disable */
 import { useState, useEffect, useCallback, } from 'react'
 import {
     Stack,
@@ -10,16 +11,13 @@ import {
     Grid,
     Rating,
     Tab,
-    RadioGroup,
     Tabs,
-    Radio,
 }
     from '@mui/material';
 import "./FilterProduct.scss"
 import StarIcon from '@mui/icons-material/Star';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { numWithCommas } from "../../constraints/Util"
 import CardProduct from '../../components/CardProduct';
 import apiProduct from '../../apis/apiProduct';
 import { toast } from 'react-toastify'
@@ -59,6 +57,7 @@ function FilterProduct(props) {
                 })
         }
         getData()
+         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [slugCategory])
 
     useEffect(() => {
@@ -117,7 +116,7 @@ function FilterProduct(props) {
             if (filterPrice.apply) {
                 if (filterPrice.option > -1) {
                     const range = filterPrice.value.split(',')
-                    if (range.length == 2) {
+                    if (range.length === 2) {
                         const minPrice = Number(range[0]) || 0
                         const maxPrice = Number(range[1]) || 1000000000
                         data = data.filter(item => item.price * (1 - item.discount / 100) > minPrice
@@ -218,9 +217,7 @@ function FilterProduct(props) {
         }
 
     }
-    const onChangeShipping = (e) => {
-        setFilter({ ...filter, shipping: e.target.value })
-    }
+    
     const handleApplyFilterPrice = () => {
         setFilterPrice(pre => {
             return { ...pre, apply: !pre.apply }
@@ -368,25 +365,6 @@ function FilterForm(props) {
     )
 
 }
-
-const services = [
-    {
-        id: 1,
-        name: "Giao siêu tốc 2h"
-    },
-    {
-        id: 2,
-        name: "Không giới hạn"
-    },
-    {
-        id: 3,
-        name: "Rẻ hơn hoàn tiền"
-    },
-    {
-        id: 4,
-        name: "Trả góp 0%"
-    }
-]
 
 
 const tabs = [

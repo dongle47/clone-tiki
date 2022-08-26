@@ -9,7 +9,7 @@ import {Link} from "react-router-dom"
 import "./Error.scss"
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import FormControl, { useFormControl } from '@mui/material/FormControl';
+import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
 import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
@@ -30,7 +30,7 @@ function Error() {
         <Box>
             <Stack >
                 <Box sx={{ backgroundColor: "#3fc6f5" }} height="230px">
-                    <img alt="" src="https://salt.tikicdn.com/desktop/img/404/city-cloud.png" width="1535px" />
+                    <img alt="" src="https://salt.tikicdn.com/desktop/img/404/city-cloud.png" width="100%" />
                 </Box>
                 <Box sx={{ backgroundColor: "#fdba13" }} height="120px" px={2} position="relative" >
                     <Stack direction="row" alignItems="center" justifyContent="center" pt={2} spacing={3}>
